@@ -1,0 +1,377 @@
+/* 导入依赖 */
+@import 'tailwindcss';
+@plugin "@tailwindcss/typography";
+@plugin "@iconify/tailwind4";
+
+/* 暗色模式配置 */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* 主题变量 */
+@theme {
+  /* 字体 */
+  --font-serif: var(--font-lexend);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-dm-mono);
+
+  /* 基础颜色 */
+  --color-border: hsl(var(--border));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  /* 主题颜色 */
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  /* 标签颜色 */
+  --color-tg-bg: hsl(var(--tag-bg));
+  --color-tag-bg-hover: hsl(var(--tag-bg-hover));
+  --color-tag-border: hsl(var(--tag-border));
+  --color-tag-text: hsl(var(--tag-text));
+
+  /* 滚动条颜色 */
+  --color-scrollbar: hsl(var(--scrollbar));
+  --color-scrollbar-bg: hsl(var(--scrollbar-bg));
+}
+
+/* 字体配置 =========================== */
+@layer base {
+  /* 数字字体 */
+  @font-face {
+    font-family: 'Nubmers';
+    unicode-range: U+0030-0039;
+    src: url('/fonts/Geist[wght].woff2') format('woff2');
+    font-display: swap;
+  }
+
+  /* 英文字体 */
+  @font-face {
+    font-family: 'Onest';
+    src: url('/fonts/Onest[wght].woff2') format('woff2');
+    font-display: swap;
+  }
+
+  /* 破折号字体 */
+  @font-face {
+    font-family: 'CJKEmDash';
+    unicode-range: U+2014, U+2E3A-2E3B;
+    src: url('/fonts/ZhudouSansVF-subset.woff2') format('woff2');
+    font-display: swap;
+  }
+
+  /* 标题字体 */
+  @font-face {
+    font-family: 'Lexend';
+    src: url('/fonts/Lexend-VariableFont_wght.woff2') format('woff2');
+    font-display: swap;
+  }
+
+  /* 等宽字体 */
+  @font-face {
+    font-family: 'DM Mono';
+    src: url('/fonts/DMMono-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'DM Mono';
+    src: url('/fonts/DMMono-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-display: swap;
+  }
+}
+
+/* 颜色变量 =========================== */
+@layer base {
+  :root {
+    /* 字体族 */
+    --font-lexend: 'Lexend', 'CJKEmDash', 'Nubmers', 'Onest', 'ShangguSansSCVF', sans-serif;
+    --font-sans: 'CJKEmDash', 'Nubmers', 'Onest', 'ShangguSansSCVF', system-ui, sans-serif;
+    --font-dm-mono: 'DM Mono', 'Input Mono', 'Fira Code', 'ShangguSansSCVF', monospace;
+
+    /* 基础色调 */
+    /* gray */
+    /* --background: 220 30% 98%; */
+    /* white */
+    --background: 255 100% 100%;
+    --foreground: 225 15% 12%;
+
+    /* 交互状态 */
+    --accent: 220 25% 94%;
+    --accent-foreground: 225 15% 12%;
+
+    /* 主要强调色 */
+    --primary: 225 15% 12%;
+    --primary-foreground: 220 30% 98%;
+
+    /* 弱化元素 */
+    --muted: 220 25% 92%;
+    --muted-foreground: 225 10% 40%;
+    --border: 220 20% 90%;
+    --ring: 225 15% 12%;
+
+    /* 标签系统 */
+    --tag-bg: 220 25% 96%;
+    --tag-bg-hover: 220 25% 92%;
+    --tag-border: 220 25% 90%;
+    --tag-text: 225 15% 35%;
+
+    /* 滚动条 */
+    --scrollbar: 220 20% 80%;
+    --scrollbar-bg: 220 25% 95%;
+  }
+
+  /* 暗色模式变量 */
+  .dark {
+    /* 基础色调 */
+    --background: 240 10% 4%;
+    --foreground: 0 0% 98%;
+
+    /* 交互状态 */
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+
+    /* 主要强调色 */
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+
+    /* 弱化元素 */
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --border: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+
+    /* 标签系统 */
+    --tag-bg: 240 20% 13%;
+    --tag-bg-hover: 240 20% 16%;
+    --tag-border: 240 20% 20%;
+    --tag-text: 240 15% 85%;
+
+    /* 滚动条 */
+    --scrollbar: 240 10% 30%;
+    --scrollbar-bg: 240 10% 15%;
+  }
+}
+
+/* 基础样式 =========================== */
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    color-scheme: light;
+    background-color: var(--color-background);
+    /* 修改基础字体 */
+    font-family: var(--font-sans);
+    scroll-behavior: smooth;
+    @variant dark {
+      color-scheme: dark;
+    }
+  }
+
+  body {
+    @apply min-h-screen bg-background text-foreground;
+  }
+
+  /* 标题样式 */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-serif font-medium! tracking-tight;
+  }
+
+  /* 链接样式 */
+  a {
+    @apply underline-offset-4;
+  }
+
+  /* 工具类 */
+  .pro {
+    @apply prose prose-zinc dark:prose-invert;
+  }
+
+  .fullPage {
+    min-height: calc(100vh - 272px);
+  }
+}
+
+/* 动画效果 =========================== */
+@layer base {
+  /* 淡入上升动画 */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.6s ease-out forwards;
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* 主题切换动画 */
+  html.disable-transition,
+  html.disable-transition * {
+    transition: none !important;
+    /* 禁用 view-transition 动画 */
+    view-transition-name: none !important;
+    /* 禁用 Astro 视图过渡 */
+    --astro-view-transition: none !important;
+  }
+}
+
+/* 滚动条样式 =========================== */
+/* Firefox */
+@supports (scrollbar-width: auto) {
+  * {
+    scrollbar-width: auto;
+    scrollbar-color: hsl(var(--scrollbar)) hsl(var(--scrollbar-bg));
+  }
+}
+
+/* Webkit */
+@supports selector(::-webkit-scrollbar) {
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar:horizontal {
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background: hsl(var(--scrollbar-bg));
+  }
+  ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: hsl(var(--scrollbar));
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--scrollbar) / 0.8);
+  }
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Search */
+
+/* 隐藏 WebKit 浏览器（如 Chrome, Safari, Edge）中的搜索框清除按钮 */
+/* Hide the search box clear button in WebKit browsers (such as Chrome, Safari, Edge) */
+#search-input::-webkit-search-decoration,
+#search-input::-webkit-search-cancel-button,
+#search-input::-webkit-search-results-button,
+#search-input::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+}
+
+/* 隐藏 IE/Edge (旧版 EdgeHTML) 中的搜索框清除按钮 */
+/* Hide the search box clear button in IE/Edge (old version EdgeHTML) */
+#search-input::-ms-clear {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* 隐藏 Firefox 中的搜索框清除按钮 (较新版本可能不再需要) */
+/* Hide the search box clear button in Firefox (may no longer be necessary in newer versions) */
+input[type='search']::-moz-search-cancel-button {
+  display: none;
+}
+
+/* Search Styles */
+.search-results-item {
+  /* 主结果样式 */
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.search-results-item.sub-result {
+  /* 子结果样式 */
+  padding-left: 1.5rem;
+  border-left: 2px solid hsl(var(--accent));
+  margin-left: 1rem;
+  font-size: 0.875rem;
+  opacity: 0.9;
+}
+
+.search-results-item .search-results-title {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.search-results-item.sub-result .search-results-title {
+  font-weight: 400;
+  font-size: 0.875rem;
+}
+
+.search-results-item {
+  display: block;
+  padding: 1rem;
+  border-bottom: 1px solid hsl(var(--border));
+  transition: background-color 0.2s ease;
+}
+
+.search-results-item:hover {
+  background-color: hsl(var(--accent));
+}
+
+.search-results-title {
+  font-size: 1rem;
+  font-weight: 500;
+  color: hsl(var(--foreground));
+  margin-bottom: 0.5rem;
+}
+
+.search-results-excerpt {
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+  line-height: 1.5;
+}
+
+/* 搜索面板动画 */
+.search-panel-show {
+  animation: searchPanelShow 0.3s cubic-bezier(0.21, 1.02, 0.73, 1) forwards;
+}
+
+@keyframes searchPanelShow {
+  0% {
+    opacity: 0;
+    transform: translate(0%, -2rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0%, 0);
+  }
+}
+.search-results-excerpt {
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+  line-height: 1.5;
+
+  mark {
+    background-color: hsl(var(--accent));
+    color: hsl(var(--accent-foreground));
+    padding: 0.1em 0.2em;
+    border-radius: 0.25em;
+    font-weight: 500;
+  }
+}

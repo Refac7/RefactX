@@ -1,0 +1,52 @@
+---
+import { HEADER_LINKS } from '~/config'
+import ThemeToggle from '~/components/theme/ThemeToggle'
+import HeaderGradient from '~/components/theme/HeaderGradient.astro'
+import SectionDivider from '~/components/base/SectionDivider.astro'
+import HeaderLink from '~/components/base/HeaderLink.astro'
+import SearchSwitch from '~/components/base/SearchSwitch.astro'
+import { Image } from 'astro:assets'
+import favicon from '../../public/favicon.svg'
+
+const { pathname } = Astro.url
+---
+
+{!pathname.includes('/posts/') && <HeaderGradient />}
+<header>
+  <div class="mx-auto max-w-3xl flex justify-between px-6 sm:px-8 py-4 lg:px-8">
+    <div class="flex gap-6 items-center">
+      <a href="/" class="pointer-events-auto select-none" transition:persist>
+        <Image src={favicon} alt="Logo" class="size-8 border-2 border-transparent dark:border-border" />
+      </a>
+      <div class="flex gap-2 sm:flex">
+        {
+          HEADER_LINKS.map((link) => (
+            <HeaderLink href={link.url} background>
+              {link.name}
+            </HeaderLink>
+          ))
+        }
+      </div>
+    </div>
+    <div class="flex gap-2 items-center" transition:persist="header-theme-toggle">
+      <SearchSwitch />
+      <a
+        href="/rss.xml"
+        target="_blank"
+        class="inline-flex items-center justify-center rounded-md hover:scale-105 duration-200"
+        aria-label="RSS Feed"
+        title="RSS Feed"
+      >
+        <span class="icon-[material-symbols--rss-feed-rounded] size-5"></span>
+      </a>
+      <ThemeToggle client:load />
+    </div>
+  </div>
+</header>
+<div class="relative max-w-3xl mx-auto pointer-events-none">
+  <div aria-hidden="true" class="absolute inset-x-0 -top-14 bottom-0 mx-auto max-w-3xl">
+    <div class="to-(--color-border)/50 absolute bottom-0 left-0 top-0 w-px bg-gradient-to-b from-transparent to-75%"></div>
+    <div class="to-(--color-border)/50 absolute bottom-0 right-0 top-0 w-px bg-gradient-to-b from-transparent to-75%"></div>
+  </div>
+</div>
+<SectionDivider position="top" />

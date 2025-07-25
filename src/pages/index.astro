@@ -1,0 +1,80 @@
+---
+import { SITE, SKILLSSHOWCASE_CONFIG, SOCIAL_LINKS } from '~/config.ts'
+import { GITHUB_CONFIG, POSTS_CONFIG } from '~/config.ts'
+import { postsSort } from '~/lib/utils'
+import { getCollection } from 'astro:content'
+import Layout from '~/layouts/Layout.astro'
+import SectionDivider from '~/components/base/SectionDivider.astro'
+import GithubContributions from '~/components/base/GithubContributions.tsx'
+import SocialLink from '~/components/base/SocialLink.astro'
+import List from '~/components/posts/card/List.astro'
+import SkillsShowcase from '~/components/base/SkillsShowcase.astro'
+
+const { ENABLED, GITHUB_USERNAME, TOOLTIP_ENABLED } = GITHUB_CONFIG
+const { size, type } = POSTS_CONFIG.homePageConfig
+const { SKILLS_ENABLED, SKILLS_DATA } = SKILLSSHOWCASE_CONFIG
+
+const allPosts = await getCollection('posts')
+const posts = postsSort(allPosts).slice(0, size)
+---
+
+<Layout title="主页" description={SITE.description}>
+  <div class="relative z-[1]">
+    <div class="py-8 pb-10 px-6 sm:px-8">
+      <h1 class="flex flex-col gap-2">
+        <span class="text-4xl sm:text-5xl tracking-tight"> RefactX </span>
+        <span class="text-muted-foreground font-semibold text-xl sm:text-2xl block tracking-wide text-balance">
+          独立开发者
+        </span>
+      </h1>
+      <div class="pro text-muted-foreground text-balance">
+        <p>
+          采用 Tailwind CSS 实现优雅的响应式设计，集成 React 组件实现流畅的交互体验，支持明暗主题切换并提供平滑的过渡动画。
+        </p>
+      </div>
+      <div class="mt-6 flex gap-6">
+        {
+          SOCIAL_LINKS.map((item) => {
+            return <SocialLink href={item.url} icon={item.icon} aria-label={`${item.name}的链接`} count={item.count} label="关注者" />
+          })
+        }
+      </div>
+    </div>
+    {
+      ENABLED && (
+        <>
+          <SectionDivider />
+          <div class="py-8 pb-10 px-6 max-md:px-6">
+            <div class="px-2 max-md:px-0">
+              <h2 class="text-2xl sm:text-3xl">动态聚焦</h2>
+              <p class="text-muted-foreground mb-6 mt-1">近期代码贡献记录</p>
+            </div>
+            <GithubContributions username={GITHUB_USERNAME} tooltipEnabled={TOOLTIP_ENABLED} client:load transition:animate="none" />
+          </div>
+        </>
+      )
+    }
+    {
+      SKILLS_ENABLED && SKILLS_DATA.length > 0 && (
+        <>
+          <SectionDivider />
+          <div class="py-8 pb-10 px-6 max-md:px-6">
+            <div class="px-2 max-md:px-0">
+              <h2 class="text-2xl sm:text-3xl">技术栈</h2>
+              <p class="text-muted-foreground mb-6 mt-1">以下是我常用的技术：</p>
+            </div>
+            <SkillsShowcase skillsData={SKILLS_DATA} />
+          </div>
+        </>
+      )
+    }
+    <SectionDivider />
+    <div class="py-8 pb-10 px-6 sm:px-8">
+      <h2 class="text-3xl">文章</h2>
+      <p class="text-muted-foreground mb-6 mt-1">
+        最近更新的 {posts.length} 篇文章
+      </p>
+      <List {posts} {type} heroImageLayout={POSTS_CONFIG.homePageConfig?.heroImageLayout} />
+    </div>
+  </div>
+</Layout>
