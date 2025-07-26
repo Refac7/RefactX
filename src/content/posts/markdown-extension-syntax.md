@@ -1,13 +1,12 @@
 ---
 title: 'Markdown扩展语法'
 description: 'RefactX主题中增强Markdown功能的完整指南'
-pubDate: 2025-04-29
-author: 'Dnzzk2'
-recommend: true
+pubDate: 1145-04-29
+author: 'Dnzzk2, Refact'
 heroImage: 'markdown-extension-syntax.webp'
 ogImage: 'markdown-extension-syntax.webp'
 heroImageAspectRatio: '16/9'
-tags: ['Markdown', '指南']
+tags: ['基本教程','笔记']
 ---
 
 本文档基于[markdown-mdx-extended-features](https://astro-antfustyle-theme.vercel.app/blog/markdown-mdx-extended-features/)进行优化调整。特别感谢原作者:link[Stephanie Lin]{#@lin-stephanie}的贡献。

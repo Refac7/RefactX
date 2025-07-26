@@ -1,9 +1,8 @@
 ---
 title: '基础配置'
 description: 'RefactX主题的基本设置指南'
-pubDate: 2025-05-03
-tags: ['配置']
-recommend: true
+pubDate: 1145-05-03
+tags: ['基本教程','笔记']
 heroImage: 'Basic-configuration.webp'
 ogImage: 'Basic-configuration.webp'
 ---
@@ -18,7 +17,7 @@ ogImage: 'Basic-configuration.webp'
 export const SITE: Site = {
   title: 'RefactX',        // 网站标题
   description: 'RefactX是基于Astro.js与Dnzzk2构建的博客主题',  // 网站描述
-  website: 'https://RefactX.vercel.app/',  // 网站URL
+  website: 'https://Litos.vercel.app/',  // 网站URL
   base: '/',             // 基础路径（若非根目录部署需修改）
   author: 'Dnzzk2',      // 作者名称
   ogImage: '/og-image.jpg'  // 默认社交媒体分享图片

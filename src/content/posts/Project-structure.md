@@ -1,9 +1,8 @@
 ---
 title: '项目结构说明'
 description: 'RefactX主题项目的目录结构解析'
-pubDate: 2025-05-04
-tags: ['项目结构']
-recommend: true
+pubDate: 1145-05-04
+tags: ['基本教程','笔记']
 heroImage: 'Project-structure.webp'
 ogImage: 'Project-structure.webp'
 ---

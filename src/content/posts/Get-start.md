@@ -1,9 +1,8 @@
 ---
 title: '快速入门'
-pubDate: 2025-05-05
+pubDate: 1145-05-05
 description: 'RefactX主题的完整入门指南'
-recommend: true
-tags: ['教程']
+tags: ['基本教程','笔记']
 heroImage: 'Getting-Started.webp'
 ogImage: 'Getting-Started.webp'
 ---

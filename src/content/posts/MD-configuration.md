@@ -1,9 +1,8 @@
 ---
 title: '文章配置指南'
 description: 'RefactX主题中文章配置的完整指南'
-pubDate: 2025-05-01
-tags: ['配置','图片','文章']
-recommend: true
+pubDate: 1145-05-01
+tags: ['基本教程','笔记']
 heroImage: 'MD-Configuration.webp'
 ogImage: 'MD-Configuration.webp'
 ---
@@ -25,8 +24,8 @@ ogImage: 'MD-Configuration.webp'
 ---
 title: '文章标题'
 description: '文章简短描述'
-pubDate: 2025-05-01
-updatedDate: 2025-05-01
+pubDate: 1145-05-01
+updatedDate: 1145-05-01
 author: 'Dnzzk2'
 recommend: false
 heroImage: '图片文件名.png'

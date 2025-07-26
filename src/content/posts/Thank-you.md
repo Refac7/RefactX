@@ -1,13 +1,12 @@
 ---
 title: '致谢'
 description: '感谢开源项目与参考网站'
-pubDate: 2025-04-28
+pubDate: 1145-04-28
 author: '感谢名单'
 heroImage: 'Thank-you.webp'
 ogImage: 'Thank-you.webp'
 heroImageAspectRatio: '16/9'
-recommend: false
-tags: ['致谢']
+tags: ['致谢','笔记']
 ---
 
 在此特别感谢以下开源项目与参考网站。

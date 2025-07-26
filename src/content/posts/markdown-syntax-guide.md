@@ -1,8 +1,8 @@
 ---
 title: 'Markdown食谱写作指南'
 description: '通过美味意面食谱学习Markdown基础语法'
-pubDate: 2025-04-30
-tags: ['Markdown', '指南', '美食']
+pubDate: 1145-04-30
+tags: ['基本教程','笔记']
 heroImage: 'Markdown-syntax-guide.webp'
 ogImage: 'Markdown-syntax-guide.webp'
 ---

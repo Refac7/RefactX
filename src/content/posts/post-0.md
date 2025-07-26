@@ -4,7 +4,7 @@ description: '这篇文章讲述了作者对非自杀性自伤行为的喜好和
 pubDate: 2023-08-22
 tags: ['Me']
 heroImage: 'post0_1.jpeg'
-ogImage: 'post0.jpeg'
+ogImage: 'post0_1.jpeg'
 heroImageAspectRatio: '16/9'
 ---
 

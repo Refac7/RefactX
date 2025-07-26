@@ -1,11 +1,10 @@
 ---
 title: 'ExpressiveCode 配置指南'
 description: 'RefactX主题中代码块配置与自定义的完整指南'
-pubDate: 2025-05-02
-tags: ['配置', '代码块', '样式']
+pubDate: 1145-05-02
+tags: ['基本教程','笔记']
 heroImage: 'ExpressiveCode-Configuration.webp'
 ogImage: 'ExpressiveCode-Configuration.webp'
-recommend: true
 ---
 
 在Markdown文档中，我们使用代码块展示代码片段等内容。本文档将介绍如何自定义代码块配置。
