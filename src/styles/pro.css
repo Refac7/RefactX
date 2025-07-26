@@ -1,6 +1,6 @@
 @import 'medium-zoom/dist/style.css';
 @import 'rehype-callouts/theme/vitepress';
-@import url('https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css');
+@import url('https://cdn.bootcdn.net/ajax/libs/KaTeX/0.16.9/katex.min.css');
 
 /* 基础颜色 */
 .markdown {

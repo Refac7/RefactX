@@ -31,12 +31,12 @@ export const remarkPlugins = [
       },
       link: {
         // faviconSourceUrl: 'https://icon.horse/icon/{domain}',// 1000/month
-        faviconSourceUrl: 'https://www.google.com/s2/favicons?domain={domain}&sz=128', // recommended ✨
+        faviconSourceUrl: 'https://faviconkit.com/{domain}/64', // recommended ✨
         imgProps: (node: Parameters<PropertiesFromTextDirective>[0]) => {
           const props: ReturnType<PropertiesFromTextDirective> = {
             'aria-hidden': 'true',
           }
-          if (node.attributes?.class?.includes('github')) props.src = 'https://www.google.com/s2/favicons?domain=github.com&sz=128'
+          if (node.attributes?.class?.includes('github')) props.src = 'https://faviconkit.com/github.com/64'
           return props
         },
       },
