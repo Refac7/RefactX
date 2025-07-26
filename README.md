@@ -1,45 +1,41 @@
-# 🌟 RefactX Theme
+# RefactX 主题  
 
-![RefactX Cover](./src/assets/cover@2x.png)
+![RefactX 封面](./src/assets/cover@2x.png)  
 
-A modern, elegant Astro theme crafted for content creators and developers.
+一款为内容创作者和开发者打造的现代、优雅的 Astro 主题。  
 
-## ✨ Key Features
+## 核心功能  
 
-### 📱 Responsive Design
+### 响应式设计  
+- 流畅布局，无缝适配各种设备  
+- 所有屏幕尺寸下均提供优化的阅读体验  
 
-- Fluid layouts that adapt seamlessly across devices
-- Optimized reading experience on all screen sizes
+### 内容呈现  
+- 多种文章布局（16:9、3:4、无图模式）  
+- 支持动态图片缩放功能  
+- 简洁的排版风格，支持自定义样式  
 
-### 🎨 Content Presentation
+### 性能优化  
+- 资源优化，实现快速页面加载  
+- 内置图片优化功能  
+- 极简 JavaScript 使用  
 
-- Multiple post layouts (16:9, 3:4, no-image)
-- Dynamic image handling with zoom capability
-- Clean typography with customizable styles
+### 开发者体验  
+- 提供 VS Code 代码片段，快速创建内容  
+- 结构化的内容组织方式  
+- 类型安全的内容集合  
 
-### ⚡ Performance
+### 内置功能  
+- 基于标签的导航  
+- 阅读时长预估  
+- SEO 优化  
+- 深色/浅色模式  
+- 社交媒体预览支持  
 
-- Fast page loads with optimized assets
-- Built-in image optimization
-- Minimal JavaScript usage
+### 内容专注体验  
+- 无干扰的阅读环境  
+- 多种内容布局可选  
+- 代码语法高亮  
+- 响应式图片画廊  
 
-### 🛠️ Developer Experience
-
-- VS Code snippets for quick content creation
-- Structured content organization
-- Type-safe content collections
-
-### 📦 Built-in Features
-
-- 🏷️ Tag-based navigation
-- 📊 Reading time estimation
-- 🔍 SEO optimization
-- 🌓 Dark/Light mode
-- 📱 Social media previews
-
-### 🎯 Content Focus
-
-- Distraction-free reading experience
-- Multiple content layouts
-- Code syntax highlighting
-- Responsive image galleries
+由 Refact 维护此副本，MIT许可证沿用原始版本
