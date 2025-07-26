@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg id="_Refact" data-name="©️Refact" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 687.6 687.68">
+<svg id="_Refact" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 688 688">
   <defs>
     <style>
       .cls-1 {
-        fill: #fff;
-        stroke: #fff;
-        stroke-miterlimit: 10;
-        stroke-width: 0.5px;
-      }
-      .bg {
-        fill: #000;
+        fill: #5B616F;
+        stroke: #5B616F;
+        stroke-width: 0.5;
+        stroke-linejoin: round;
+        shape-rendering: geometricPrecision;
       }
     </style>
   </defs>
-  <rect class="bg" width="100%" height="100%"/>
-  <polygon class="cls-1" points="0.3 0.3 0.3 457.3 230.3 687.3 230.3 230.3 0.3 0.3"/>
-  <polygon class="cls-1" points="687.3 230.55 230.3 230.55 0.3 0.55 457.3 0.55 687.3 230.55"/>
-  <polygon class="cls-1" points="230.3 459.05 458.05 687.55 687.3 687.55 459.55 459.05 230.3 459.05"/>
-  <polygon class="cls-1" points="687.3 230.55 459.55 459.05 230.3 459.05 458.05 230.55 687.3 230.55"/>
+  <path class="cls-1" d="M0,0 L0,458 L230,688 L230,230 Z
+                        M688,230 L230,230 L0,0 L458,0 Z
+                        M230,458 L458,688 L688,688 L460,458 Z
+                        M688,230 L460,458 L230,458 L458,230 Z"/>
 </svg>

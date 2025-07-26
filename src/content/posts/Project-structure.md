@@ -1,6 +1,6 @@
 ---
 title: '项目结构说明'
-description: 'Litos主题项目的目录结构解析'
+description: 'RefactX主题项目的目录结构解析'
 pubDate: 2025-05-04
 tags: ['项目结构']
 recommend: true
@@ -8,19 +8,19 @@ heroImage: 'Project-structure.webp'
 ogImage: 'Project-structure.webp'
 ---
 
-本文档将帮助您快速理解[Litos主题](https://github.com/Dnzzk2/Litos)的项目结构。
+本文档将帮助您快速理解[RefactX主题](https://github.com/msrefs/RefactX)的项目结构。
 
 ## 项目目录结构
 
 以下是项目的完整目录结构及核心文件说明：
 
 ```tex
-Litos
+RefactX
 ├── .git                                  # Git版本控制目录
 ├── .vscode                               # VS Code工作区配置
 │   ├── extensions.json                   # 推荐安装的VSCode扩展
 │   ├── launch.json                       # 调试配置
-│   ├── litos.code-snippets.json          # 自定义代码片段
+│   ├── RefactX.code-snippets.json          # 自定义代码片段
 │   └── settings.json                     # 编辑器设置
 ├── plugins                               # Markdown扩展插件
 ├── public                                # 静态资源目录

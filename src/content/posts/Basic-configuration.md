@@ -1,6 +1,6 @@
 ---
 title: '基础配置'
-description: 'Litos主题的基本设置指南'
+description: 'RefactX主题的基本设置指南'
 pubDate: 2025-05-03
 tags: ['配置']
 recommend: true
@@ -8,7 +8,7 @@ heroImage: 'Basic-configuration.webp'
 ogImage: 'Basic-configuration.webp'
 ---
 
-欢迎阅读Litos主题配置指南。所有网站基础设置均通过`src/config.ts`文件管理。本指南将详细介绍每个配置模块，助您高效定制网站。
+欢迎阅读RefactX主题配置指南。所有网站基础设置均通过`src/config.ts`文件管理。本指南将详细介绍每个配置模块，助您高效定制网站。
 
 ## 核心站点配置
 
@@ -16,9 +16,9 @@ ogImage: 'Basic-configuration.webp'
 
 ```ts title="src/config.ts"
 export const SITE: Site = {
-  title: 'Litos',        // 网站标题
-  description: 'Litos是基于Astro.js与Dnzzk2构建的博客主题',  // 网站描述
-  website: 'https://litos.vercel.app/',  // 网站URL
+  title: 'RefactX',        // 网站标题
+  description: 'RefactX是基于Astro.js与Dnzzk2构建的博客主题',  // 网站描述
+  website: 'https://RefactX.vercel.app/',  // 网站URL
   base: '/',             // 基础路径（若非根目录部署需修改）
   author: 'Dnzzk2',      // 作者名称
   ogImage: '/og-image.jpg'  // 默认社交媒体分享图片
@@ -38,7 +38,7 @@ export const SITE: Site = {
 
 ## 导航结构
 
-Litos采用双导航系统增强用户体验。导航分为主导航（`HEADER_LINKS`）和页脚导航（`FOOTER_LINKS`）两部分。
+RefactX采用双导航系统增强用户体验。导航分为主导航（`HEADER_LINKS`）和页脚导航（`FOOTER_LINKS`）两部分。
 
 ### 主导航
 
@@ -100,7 +100,7 @@ export const FOOTER_LINKS: Link[] = [
 
 ## 社交媒体集成
 
-Litos内置社交媒体集成功能，可在指定区域展示社交账号：
+RefactX内置社交媒体集成功能，可在指定区域展示社交账号：
 
 :::image-figure[社交链接]
 ![](~/assets/images/base-configuration/social-link-dark.jpg)(class:img-light)
@@ -264,7 +264,7 @@ export const SKILLSSHOWCASE_CONFIG: SkillsShowcaseConfig = {
 
 ## 文章配置
 
-Litos通过`src/config.ts`中的`POSTS_CONFIG`对象提供全面的文章配置选项，包括文章显示设置、分页和布局选项。
+RefactX通过`src/config.ts`中的`POSTS_CONFIG`对象提供全面的文章配置选项，包括文章显示设置、分页和布局选项。
 
 ```ts title="src/config.ts"
 export const POSTS_CONFIG: PostConfig = {
@@ -387,19 +387,19 @@ export const PROJECTS_CONFIG: ProjectsConfig = {
 ```ts title="src/config.ts"
 export const ProjectList: Project[] = [
   {
-    name: 'Litos',
+    name: 'RefactX',
     description: '基于Astro.js与Dnzzk2构建的博客主题',
-    githubUrl: 'https://github.com/Dnzzk2/Litos',
-    website: 'https://litos.vercel.app/',
+    githubUrl: 'https://github.com/msrefs/RefactX',
+    website: 'https://RefactX.vercel.app/',
     type: 'icon',
     icon: 'icon-[ri--github-fill]',
     star: 1,
   },
   {
-    name: 'Litos',
+    name: 'RefactX',
     description: '基于Astro.js与Dnzzk2构建的博客主题',
-    githubUrl: 'https://github.com/Dnzzk2/Litos',
-    website: 'https://litos.vercel.app/',
+    githubUrl: 'https://github.com/msrefs/RefactX',
+    website: 'https://RefactX.vercel.app/',
     type: 'image',
     icon: '/projects/logo.png',
     star: 1,

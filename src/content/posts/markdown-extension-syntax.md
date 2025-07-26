@@ -1,6 +1,6 @@
 ---
 title: 'Markdown扩展语法'
-description: 'Litos主题中增强Markdown功能的完整指南'
+description: 'RefactX主题中增强Markdown功能的完整指南'
 pubDate: 2025-04-29
 author: 'Dnzzk2'
 recommend: true
@@ -134,7 +134,7 @@ cleanupResources()
 :::
 ```
 
-:::image-a{href="https://github.com/Dnzzk2/Litos"}
+:::image-a{href="https://github.com/msrefs/RefactX"}
 ![GitHub仓库](~/assets/images/markdown-extension-syntax/markdown-extension-syntax.png)
 :::
 
@@ -159,7 +159,7 @@ cleanupResources()
 ```
 
 :link[Vite]{id=@vitejs}  
-:link[Litos]{id=Dnzzk2/Litos}
+:link[RefactX]{id=Dnzzk2/RefactX}
 
 ## 徽章
 

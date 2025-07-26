@@ -49,12 +49,12 @@ export const SOCIAL_LINKS: SocialLink[] = [
   },
   {
     name: 'twitter',
-    url: 'https://x.com/yourname',
+    url: 'https://x.com/MSReFS',
     icon: 'icon-[ri--twitter-x-fill]',
   },
   {
     name: 'bilibili',
-    url: 'https://space.bilibili.com/yourSpaceId',
+    url: 'https://space.bilibili.com/441325177',
     icon: 'icon-[ri--bilibili-fill]',
   },
 ]
@@ -162,8 +162,8 @@ export const GITHUB_CONFIG: GithubConfig = {
 
 export const POSTS_CONFIG: PostConfig = {
   title: '文章',
-  description: 'Refact的文章',
-  introduce: '这里将分享主题使用指南，助您快速上手。',
+  description: 'Refact 的文章',
+  introduce: '不定时更新维护文章，可订阅 RSS 获取最新更新状态。',
   author: 'Refact',
   homePageConfig: {
     size: 5,
@@ -204,13 +204,61 @@ export const PROJECTS_CONFIG: ProjectConfig = {
 
 export const ProjectList: Project[] = [
   {
-    name: 'Litos',
-    description: '基于Astro的简洁现代博客主题',
-    githubUrl: 'https://github.com/Dnzzk2/Litos',
-    website: 'https://litos.vercel.app/',
-    type: 'image',
-    icon: '/projects/logo.png',
-    star: 16,
+    name: 'RefactX',
+    description: '基于Astro的简洁现代博客',
+    githubUrl: 'https://github.com/msrefs/RefactX',
+    website: '/',
+    type: 'icon',
+    icon: 'icon-[ri--xing-fill]',
+    star: 1,
+    fork: 1
+  },
+  {
+    name: 'RefactX-DEV',
+    description: '基于Astro的简洁现代博客(开发版)',
+    githubUrl: 'https://github.com/msrefs/RefactXDEV',
+    website: 'https://dev.refact.cc/',
+    type: 'icon',
+    icon: 'icon-[ri--xing-line]',
+    star: 4,
     fork: 5
-  }
+  },
+  {
+    name: 'MC服务器状态嵌入式组件',
+    description: '基于 React 开发了独立的 Vercel 应用，通过 URL 嵌入状态页面，无需修改网站源码。',
+    githubUrl: 'https://github.com/msrefs/minecraft-status-widget',
+    website: 'https://www.neotec.uk/serverstatus.html',
+    type: 'icon',
+    icon: 'icon-[ri--puzzle-line]',
+    star: 1,
+    fork: 4
+  },
+  {
+    name: 'NotionNext主题 - Neo',
+    description: '基于内置的 Heo 主题进行了大量修改，是现代化的博客设计方案（项目已归档)',
+    githubUrl: 'https://github.com/msrefs/WebsiteKit/',
+    type: 'icon',
+    icon: 'icon-[ri--terminal-box-line]',
+    star: 1,
+    fork: 9
+  },
+  {
+    name: 'Neotec. 主站',
+    description: '基于 Vitepress 构建，储存官方文档',
+    githubUrl: 'https://github.com/msrefs/VitePress/',
+    website: 'https://www.neotec.uk/',
+    type: 'icon',
+    icon: 'icon-[ri--terminal-box-line]',
+    star: 1,
+    fork: 9
+  },
+  {
+    name: 'Neotec. 整合包',
+    description: 'Neotec整合包平台是一个以开源、自由、社区驱动为核心的Minecraft模组整合服务。',
+    website: 'https://www.neotec.uk/modpacks.html',
+    type: 'icon',
+    icon: 'icon-[ri--archive-line]',
+    star: 8,
+    fork: 1
+  },
 ]

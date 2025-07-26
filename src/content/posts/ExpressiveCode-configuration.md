@@ -1,6 +1,6 @@
 ---
 title: 'ExpressiveCode 配置指南'
-description: 'Litos主题中代码块配置与自定义的完整指南'
+description: 'RefactX主题中代码块配置与自定义的完整指南'
 pubDate: 2025-05-02
 tags: ['配置', '代码块', '样式']
 heroImage: 'ExpressiveCode-Configuration.webp'

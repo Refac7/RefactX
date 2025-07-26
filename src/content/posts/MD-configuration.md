@@ -1,6 +1,6 @@
 ---
 title: '文章配置指南'
-description: 'Litos主题中文章配置的完整指南'
+description: 'RefactX主题中文章配置的完整指南'
 pubDate: 2025-05-01
 tags: ['配置','图片','文章']
 recommend: true
@@ -8,7 +8,7 @@ heroImage: 'MD-Configuration.webp'
 ogImage: 'MD-Configuration.webp'
 ---
 
-本文档提供Litos主题中文章配置的完整指南，包括Front Matter设置和图片显示选项。
+本文档提供RefactX主题中文章配置的完整指南，包括Front Matter设置和图片显示选项。
 
 ## 创建新文章
 
@@ -132,7 +132,7 @@ pnpm run optimize -- -i public/images -f webp
 
 ## 代码片段
 
-`.vscode/litos.code-snippets`提供三种代码片段快速生成Front Matter：
+`.vscode/RefactX.code-snippets`提供三种代码片段快速生成Front Matter：
 
 ### 基础模板(无图片)
 

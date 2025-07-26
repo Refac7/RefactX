@@ -1,14 +1,14 @@
 ---
 title: '快速入门'
 pubDate: 2025-05-05
-description: 'Litos主题的完整入门指南'
+description: 'RefactX主题的完整入门指南'
 recommend: true
 tags: ['教程']
 heroImage: 'Getting-Started.webp'
 ogImage: 'Getting-Started.webp'
 ---
 
-欢迎使用 **[Litos主题](https://github.com/Dnzzk2/Litos)**！本指南将带您完成基于Astro.js构建的现代化博客主题Litos的安装与配置流程。
+欢迎使用 **[RefactX主题](https://github.com/msrefs/RefactX)**！本指南将带您完成基于Astro.js构建的现代化博客主题RefactX的安装与配置流程。
 
 ## 环境准备
 
@@ -26,9 +26,9 @@ ogImage: 'Getting-Started.webp'
 
 ### 创建项目
 
-通过Fork仓库开始您的Litos项目：
+通过Fork仓库开始您的RefactX项目：
 
-1. 访问[Litos主题仓库](https://github.com/Dnzzk2/Litos)
+1. 访问[RefactX主题仓库](https://github.com/msrefs/RefactX)
 2. 点击"Fork"按钮创建您的副本
 3. 本地克隆仓库：
 
@@ -70,7 +70,7 @@ pnpm dev
 
 ## 内容创作
 
-Litos支持标准Markdown和增强语法：
+RefactX支持标准Markdown和增强语法：
 
 - [基础Markdown语法](/posts/markdown-syntax-guide) - 核心格式化语法
 - [扩展Markdown功能](/posts/markdown-extension-syntax) - 高级格式化选项
