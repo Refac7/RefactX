@@ -237,3 +237,5 @@ public class DoNSSI
 - [自我傷害的誘惑與探討](https://spiketren.gitbooks.io/psy101/content/ch14/hot/nssi.html)
 - [割手割到要縫，但是案主卻興奮了三天？](https://www.facebook.com/sn094545/posts/1218338905037196/)
 - [文件源](https://icha.win/7A9B2C1D/)
+
+> 文章转载于 https://icha.win/

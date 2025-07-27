@@ -64,3 +64,5 @@ sudo sh -c 'echo "127.0.0.1 refact.cc" >> /etc/hosts"
 除了以上两种文章以外，从其他地方转载的文章包括在这里
 
 许可证使用原作者，会在文档首尾标明
+
+> 此 HeroImage 来自 https://icha.win/
