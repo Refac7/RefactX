@@ -6,7 +6,7 @@ export const SITE: Site = {
   website: 'https://www.refact.cc/',
   base: '/',
   author: 'Refact',
-  ogImage: '/og-image.jpg',
+  ogImage: '/og-image.webp',
 }
 
 export const HEADER_LINKS: Link[] = [
@@ -177,7 +177,7 @@ export const POSTS_CONFIG: PostConfig = {
     size: 10,
     type: 'time-line'
   },
-  defaultHeroImage: '/og-image.jpg',
+  defaultHeroImage: '/og-image.webp',
   defaultHeroImageAspectRatio: '16/9',
   postType: 'horizontal',
   imageDarkenInDark: true,
