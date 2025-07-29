@@ -20,24 +20,31 @@ const posts = postsSort(allPosts).slice(0, size)
 
 <Layout title="主页" description={SITE.description}>
   <div class="relative z-[1]">
-    <div class="py-8 pb-10 px-6 sm:px-8">
-      <h1 class="flex flex-col gap-2">
-        <span class="text-4xl sm:text-5xl tracking-tight"> RefactX </span>
-        <span class="text-muted-foreground font-semibold text-xl sm:text-2xl block tracking-wide text-balance">
-          独立开发者
-        </span>
-      </h1>
-      <div class="pro text-muted-foreground text-balance">
-        <p>
-          采用 Tailwind CSS 实现优雅的响应式设计，集成 React 组件实现流畅的交互体验，支持明暗主题切换并提供平滑的过渡动画。
-        </p>
-      </div>
-      <div class="mt-6 flex gap-6">
-        {
-          SOCIAL_LINKS.map((item) => {
-            return <SocialLink href={item.url} icon={item.icon} aria-label={`${item.name}的链接`} count={item.count} label="关注者" />
-          })
-        }
+      <div class="py-8 pb-10 px-6 sm:px-8">
+        <div class="flex-1">
+          <h1 class="flex flex-col gap-2">
+            <span class="text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-cyan-500 dark:from-indigo-400 dark:to-cyan-300 tracking-tight">
+              RefactX
+            </span>
+            <span class="text-xl md:text-2xl font-medium tracking-wide">
+              代码重构师 & 创意开发者
+            </span>
+          </h1>
+          
+          <div class="prose prose-indigo dark:prose-invert max-w-2xl mt-6 text-gray-700 dark:text-gray-300">
+            <p>
+              专注于将复杂问题「做不了」优雅简化「未必」，擅长使用 Cmd+C 、Cmd+V 生态构建应用，对 Git clone 和现代 CSS 有深度实践。
+              相信代码不仅是工具，更是表达创意的艺术媒介。
+            </p>
+          </div>
+          <div class="mt-6 flex gap-6">
+            {
+              SOCIAL_LINKS.map((item) => {
+                return <SocialLink href={item.url} icon={item.icon} aria-label={`${item.name}的链接`} count={item.count} label="关注者" />
+              })
+            }
+          </div>
+        </div>
       </div>
     </div>
     {

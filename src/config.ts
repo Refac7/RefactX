@@ -161,7 +161,7 @@ export const GITHUB_CONFIG: GithubConfig = {
 }
 
 export const POSTS_CONFIG: PostConfig = {
-  title: '文章',
+  title: 'Posts',
   description: 'Refact 的文章',
   introduce: '不定时更新维护文章，可订阅 RSS 获取最新更新状态。',
   author: 'Refact',
@@ -197,7 +197,7 @@ export const TAGS_CONFIG: TagsConfig = {
 }
 
 export const PROJECTS_CONFIG: ProjectConfig = {
-  title: '项目展示',
+  title: 'Projects',
   description: '我的项目案例',
   introduce: '以下是我的项目案例展示。'
 }

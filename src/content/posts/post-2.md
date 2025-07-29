@@ -80,6 +80,8 @@ graph TD
 
 ---
 
+:badge[新功能]{style="background-color: #bef264"}
+
 ### 3. 渐变背景重构
 
 #### 3.1 移动端适配方案

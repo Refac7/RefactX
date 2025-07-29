@@ -5,8 +5,8 @@ pubDate: 2025-07-27
 author: 'Refact'
 tags: ['Me','杂谈']
 recommend: true
-heroImage: 'post0.jpeg'
-ogImage: 'post0.jpeg'
+heroImage: 'me.webp'
+ogImage: 'me.webp'
 heroImageAspectRatio: '16/9'
 ---
 
@@ -16,7 +16,7 @@ heroImageAspectRatio: '16/9'
 
 这是 RefactX Project，原始版本来自 https://github.com/Dnzzk2/Litos ，我创建的此副本为其修改为中文支持和少部分维护。
 
-同时这里是我比较隐蔽的一个写作网站，同时又是我学习前端开发的实践对象。因为我身边的人都不知道这个东西，所以这里可能会涉及一些比较敏感的话题，内容是偏主观的，若你不能接受，请通过以下命令拉黑此网站。
+这里是我比较隐蔽的一个写作网站，同时又是我学习前端开发的实践对象。因为我身边的人都不知道这个东西，所以这里可能会涉及一些比较敏感的话题，内容是偏主观的，若你不能接受，请通过以下命令拉黑此网站。
 
 **Windows（管理员权限运行）**:
 ```cmd
@@ -65,4 +65,6 @@ sudo sh -c 'echo "127.0.0.1 refact.cc" >> /etc/hosts"
 
 许可证使用原作者，会在文档首尾标明
 
-> 此 HeroImage 来自 https://icha.win/
+> 此 HeroImage 的原始版本来自 https://icha.win/
+
+由 Refact 二次绘制
