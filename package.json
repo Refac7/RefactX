@@ -1,7 +1,7 @@
 {
   "name": "RefactX",
   "type": "module",
-  "version": "0.3.0",
+  "version": "1.2",
   "license": "MIT",
   "scripts": {
     "dev": "astro dev",

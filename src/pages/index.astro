@@ -20,27 +20,35 @@ const posts = postsSort(allPosts).slice(0, size)
 
 <Layout title="主页" description={SITE.description}>
   <div class="relative z-[1]">
-      <div class="py-8 pb-10 px-6 sm:px-8">
-        <div class="flex-1">
-          <h1 class="flex flex-col gap-2">
-            <span class="text-xl sm:text-2xl font-bold tracking-tight"> By Refact </span>
-            <span class="text-4xl md:text-6xl font-bold tracking-wide">
-              RefactX Project
-            </span>
-          </h1>
-          
-          <div class="prose prose-indigo dark:prose-invert max-w-2xl mt-6 font-semibold text-gray-700 dark:text-gray-300">
-            <p>
-              擅长使用 Cmd+C 、Cmd+V 构建应用，对 Git clone 和 复制粘贴 有深度实践。
-            </p>
-          </div>
-          <div class="mt-6 flex gap-6">
-            {
-              SOCIAL_LINKS.map((item) => {
-                return <SocialLink href={item.url} icon={item.icon} aria-label={`${item.name}的链接`} count={item.count} label="关注者" />
-              })
-            }
-          </div>
+    <div class="py-8 px-6 sm:px-6 md:px-8 max-w-3xl mx-auto">
+      <div class="space-y-6">
+        <h1 class="space-y-2">
+          <span class="block text-xl sm:text-2xl font-medium text-gray-500 dark:text-gray-400 tracking-normal">
+            By Refact
+          </span>
+          <span class="block text-4xl md:text-5xl font-semibold text-gray-900 dark:text-white leading-tight">
+            RefactX Project
+          </span>
+        </h1>
+        
+        <div class="prose prose-indigo dark:prose-invert text-gray-600 dark:text-gray-300">
+          <p class="leading-relaxed">
+            擅长使用 Cmd+C 、Cmd+V 构建应用，对 Git clone 和 复制粘贴 有深度实践。
+            相信快捷键不仅是工具，更是表达创意的艺术媒介。
+          </p>
+        </div>
+        
+        <div class="flex gap-4">
+          {SOCIAL_LINKS.map((item) => (
+            <SocialLink 
+              href={item.url} 
+              icon={item.icon} 
+              aria-label={`${item.name}的链接`} 
+              count={item.count} 
+              label="关注者"
+              class="hover:scale-105 transition-transform"
+            />
+          ))}
         </div>
       </div>
     </div>
