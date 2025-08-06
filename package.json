@@ -1,14 +1,13 @@
 {
-  "name": "RefactX",
+  "name": "Litos",
   "type": "module",
-  "version": "1.2",
+  "version": "0.4.0",
   "license": "MIT",
   "scripts": {
     "dev": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "optimize": "tsx scripts/optimize-images.ts",
     "format": "prettier . --check --ignore-unknown",
     "format:write": "prettier . --write --ignore-unknown --cache",
     "postbuild": "pagefind --site dist"
