@@ -22,22 +22,22 @@ const posts = postsSort(allPosts).slice(0, size)
   <div class="relative z-[1]">
     <div class="py-8 px-6 sm:px-6 md:px-8 max-w-3xl mx-auto">
       <div class="space-y-6">
-        <h1 class="space-y-2">
-          <span class="block text-xl sm:text-2xl font-medium text-gray-500 dark:text-gray-400 tracking-normal">
-            By Refact
-          </span>
-          <span class="block text-4xl md:text-5xl font-semibold text-gray-900 dark:text-white leading-tight">
+        <h1 class="space-y-0">
+          <span class="block text-5xl font-medium text-gray-900 dark:text-white leading-tight">
             RefactX
           </span>
+          <span class="block text-xl sm:text-2xl font-medium text-gray-500 dark:text-gray-400 tracking-normal">
+            Your Code, Elevate Your Ideas
+          </span>
         </h1>
-        
-        <div class="prose prose-indigo dark:prose-invert text-gray-600 dark:text-gray-300">
+        <div class="prose prose-indigo dark:prose-invert text-gray-900 dark:text-white">
           <p class="leading-relaxed">
             擅长使用 Cmd+C 、Cmd+V 构建应用，对 Git clone 和 复制粘贴 有深度实践。
-            相信快捷键不仅是工具，更是表达创意的艺术媒介。
+          </p>
+          <p class="leading-relaxed text-sm sm:text-sm font-semibold text-gray-500 dark:text-gray-400">
+            项目以 MIT 许可协议开源，文章内容遵循 CC BY-NC-SA 4.0 协议。
           </p>
         </div>
-        
         <div class="flex gap-4">
           {SOCIAL_LINKS.map((item) => (
             <SocialLink 

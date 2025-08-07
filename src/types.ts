@@ -21,7 +21,7 @@ export type Site = {
  * 文章封面图宽高比类型 / Hero image aspect ratio type
  * @description 可选值为 '16/9' 和 '3/4' / Possible values: '16/9' and '3/4'
  */
-export type HeroImageAspectRatio = '16/9' | '3/4'
+export type HeroImageAspectRatio = '16/9' | '3/4' 
 
 /**
  * 文章封面图布局类型 / Hero image layout type
@@ -212,7 +212,7 @@ export interface Project {
  * - 4x3: 横向比例
  * - 9x16: 竖向比例
  */
-export type PolaroidVariant = '1x1' | '4x5' | '4x3' | '9x16'
+export type PolaroidVariant = '1x1' | '4x5' | '4x3' | '9x16' | '3x4'
 
 /**
  * 图片配置接口 / Photo configuration interface
