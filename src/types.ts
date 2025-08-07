@@ -212,8 +212,7 @@ export interface Project {
  * - 4x3: 横向比例
  * - 9x16: 竖向比例
  */
-export type PolaroidVariant = '1x1' | '4x5' | '4x3' | '9x16' | '3x4'
-
+export type PolaroidVariant = '1x1' | '4x5' | '4x3' | '9x16' 
 /**
  * 图片配置接口 / Photo configuration interface
  * @property {string} src - 图片路径 / Image path
