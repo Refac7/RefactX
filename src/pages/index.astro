@@ -3,6 +3,8 @@ import { SITE, SKILLSSHOWCASE_CONFIG, SOCIAL_LINKS } from '~/config.ts'
 import { GITHUB_CONFIG, POSTS_CONFIG } from '~/config.ts'
 import { postsSort } from '~/lib/utils'
 import { getCollection } from 'astro:content'
+import { Image } from 'astro:assets';
+import heroImage from '../assets/hero.jpg';
 import Layout from '~/layouts/Layout.astro'
 import SectionDivider from '~/components/base/SectionDivider.astro'
 import GithubContributions from '~/components/base/GithubContributions.tsx'
@@ -32,12 +34,14 @@ const posts = postsSort(allPosts).slice(0, size)
           <span class="block text-xl sm:text-2xl font-medium text-gray-500 dark:text-gray-400 tracking-normal">
             Your Code, Elevate Your Ideas
           </span>
+          <span class="mx-auto w-full">
+            <Image
+              src={heroImage}
+              alt="Profile image"
+              class="rounded-lg shadow-md w-full h-auto max-w-[500px]"
+            />
+          </span>
         </h1>
-        <div class="prose prose-indigo dark:prose-invert font-semibold text-gray-500 dark:text-gray-400">
-          <p class="leading-relaxed">
-            > 擅长使用 Cmd+C 、Cmd+V 构建应用，对 Git clone 和 复制粘贴 有深度实践。
-          </p>
-        </div>
         <div class="flex gap-4 items-center">
           {SOCIAL_LINKS.map((item) => (
             <SocialLink 

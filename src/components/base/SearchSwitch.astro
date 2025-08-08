@@ -21,7 +21,7 @@
           type="search"
           id="search-input"
           class="w-full h-8 bg-transparent outline-none text-foreground placeholder:text-muted-foreground font-normal leading-8 text-base"
-          placeholder="Search"
+          placeholder="搜索..."
           autocomplete="off"
         />
         <kbd class="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 text-xs text-muted-foreground bg-muted rounded">ESC</kbd>
@@ -148,8 +148,8 @@
       resultItem.href = searchResults?.dataset.base || '/'
       resultItem.className = 'search-results-item'
       resultItem.innerHTML = `
-        <div class="search-results-title">Search</div>
-        <div class="search-results-excerpt">Search in development mode</div>
+        <div class="search-results-title">搜索</div>
+        <div class="search-results-excerpt">在开发模式下搜索</div>
       `
       resultItem.addEventListener('click', closeSearchIn)
       searchResults?.appendChild(resultItem)
