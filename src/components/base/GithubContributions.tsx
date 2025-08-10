@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { cn } from '~/lib/utils'
-import Tooltip, { TooltipProvider } from './Tooltip.tsx'
+import Tooltip, { TooltipProvider } from './Tooltip'
 
 // API from https://github.com/grubersjoe/github-contributions-api
 interface Contribution {
@@ -142,16 +142,14 @@ export default function GithubContributions({ username, tooltipEnabled }: Props)
           <div key={weekIndex} className="grid grid-rows-7 gap-1">
             {week.map((contribution, dayIndex) => {
               const { date, count } = contribution
-              const formattedDate = new Date(date).toLocaleDateString('en-US', {
+              const formattedDate = new Date(date).toLocaleDateString('zh-CN', {
                 weekday: 'long',
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',
               })
 
-              const tooltipContent = `${formattedDate} — ${
-                count === 1 ? '1 contribution 💤' : count === 0 ? 'Rest day 🪴' : `${count} contributions`
-              }`
+              const tooltipContent = `${formattedDate} — ${count === 1 ? '1 次提交 ✨' : count === 0 ? '休息日 💤' : `${count} 次提交`}`
 
               return (
                 <Tooltip key={dayIndex} content={tooltipContent} disabled={!tooltipEnabled || errorVisible}>
@@ -159,9 +157,9 @@ export default function GithubContributions({ username, tooltipEnabled }: Props)
                     className={cn(
                       'size-2 relative transition-colors duration-500 hover:scale-125 hover:transition-none',
                       count === 0
-                        ? 'bg-zinc-200 dark:bg-zinc-900'
+                        ? 'bg-zinc-200/70 dark:bg-zinc-900'
                         : count < 5
-                          ? 'bg-zinc-300 dark:bg-zinc-700'
+                          ? 'bg-zinc-400/70 dark:bg-zinc-700'
                           : count < 10
                             ? 'bg-zinc-500'
                             : 'bg-zinc-900 dark:bg-zinc-50'
