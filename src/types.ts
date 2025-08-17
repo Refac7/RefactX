@@ -227,7 +227,7 @@ export type PolaroidVariant = '1x1' | '4x5' | '4x3' | '9x16'
  */
 export interface Photo {
   src: string
-  alt: string
+  alt?: string
   width: number
   height: number
   variant: PolaroidVariant
