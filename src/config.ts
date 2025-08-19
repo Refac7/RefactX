@@ -211,7 +211,7 @@ export const POSTS_CONFIG: PostConfig = {
 }
 
 export const TAGS_CONFIG: TagsConfig = {
-  title: '标签',
+  title: 'Tags',
   description: '所有文章标签',
   introduce: '所有文章标签均在此处，点击即可筛选。'
 }

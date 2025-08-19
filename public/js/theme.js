@@ -7,17 +7,18 @@
   const root = document.documentElement
 
   // 立即应用主题，避免闪烁
-  function applyTheme(theme) {
+  function applyTheme(theme, instant = false) {
     const isDark = theme === 'dark' || (theme === 'system' && prefersDark.matches)
 
-    // 使用 toggleAttribute 性能更好
+    if (instant) root.classList.add('disable-transition')
     root.toggleAttribute('data-theme', isDark ? 'dark' : 'light')
     root.classList.toggle('dark', isDark)
+    if (instant) setTimeout(() => root.classList.remove('disable-transition'), 0)
   }
 
   // 初始化
   const savedTheme = localStorage.getItem(STORAGE_KEY) || 'system'
-  applyTheme(savedTheme)
+  applyTheme(savedTheme, true)
 
   // 🔧 优化系统主题监听
   prefersDark.addEventListener('change', () => {
