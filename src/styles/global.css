@@ -87,7 +87,7 @@
     --font-dm-mono: 'DM Mono', 'Input Mono', 'Fira Code', 'ShangguSansSC-VF', monospace;
 
     /* 基础色调 */
-    --background: 210, 100%, 98%;
+    --background: 255 100% 100%;
     --foreground: 225 15% 12%;
 
     /* 交互状态 */
