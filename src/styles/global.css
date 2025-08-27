@@ -8,10 +8,10 @@
 
 /* ===== 主题变量 ===== */
 @theme {
-  /* 字体系统 */
-  --font-serif: var(--font-lexend);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-dm-mono);
+  /* 使用直接值而不是变量引用 */
+  --font-sans: 'CJKEmDash', 'Numbers', 'ShangguSansSC-VF', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Lexend', 'CJKEmDash', 'Numbers', 'ShangguSansSC-VF', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'DM Mono', 'Input Mono', 'Fira Code', 'ShangguSansSC-VF', monospace;
 
   /* 颜色系统 */
   --color-border: hsl(var(--border));
@@ -81,7 +81,7 @@
 /* ===== 颜色变量 ===== */
 @layer base {
   :root {
-    /* 字体族 */
+    /* 字体族 - 修复循环引用 */
     --font-lexend: 'Lexend', 'CJKEmDash', 'Numbers', 'ShangguSansSC-VF', ui-sans-serif, system-ui, sans-serif;
     --font-sans: 'CJKEmDash', 'Numbers', 'ShangguSansSC-VF', ui-sans-serif, system-ui, sans-serif;
     --font-dm-mono: 'DM Mono', 'Input Mono', 'Fira Code', 'ShangguSansSC-VF', monospace;
@@ -144,11 +144,16 @@
 
   html {
     color-scheme: light;
-    background-color: var(--color-background);
-    font-family: var(--font-sans);
+    background-color: var(--color-background, #ffffff);
+    font-family: var(--font-sans, ui-sans-serif, system-ui, sans-serif);
     scroll-behavior: smooth;
-    @variant dark {
-      color-scheme: dark;
+    text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    
+    @media (prefers-color-scheme: dark) {
+      &:where(.dark, .dark *) {
+        color-scheme: dark;
+      }
     }
   }
 
