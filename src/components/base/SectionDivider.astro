@@ -3,16 +3,14 @@ import { cn } from '~/lib/utils'
 
 interface Props {
   className?: string
-  position?: 'top' | 'bottom' // 可选属性，默认不传时保持原样
+  position?: 'top' | 'bottom'
 }
 
-const { className, position = undefined } = Astro.props // 默认 undefined
+const { className, position = undefined } = Astro.props
 ---
 
 <section class={cn(
-  'border-y border-border/50 z-[1] relative max-md:hidden', // 默认双边框 + 窄屏隐藏
-  position === 'top' && 'border-b-0',   // 如果 position="top"，移除底部边框
-  position === 'bottom' && 'border-t-0', // 如果 position="bottom"，移除顶部边框
+  'border-y border-border/50 z-[1] relative max-md:hidden',
   className
 )}>
   <div class="h-1.5 w-full bg-[repeating-linear-gradient(-45deg,var(--color-border),var(--color-border)_1px,transparent_1px,transparent_6px)] opacity-50" />
