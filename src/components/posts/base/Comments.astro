@@ -14,27 +14,63 @@
   #waline .wl-footer {
     border-radius: 0 !important;
   }
-    /* 深色模式下，修改 wl-panel 背景色 */
+  /* 深色模式下，修改 wl-panel 背景色 */
   html.dark #waline .wl-panel {
-    --waline-bgcolor: #101018 !important; /* 改变量，影响内部所有用到该变量的地方 */
-    background-color: #101018 !important; /* 直接覆盖背景色 */
+    --waline-bgcolor: #101018 !important;
+    background-color: #101018 !important;
+  }
+  /* 禁用输入框获得焦点时的样式变化 */
+  #waline .wl-editor:focus,
+  #waline .wl-editor:focus-within,
+  #waline .wl-input:focus {
+    background-color: var(--waline-bgcolor) !important;
+    box-shadow: none !important;
+    outline: none !important;
   }
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@waline/client@3.6.0/dist/waline.umd.js" defer></script>
 <script>
-  window.addEventListener('DOMContentLoaded', () => {
-    const w = (window as any).Waline;
-    if (!w) return;
-    w.init({
-      el: '#waline',
-      serverURL: 'https://waline.refact.cc/',
-      path: location.pathname.replace(/\/$/, ''),
-      lang: 'zh-CN',
-      pageview: true,
-      dark: 'html.dark',
-      requiredMeta: ['nick', 'mail'],
-      locale: { placeholder: '写点什么吧…' }
-    });
+function loadWaline() {
+  const container = document.querySelector('#waline');
+  if (!container) return; // 容器不存在就不初始化
+
+  const w = (window as any).Waline;
+  if (!w) return;
+
+  // 如果已有实例，先安全销毁
+  const oldInstance = (window as any).__walineInstance;
+  if (oldInstance && typeof oldInstance.destroy === 'function') {
+    try {
+      // 只有当挂载点还在 DOM 中时才销毁
+      if (container.contains(container.firstChild) || container.childNodes.length > 0) {
+        oldInstance.destroy();
+      }
+    } catch (e) {
+      console.warn('Waline destroy failed:', e);
+    }
+  }
+
+  // 重新初始化并保存实例
+  (window as any).__walineInstance = w.init({
+    el: container,
+    serverURL: 'https://waline.refact.cc/',
+    path: location.pathname.replace(/\/$/, ''),
+    lang: 'zh-CN',
+    pageview: true,
+    dark: 'html.dark',
+    requiredMeta: ['nick', 'mail'],
+    locale: { placeholder: '写点什么吧…' }
   });
+}
+
+
+  // 首次加载
+  window.addEventListener('DOMContentLoaded', loadWaline);
+
+  // PJAX 完成后
+  document.addEventListener('pjax:complete', loadWaline);
+
+  // Astro View Transitions 完成后
+  document.addEventListener('astro:page-load', loadWaline);
 </script>
