@@ -1,25 +1,40 @@
----
----
-
 <div id="waline"></div>
-<link rel="stylesheet" href="https://unpkg.com/@waline/client@3.6.0/dist/waline.css" />
 
-<script type="module">
-  import { init } from 'https://unpkg.com/@waline/client@3.6.0/dist/waline.mjs';
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@waline/client@3.6.0/dist/waline.css" />
 
-  if (typeof window !== 'undefined') {
-    const serverURL = 'https://waline.refact.cc/'; // 你的 Waline Server 地址
-    console.log('Waline init start', serverURL);
+<style is:global>
+  /* 去掉 Waline 所有圆角 */
+  #waline .wl-editor,
+  #waline .wl-input,
+  #waline .wl-btn,
+  #waline .wl-comment,
+  #waline .wl-card,
+  #waline .wl-panel,
+  #waline .wl-header,
+  #waline .wl-footer {
+    border-radius: 0 !important;
+  }
+    /* 深色模式下，修改 wl-panel 背景色 */
+  html.dark #waline .wl-panel {
+    --waline-bgcolor: #101018 !important; /* 改变量，影响内部所有用到该变量的地方 */
+    background-color: #101018 !important; /* 直接覆盖背景色 */
+  }
+</style>
 
-    init({
+<script src="https://cdn.jsdelivr.net/npm/@waline/client@3.6.0/dist/waline.umd.js" defer></script>
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const w = (window as any).Waline;
+    if (!w) return;
+    w.init({
       el: '#waline',
-      serverURL,
-      path: window.location.pathname,
+      serverURL: 'https://waline.refact.cc/',
+      path: location.pathname.replace(/\/$/, ''),
       lang: 'zh-CN',
       pageview: true,
-      dark: 'auto',
+      dark: 'html.dark',
       requiredMeta: ['nick', 'mail'],
-      locale: { placeholder: '写点什么吧...' }
+      locale: { placeholder: '写点什么吧…' }
     });
-  }
+  });
 </script>
