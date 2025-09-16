@@ -1,24 +1,47 @@
 <div id="waline"></div>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@waline/client@3.6.0/dist/waline.css" />
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/@waline/client@v3/dist/waline.css"
+/>
 
 <style is:global>
   /* 去掉 Waline 所有圆角 */
   #waline .wl-editor,
   #waline .wl-input,
+  #waline span.wl-badge,
   #waline .wl-btn,
   #waline .wl-comment,
   #waline .wl-card,
   #waline .wl-panel,
   #waline .wl-header,
+  #waline .wl-gif-popup,
+  #waline .wl-emoji-popup,
   #waline .wl-footer {
     border-radius: 0 !important;
+    font-family: 'ShangguSansSC Variable', system-ui, -apple-system, sans-serif !important;
   }
-  /* 深色模式下，修改 wl-panel 背景色 */
+
+  /* 浅色模式下的颜色设置 */
+  #waline {
+    --waline-theme-color: #000000 !important;
+    --waline-active-color: #000000 !important;
+    /* 设置字体 */
+    --waline-font-size: 1rem !important;
+    --waline-font-family: 'Onest Variable', 'Geist Variable', 'ShangguSansSC Variable', system-ui, -apple-system, sans-serif !important;
+  }
+
+  /* 深色模式下的颜色和背景设置 */
+  html.dark #waline {
+    --waline-theme-color: #ffffff !important;
+    --waline-active-color: #ffffff !important;
+  }
+
   html.dark #waline .wl-panel {
     --waline-bgcolor: #101018 !important;
     background-color: #101018 !important;
   }
+
   /* 禁用输入框获得焦点时的样式变化 */
   #waline .wl-editor:focus,
   #waline .wl-editor:focus-within,
@@ -29,7 +52,7 @@
   }
 </style>
 
-<script src="https://cdn.jsdelivr.net/npm/@waline/client@3.6.0/dist/waline.umd.js" defer></script>
+<script src="https://unpkg.com/@waline/client@v3/dist/waline.umd.js" defer></script>
 <script>
 function loadWaline() {
   const container = document.querySelector('#waline');

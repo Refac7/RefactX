@@ -22,44 +22,55 @@ const posts = postsSort(allPosts).slice(0, size)
 
 <Layout title="主页" description={SITE.description}>
   <div class="relative z-[1]">
-    <div class="py-8 px-6 sm:px-6 md:px-8 max-w-3xl mx-auto">
+    <div class="min-h-screen flex py-8 px-6 sm:px-6 md:px-8">
+      <div class="max-w-3xl mx-auto">
       <div class="space-y-4">
-        <h1 class="space-y-3">
-          <span class="block text-5xl font-medium text-gray-900 dark:text-white text-left">
-            RefactX
-          </span>
-           <span class="block text-lg sm:text-xl font-light text-gray-500 dark:text-gray-400 tracking-normal text-left">
-            Your Code, Elevate Your Ideas
-          </span>
-        </h1>
-        <div class="my-10">
-          <span class="block w-full">
-            <Image
-              src={heroImage}
-              alt="Profile image"
-              class="w-full h-auto"
-              loading="eager"
-            />
-          </span>
-        </div>
-        <div class="prose prose-indigo dark:prose-invert font-regular text-gray-500 dark:text-gray-400 mb-5">
-          <p class="leading-relaxed">
-            擅长使用 Cmd+C 、Cmd+V 构建应用，对 Git clone 和 复制粘贴 有深度实践。快捷键不仅是工具，更是发挥搬运功能的有效媒介。
-          </p>
-        </div>
+      <h1 class="space-y-3">
+      <span class="block text-5xl font-medium text-gray-900 dark:text-white text-left">
+        RefactX
+      </span>
+      <span class="block text-lg sm:text-xl font-light text-gray-500 dark:text-gray-400 tracking-normal text-left">
+        Your Code, Elevate Your Ideas
+      </span>
+      </h1>
+      <div class="my-10">
+      <span class="block w-full">
+        <Image
+        src={heroImage}
+        alt="Profile image"
+        class="w-full h-auto"
+        loading="eager"
+        />
+      </span>
+      </div>
+      <div class="prose prose-indigo dark:prose-invert font-regular text-gray-500 dark:text-gray-400 mb-5">
+      <p class="leading-relaxed">
+        擅长使用 Cmd+C 、Cmd+V 构建应用，对 Git clone 和 复制粘贴 有深度实践。快捷键不仅是工具，更是发挥搬运功能的有效媒介。
+      </p>
+      <p class="leading-relaxed">
+        Skilled in using Cmd C and Cmd V to build applications, with extensive practical experience in Git clone and copy-pasting. Keyboard shortcuts are not merely tools, but effective mediums for leveraging the functionality of transferring.
+      </p>   
+      </div>
 
-        <div class="flex gap-4 items-center mt-5">
-          {SOCIAL_LINKS.map((item) => (
-            <SocialLink 
-              href={item.url} 
-              icon={item.icon} 
-              aria-label={`${item.name}的链接`} 
-              count={item.count} 
-              label="关注者"
-              class="hover:scale-105 transition-transform"
-            />
-          ))}
-        </div>
+      <div class="flex gap-4 items-center mb-12">
+      {SOCIAL_LINKS.map((item) => (
+        <SocialLink 
+        href={item.url} 
+        icon={item.icon} 
+        aria-label={`${item.name}的链接`} 
+        count={item.count} 
+        label="关注者"
+        class="hover:scale-105 transition-transform"
+        />
+      ))}
+      </div>
+
+      <div class="flex justify-center animate-bounce">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+        </svg>
+      </div>
+      </div>
       </div>
     </div>
     {
