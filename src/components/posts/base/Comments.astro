@@ -1,0 +1,25 @@
+---
+---
+
+<div id="waline"></div>
+<link rel="stylesheet" href="https://unpkg.com/@waline/client@3.6.0/dist/waline.css" />
+
+<script type="module">
+  import { init } from 'https://unpkg.com/@waline/client@3.6.0/dist/waline.mjs';
+
+  if (typeof window !== 'undefined') {
+    const serverURL = 'https://waline.refact.cc/'; // 你的 Waline Server 地址
+    console.log('Waline init start', serverURL);
+
+    init({
+      el: '#waline',
+      serverURL,
+      path: window.location.pathname,
+      lang: 'zh-CN',
+      pageview: true,
+      dark: 'auto',
+      requiredMeta: ['nick', 'mail'],
+      locale: { placeholder: '写点什么吧...' }
+    });
+  }
+</script>
