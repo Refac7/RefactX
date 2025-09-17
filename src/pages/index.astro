@@ -5,6 +5,7 @@ import { postsSort } from '~/lib/utils'
 import { getCollection } from 'astro:content'
 import { Image } from 'astro:assets';
 import heroImage from '../assets/hero.webp';
+import BlackBar from '../assets/blackbar.png';
 import Layout from '~/layouts/Layout.astro'
 import SectionDivider from '~/components/base/SectionDivider.astro'
 import GithubContributions from '~/components/base/GithubContributions.tsx'
@@ -27,13 +28,13 @@ const posts = postsSort(allPosts).slice(0, size)
       <div class="space-y-4">
       <h1 class="space-y-3">
       <span class="block text-5xl font-medium text-gray-900 dark:text-white text-left">
-        RefactX
+        Hi, there!
       </span>
       <span class="block text-lg sm:text-xl font-light text-gray-500 dark:text-gray-400 tracking-normal text-left">
-        Your Code, Elevate Your Ideas
+        Welcome to RefactX Project (Release v1.5.0)
       </span>
       </h1>
-      <div class="my-5 md:my-8">
+      <div class="my-8">
       <span class="block w-full">
         <Image
         src={heroImage}
@@ -44,13 +45,21 @@ const posts = postsSort(allPosts).slice(0, size)
       </span>
       </div>
       <div class="prose prose-indigo dark:prose-invert font-regular text-gray-500 dark:text-gray-400 mb-5">
-      <p class="leading-relaxed">
-        擅长使用 Cmd+C 、Cmd+V 构建应用，对 Git clone 和 复制粘贴 有深度实践。快捷键不仅是工具，更是发挥搬运功能的有效媒介。
+      <p class="text-xl font-medium">
+        设计/Deisgn - BLACK® Design
       </p>
-      <p class="leading-relaxed">
-        Skilled in using Cmd C and Cmd V to build applications, with extensive practical experience in Git clone and copy-pasting. Keyboard shortcuts are not merely tools, but effective mediums for leveraging the functionality of transferring.
+      <p>
+        形体是简单而纯粹的，它不是完整的群体，每个形体都指向其复杂性，并最终被复杂性联系在一起。
       </p>   
       </div>
+      <span class="block w-full">
+        <Image
+        src={BlackBar}
+        alt="black bar"
+        class="w-full h-auto"
+        loading="eager"
+        />
+      </span>
 
       <div class="flex gap-4 items-center mb-12">
       {SOCIAL_LINKS.map((item) => (
