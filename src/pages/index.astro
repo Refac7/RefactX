@@ -4,7 +4,6 @@ import { GITHUB_CONFIG, POSTS_CONFIG } from '~/config.ts'
 import { postsSort } from '~/lib/utils'
 import { getCollection } from 'astro:content'
 import { Image } from 'astro:assets';
-import heroImage from '../assets/hero.webp';
 import BlackBar from '../assets/blackbar.png';
 import Layout from '~/layouts/Layout.astro'
 import SectionDivider from '~/components/base/SectionDivider.astro'
@@ -23,63 +22,53 @@ const posts = postsSort(allPosts).slice(0, size)
 
 <Layout title="主页" description={SITE.description}>
   <div class="relative z-[1]">
-    <div class="min-h-screen flex py-8 px-6 sm:px-6 md:px-8">
-      <div class="max-w-3xl mx-auto">
-      <div class="space-y-4">
-      <h1 class="space-y-3">
-      <span class="block text-5xl font-medium text-gray-900 dark:text-white text-left">
-        Hi, there!
-      </span>
-      <span class="block text-lg sm:text-xl font-light text-gray-500 dark:text-gray-400 tracking-normal text-left">
-        Welcome to RefactX Project (Release v1.5.0)
-      </span>
-      </h1>
-      <div class="my-8">
-      <span class="block w-full">
-        <Image
-        src={heroImage}
-        alt="Profile image"
-        class="w-full h-auto"
-        loading="eager"
-        />
-      </span>
-      </div>
-      <div class="prose prose-indigo dark:prose-invert font-regular text-gray-500 dark:text-gray-400 mb-5">
-      <p class="text-xl font-medium">
-        设计/Deisgn - BLACK® Design
-      </p>
-      <p>
-        形体是简单而纯粹的，它不是完整的群体，每个形体都指向其复杂性，并最终被复杂性联系在一起。
-      </p>   
-      </div>
-      <span class="block w-full">
-        <Image
-        src={BlackBar}
-        alt="black bar"
-        class="w-full h-auto"
-        loading="eager"
-        />
-      </span>
+    <div class="min-h-screen flex mt-8 px-6 sm:px-6 md:px-8">
+      <div class="max-w-3xl mx-auto w-full flex flex-col">
+        <!-- 上部内容 -->
+        <div class="space-y-4 mb-8">
+          <h1 class="space-y-3">
+            <span class="block text-5xl font-medium text-gray-900 dark:text-white text-left">
+              Hi, there! <span class="text-lg">(Release v1.5.0)</span>
+            </span>
+            <span class="block text-lg sm:text-xl font-light text-gray-500 dark:text-gray-400 tracking-normal text-left">
+              Welcome to RefactX Project
+            </span>
+          </h1>
+        </div>
+        
+        <!-- 底部内容 - 左对齐 -->
+        <div class="mt-auto mb-36">
+          <div class="prose prose-indigo dark:prose-invert font-regular text-gray-500 dark:text-gray-400 mb-5 text-left">
+            <p class="text-xl font-medium">
+              设计/Deisgn - BLACK® Design
+            </p>
+            <p>
+              形体是简单而纯粹的，它不是完整的群体，每个形体都指向其复杂性，并最终被复杂性联系在一起。
+            </p>   
+          </div>
+          
+          <span class="block w-full mb-5">
+            <Image
+              src={BlackBar}
+              alt="black bar"
+              class="w-full h-auto"
+              loading="eager"
+            />
+          </span>
 
-      <div class="flex gap-4 items-center mb-12">
-      {SOCIAL_LINKS.map((item) => (
-        <SocialLink 
-        href={item.url} 
-        icon={item.icon} 
-        aria-label={`${item.name}的链接`} 
-        count={item.count} 
-        label="关注者"
-        class="hover:scale-105 transition-transform"
-        />
-      ))}
-      </div>
-
-      <div class="flex justify-center animate-bounce">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-        </svg>
-      </div>
-      </div>
+          <div class="flex gap-4 items-center mb-5 justify-start">
+            {SOCIAL_LINKS.map((item) => (
+              <SocialLink 
+                href={item.url} 
+                icon={item.icon} 
+                aria-label={`${item.name}的链接`} 
+                count={item.count} 
+                label="关注者"
+                class="hover:scale-105 transition-transform"
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
     {
