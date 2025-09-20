@@ -419,3 +419,21 @@ export const PhotosList: PhotoData[] = [
     ],
   },
 ]
+
+// 友链配置
+// src/config.ts
+export const FRIENDS_CONFIG = {
+  title: 'Friends',
+  description: '我的朋友们都在这里，欢迎互访～',
+  introduce: '这些站点展示了他们的精彩内容，点进来看看吧！',
+}
+
+export const FRIENDS_LIST = [
+  {
+    name: 'ATao-Blog',
+    url: 'https://blog.atao.cyou',
+    author: 'ATao',
+    description: '做自己喜欢的事',
+    avatar: 'https://cdn.atao.cyou/Web/Avatar.png',
+  },
+]
