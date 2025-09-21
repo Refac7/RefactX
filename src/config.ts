@@ -39,7 +39,7 @@ export const HEADER_LINKS: Link[] = [
 export const FOOTER_LINKS: Link[] = [
   {
     name: '主页',
-    url: '/',
+    url: '/', 
   },
   {
     name: '文章',
@@ -57,6 +57,10 @@ export const FOOTER_LINKS: Link[] = [
     name: '图库',
     url: '/photos',
   },
+  {
+    name: '友链',
+    url: '/friends',
+  }
 ]
 
 // get icon https://icon-sets.iconify.design/
