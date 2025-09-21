@@ -440,4 +440,11 @@ export const FRIENDS_LIST = [
     description: '做自己喜欢的事',
     avatar: 'https://cdn.atao.cyou/Web/Avatar.png',
   },
+  {
+    name: '酥米的小站',
+    url: 'https://www.sumi233.top/',
+    author: '酥米',
+    description: '终有一日，寻梦中人',
+    avatar: 'https://cdn.sumi233.top/gh/huang233893/blog-image-bed/top/huang233893/imgs/blog/userfb6a1018b84ce485.jpg',
+  },
 ]
