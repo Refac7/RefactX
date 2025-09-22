@@ -22,10 +22,17 @@
     font-family: 'ShangguSansSC Variable', system-ui, -apple-system, sans-serif !important;
   }
 
+  .wl-content,
+  .wl-content * {
+    white-space: normal !important;
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
+  }
+
   /* 浅色模式下的颜色设置 */
   #waline {
     --waline-theme-color: #000000 !important;
-    --waline-active-color: red !important;
+    --waline-active-color: #dc2626 !important;
     /* 设置字体 */
     --waline-font-size: 1rem !important;
     --waline-font-family: 'Onest Variable', 'Geist Variable', 'ShangguSansSC Variable', system-ui, -apple-system, sans-serif !important;
@@ -34,7 +41,7 @@
   /* 深色模式下的颜色和背景设置 */
   html.dark #waline {
     --waline-theme-color: #ffffff !important;
-    --waline-active-color: red !important;
+    --waline-active-color: #dc2626 !important;
   }
 
   html.dark #waline .wl-panel {

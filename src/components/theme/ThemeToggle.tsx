@@ -89,7 +89,7 @@ const ThemeToggle = () => {
           animate={controlsSystem}
           transition={{ duration: 0.2, ease: 'easeInOut' }}
         >
-          <span className="icon-[majesticons--monitor-line] size-5 text-red-600"></span>
+          <span className="icon-[majesticons--laptop] size-5 text-red-600"></span>
         </motion.div>
         <motion.div
           className="absolute inset-0"
