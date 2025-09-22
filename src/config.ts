@@ -447,4 +447,18 @@ export const FRIENDS_LIST = [
     description: '终有一日，寻梦中人',
     avatar: 'https://cdn.sumi233.top/gh/huang233893/blog-image-bed/top/huang233893/imgs/blog/userfb6a1018b84ce485.jpg',
   },
+  {
+    name: '纸鹿摸鱼处',
+    url: 'https://blog.zhilu.site/',
+    author: '纸鹿本鹿',
+    description: '纸鹿至麓不知路，支炉制露不止漉',
+    avatar: 'https://www.zhilu.site/api/avatar.png',
+  },
+  {
+    name: '鈴奈咲桜のBlog',
+    url: 'https://blog.sakura.ink',
+    author: '鈴奈咲桜',
+    description: '愛することを忘れないで',
+    avatar: 'https://q2.qlogo.cn/headimg_dl?dst_uin=2731443459&spec=5',
+  },
 ]
