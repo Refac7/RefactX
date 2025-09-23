@@ -461,4 +461,18 @@ export const FRIENDS_LIST = [
     description: '愛することを忘れないで',
     avatar: 'https://q2.qlogo.cn/headimg_dl?dst_uin=2731443459&spec=5',
   },
+  {
+    name: 'LYEy_isine个人博客',
+    url: 'https://caiyifeng.top',
+    author: 'LYEy_isine',
+    description: '花海无一日,少年踏自来',
+    avatar: 'https://tc-new.z.wiki/autoupload/f/UdxyOKhNTtcbZB7VCT3UgfISxQjrFcHo0MYIVlLsrJSyl5f0KlZfm6UsKj-HyTuv/20250906/NGik/460X460/103258286.png',
+  },
+  {
+    name: '枫落丰源',
+    url: 'https://blog.feng1026.top/',
+    author: '枫落丰源',
+    description: '和你的日常，就是奇迹',
+    avatar: 'https://blog.feng1026.top/avatar.jpg',
+  },
 ]
