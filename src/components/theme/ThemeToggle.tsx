@@ -80,7 +80,7 @@ const ThemeToggle = () => {
           animate={controlsSun}
           transition={{ duration: 0.2, ease: 'easeInOut' }}
         >
-          <span className="icon-[f7--sun-max-fill] size-5 text-red-600"></span>
+          <span className="icon-[tabler--sun-filled] size-5"></span>
         </motion.div>
         <motion.div
           className="absolute inset-0"
@@ -89,7 +89,7 @@ const ThemeToggle = () => {
           animate={controlsSystem}
           transition={{ duration: 0.2, ease: 'easeInOut' }}
         >
-          <span className="icon-[majesticons--laptop] size-5 text-red-600"></span>
+          <span className="icon-[tabler--device-desktop-question] size-5"></span>
         </motion.div>
         <motion.div
           className="absolute inset-0"
@@ -98,7 +98,7 @@ const ThemeToggle = () => {
           animate={controlsMoon}
           transition={{ duration: 0.2, ease: 'easeInOut' }}
         >
-          <span className="icon-[tabler--moon-filled] size-5 text-red-600"></span>
+          <span className="icon-[tabler--moon-filled] size-5"></span>
         </motion.div>
       </motion.div>
     </button>

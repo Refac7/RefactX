@@ -2,6 +2,7 @@
 import type { CollectionEntry } from 'astro:content'
 import type { MarkdownHeading } from 'astro'
 import SimpleProgressRing from './SimpleProgressRing.astro'
+import { cn } from '~/lib/utils'
 
 interface Props {
   post: CollectionEntry<'posts'>
@@ -20,11 +21,19 @@ const filteredHeadings = headings
     text: h.text.replace(/\s*[Hh][1-6]$/g, ''),
     order: index + 1,
   }))
+
+// 计算相对缩进 - 基于实际存在的最小层级
+const minDepth = filteredHeadings.length > 0 ? Math.min(...filteredHeadings.map((h) => h.depth)) : 2
+const getRelativeIndentClass = (depth: number) => {
+  const relativeDepth = depth - minDepth
+  const indentMap = ['ml-0', 'ml-4', 'ml-8', 'ml-12'] // 最多支持4级相对缩进
+  return indentMap[relativeDepth] || 'ml-12'
+}
 ---
 
 {
   hasHeadings && (
-    <div id="mobile-toc-container" class="lg:hidden sticky top-0 z-30">
+    <div id="mobile-toc-container" class="xl:hidden sticky top-0 z-30">
       <div class="relative">
         <button
           class="flex w-full cursor-pointer items-center justify-between relative md:bg-transparent bg-background/95 backdrop-blur-sm border-b border-border/60 px-6 sm:px-8 py-3 select-none"
@@ -58,15 +67,9 @@ const filteredHeadings = headings
             <div class="max-h-[30vh] overflow-y-auto no-scrollbar" data-toc-scroll-area>
               <ul class="px-6 sm:px-8 py-2 space-y-2" id="mobile-table-of-contents">
                 {filteredHeadings.map((heading) => {
-                  const indentClass =
-                    {
-                      2: '',
-                      3: 'ml-3',
-                      4: 'ml-6',
-                    }[heading.depth] || ''
-
+                  const depthClass = heading.depth === 1 ? 'font-medium text-foreground' : 'text-foreground/60 hover:text-foreground/90'
                   return (
-                    <li class={`flex items-start gap-2 min-w-0 ${indentClass}`}>
+                    <li class={cn('flex items-start gap-2 min-w-0', depthClass, getRelativeIndentClass(heading.depth) || '')}>
                       <span
                         class="text-primary/40 font-mono text-xs mt-1 min-w-[1.5rem] transition-colors duration-200 flex-shrink-0 mobile-toc-number"
                         data-order={heading.order}
@@ -95,410 +98,423 @@ const filteredHeadings = headings
 
 <script>
   const INITIAL_OVERVIEW_TEXT = '目录导航'
-  const TOC_OFFSET = 48
 
-  class MobileTOCState {
-    currentSectionText: HTMLElement | null = null
-    detailsElement: HTMLDetailsElement | null = null
-    listElement: HTMLElement | null = null
-    scrollArea: HTMLElement | null = null
-    fadeTop: HTMLElement | null = null
-    fadeBottom: HTMLElement | null = null
-    headings: HTMLElement[] = []
-    regions: { id: string; start: number; end: number }[] = []
-    activeIds: string[] = []
+  // 全局状态管理
+  class MobileTOC {
+    // DOM 元素
+    private static tocContainer: HTMLElement | null = null
+    private static tocContent: HTMLElement | null = null
+    private static tocArrow: HTMLElement | null = null
+    private static currentSectionText: HTMLElement | null = null
+    private static listElement: HTMLElement | null = null
+    private static scrollArea: HTMLElement | null = null
+    private static fadeTop: HTMLElement | null = null
+    private static fadeBottom: HTMLElement | null = null
 
-    reset(): void {
+    // 状态
+    private static isOpen = false
+    private static isStuck = false
+    private static headings: HTMLElement[] = []
+    private static observer: IntersectionObserver | null = null
+    private static stickyObserver: IntersectionObserver | null = null
+
+    // 滚动控制
+    private static lastScrollY = 0
+    private static scrollRAF: number | null = null
+    private static recentlyOpened = false
+    private static lastOpenTime = 0 // 记录打开的时间戳
+
+    // 初始化
+    static init(): void {
+      this.cleanup()
+      this.initElements()
+      this.initHeadingObserver()
+      this.initStickyObserver()
+      this.initInteractions()
+      this.initScrollHandler()
+    }
+
+    // 获取 DOM 元素
+    private static initElements(): void {
+      this.tocContainer = document.getElementById('mobile-toc-container')
+      this.tocContent = document.querySelector('[data-toc-content]')
+      this.tocArrow = document.querySelector('[data-toc-arrow]')
       this.currentSectionText = document.getElementById('mobile-toc-current-section')
-      this.detailsElement = document.querySelector('#mobile-toc-container details')
       this.listElement = document.getElementById('mobile-table-of-contents')
       this.scrollArea = document.querySelector('[data-toc-scroll-area]')
       this.fadeTop = document.querySelector('[data-fade-top]')
       this.fadeBottom = document.querySelector('[data-fade-bottom]')
-      this.headings = []
-      this.regions = []
-      this.activeIds = []
-    }
-  }
 
-  const state = new MobileTOCState()
-
-  class HeadingRegions {
-    static build(): void {
-      // 获取所有标题，排除脚注
-      state.headings = Array.from(document.querySelectorAll<HTMLElement>('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]')).filter(
+      // 获取文章标题
+      this.headings = Array.from(document.querySelectorAll<HTMLElement>('h1[id], h2[id], h3[id], h4[id]')).filter(
         (heading) => heading.id !== 'footnote-label'
       )
 
-      if (state.headings.length === 0) {
-        state.regions = []
-        return
-      }
+      // 初始化滚动位置
+      this.lastScrollY = window.scrollY
 
-      // 构建标题区域映射
-      state.regions = state.headings
-        .filter((heading) => heading.id !== 'footnote-label')
-        .map((heading, index) => {
-          const nextHeading = state.headings[index + 1]
-          return {
-            id: heading.id,
-            start: heading.offsetTop - TOC_OFFSET,
-            end: nextHeading ? nextHeading.offsetTop - TOC_OFFSET : document.documentElement.scrollHeight,
-          }
-        })
+      // 初始化展开状态
+      this.isOpen = this.getOpenStateFromDOM()
     }
 
-    static getVisibleIds(): string[] {
-      if (state.headings.length === 0) return []
+    // 从 DOM 获取展开状态
+    private static getOpenStateFromDOM(): boolean {
+      if (!this.tocContent) return false
+      const maxHeight = this.tocContent.style.maxHeight
+      return maxHeight !== '0px' && maxHeight !== '' && maxHeight !== '0'
+    }
+
+    // 设置展开状态
+    static setOpen(open: boolean): void {
+      if (!this.tocContent || !this.tocArrow) return
+
+      this.isOpen = open
+
+      if (open) {
+        this.tocContent.style.maxHeight = '31vh'
+        this.tocArrow.style.transform = 'rotate(180deg)'
+        setTimeout(() => this.updateScrollMask(), 100)
+      } else {
+        this.tocContent.style.maxHeight = '0'
+        this.tocArrow.style.transform = 'rotate(0deg)'
+      }
+    }
+
+    // 切换展开状态
+    static toggle(): void {
+      this.setOpen(!this.isOpen)
+    }
+
+    // 初始化标题观察器
+    private static initHeadingObserver(): void {
+      if (this.headings.length === 0) return
+
+      this.observer = new IntersectionObserver(
+        (entries) => {
+          // 收集所有可见的标题
+          const visibleHeadings = entries
+            .filter((entry) => entry.intersectionRatio > 0)
+            .map((entry) => ({
+              id: entry.target.id,
+              element: entry.target as HTMLElement,
+              ratio: entry.intersectionRatio,
+              rect: entry.target.getBoundingClientRect(),
+            }))
+
+          if (visibleHeadings.length > 0) {
+            // 优先选择最接近视窗顶部的标题
+            const bestHeading = visibleHeadings.reduce((best, current) => {
+              const bestDistance = Math.abs(best.rect.top - 80)
+              const currentDistance = Math.abs(current.rect.top - 80)
+              return currentDistance < bestDistance ? current : best
+            })
+
+            this.updateActiveHeading(bestHeading.id)
+          } else {
+            // 没有可见标题时，根据滚动位置选择最合适的标题
+            this.updateActiveHeadingByScroll()
+          }
+        },
+        {
+          rootMargin: '-80px 0px -85% 0px',
+          threshold: [0, 0.1, 0.25, 0.5, 0.75, 1],
+        }
+      )
+
+      this.headings.forEach((heading) => this.observer?.observe(heading))
+
+      // 初始检查
+      setTimeout(() => this.updateActiveHeadingByScroll(), 100)
+    }
+
+    // 根据滚动位置更新活跃标题
+    private static updateActiveHeadingByScroll(): void {
+      if (this.headings.length === 0) return
 
       const scrollTop = window.scrollY
+      let activeHeading: HTMLElement | null = null
 
-      // 如果在页面顶部（滚动位置小于第一个标题位置），显示 Overview
-      if (scrollTop < state.regions[0]?.start) {
-        return []
+      // 从后往前查找，选择已经滚过的最后一个标题
+      for (let i = this.headings.length - 1; i >= 0; i--) {
+        const heading = this.headings[i]
+        const rect = heading.getBoundingClientRect()
+        const headingTop = rect.top + scrollTop
+
+        if (headingTop <= scrollTop + 120) {
+          activeHeading = heading
+          break
+        }
       }
 
-      // 找到当前滚动位置对应的标题
-      const activeRegion = state.regions.find((region) => scrollTop >= region.start && scrollTop < region.end)
-
-      if (activeRegion) {
-        return [activeRegion.id]
-      }
-
-      // 如果滚动到最底部，返回最后一个标题
-      const documentHeight = document.documentElement.scrollHeight
-      const windowHeight = window.innerHeight
-      if (scrollTop + windowHeight >= documentHeight - 10) {
-        return [state.regions[state.regions.length - 1]?.id].filter(Boolean)
-      }
-
-      return []
+      // 如果没找到合适的标题，显示Overview（传入空字符串）
+      this.updateActiveHeading(activeHeading?.id || '')
     }
-  }
 
-  class TOCScrollMask {
-    static update(): void {
-      if (!state.scrollArea || !state.fadeTop || !state.fadeBottom) return
+    // 初始化 sticky 观察器
+    private static initStickyObserver(): void {
+      if (!this.tocContainer || !this.tocContent) return
 
-      const { scrollTop, scrollHeight, clientHeight } = state.scrollArea
-      const threshold = 10
+      // 创建哨兵元素
+      const sentinel = document.createElement('div')
+      sentinel.style.position = 'absolute'
+      sentinel.style.height = '1px'
+      sentinel.style.top = `${this.tocContainer.offsetTop - 1}px`
+      this.tocContainer.parentElement?.insertBefore(sentinel, this.tocContainer)
 
-      const showTopFade = scrollTop > threshold
-      const showBottomFade = scrollTop < scrollHeight - clientHeight - threshold
+      this.stickyObserver = new IntersectionObserver(
+        ([entry]) => {
+          const wasStuck = this.isStuck
+          this.isStuck = !entry.isIntersecting
 
-      state.fadeTop.style.opacity = showTopFade ? '1' : '0'
-      state.fadeBottom.style.opacity = showBottomFade ? '1' : '0'
+          // 切换定位模式
+          if (this.isStuck) {
+            // 浮层模式
+            this.tocContent!.style.position = 'absolute'
+            this.tocContent!.style.top = '100%'
+            this.tocContent!.style.left = '0'
+            this.tocContent!.style.right = '0'
+            this.tocContent!.style.zIndex = '10'
+          } else {
+            // 静态模式
+            this.tocContent!.style.position = 'static'
+            this.tocContent!.style.top = 'auto'
+            this.tocContent!.style.left = 'auto'
+            this.tocContent!.style.right = 'auto'
+            this.tocContent!.style.zIndex = 'auto'
+
+            // 关键：从 sticky 回到 static 时重置所有状态
+            if (wasStuck) {
+              this.lastScrollY = window.scrollY
+              this.recentlyOpened = false
+            }
+          }
+        },
+        { threshold: [0] }
+      )
+
+      this.stickyObserver.observe(sentinel)
     }
-  }
 
-  class MobileTOCLinks {
-    static update(headingIds: string[]): void {
-      if (!state.listElement || !state.currentSectionText) return
-
-      // 重置所有项目状态
-      state.listElement.querySelectorAll('.mobile-toc-item').forEach((item) => {
-        const tocItem = item as HTMLElement
-        tocItem.classList.remove('text-primary', 'font-semibold')
-        tocItem.classList.add('text-foreground/70')
+    // 初始化交互
+    private static initInteractions(): void {
+      // 切换按钮
+      const toggleButton = document.querySelector('[data-toc-toggle]')
+      toggleButton?.addEventListener('click', () => {
+        if (!this.isOpen) {
+          this.setRecentlyOpened()
+        }
+        this.toggle()
       })
 
-      state.listElement.querySelectorAll('.mobile-toc-number').forEach((number) => {
-        const tocNumber = number as HTMLElement
-        tocNumber.classList.remove('text-primary', 'font-semibold')
-        tocNumber.classList.add('text-primary/40')
+      // 目录项点击
+      if (this.listElement) {
+        this.listElement.addEventListener('click', (e) => {
+          const target = e.target as HTMLElement
+          const item = target.closest('.mobile-toc-item') as HTMLElement
+          if (!item) return
+
+          e.preventDefault()
+
+          if (!this.isOpen) {
+            // 收缩状态：打开目录
+            this.setRecentlyOpened()
+            this.setOpen(true)
+          } else {
+            // 展开状态：关闭目录并跳转
+            this.setOpen(false)
+            setTimeout(() => {
+              const href = item.getAttribute('href')
+              if (href) {
+                const target = document.querySelector(href)
+                if (target) {
+                  const rect = target.getBoundingClientRect()
+                  const documentTop = rect.top + window.scrollY
+                  const scrollPosition = documentTop - 80
+
+                  window.scrollTo({
+                    top: Math.max(0, scrollPosition),
+                    behavior: 'smooth',
+                  })
+                }
+              }
+            }, 300)
+          }
+        })
+      }
+
+      // 滚动区域遮罩
+      this.scrollArea?.addEventListener('scroll', () => this.updateScrollMask(), { passive: true })
+    }
+
+    // 初始化滚动处理
+    private static initScrollHandler(): void {
+      let headingUpdateRAF: number | null = null
+
+      const handleScroll = () => {
+        if (this.scrollRAF) return
+
+        this.scrollRAF = requestAnimationFrame(() => {
+          const currentScrollY = window.scrollY
+          const scrollDelta = currentScrollY - this.lastScrollY
+          const isScrollingDown = scrollDelta > 1 // 降低阈值，只要向下滚动超过1px
+
+          // 计算距离打开时间的间隔
+          const timeSinceOpened = Date.now() - this.lastOpenTime
+          const isInImmunityPeriod = this.recentlyOpened && timeSinceOpened < 200 // 缩短免疫期到200ms
+
+          // 只在 static 状态下检测向下滚动
+          if (!this.isStuck && isScrollingDown && this.isOpen) {
+            // 免疫期内只防止微小的滚动（<10px），允许正常滚动
+            const shouldClose = !isInImmunityPeriod || Math.abs(scrollDelta) > 10
+
+            if (shouldClose) {
+              this.setOpen(false)
+              this.recentlyOpened = false // 关闭时清除免疫期
+            }
+          }
+
+          // 快速滚动时，额外更新活跃标题（防抖）
+          if (Math.abs(scrollDelta) > 20) {
+            if (headingUpdateRAF) {
+              cancelAnimationFrame(headingUpdateRAF)
+            }
+            headingUpdateRAF = requestAnimationFrame(() => {
+              this.updateActiveHeadingByScroll()
+              headingUpdateRAF = null
+            })
+          }
+
+          this.lastScrollY = currentScrollY
+          this.scrollRAF = null
+        })
+      }
+
+      window.addEventListener('scroll', handleScroll, { passive: true })
+    }
+
+    // 设置免疫期
+    private static setRecentlyOpened(): void {
+      this.recentlyOpened = true
+      this.lastOpenTime = Date.now() // 记录打开时间
+      setTimeout(() => {
+        this.recentlyOpened = false
+      }, 800)
+    }
+
+    // 更新活跃标题
+    private static updateActiveHeading(activeId: string): void {
+      if (!this.listElement || !this.currentSectionText) return
+
+      const headingLinks = this.listElement.querySelectorAll('.mobile-toc-item')
+      const headingNumbers = this.listElement.querySelectorAll('.mobile-toc-number')
+
+      // 重置样式
+      headingLinks.forEach((link) => {
+        link.classList.remove('text-primary', 'font-semibold')
+        link.classList.add('text-foreground/70')
       })
 
-      // 高亮当前活跃项
-      if (headingIds.length > 0) {
-        const activeId = headingIds[0]
-        const activeItem = state.listElement.querySelector(`[data-heading-id="${activeId}"]`) as HTMLElement
-        const activeNumber = state.listElement.querySelector(`[data-order="${this.getOrderByHeadingId(activeId)}"]`) as HTMLElement
+      headingNumbers.forEach((number) => {
+        number.classList.remove('text-primary', 'font-semibold')
+        number.classList.add('text-primary/40')
+      })
+
+      // 设置活跃样式
+      let textToShow = INITIAL_OVERVIEW_TEXT
+
+      if (activeId) {
+        const activeItem = this.listElement.querySelector(`[data-heading-id="${activeId}"]`) as HTMLElement
 
         if (activeItem) {
           activeItem.classList.remove('text-foreground/70')
           activeItem.classList.add('text-primary', 'font-semibold')
+          textToShow = activeItem.dataset.headingText || textToShow
+
+          // 查找对应的数字标记（通过父元素查找）
+          const parentLi = activeItem.closest('li')
+          const activeNumber = parentLi?.querySelector('.mobile-toc-number') as HTMLElement
+
+          if (activeNumber) {
+            activeNumber.classList.remove('text-primary/40')
+            activeNumber.classList.add('text-primary', 'font-semibold')
+          }
         }
 
-        if (activeNumber) {
-          activeNumber.classList.remove('text-primary/40')
-          activeNumber.classList.add('text-primary', 'font-semibold')
-        }
-
-        this.scrollToActive(activeId)
+        this.scrollToActiveInTOC(activeId)
       }
 
-      this.updateCurrentSectionText(headingIds)
+      this.currentSectionText.textContent = textToShow
     }
 
-    static getOrderByHeadingId(headingId: string): string {
-      const item = state.listElement?.querySelector(`[data-heading-id="${headingId}"]`)
-      return item?.getAttribute('data-heading-text') || ''
-    }
+    // 滚动目录到活跃项
+    private static scrollToActiveInTOC(activeHeadingId: string): void {
+      if (!this.listElement || !this.scrollArea) return
 
-    static updateCurrentSectionText(headingIds: string[]): void {
-      if (!state.currentSectionText) return
-
-      let textToShow = INITIAL_OVERVIEW_TEXT
-
-      // 只有当确实有活跃标题时才更新文本
-      if (headingIds.length > 0) {
-        const activeId = headingIds[0]
-        const activeItem = state.listElement?.querySelector(`[data-heading-id="${activeId}"]`) as HTMLElement
-        const cleanText = activeItem?.dataset.headingText
-
-        if (cleanText) {
-          textToShow = cleanText
-        }
-      }
-
-      state.currentSectionText.textContent = textToShow
-    }
-
-    static scrollToActive(activeHeadingId: string): void {
-      if (!state.listElement || !state.scrollArea) return
-
-      const activeItem = state.listElement.querySelector(`[data-heading-id="${activeHeadingId}"]`)
+      const activeItem = this.listElement.querySelector(`[data-heading-id="${activeHeadingId}"]`)
       if (!activeItem) return
 
-      const containerRect = state.scrollArea.getBoundingClientRect()
+      const containerRect = this.scrollArea.getBoundingClientRect()
       const itemRect = activeItem.getBoundingClientRect()
 
-      const relativeTop = itemRect.top - containerRect.top + state.scrollArea.scrollTop
+      const relativeTop = itemRect.top - containerRect.top + this.scrollArea.scrollTop
       const targetScrollTop = relativeTop - containerRect.height / 2 + itemRect.height / 2
 
-      const targetScroll = Math.max(0, Math.min(targetScrollTop, state.scrollArea.scrollHeight - state.scrollArea.clientHeight))
+      const targetScroll = Math.max(0, Math.min(targetScrollTop, this.scrollArea.scrollHeight - this.scrollArea.clientHeight))
 
-      if (Math.abs(targetScroll - state.scrollArea.scrollTop) > 5) {
-        state.scrollArea.scrollTo({
+      if (Math.abs(targetScroll - this.scrollArea.scrollTop) > 5) {
+        this.scrollArea.scrollTo({
           top: targetScroll,
           behavior: 'smooth',
         })
       }
     }
 
-    static setupInteraction(): void {
-      const toggleButton = document.querySelector('[data-toc-toggle]') as HTMLElement | null
-      const tocContent = document.querySelector('[data-toc-content]') as HTMLElement | null
-      const tocArrow = document.querySelector('[data-toc-arrow]') as HTMLElement | null
+    // 更新滚动遮罩
+    private static updateScrollMask(): void {
+      if (!this.scrollArea || !this.fadeTop || !this.fadeBottom) return
 
-      let isOpen = false
+      const { scrollTop, scrollHeight, clientHeight } = this.scrollArea
+      const threshold = 10
 
-      if (toggleButton && tocContent && tocArrow) {
-        toggleButton.addEventListener('click', () => {
-          isOpen = !isOpen
+      const showTopFade = scrollTop > threshold
+      const showBottomFade = scrollTop < scrollHeight - clientHeight - threshold
 
-          if (isOpen) {
-            // 使用一个足够大的 max-height 值来容纳内容
-            tocContent.style.maxHeight = '31vh'
-            tocArrow.style.transform = 'rotate(180deg)'
-            setTimeout(() => TOCScrollMask.update(), 100)
-          } else {
-            tocContent.style.maxHeight = '0'
-            tocArrow.style.transform = 'rotate(0deg)'
-          }
-        })
-      }
-
-      if (!state.listElement) return
-
-      // 点击Overview链接时关闭
-      state.listElement.querySelectorAll('.mobile-toc-item').forEach((item) => {
-        item.addEventListener('click', (e) => {
-          e.preventDefault()
-          const href = (item as HTMLElement).getAttribute('href')
-          if (!href) return
-
-          const target = document.querySelector(href)
-          if (!target) return
-
-          // 手动关闭Overview
-          if (isOpen && tocContent && tocArrow) {
-            isOpen = false
-            tocContent.style.maxHeight = '0'
-            tocArrow.style.transform = 'rotate(0deg)'
-          }
-
-          // 平滑滚动到目标
-          setTimeout(() => {
-            const tocHeight = document.getElementById('mobile-toc-container')?.querySelector('button')?.offsetHeight || TOC_OFFSET
-            const targetTop = (target as HTMLElement).offsetTop - tocHeight
-            window.scrollTo({
-              top: Math.max(0, targetTop),
-              behavior: 'smooth',
-            })
-          }, 300) // 等待关闭动画
-        })
-      })
-
-      // 设置滚动区域遮罩
-      if (state.scrollArea) {
-        state.scrollArea.addEventListener('scroll', TOCScrollMask.update, { passive: true })
-      }
-    }
-  }
-
-  class MobileTOCController {
-    private static scrollRAF: number | null = null
-    private static resizeRAF: number | null = null
-    private static observer: IntersectionObserver | null = null
-    private static isStuck = false
-    private static lastScrollY = 0
-    private static boundHandleScroll: (() => void) | null = null
-    private static boundHandleResize: (() => void) | null = null
-
-    static handleScroll(): void {
-      if (this.scrollRAF) return
-
-      this.scrollRAF = requestAnimationFrame(() => {
-        const currentScrollY = window.scrollY
-        const isScrollingDown = currentScrollY > this.lastScrollY
-
-        // 如果 sticky 未激活且向下滚动，则关闭Overview
-        if (!this.isStuck && isScrollingDown) {
-          const tocContent = document.querySelector('[data-toc-content]') as HTMLElement | null
-          const tocArrow = document.querySelector('[data-toc-arrow]') as HTMLElement | null
-
-          if (tocContent && tocArrow) {
-            const isOpen = tocContent.style.maxHeight !== '0px' && tocContent.style.maxHeight !== '' && tocContent.style.maxHeight !== '0'
-            if (isOpen) {
-              tocContent.style.maxHeight = '0'
-              tocArrow.style.transform = 'rotate(0deg)'
-            }
-          }
-        }
-
-        this.lastScrollY = currentScrollY
-
-        const newActiveIds = HeadingRegions.getVisibleIds()
-
-        if (JSON.stringify(newActiveIds) !== JSON.stringify(state.activeIds)) {
-          state.activeIds = newActiveIds
-          MobileTOCLinks.update(state.activeIds)
-        }
-
-        this.scrollRAF = null
-      })
+      this.fadeTop.style.opacity = showTopFade ? '1' : '0'
+      this.fadeBottom.style.opacity = showBottomFade ? '1' : '0'
     }
 
-    static handleResize(): void {
-      if (this.resizeRAF) return
-
-      this.resizeRAF = requestAnimationFrame(() => {
-        HeadingRegions.build()
-
-        const newActiveIds = HeadingRegions.getVisibleIds()
-        if (JSON.stringify(newActiveIds) !== JSON.stringify(state.activeIds)) {
-          state.activeIds = newActiveIds
-          MobileTOCLinks.update(state.activeIds)
-        }
-
-        this.resizeRAF = null
-      })
-    }
-
-    static init(): void {
-      state.reset()
-      HeadingRegions.build()
-
-      // 初始化滚动位置
-      this.lastScrollY = window.scrollY
-
-      if (!state.currentSectionText) return
-
-      // 添加 sticky 状态检测
-      const tocContainer = document.getElementById('mobile-toc-container')
-      const tocContent = document.querySelector('[data-toc-content]') as HTMLElement
-
-      if (tocContainer && tocContent) {
-        // 创建检测元素
-        const sentinel = document.createElement('div')
-        sentinel.style.position = 'absolute'
-        sentinel.style.height = '1px'
-        sentinel.style.top = `${tocContainer.offsetTop - 1}px`
-        tocContainer.parentElement?.insertBefore(sentinel, tocContainer)
-
-        // 观察器
-        this.observer = new IntersectionObserver(
-          ([entry]) => {
-            this.isStuck = !entry.isIntersecting
-
-            // 动态切换定位模式
-            if (this.isStuck) {
-              // sticky 激活：变为浮层
-              tocContent.style.position = 'absolute'
-              tocContent.style.top = '100%'
-              tocContent.style.left = '0'
-              tocContent.style.right = '0'
-              tocContent.style.zIndex = '10'
-            } else {
-              // sticky 未激活：占据文档流
-              tocContent.style.position = 'static'
-              tocContent.style.top = 'auto'
-              tocContent.style.left = 'auto'
-              tocContent.style.right = 'auto'
-              tocContent.style.zIndex = 'auto'
-            }
-          },
-          { threshold: [0] }
-        )
-
-        this.observer.observe(sentinel)
-      }
-
-      if (state.headings.length === 0) {
-        state.currentSectionText.textContent = INITIAL_OVERVIEW_TEXT
-        return
-      }
-
-      state.activeIds = HeadingRegions.getVisibleIds()
-      MobileTOCLinks.update(state.activeIds)
-      MobileTOCLinks.setupInteraction()
-
-      // 使用 passive 监听器优化性能
-      this.boundHandleScroll = () => this.handleScroll()
-      this.boundHandleResize = () => this.handleResize()
-
-      window.addEventListener('scroll', this.boundHandleScroll, { passive: true })
-      window.addEventListener('resize', this.boundHandleResize, { passive: true })
-    }
-
+    // 清理
     static cleanup(): void {
-      if (this.scrollRAF) {
-        cancelAnimationFrame(this.scrollRAF)
-        this.scrollRAF = null
-      }
-      if (this.resizeRAF) {
-        cancelAnimationFrame(this.resizeRAF)
-        this.resizeRAF = null
-      }
       if (this.observer) {
         this.observer.disconnect()
         this.observer = null
       }
 
+      if (this.stickyObserver) {
+        this.stickyObserver.disconnect()
+        this.stickyObserver = null
+      }
+
+      if (this.scrollRAF) {
+        cancelAnimationFrame(this.scrollRAF)
+        this.scrollRAF = null
+      }
+
+      // 重置状态
+      this.isOpen = false
+      this.isStuck = false
       this.lastScrollY = 0
-
-      if (this.boundHandleScroll) {
-        window.removeEventListener('scroll', this.boundHandleScroll)
-        this.boundHandleScroll = null
-      }
-
-      if (this.boundHandleResize) {
-        window.removeEventListener('resize', this.boundHandleResize)
-        this.boundHandleResize = null
-      }
-
-      state.activeIds = []
-      state.headings = []
-      state.regions = []
+      this.recentlyOpened = false
+      this.lastOpenTime = 0
+      this.headings = []
     }
   }
 
   // 生命周期管理
-  document.addEventListener('astro:page-load', () => MobileTOCController.init())
+  document.addEventListener('astro:page-load', () => MobileTOC.init())
   document.addEventListener('astro:after-swap', () => {
-    MobileTOCController.cleanup()
-    MobileTOCController.init()
+    MobileTOC.cleanup()
+    MobileTOC.init()
   })
-  document.addEventListener('astro:before-swap', () => MobileTOCController.cleanup())
+  document.addEventListener('astro:before-swap', () => MobileTOC.cleanup())
 </script>

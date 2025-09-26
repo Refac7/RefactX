@@ -89,12 +89,12 @@ const PhotoGalleryModal: React.FC<Props> = ({ photos, title, description, isOpen
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
+          className="fixed inset-0 z-[99999] flex items-center justify-center p-4"
           onClick={onClose}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.2, ease: 'easeOut' }}
+          transition={{ duration: 0.15, ease: 'easeOut' }}
         >
           {/* 遮罩层 */}
           <motion.div
@@ -121,10 +121,9 @@ const PhotoGalleryModal: React.FC<Props> = ({ photos, title, description, isOpen
                   <h3 className="text-lg font-semibold text-foreground">{title}</h3>
                   {description && <p className="text-sm text-muted-foreground mt-1">{description}</p>}
                 </div>
-                <div
-                  className="w-5 h-5 icon-[mdi--close] text-muted-foreground hover:text-foreground cursor-pointer transition-colors"
-                  onClick={onClose}
-                ></div>
+                <div className="w-5 h-7 flex items-center justify-center" onClick={onClose}>
+                  <span className="w-5 h-5 icon-[mdi--close] text-muted-foreground hover:text-foreground cursor-pointer transition-colors"></span>
+                </div>
               </div>
             </div>
 

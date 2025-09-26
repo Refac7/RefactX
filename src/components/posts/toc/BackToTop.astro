@@ -94,6 +94,11 @@ const { class: className, id = 'backToTopDesktop' } = Astro.props
     window.addEventListener('scroll', handleScroll)
   }
 
-  // 在 Astro 页面加载完成后初始化功能
+  if (document.readyState !== 'loading') {
+    setupBackToTop()
+  } else {
+    document.addEventListener('DOMContentLoaded', setupBackToTop)
+  }
+
   document.addEventListener('astro:page-load', setupBackToTop)
 </script>

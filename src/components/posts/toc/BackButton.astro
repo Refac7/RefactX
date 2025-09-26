@@ -12,7 +12,7 @@ interface Props {
 const { class: className, post, posts } = Astro.props
 
 // 计算文章在第几页
-const postIndex = posts.findIndex((p) => p.slug === post.slug)
+const postIndex = posts.findIndex((p) => p.id === post.id)
 const pageSize = POSTS_CONFIG.postPageConfig.size
 const pageNumber = Math.floor(postIndex / pageSize) + 1
 const pageUrl = pageNumber === 1 ? '/posts' : `/posts/${pageNumber}`

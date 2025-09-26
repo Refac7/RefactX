@@ -25,21 +25,22 @@ const filteredHeadings = headings.reduce(
   [] as (MarkdownHeading & { order: number })[]
 )
 
-// 使用 Map 代替对象，提高查找效率
-const indentClass = new Map([
-  [2, ''],
-  [3, 'ml-4'],
-  [4, 'ml-8'],
-])
+// 计算相对缩进 - 基于实际存在的最小层级
+const minDepth = filteredHeadings.length > 0 ? Math.min(...filteredHeadings.map((h) => h.depth)) : 2
+const getRelativeIndentClass = (depth: number) => {
+  const relativeDepth = depth - minDepth
+  const indentMap = ['ml-0', 'ml-4', 'ml-8', 'ml-12'] // 最多支持4级相对缩进
+  return indentMap[relativeDepth] || 'ml-12'
+}
 ---
 
-<div class={cn('fixed top-30 right-[calc(50%-384px)] translate-x-full w-64', className)}>
+<div class={cn('hidden xl:block fixed top-30 right-[calc(50%-384px)] translate-x-full w-[clamp(12rem,18vw,18rem)]', className)}>
   <nav class="p-4">
     <h3 class="font-sans text-sm font-medium mb-4 text-foreground/80 flex items-center gap-2 pl-2">
       <span class="icon-[fluent--list-20-filled] w-4 h-4 opacity-85"></span>
       {POSTS_CONFIG.tocText}
     </h3>
-    <div class="relative overflow-hidden h-[calc(100vh-24rem)]">
+    <div class="relative h-[calc(100vh-24rem)] overflow-hidden">
       <ul
         class="space-y-2 absolute w-full transition-transform duration-300 will-change-transform"
         data-desktop-toc-list
@@ -50,23 +51,21 @@ const indentClass = new Map([
             const depthClass = heading.depth === 1 ? 'font-medium text-foreground' : 'text-foreground/60 hover:text-foreground/90'
 
             return (
-              <li>
+              <li class={cn(depthClass, getRelativeIndentClass(heading.depth) || '')}>
                 <a
                   href={`#${heading.slug}`}
                   data-desktop-heading-link
                   class={cn(
-                    'group flex text-sm min-h-[1.75rem] w-full overflow-hidden relative',
+                    'group flex items-center text-sm min-h-[1.75rem] w-full overflow-hidden relative',
                     'hover:bg-gradient-to-r hover:from-primary/10 dark:hover:from-primary/25 hover:to-transparent',
-                    'data-[active]:bg-gradient-to-r data-[active]:from-primary/10 dark:data-[active]:from-primary/25 data-[active]:to-transparent',
-                    depthClass,
-                    indentClass.get(heading.depth) || ''
+                    'data-[active]:bg-gradient-to-r data-[active]:from-primary/10 dark:data-[active]:from-primary/25 data-[active]:to-transparent '
                   )}
                 >
-                  <span class="font-mono flex items-center px-2 text-xs text-primary/40 group-hover:text-primary/60 group-data-[active]:text-primary min-w-[2rem]">
+                  <span class="font-mono flex items-center px-2 text-xs text-primary/50 group-hover:text-primary group-data-[active]:text-primary min-w-[2rem]">
                     {heading.order.toString().padStart(2, '0')}
                   </span>
                   <span
-                    class="leading-[1.75rem] truncate pr-2 group-data-[active]:text-primary/90 group-data-[active]:font-medium"
+                    class="leading-[1.75rem] truncate pr-2 group-hover:text-primary group-data-[active]:text-primary"
                     title={heading.text}
                   >
                     {heading.text}
@@ -132,7 +131,7 @@ const indentClass = new Map([
         })
       },
       {
-        rootMargin: '-10px 0px -85% 0px',
+        rootMargin: '-96px 0px -85% 0px',
         threshold: [0, 1],
       }
     )

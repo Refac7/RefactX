@@ -37,10 +37,11 @@ const duplicateSkills = (skills: Skill[]) => [...skills, ...skills, ...skills, .
       )
     })
   }
+  <!-- <div class="pointer-events-none absolute left-0 top-0 w-[25%] h-full z-50 bg-gradient-to-r from-background to-transparent"></div>
+  <div class="pointer-events-none absolute right-0 top-0 w-[25%] h-full z-50 bg-gradient-to-l from-background to-transparent"></div> -->
 </div>
 
 <style is:global>
-  /* Safari/WebKit 兼容性修复 */
   @-webkit-keyframes scroll {
     0% {
       -webkit-transform: translate3d(0, 0, 0);
@@ -96,10 +97,12 @@ const duplicateSkills = (skills: Skill[]) => [...skills, ...skills, ...skills, .
     transform: translate3d(0, 0, 0);
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
+    /* Chrome 优化 */
+    contain: layout style paint;
+    will-change: transform;
   }
 </style>
 <script>
-  // 动态调整动画速度
   function adjustAnimationSpeed() {
     const tracks = document.querySelectorAll<HTMLElement>('.flex.w-max')
     const screenWidth = window.innerWidth
@@ -108,7 +111,6 @@ const duplicateSkills = (skills: Skill[]) => [...skills, ...skills, ...skills, .
     const newDuration = `${baseSpeed * speedFactor}s`
 
     tracks.forEach((track) => {
-      // 直接更新动画持续时间，不暂停动画
       track.style.animationDuration = newDuration
     })
   }

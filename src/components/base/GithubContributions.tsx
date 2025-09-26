@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { cn } from '~/lib/utils'
-import Tooltip, { TooltipProvider } from './Tooltip'
+import Tooltip, { TooltipProvider } from './Tooltip.tsx'
 
 // API from https://github.com/grubersjoe/github-contributions-api
 interface Contribution {
@@ -142,14 +142,16 @@ export default function GithubContributions({ username, tooltipEnabled }: Props)
           <div key={weekIndex} className="grid grid-rows-7 gap-1">
             {week.map((contribution, dayIndex) => {
               const { date, count } = contribution
-              const formattedDate = new Date(date).toLocaleDateString('zh-CN', {
+              const formattedDate = new Date(date).toLocaleDateString('en-US', {
                 weekday: 'long',
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',
               })
 
-              const tooltipContent = `${formattedDate} — ${count === 1 ? '1 次提交 ✨' : count === 0 ? '休息日 💤' : `${count} 次提交`}`
+              const tooltipContent = `${formattedDate} — ${
+                count === 1 ? '1 contribution 💤' : count === 0 ? 'Rest day 🪴' : `${count} contributions`
+              }`
 
               return (
                 <Tooltip key={dayIndex} content={tooltipContent} disabled={!tooltipEnabled || errorVisible}>

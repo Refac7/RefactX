@@ -20,13 +20,25 @@ const PolaroidStack: React.FC<Props> = ({ photos, title, description, className 
   const isInView = useInView(ref, { once: true, amount: 0.4 })
   const [isModalOpen, setIsModalOpen] = React.useState(false)
   const [selectedPhotoIndex, setSelectedPhotoIndex] = React.useState(0)
+  const [clickedPhotoIndex, setClickedPhotoIndex] = React.useState<number | null>(null)
 
   // 为每张照片生成固定的旋转角度
   const photoRotations = React.useMemo(() => generateRotations(photos.length), [photos.length])
 
   const handlePhotoClick = (index: number) => {
+    setClickedPhotoIndex(index) // 立即标记为点击状态
     setSelectedPhotoIndex(index)
-    setIsModalOpen(true)
+    setTimeout(() => {
+      setIsModalOpen(true)
+    }, 50) // 等待模态框动画结束
+  }
+
+  const handleModalClose = () => {
+    setIsModalOpen(false)
+    // 模态框关闭后重置点击状态
+    setTimeout(() => {
+      setClickedPhotoIndex(null)
+    }, 200) // 等待模态框动画结束
   }
 
   return (
@@ -41,6 +53,7 @@ const PolaroidStack: React.FC<Props> = ({ photos, title, description, className 
               rotation={photoRotations[index]}
               variant={photo.variant}
               isVisible={isInView}
+              isClicked={clickedPhotoIndex === index}
             />
           </div>
         ))}
@@ -51,7 +64,7 @@ const PolaroidStack: React.FC<Props> = ({ photos, title, description, className 
         title={title}
         description={description}
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={handleModalClose}
         initialIndex={selectedPhotoIndex}
       />
     </>
