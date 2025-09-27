@@ -44,7 +44,7 @@ const maxCount = Math.max(...sortedTags.map((t) => t.count))
     </div>
 
     <!-- 标签网格 -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" data-astro-transition="animate">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 fade-up" data-astro-transition="animate">
       {
         sortedTags.map((tag, index) => {
           const sizeClass = tag.count >= 10 ? 'text-base' : tag.count >= 5 ? 'text-sm' : 'text-xs'

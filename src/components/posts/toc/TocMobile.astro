@@ -1,8 +1,18 @@
 ---
 import type { CollectionEntry } from 'astro:content'
-import type { MarkdownHeading } from 'astro'
 import SimpleProgressRing from './SimpleProgressRing.astro'
 import { cn } from '~/lib/utils'
+
+type MarkdownHeading = {
+  depth: number
+  slug: string
+  text: string
+}
+
+// 新增：用于 toc 的 heading 类型，包含 order
+type TocHeading = MarkdownHeading & {
+  order: number
+}
 
 interface Props {
   post: CollectionEntry<'posts'>
@@ -14,16 +24,16 @@ const { headings } = Astro.props
 const hasHeadings = headings.length > 0
 
 // 过滤并处理标题
-const filteredHeadings = headings
-  .filter((h) => h.depth <= 4 && h.text.trim())
-  .map((h, index) => ({
+const filteredHeadings: TocHeading[] = headings
+  .filter((h: MarkdownHeading) => h.depth <= 4 && h.text.trim())
+  .map((h: MarkdownHeading, index: number): TocHeading => ({
     ...h,
     text: h.text.replace(/\s*[Hh][1-6]$/g, ''),
     order: index + 1,
   }))
 
 // 计算相对缩进 - 基于实际存在的最小层级
-const minDepth = filteredHeadings.length > 0 ? Math.min(...filteredHeadings.map((h) => h.depth)) : 2
+const minDepth = filteredHeadings.length > 0 ? Math.min(...filteredHeadings.map((h: MarkdownHeading) => h.depth)) : 2
 const getRelativeIndentClass = (depth: number) => {
   const relativeDepth = depth - minDepth
   const indentMap = ['ml-0', 'ml-4', 'ml-8', 'ml-12'] // 最多支持4级相对缩进
@@ -66,7 +76,7 @@ const getRelativeIndentClass = (depth: number) => {
 
             <div class="max-h-[30vh] overflow-y-auto no-scrollbar" data-toc-scroll-area>
               <ul class="px-6 sm:px-8 py-2 space-y-2" id="mobile-table-of-contents">
-                {filteredHeadings.map((heading) => {
+                {filteredHeadings.map((heading: TocHeading) => {
                   const depthClass = heading.depth === 1 ? 'font-medium text-foreground' : 'text-foreground/60 hover:text-foreground/90'
                   return (
                     <li class={cn('flex items-start gap-2 min-w-0', depthClass, getRelativeIndentClass(heading.depth) || '')}>
@@ -251,7 +261,7 @@ const getRelativeIndentClass = (depth: number) => {
         }
       }
 
-      // 如果没找到合适的标题，显示Overview（传入空字符串）
+      // 如果没找到合适的标题，显示目录导航（传入空字符串）
       this.updateActiveHeading(activeHeading?.id || '')
     }
 

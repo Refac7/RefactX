@@ -30,8 +30,8 @@ const posts = postsSort(allPosts).slice(0, size)
             <span class="block text-5xl font-medium text-gray-900 dark:text-white text-left">
               Hi, <span class="text-red-600">there!</span>
             </span>
-            <span class="block text-lg sm:text-xl text-gray-500 dark:text-gray-400 tracking-normal text-left">
-              欢迎来到RefactX项目。这是一个为开发者设计的现代而优雅的Astro主题。
+            <span class="block text-base sm:text-lg text-gray-500 dark:text-gray-400 text-left font-regular">
+              欢迎来到 RefactX 项目。这是一个为开发者设计的现代而优雅的Astro主题。
             </span>
             <span>Release v1.5.0 Special Edition INDEV</span>
           </h1>
@@ -39,8 +39,8 @@ const posts = postsSort(allPosts).slice(0, size)
         
         <!-- 底部内容 - 左对齐 -->
         <div class="mt-auto mb-8 fade-up">
-          <div class="prose prose-indigo dark:prose-invert font-regular text-black dark:text-white mb-2 text-left">
-            <p class="text-xl font-bold">
+          <div class="font-regular text-black dark:text-white mb-2 text-left">
+            <p class="text-lg md:text-xl font-bold mb-4">
               设计/Design – BLACK® Design
             </p>
             <p class="text-gray-500">
@@ -51,7 +51,7 @@ const posts = postsSort(allPosts).slice(0, size)
             <Image
               src={BlackBar}
               alt="black bar"
-              class="w-full h-auto"
+              class="rounded-md"
               loading="eager"
             />
           </span>
