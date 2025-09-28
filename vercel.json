@@ -1,9 +1,4 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "version": 2,
-  "buildCommand": "pnpm run build",
-  "outputDirectory": "dist",
-  "framework": "astro",
   "headers": [
     {
       "source": "/(.*)",
@@ -15,10 +10,6 @@
         {
           "key": "X-Content-Type-Options",
           "value": "nosniff"
-        },
-        {
-          "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; frame-ancestors 'none';"
         }
       ]
     },
