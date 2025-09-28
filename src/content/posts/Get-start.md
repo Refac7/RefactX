@@ -7,7 +7,7 @@ heroImage: 'Getting-Started.webp'
 ogImage: 'Getting-Started.webp'
 ---
 
-欢迎使用 **[RefactX主题](https://github.com/msrefs/RefactX)**！本指南将带您完成基于Astro.js构建的现代化博客主题RefactX的安装与配置流程。
+欢迎使用 **[RefactX主题](https://github.com/Refac7/RefactX)**！本指南将带您完成基于Astro.js构建的现代化博客主题RefactX的安装与配置流程。
 
 ## 环境准备
 
@@ -27,7 +27,7 @@ ogImage: 'Getting-Started.webp'
 
 通过Fork仓库开始您的RefactX项目：
 
-1. 访问[RefactX主题仓库](https://github.com/msrefs/RefactX)
+1. 访问[RefactX主题仓库](https://github.com/Refac7/RefactX)
 2. 点击"Fork"按钮创建您的副本
 3. 本地克隆仓库：
 

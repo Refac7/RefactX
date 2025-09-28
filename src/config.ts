@@ -67,13 +67,13 @@ export const FOOTER_LINKS: Link[] = [
 export const SOCIAL_LINKS: SocialLink[] = [
   {
     name: 'github',
-    url: 'https://github.com/msrefs',
+    url: 'https://github.com/Refac7',
     icon: 'icon-[ri--github-fill]',
     count: 1,
   },
   {
     name: 'twitter',
-    url: 'https://x.com/MSReFS',
+    url: 'https://x.com/Refac7',
     icon: 'icon-[ri--twitter-x-fill]',
   },
   {
@@ -180,7 +180,7 @@ export const SKILLSSHOWCASE_CONFIG: SkillsShowcaseConfig = {
 
 export const GITHUB_CONFIG: GithubConfig = {
   ENABLED: true,
-  GITHUB_USERNAME: 'msrefs',
+  GITHUB_USERNAME: 'Refac7',
   TOOLTIP_ENABLED: true
 }
 
@@ -230,7 +230,7 @@ export const ProjectList: Project[] = [
   {
     name: 'RefactX',
     description: '基于Astro的简洁现代博客',
-    githubUrl: 'https://github.com/msrefs/RefactX',
+    githubUrl: 'https://github.com/Refac7/RefactX',
     website: '/',
     type: 'icon',
     icon: 'icon-[ri--xing-fill]',
@@ -240,7 +240,7 @@ export const ProjectList: Project[] = [
   {
     name: 'RefactX-DEV',
     description: '基于Astro的简洁现代博客(开发版)',
-    githubUrl: 'https://github.com/msrefs/RefactXDEV',
+    githubUrl: 'https://github.com/Refac7/RefactXDEV',
     website: 'https://dev.refact.cc/',
     type: 'icon',
     icon: 'icon-[ri--xing-line]',
@@ -250,7 +250,7 @@ export const ProjectList: Project[] = [
   {
     name: 'MC服务器状态嵌入式组件',
     description: '基于 React 开发了独立的 Vercel 应用，通过 URL 嵌入状态页面，无需修改网站源码。',
-    githubUrl: 'https://github.com/msrefs/minecraft-status-widget',
+    githubUrl: 'https://github.com/Refac7/minecraft-status-widget',
     website: 'https://www.neotec.uk/serverstatus.html',
     type: 'icon',
     icon: 'icon-[ri--puzzle-line]',
@@ -260,7 +260,7 @@ export const ProjectList: Project[] = [
   {
     name: 'NotionNext主题 - Neo',
     description: '基于内置的 Heo 主题进行了大量修改，是现代化的博客设计方案（项目已归档)',
-    githubUrl: 'https://github.com/msrefs/WebsiteKit/',
+    githubUrl: 'https://github.com/Refac7/WebsiteKit/',
     type: 'icon',
     icon: 'icon-[ri--terminal-box-line]',
     star: 1,
@@ -269,7 +269,7 @@ export const ProjectList: Project[] = [
   {
     name: 'Neotec. 主站',
     description: '基于 Vitepress 构建，储存官方文档',
-    githubUrl: 'https://github.com/msrefs/VitePress/',
+    githubUrl: 'https://github.com/Refac7/VitePress/',
     website: 'https://www.neotec.uk/',
     type: 'icon',
     icon: 'icon-[ri--terminal-box-line]',

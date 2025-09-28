@@ -7,7 +7,7 @@ heroImage: 'Project-structure.webp'
 ogImage: 'Project-structure.webp'
 ---
 
-本文档将帮助您快速理解[RefactX主题](https://github.com/msrefs/RefactX)的项目结构。
+本文档将帮助您快速理解[RefactX主题](https://github.com/Refac7/RefactX)的项目结构。
 
 ## 项目目录结构
 

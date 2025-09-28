@@ -388,7 +388,7 @@ export const ProjectList: Project[] = [
   {
     name: 'RefactX',
     description: '基于Astro.js与Dnzzk2构建的博客主题',
-    githubUrl: 'https://github.com/msrefs/RefactX',
+    githubUrl: 'https://github.com/Refac7/RefactX',
     website: 'https://RefactX.vercel.app/',
     type: 'icon',
     icon: 'icon-[ri--github-fill]',
@@ -397,7 +397,7 @@ export const ProjectList: Project[] = [
   {
     name: 'RefactX',
     description: '基于Astro.js与Dnzzk2构建的博客主题',
-    githubUrl: 'https://github.com/msrefs/RefactX',
+    githubUrl: 'https://github.com/Refac7/RefactX',
     website: 'https://RefactX.vercel.app/',
     type: 'image',
     icon: '/projects/logo.png',
