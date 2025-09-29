@@ -475,4 +475,11 @@ export const FRIENDS_LIST = [
     description: '和你的日常，就是奇迹',
     avatar: 'https://blog.feng1026.top/avatar.jpg',
   },
+  {
+    name: '森语 - SENblog',
+    url: 'https://blog.sakurasen.cn',
+    author: 'SEN',
+    description: '无限进步',
+    avatar: 'https://sakurasen.cn/icon',
+  },
 ]
