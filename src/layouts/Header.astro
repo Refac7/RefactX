@@ -1,6 +1,7 @@
 ---
 import { HEADER_LINKS } from '~/config'
 import ThemeToggle from '~/components/theme/ThemeToggle'
+import HeaderGradient from '~/components/theme/HeaderGradient.astro'
 import SectionDivider from '~/components/base/SectionDivider.astro'
 import HeaderLink from '~/components/base/HeaderLink.astro'
 import SearchSwitch from '~/components/base/SearchSwitch.astro'
@@ -8,6 +9,7 @@ import { Image } from 'astro:assets'
 import favicon from '../../public/favicon.webp'
 ---
 
+<HeaderGradient />
 <header>
   <div class="mx-auto max-w-3xl flex justify-between px-6 sm:px-8 py-4 lg:px-8">
     <div class="flex gap-3 sm:gap-6 items-center flex-shrink-0">

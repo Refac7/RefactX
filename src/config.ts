@@ -72,14 +72,10 @@ export const SOCIAL_LINKS: SocialLink[] = [
     count: 1,
   },
   {
-    name: 'twitter',
-    url: 'https://x.com/Refac7',
-    icon: 'icon-[ri--twitter-x-fill]',
-  },
-  {
     name: 'bilibili',
     url: 'https://space.bilibili.com/441325177',
     icon: 'icon-[ri--bilibili-fill]',
+    count: 77,
   },
 ]
 
@@ -481,5 +477,12 @@ export const FRIENDS_LIST = [
     author: 'SEN',
     description: '无限进步',
     avatar: 'https://sakurasen.cn/icon',
+  },
+  {
+    name: "kzhik's website",
+    url: 'https://www.kzhik.cn',
+    author: 'kzhik',
+    description: 'EXPLORE THE WORLD!',
+    avatar: 'https://www.kzhik.cn/avatar.webp',
   },
 ]
