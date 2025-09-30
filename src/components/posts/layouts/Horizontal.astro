@@ -12,7 +12,7 @@ const { frontmatter, minutesRead } = Astro.props
 ---
 
 <article class="relative fade-up">
-  <header class="bg-[#FFFFFF] dark:bg-[#101018] px-6 sm:px-8 py-8 sm:py-10 border-b border-border/50">
+  <header class="px-6 sm:px-8 py-8 sm:py-10 border-b border-border/50">
     <div class="max-w-4xl mx-auto">
       <div class="flex flex-wrap items-center gap-4 text-sm text-muted-foreground/85 mb-8">
         <div class="flex items-center gap-1.5">
@@ -77,7 +77,7 @@ const { frontmatter, minutesRead } = Astro.props
     </div>
   </header>
 
-  <main class="bg-[#FFFFFF] dark:bg-[#101018] px-6 sm:px-8 py-10 max-w-4xl mx-auto">
+  <main class="px-6 sm:px-8 py-10 max-w-4xl mx-auto">
     <Prose>
       <slot />
     </Prose>
