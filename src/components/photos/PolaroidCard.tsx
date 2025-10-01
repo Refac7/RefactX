@@ -76,7 +76,7 @@ const PolaroidCard: React.FC<Props> = ({ photo, index, totalPhotos, rotation, va
       }
     >
       <div className="w-full h-full bg-gray-100 overflow-hidden">
-        <img src={photo.src} width={photo.width} height={photo.height} className="w-full h-full object-cover" loading="lazy" alt="" />
+        <img src={photo.src} width={photo.width} height={photo.height} className="w-full h-full object-cover" loading="eager" alt="" />
       </div>
     </motion.div>
   )

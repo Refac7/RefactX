@@ -29,7 +29,7 @@ const defaultHeroImage = POSTS_CONFIG.defaultHeroImage
         <img
           src={post.data.heroImage || defaultHeroImage}
           alt={post.data.title}
-          loading="lazy"
+          loading="eager"
           decoding="async"
           onload="this.parentElement.querySelector('div').style.display='none';this.style.opacity='1'"
           class={`w-full h-full object-cover will-change-transform duration-300 group-hover:scale-105 dark:brightness-90 opacity-0`}
