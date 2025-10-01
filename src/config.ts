@@ -14,7 +14,7 @@ import type {
 
 export const SITE: Site = {
   title: 'RefactX Project',
-  description: 'RefactX 是一个基于 Astro 构建的现代化高性能博客',
+  description: '如风般轻盈，如光般纯粹。',
   website: 'https://www.refact.cc/',
   base: '/',
   author: 'Refact',
