@@ -95,7 +95,12 @@ function loadWaline() {
     pageview: true,
     dark: 'html.dark',
     requiredMeta: ['nick', 'mail'],
-    locale: { placeholder: '写点什么吧…' }
+    locale: { placeholder: '写点什么吧…' },
+
+    // 关闭多余功能
+    emoji: [],          // 禁用表情包
+    imageUploader: false, // 禁用图片上传
+    search: false,      // 禁用评论搜索
   });
 }
 
