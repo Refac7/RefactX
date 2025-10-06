@@ -24,14 +24,30 @@ const ThemeToggle = () => {
   const controlsSystem = useAnimation()
 
   useEffect(() => {
-    setMounted(true)
-    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | 'system'
-    themeStore.set(savedTheme || 'system')
+    // 安全地读取 localStorage
+    const initializeTheme = () => {
+      try {
+        const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | 'system'
+        if (savedTheme && ['light', 'dark', 'system'].includes(savedTheme)) {
+          themeStore.set(savedTheme)
+        } else {
+          themeStore.set('system')
+        }
+      } catch (error) {
+        // 如果 localStorage 不可用，使用默认值
+        console.warn('localStorage is not available, using system theme')
+        themeStore.set('system')
+      }
+      setMounted(true)
+    }
+
+    initializeTheme()
   }, [])
 
   useEffect(() => {
     if (!mounted) return
 
+    // 更新图标动画
     if (theme === 'system') {
       controlsSun.start('hidden')
       controlsSystem.start('visible')
@@ -42,7 +58,13 @@ const ThemeToggle = () => {
       controlsSystem.start('hidden')
     }
 
-    localStorage.setItem('theme', theme)
+    // 安全地保存到 localStorage
+    try {
+      localStorage.setItem('theme', theme)
+    } catch (error) {
+      console.warn('Failed to save theme to localStorage')
+    }
+
     applyTheme(theme)
   }, [theme, mounted, controlsSun, controlsMoon, controlsSystem])
 
@@ -68,6 +90,17 @@ const ThemeToggle = () => {
       system: 'light',
     }
     themeStore.set(themeMap[theme] as 'light' | 'dark' | 'system')
+  }
+
+  // 如果未挂载，返回一个占位符保持布局一致
+  if (!mounted) {
+    return (
+      <button className="relative size-5 flex items-center justify-center cursor-pointer" aria-label="切换主题">
+        <div className="relative size-5 flex items-center justify-center opacity-0">
+          <span className="icon-[tabler--device-desktop-question] size-5"></span>
+        </div>
+      </button>
+    )
   }
 
   return (
