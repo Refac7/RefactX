@@ -33,28 +33,6 @@ tags: ['更新日志','笔记']
 **技术实现**：  
 采用本地预生成PNG图标方案，通过`sharp`库进行多尺寸预渲染（16x16/32x32/64x64），文件体积优化至4.8KB。
 
-#### 1.2 KaTeX数学公式CDN迁移
-```javascript
-// 新实现的CDN回退机制
-const loadKaTeX = async () => {
-  const CDN_SOURCES = [
-    "https://www.bootcdn.cn/KaTeX/0.16.8/katex.min.css",
-    "https://cdn.bootcdn.net/ajax/libs/KaTeX/0.16.8/katex.min.js"
-  ];
-  
-  const fallbackTimer = setTimeout(() => {
-    console.warn("CDN响应超时，启用本地备用资源");
-    loadLocalResources();
-  }, 150000); // 2.5分钟超时阈值
-
-  try {
-    await Promise.all(CDN_SOURCES.map(loadResource));
-    clearTimeout(fallbackTimer);
-  } catch (error) {
-    handleCDNError(error);
-  }
-}
-```
 **性能指标**：  
 
 | CDN提供商         | 平均响应时间 | 可用性  |

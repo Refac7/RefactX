@@ -73,7 +73,7 @@ const posts = postsSort(allPosts).slice(0, size)
             <!-- 友链按钮 -->
             <a
               href="/friends"
-              class="ml-auto inline-flex items-center gap-1 text-ml font-bold text-gray-600 hover:text-black dark:hover:text-white transition-colors"
+              class="ml-auto inline-flex items-center gap-1 text-ml font-bold text-gray-600 dark:text-zinc-400 hover:text-black dark:hover:text-white transition-colors"
             >
               <span class="icon-[mdi--link] size-6" />
               <span>友链 / Links</span>
@@ -88,7 +88,7 @@ const posts = postsSort(allPosts).slice(0, size)
         <SectionDivider />
         <div class="py-8 pb-10 px-6 max-md:px-6">
           <div class="px-2 max-md:px-0">
-            <h2 class="text-2xl sm:text-3xl">动态聚焦</h2>
+            <h2 class="font-bold text-2xl sm:text-3xl">动态聚焦</h2>
             <p class="text-muted-foreground mb-6 mt-1">近期代码贡献记录</p>
           </div>
           <GithubContributions
@@ -106,7 +106,7 @@ const posts = postsSort(allPosts).slice(0, size)
         <SectionDivider />
         <div class="py-8 pb-10 px-6 max-md:px-6">
           <div class="px-2 max-md:px-0">
-            <h2 class="text-2xl sm:text-3xl">技术栈</h2>
+            <h2 class="font-bold text-2xl sm:text-3xl">技术栈</h2>
             <p class="text-muted-foreground mb-6 mt-1">以下是我常用的技术：</p>
           </div>
           <SkillsShowcase skillsData={SKILLS_DATA} />
@@ -116,7 +116,7 @@ const posts = postsSort(allPosts).slice(0, size)
 
     <SectionDivider />
     <div class="py-8 pb-10 px-6 sm:px-8">
-      <h2 class="text-2xl sm:text-3xl">文章</h2>
+      <h2 class="font-bold text-2xl sm:text-3xl">文章</h2>
       <p class="text-muted-foreground mb-6 mt-1">
         最近更新的 {posts.length} 篇文章
       </p>
