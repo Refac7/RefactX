@@ -133,7 +133,7 @@ cleanupResources()
 :::
 ```
 
-:::image-a{href="https://github.com/Refac7/RefactX"}
+:::image-a{href="https://github.com/Refac7/RefactX_Template"}
 ![GitHub仓库](~/assets/images/markdown-extension-syntax/markdown-extension-syntax.png)
 :::
 

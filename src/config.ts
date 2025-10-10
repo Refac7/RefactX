@@ -226,7 +226,7 @@ export const ProjectList: Project[] = [
   {
     name: 'RefactX',
     description: '基于Astro的简洁现代博客',
-    githubUrl: 'https://github.com/Refac7/RefactX',
+    githubUrl: 'https://github.com/Refac7/RefactX_Template',
     website: '/',
     type: 'icon',
     icon: 'icon-[ri--xing-fill]',
@@ -236,7 +236,7 @@ export const ProjectList: Project[] = [
   {
     name: 'RefactX-DEV',
     description: '基于Astro的简洁现代博客(开发版)',
-    githubUrl: 'https://github.com/Refac7/RefactXDEV',
+    githubUrl: 'https://github.com/Refac7/RefactX_TemplateDEV',
     website: 'https://dev.refact.cc/',
     type: 'icon',
     icon: 'icon-[ri--xing-line]',
