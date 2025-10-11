@@ -12,6 +12,7 @@ import type {
   TagsConfig,
 } from '~/types'
 
+// 站点信息
 export const SITE: Site = {
   title: 'RefactX Project',
   description: '如风般轻盈，如光般纯粹。',
@@ -180,6 +181,7 @@ export const GITHUB_CONFIG: GithubConfig = {
   TOOLTIP_ENABLED: true
 }
 
+// 文章配置
 export const POSTS_CONFIG: PostConfig = {
   title: 'Posts',
   description: 'Refact 的文章',
@@ -210,12 +212,14 @@ export const POSTS_CONFIG: PostConfig = {
   prevPostText: '上一篇'
 }
 
+// 标签配置
 export const TAGS_CONFIG: TagsConfig = {
   title: 'Tags',
   description: '所有文章标签',
   introduce: '所有文章标签均在此处，点击即可筛选。'
 }
 
+// 项目配置
 export const PROJECTS_CONFIG: ProjectConfig = {
   title: 'Projects',
   description: '我的项目案例',
@@ -486,3 +490,18 @@ export const FRIENDS_LIST = [
     avatar: 'https://www.kzhik.cn/avatar.webp',
   },
 ]
+
+// 我的友链信息
+export const FRIENDS_CONTACT = {
+  sitename: 'RefactX Project',
+  email: 'refs@aliyun.com',
+  author: 'Refactored',
+  sitelink: 'https://www.refact.cc',
+  siteavatar: 'https://refact.cc/avatar.png',
+  description: '形体是简单而纯粹的，它不是完整的群体，每个形体都指向其复杂性，并最终被复杂性联系在一起。', 
+}
+
+// Waline 配置
+export const WALINE_CONFIG = {
+  serverURL: "https://waline.refact.cc/", // Waline 后端服务器地址
+};

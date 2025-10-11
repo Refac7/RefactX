@@ -1,3 +1,7 @@
+---
+import { WALINE_CONFIG } from "~/config";
+---
+
 <div id="waline"></div>
 
 <link
@@ -65,19 +69,17 @@
 </style>
 
 <script src="https://unpkg.com/@waline/client@v3/dist/waline.umd.js" defer></script>
-<script>
+<script define:vars={{ serverURL: WALINE_CONFIG.serverURL }}>
 function loadWaline() {
   const container = document.querySelector('#waline');
-  if (!container) return; // 容器不存在就不初始化
+  if (!container) return;
 
-  const w = (window as any).Waline;
+  const w = window.Waline;
   if (!w) return;
 
-  // 如果已有实例，先安全销毁
-  const oldInstance = (window as any).__walineInstance;
+  const oldInstance = window.__walineInstance;
   if (oldInstance && typeof oldInstance.destroy === 'function') {
     try {
-      // 只有当挂载点还在 DOM 中时才销毁
       if (container.contains(container.firstChild) || container.childNodes.length > 0) {
         oldInstance.destroy();
       }
@@ -86,31 +88,22 @@ function loadWaline() {
     }
   }
 
-  // 重新初始化并保存实例
-  (window as any).__walineInstance = w.init({
+  window.__walineInstance = w.init({
     el: container,
-    serverURL: 'https://waline.refact.cc/',
+    serverURL: serverURL,  // 这里使用从 define:vars 传递过来的 serverURL
     path: location.pathname.replace(/\/$/, ''),
     lang: 'zh-CN',
     pageview: true,
     dark: 'html.dark',
     requiredMeta: ['nick', 'mail'],
     locale: { placeholder: '写点什么吧…' },
-
-    // 关闭多余功能
-    emoji: [],          // 禁用表情包
-    imageUploader: false, // 禁用图片上传
-    search: false,      // 禁用评论搜索
+    emoji: [],
+    imageUploader: false,
+    search: false,
   });
 }
 
-
-  // 首次加载
-  window.addEventListener('DOMContentLoaded', loadWaline);
-
-  // PJAX 完成后
-  document.addEventListener('pjax:complete', loadWaline);
-
-  // Astro View Transitions 完成后
-  document.addEventListener('astro:page-load', loadWaline);
+window.addEventListener('DOMContentLoaded', loadWaline);
+document.addEventListener('pjax:complete', loadWaline);
+document.addEventListener('astro:page-load', loadWaline);
 </script>
