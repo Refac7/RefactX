@@ -501,7 +501,8 @@ export const FRIENDS_CONTACT = {
   description: '形体是简单而纯粹的，它不是完整的群体，每个形体都指向其复杂性，并最终被复杂性联系在一起。', 
 }
 
-// Waline 配置
+// waline 配置
 export const WALINE_CONFIG = {
-  serverURL: "https://waline.refact.cc/", // Waline 后端服务器地址
+  enableComment: true, // 设置为 false 可禁用评论组件
+  serverURL: "https://waline.refact.cc", // Waline 服务器地址
 };
