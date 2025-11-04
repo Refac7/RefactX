@@ -227,6 +227,16 @@ export const PROJECTS_CONFIG: ProjectConfig = {
 }
 
 export const ProjectList: Project[] = [
+    {
+    name: 'RefactZ',
+    description: '基于 Astro 开发的 Material Design 3 风格轻量简洁个人主页。',
+    githubUrl: 'https://github.com/Refac7/RefactZ_Template',
+    website: 'https://dash.refact.cc',
+    type: 'icon',
+    icon: 'icon-[ri--pages-line]',
+    star: 1,
+    fork: 1
+  },
   {
     name: 'RefactX',
     description: '基于Astro的简洁现代博客',
@@ -234,16 +244,6 @@ export const ProjectList: Project[] = [
     website: '/',
     type: 'icon',
     icon: 'icon-[ri--xing-fill]',
-    star: 1,
-    fork: 1
-  },
-  {
-    name: 'RefactX-DEV',
-    description: '基于Astro的简洁现代博客(开发版)',
-    githubUrl: 'https://github.com/Refac7/RefactX_TemplateDEV',
-    website: 'https://dev.refact.cc/',
-    type: 'icon',
-    icon: 'icon-[ri--xing-line]',
     star: 4,
     fork: 5
   },
@@ -488,6 +488,13 @@ export const FRIENDS_LIST = [
     author: 'kzhik',
     description: 'EXPLORE THE WORLD!',
     avatar: 'https://www.kzhik.cn/avatar.webp',
+  },
+  {
+    name: "Mikuの极光星",
+    url: 'https://blog.sotkg.com',
+    author: 'Mikuの鬆',
+    description: '心有多宽，世界就有多远',
+    avatar: 'https://cravatar.com/avatar/1012bf78fb01d5b964c3a9a0f515911a',
   },
 ]
 
