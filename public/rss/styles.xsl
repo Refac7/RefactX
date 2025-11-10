@@ -6,132 +6,349 @@
       <head>
         <title><xsl:value-of select="/rss/channel/title"/></title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <style type="text/css">
-          /* 极简/学术风格 */
-          body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; /* 清晰的无衬线字体 */
-            line-height: 1.7;
-            margin: 0 auto;
-            max-width: 720px; /* 适中宽度 */
-            padding: 3em 1.5em;
-            background-color: #fdfdfd; /* 非常浅的灰色背景 */
-            color: #333; /* 深灰色文字 */
-            font-size: 16px; /* 标准字体大小 */
+          :root {
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            --color-bg-light: #ffffff;
+            --color-text-light: #000000;
+            --color-heading-light: #ff3b30;
+            --color-link-light: #000000;
+            --color-link-hover-light: #ff3b30;
+            --color-border-light: #e0e0e0;
+            --color-accent: #ff3b30;
+            --color-muted: #666666;
+
+            --color-bg-dark: #000000;
+            --color-text-dark: #ffffff;
+            --color-heading-dark: #ff3b30;
+            --color-link-dark: #ffffff;
+            --color-link-hover-dark: #ff3b30;
+            --color-border-dark: #333333;
           }
 
-          /* 标题样式 */
-          h1 {
-            font-size: 1.75em; /* 相对小一点的标题 */
-            margin-bottom: 1em;
-            border-bottom: 1px solid #eee; /* 非常浅的边框 */
-            padding-bottom: 0.4em;
-            font-weight: 500; /* Medium weight */
-            color: #111; /* 黑色标题 */
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
           }
+
+          body {
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: var(--color-bg-light);
+            color: var(--color-text-light);
+            font-size: 16px;
+            font-weight: 400;
+            transition: background-color 0.3s ease, color 0.3s ease;
+          }
+
+          .container {
+            max-width: 100%;
+            margin: 0;
+            padding: 2rem 1.5rem;
+          }
+
+          .header {
+            margin-bottom: 3rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--color-border-light);
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+          }
+
+          .header-content {
+            flex: 1;
+          }
+
+          h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--color-heading-light);
+            letter-spacing: -0.02em;
+          }
+          
           h1 a {
             color: inherit;
             text-decoration: none;
+            transition: color 0.2s ease;
           }
+          
           h1 a:hover {
-             text-decoration: underline; /* 悬停下划线 */
+            color: var(--color-accent);
+            text-decoration: none;
           }
 
-          /* 描述文字 */
-          p {
-            margin: 0.5em 0 2.5em 0;
-            color: #555; /* 中灰色 */
-            font-size: 1em;
+          .channel-description {
+            font-size: 1.125rem;
+            color: var(--color-muted);
+            margin-bottom: 10rem;
+            font-weight: 400;
+            line-height: 1.5;
           }
 
-          /* 列表样式 */
-          ul {
+          .back-button {
+            background-color: var(--color-text-light);
+            color: var(--color-bg-light);
+            border: none;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-left: 1.5rem;
+            flex-shrink: 0;
+            text-decoration: none;
+            font-size: 1.25rem;
+            font-weight: 500;
+          }
+
+          .back-button:hover {
+            background-color: var(--color-accent);
+            transform: scale(1.05);
+          }
+
+          .back-button:active {
+            transform: scale(0.95);
+          }
+
+          .items-list {
             list-style: none;
             padding: 0;
           }
 
-          /* 列表项样式 - 移除边框和阴影，增加间距 */
-          li {
-            background-color: transparent; /* 透明背景 */
-            border: none; /* 无边框 */
-            border-radius: 0; /* 无圆角 */
-            margin-bottom: 2em; /* 增加列表项间距 */
-            padding: 0; /* 无内边距 */
-            box-shadow: none; /* 无阴影 */
-            border-bottom: 1px dotted #ddd; /* 用虚线分隔 */
-            padding-bottom: 1.5em; /* 虚线下方的间距 */
+          .item {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--color-border-light);
           }
-          li:last-child {
-             border-bottom: none; /* 最后一项无分隔线 */
-             padding-bottom: 0;
-             margin-bottom: 0;
-          }
-          li:hover {
-             /* 无悬停效果，保持简洁 */
+          
+          .item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
           }
 
-
-          /* 列表项标题 */
-          li h2 {
-            margin: 0 0 0.3em 0;
-            font-size: 1.15em; /* 稍大一点 */
-            font-weight: 500; /* Medium weight */
+          .item-header {
+            margin-bottom: 1rem;
           }
-          li h2 a {
-            color: #0056b3; /* 蓝色链接 */
+
+          .item-title {
+            font-size: 1.375rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+          }
+          
+          .item-title a {
+            color: var(--color-link-light);
             text-decoration: none;
-            transition: color 0.2s ease-in-out;
+            transition: color 0.2s ease;
           }
-          li h2 a:hover {
-            color: #003d80; /* 深蓝色悬停 */
+          
+          .item-title a:hover {
+            color: var(--color-link-hover-light);
+            text-decoration: none;
+          }
+
+          .pubDate {
+            color: var(--color-muted);
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+          }
+
+          .description {
+            color: var(--color-text-light);
+            font-size: 1rem;
+            line-height: 1.6;
+          }
+
+          .description a {
+            color: var(--color-link-light);
+            text-decoration: underline;
+            text-decoration-color: var(--color-accent);
+            text-underline-offset: 2px;
+            transition: color 0.2s ease;
+          }
+          
+          .description a:hover {
+            color: var(--color-accent);
+            text-decoration-color: currentColor;
+          }
+
+          footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 2px solid var(--color-border-light);
+            font-size: 0.875rem;
+            color: var(--color-muted);
+            text-align: left;
+            line-height: 1.5;
+          }
+
+          footer a {
+            color: var(--color-accent);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+          }
+          
+          footer a:hover {
+            color: var(--color-link-hover-light);
             text-decoration: underline;
           }
 
-          /* 发布日期样式 */
-          .pubDate {
-            color: #777; /* 灰色日期 */
-            font-size: 0.875em; /* text-sm */
-            margin-bottom: 0.5em;
-            display: block;
+          /* 深色模式 */
+          @media (prefers-color-scheme: dark) {
+            body {
+              background-color: var(--color-bg-dark);
+              color: var(--color-text-dark);
+            }
+            
+            .header {
+              border-bottom: 2px solid var(--color-border-dark);
+            }
+            
+            h1 {
+              color: var(--color-heading-dark);
+            }
+            
+            .channel-description {
+              color: #aaaaaa;
+            }
+            
+            .back-button {
+              background-color: var(--color-text-dark);
+              color: var(--color-bg-dark);
+            }
+            
+            .back-button:hover {
+              background-color: var(--color-accent);
+            }
+            
+            .item {
+              border-bottom: 1px solid var(--color-border-dark);
+            }
+            
+            .item-title a {
+              color: var(--color-link-dark);
+            }
+            
+            .item-title a:hover {
+              color: var(--color-link-hover-dark);
+            }
+            
+            .pubDate {
+              color: #888888;
+            }
+            
+            .description {
+              color: var(--color-text-dark);
+            }
+            
+            .description a {
+              color: var(--color-link-dark);
+            }
+            
+            .description a:hover {
+              color: var(--color-link-hover-dark);
+            }
+            
+            footer {
+              border-top: 2px solid var(--color-border-dark);
+              color: #888888;
+            }
           }
 
-          /* 描述内容样式 */
-          .description {
-            color: #444; /* 稍深的灰色 */
-            font-size: 0.95em;
+          /* 响应式设计 */
+          @media (min-width: 768px) {
+            .container {
+              padding: 3rem 2rem;
+            }
+            
+            h1 {
+              font-size: 3rem;
+            }
+            
+            .item-title {
+              font-size: 1.5rem;
+            }
+            
+            .back-button {
+              width: 56px;
+              height: 56px;
+              font-size: 1.5rem;
+            }
           }
 
-          /* 页脚样式 */
-          footer {
-            margin-top: 4em;
-            padding-top: 1em;
-            border-top: 1px solid #eee; /* 非常浅的边框 */
-            font-size: 0.875em; /* text-sm */
-            color: #888; /* 浅灰色页脚 */
-            text-align: center;
-            line-height: 1.5; /* 增加行高以便容纳多行 */
+          @media (min-width: 1024px) {
+            .container {
+              padding: 4rem 3rem;
+              max-width: 800px;
+              margin: 0 auto;
+            }
+          }
+          
+          @media (max-width: 480px) {
+            .header {
+              flex-direction: column;
+            }
+            
+            .back-button {
+              margin-left: 0;
+              margin-top: 1rem;
+              align-self: flex-start;
+            }
           }
         </style>
       </head>
       <body>
-        <h1><a href="{/rss/channel/link}" target="_blank"><xsl:value-of select="/rss/channel/title"/></a></h1>
-        <p><xsl:value-of select="/rss/channel/description"/></p>
-        <ul>
-          <xsl:for-each select="/rss/channel/item">
-            <li>
-              <h2><a href="{link}" target="_blank"><xsl:value-of select="title"/></a></h2>
-              <div class="pubDate">
-                <xsl:value-of select="pubDate"/>
-              </div>
-              <div class="description">
-                <xsl:value-of select="description"/>
-              </div>
-            </li>
-          </xsl:for-each>
-        </ul>
-        <footer>
-          Generated by Astro using @astrojs/rss <br /> 
-          Powered by <a href="https://github.com/Refac7/RefactX_Template" target="_blank" style="color: #0056b3; text-decoration: none;">RefactX Theme</a>
-        </footer>
+        <div class="container">
+          <div class="header">
+            <div class="header-content">
+              <h1><a href="{/rss/channel/link}" target="_blank"><xsl:value-of select="/rss/channel/title"/></a></h1>
+              <p class="channel-description"><xsl:value-of select="/rss/channel/description"/></p>
+            </div>
+            <a href="{/rss/channel/link}" class="back-button" title="返回网站">
+              ←
+            </a>
+          </div>
+
+          <ul class="items-list">
+            <xsl:for-each select="/rss/channel/item">
+              <li class="item">
+                <div class="item-header">
+                  <h2 class="item-title">
+                    <a href="{link}" target="_blank">
+                      <xsl:value-of select="title"/>
+                    </a>
+                  </h2>
+                  <div class="pubDate">
+                    <xsl:value-of select="pubDate"/>
+                  </div>
+                </div>
+                <div class="description">
+                  <xsl:value-of select="description" disable-output-escaping="yes"/>
+                </div>
+              </li>
+            </xsl:for-each>
+          </ul>
+          
+          <footer>
+            Generated by Astro using @astrojs/rss <br /> 
+            Powered by <a href="https://github.com/Refac7/RefactX_Template" target="_blank">RefactX Theme</a>
+          </footer>
+        </div>
       </body>
     </html>
   </xsl:template>
