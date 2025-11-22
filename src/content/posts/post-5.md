@@ -32,7 +32,7 @@ https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fwalinejs%
 
 ### 部署和后续工作
 
-通过 vercel 部署完成后，需要绑定自己的域名使用，因为 vercel.app 在大陆不可访问。你可以直接访问，看到评论窗口，你可以直接发送一个实例评论，然后在数据库查看是否写入键值。
+通过 vercel 部署完成后，需要绑定自己的域名使用，因为 vercel.app 在大陆不可访问。在此之后，你才可以直接访问，并且看到评论窗口，然后你可以直接发送一个实例评论，然后在数据库查看是否写入键值。
 
 ## 前端配置
 
@@ -237,3 +237,5 @@ MAIL_TEMPLATE_ADMIN
 **共 1859 词**
 
 2025年9月26日 在macOS Tahoe 26.0 ｜ Typora 编辑
+
+2025年11月22日 第一次修改
