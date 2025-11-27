@@ -496,6 +496,13 @@ export const FRIENDS_LIST = [
     description: '心有多宽，世界就有多远',
     avatar: 'https://cravatar.com/avatar/1012bf78fb01d5b964c3a9a0f515911a',
   },
+  {
+    name: "木竹",
+    url: 'https://www.laomuzhu.cn',
+    author: '木竹',
+    description: '喜欢把复杂的图纸变成简洁优雅的造价文件',
+    avatar: 'https://www.laomuzhu.cn/img/touxiang.jpg',
+  },
 ]
 
 // 我的友链信息
