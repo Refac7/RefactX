@@ -6,7 +6,7 @@ author: 'Refact'
 heroImage: 'me.webp'
 ogImage: 'me.webp'
 heroImageAspectRatio: '16/9'
-tags: ['技术']
+tags: ['笔记','网络']
 ---
 
 ## 概述
@@ -54,6 +54,14 @@ ISP连接超时。（未知错误）或认证失败。我去运营商处咨询�
 ## 结语
 
 我终于摆脱了每次打开电脑输入密码的时代。
+
+:::image-figure[多设备连接]
+![](/assets/post-6-1.png)
+:::
+
+:::image-figure[5GHz频段测速]
+![](/assets/post-6-2.jpg)
+:::
 
 我不理解学校的这种行为，我们学校的可分配网段应该是10.209.0.0/16.也就是说足足可分配65025个IP地址，即使全校学生同时上网也是完全够用的。我们学校对学生的限制已经够多了，所以这次我必须打破这个规则。
 

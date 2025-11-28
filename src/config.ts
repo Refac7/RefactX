@@ -201,7 +201,7 @@ export const POSTS_CONFIG: PostConfig = {
   },
   defaultHeroImage: '/og-image.webp',
   defaultHeroImageAspectRatio: '16/9',
-  postType: 'horizontal',
+  postType: 'jap',
   imageDarkenInDark: true,
   readMoreText: '阅读全文',
   prevPageText: '上一页',
