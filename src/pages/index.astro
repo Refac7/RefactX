@@ -71,7 +71,7 @@ const posts = postsSort(allPosts).slice(0, size)
                     aria-label={`${item.name} 的链接`}
                     count={item.count}
                     label="关注者"
-                    class="text-sm md:text-base hover:text-red-600 dark:hover:text-red-500 transition-colors"
+                    class="text-sm md:text-base"
                   />
                 ))}
             </div>
@@ -79,7 +79,7 @@ const posts = postsSort(allPosts).slice(0, size)
             <!-- 右侧：友链按钮 -->
             <a
               href="/friends"
-              class="ml-auto inline-flex items-center gap-1 text-ml font-bold text-black dark:text-white transition-colors"
+              class="ml-auto inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary transition-colors"
             >
               <span class="icon-[mdi--link] size-6" />
               <span>友链 / Links</span>
