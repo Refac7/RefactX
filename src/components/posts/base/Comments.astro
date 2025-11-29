@@ -8,7 +8,7 @@ import { WALINE_CONFIG } from "~/config";
 
     <link
       rel="stylesheet"
-      href="https://unpkg.com/@waline/client@v3/dist/waline.css"
+      href="/css/waline.css"
     />
 
     <style is:global>
@@ -78,7 +78,7 @@ import { WALINE_CONFIG } from "~/config";
       }
     </style>
 
-    <script src="https://unpkg.com/@waline/client@v3/dist/waline.umd.js" defer></script>
+    <script src="/js/waline.umd.js" defer></script>
     <script define:vars={{ serverURL: WALINE_CONFIG.serverURL }}>
       function loadWaline() {
         const container = document.querySelector('#waline');
