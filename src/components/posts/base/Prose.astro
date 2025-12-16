@@ -40,6 +40,24 @@ const { class: className } = Astro.props
         imageEl.addEventListener('error', handleImageLoad)
       }
     })
+
+    // 为 lazy-image 类的图片添加加载完成处理
+    const lazyImages = document.querySelectorAll('.lazy-image')
+    lazyImages.forEach((img) => {
+      const imageEl = img as HTMLImageElement
+
+      function handleLazyImageLoad() {
+        imageEl.classList.add('lazy-image-loaded')
+      }
+
+      // 检查图片是否已加载
+      if (imageEl.complete && imageEl.naturalHeight !== 0) {
+        handleLazyImageLoad()
+      } else {
+        imageEl.addEventListener('load', handleLazyImageLoad)
+        imageEl.addEventListener('error', handleLazyImageLoad)
+      }
+    })
   })
 </script>
 
@@ -47,7 +65,8 @@ const { class: className } = Astro.props
   if (enabled) {
     const darkModeHandler = () => {
       const isDark = document.documentElement.classList.contains('dark')
-      document.querySelectorAll('.markdown img:not(:hover):not(.medium-zoom-image--opened):not(.noDarken)').forEach((img) => {
+      // 不对加载中的 lazy-image 应用暗化效果，只对已加载的图片应用
+      document.querySelectorAll('.markdown img:not(:hover):not(.medium-zoom-image--opened):not(.noDarken):not(.lazy-image:not(.lazy-image-loaded))').forEach((img) => {
         if (isDark) {
           img.style.setProperty('filter', 'brightness(0.75) contrast(1.1)')
         } else {
@@ -71,11 +90,17 @@ const { class: className } = Astro.props
       // 监听 hover 事件
       document.querySelectorAll('.markdown :not(image-figure-polaroid) img:not(.noDarken)').forEach((img) => {
         img.addEventListener('mouseenter', () => {
-          img.style.removeProperty('filter')
+          // 只在非 lazy-image 或已加载的 lazy-image 上移除滤镜
+          if (!img.classList.contains('lazy-image') || img.classList.contains('lazy-image-loaded')) {
+            img.style.removeProperty('filter')
+          }
         })
         img.addEventListener('mouseleave', () => {
+          // 重新应用暗化效果
           if (document.documentElement.classList.contains('dark')) {
-            img.style.setProperty('filter', 'brightness(0.75) contrast(1.1)')
+            if (!img.classList.contains('lazy-image') || img.classList.contains('lazy-image-loaded')) {
+              img.style.setProperty('filter', 'brightness(0.75) contrast(1.1)')
+            }
           }
         })
       })

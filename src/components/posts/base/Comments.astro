@@ -104,80 +104,111 @@ import { WALINE_CONFIG } from "~/config";
         const container = document.querySelector('#waline-container');
         if (!container) return;
 
-        // 创建一个容器用于初始化
-        const walineDiv = document.createElement('div');
-        walineDiv.id = 'waline';
+        // 检查是否已经初始化过这个容器
+        if (container.hasAttribute('data-waline-init')) {
+          return;
+        }
+        container.setAttribute('data-waline-init', 'true');
+
+        // 重置页面切换时的加载状态
+        window.__walineLoaded = false;
+        
+        let observer = null;
         
         // 设置交叉观察器，当评论区滚入视口时加载
-        const observer = new IntersectionObserver(
-          (entries) => {
-            for (const entry of entries) {
-              if (entry.isIntersecting && !window.__walineLoaded) {
-                window.__walineLoaded = true;
-                observer.disconnect();
-                
-                // 替换加载提示
-                container.innerHTML = '';
-                container.appendChild(walineDiv);
-                
-                // 加载 Waline
-                setTimeout(loadWaline, 100);
+        const setupObserver = () => {
+          observer = new IntersectionObserver(
+            (entries) => {
+              for (const entry of entries) {
+                if (entry.isIntersecting && !window.__walineLoaded) {
+                  window.__walineLoaded = true;
+                  observer.disconnect();
+                  
+                  // 直接加载 Waline，不延迟
+                  loadWaline();
+                }
               }
+            },
+            { rootMargin: '300px' } // 提前加载，提高响应速度
+          );
+          
+          observer.observe(container);
+        };
+
+        // 如果 Waline 还没加载，等待它加载
+        if (!window.Waline) {
+          const checkWaline = setInterval(() => {
+            if (window.Waline) {
+              clearInterval(checkWaline);
+              setupObserver();
             }
-          },
-          { rootMargin: '200px' } // 提前 200px 加载
-        );
-        
-        observer.observe(container);
+          }, 50);
+          
+          // 设置超时，防止无限等待
+          setTimeout(() => {
+            clearInterval(checkWaline);
+            if (window.Waline) {
+              setupObserver();
+            }
+          }, 5000);
+        } else {
+          setupObserver();
+        }
       }
 
       function loadWaline() {
-        if (!window.Waline) return;
+        const container = document.querySelector('#waline-container');
+        if (!container || !window.Waline) return;
 
-        const container = document.querySelector('#waline');
-        if (!container) return;
+        // 完全清空旧实例 - 不尝试调用 destroy，直接清空并重建
+        // 这避免了 Waline destroy 过程中的 DOM 操作错误
+        container.innerHTML = '';
+        
+        // 创建新的 Waline 容器
+        const walineDiv = document.createElement('div');
+        walineDiv.id = 'waline';
+        container.appendChild(walineDiv);
+        
+        // 丢弃旧实例引用，让垃圾回收处理
+        window.__walineInstance = null;
 
-        const oldInstance = window.__walineInstance;
-        if (oldInstance && typeof oldInstance.destroy === 'function') {
-          try {
-            oldInstance.destroy();
-          } catch (e) {
-            console.warn('Waline destroy failed:', e);
-          }
+        // 初始化新实例
+        try {
+          window.__walineInstance = window.Waline.init({
+            el: walineDiv,
+            serverURL: serverURL,
+            path: location.pathname.replace(/\/$/, ''),
+            lang: 'zh-CN',
+            pageview: true,
+            dark: 'html.dark',
+            requiredMeta: ['nick', 'mail'],
+            locale: { placeholder: '写点什么吧…' },
+            emoji: [],
+            imageUploader: async (file) => {
+              const formData = new FormData();
+              formData.append('file', file);
+              
+              try {
+                const response = await fetch('https://img.refact.cc/upload', {
+                  method: 'POST',
+                  body: formData,
+                });
+                
+                if (!response.ok) throw new Error('上传失败');
+                
+                const data = await response.json();
+                return data.url;
+              } catch (error) {
+                console.error('图片上传失败:', error);
+                throw error;
+              }
+            },
+            search: false,
+            upload: false,
+          });
+        } catch (error) {
+          console.error('Waline 初始化失败:', error);
         }
-
-        window.__walineInstance = window.Waline.init({
-          el: container,
-          serverURL: serverURL,
-          path: location.pathname.replace(/\/$/, ''),
-          lang: 'zh-CN',
-          pageview: true,
-          dark: 'html.dark',
-          requiredMeta: ['nick', 'mail'],
-          locale: { placeholder: '写点什么吧…' },
-          emoji: [],
-          imageUploader: async (file) => {
-            const formData = new FormData();
-            formData.append('file', file);
-            
-            try {
-              const response = await fetch('https://img.refact.cc/upload', {
-                method: 'POST',
-                body: formData,
-              });
-              
-              if (!response.ok) throw new Error('上传失败');
-              
-              const data = await response.json();
-              return data.url;
-            } catch (error) {
-              console.error('图片上传失败:', error);
-              throw error;
-            }
-          },
-          search: false,
-          upload: false,
-        });
       }
 
       // 页面加载完成后初始化
@@ -187,9 +218,18 @@ import { WALINE_CONFIG } from "~/config";
         initWalineLazyLoad();
       }
       
-      // 支持 pjax 和 astro 页面切换
-      document.addEventListener('pjax:complete', initWalineLazyLoad);
-      document.addEventListener('astro:page-load', initWalineLazyLoad);
+      // 支持 astro 页面切换 - 重置状态以允许重新初始化
+      document.addEventListener('astro:page-load', () => {
+        const container = document.querySelector('#waline-container');
+        if (container) {
+          container.removeAttribute('data-waline-init');
+          // 重置加载状态
+          window.__walineLoaded = false;
+          // 重新恢复加载提示
+          container.innerHTML = '<div class="waline-loading">加载评论中...</div>';
+        }
+        initWalineLazyLoad();
+      });
     </script>
   </>
 )}

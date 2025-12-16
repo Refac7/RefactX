@@ -392,7 +392,7 @@ input[type='search']::-moz-search-cancel-button {
 /* ===== 图片懒加载过渡 ===== */
 .lazy-image {
   /* 加载中：模糊效果 */
-  filter: blur(4px);
+  filter: blur(4px) !important;
   opacity: 0.8;
   transition: filter 0.3s ease-out, opacity 0.3s ease-out;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
@@ -400,11 +400,24 @@ input[type='search']::-moz-search-cancel-button {
   animation: shimmer 1.5s infinite;
 }
 
+/* 加载完成后移除模糊 - 使用 !important 确保优先级 */
+.lazy-image-loaded {
+  filter: none !important;
+  opacity: 1 !important;
+  animation: none !important;
+}
+
 .lazy-image[complete],
 .lazy-image[loaded] {
-  filter: blur(0);
-  opacity: 1;
-  animation: none;
+  filter: blur(0) !important;
+  opacity: 1 !important;
+  animation: none !important;
+}
+
+/* 防止 hover 时重新应用模糊效果 */
+.lazy-image:hover:not(.lazy-image-loaded) {
+  filter: blur(4px) !important;
+  opacity: 0.8 !important;
 }
 
 @keyframes shimmer {
