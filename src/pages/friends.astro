@@ -10,25 +10,25 @@ const { sitename, email, author, sitelink, siteavatar, description: myDescriptio
 ---
 
 <Layout title={title} description={description}>
-  <div class="relative z-[1] py-14 pb-10">
+  <div class="relative z-[1] py-14 pb-12">
     <!-- 标题区 -->
     <div class="px-6 sm:px-8">
       <h1
-        class="tracking-tight text-5xl bg-gradient-to-r from-primary to-primary/70
+        class="tracking-tighter text-5xl sm:text-6xl font-semibold bg-gradient-to-r from-primary to-primary/70
                bg-clip-text text-transparent pb-1.5"
       >
         {title}
       </h1>
-      <p class="pro text-muted-foreground mt-2">{introduce}</p>
+      <p class="pro text-muted-foreground mt-3 text-sm sm:text-base leading-relaxed">{introduce}</p>
     </div>
 
     <!-- 友链列表 -->
-    <div class="mt-8 grid grid-cols-1 fade-up">
+    <div class="mt-12 grid grid-cols-1 fade-up">
       {FRIENDS_LIST.map((friend, index) => (
         <div>
           <div
-            class="group relative hover:bg-muted/30 dark:hover:bg-muted/30
-                   transition-colors duration-300 px-8 py-4"
+            class="group relative hover:bg-muted/40 dark:hover:bg-muted/40
+                   transition-colors duration-300 px-6 sm:px-8 py-5"
           >
             <div class="flex items-center gap-4">
               <img
@@ -40,8 +40,8 @@ const { sitename, email, author, sitelink, siteavatar, description: myDescriptio
                 href={friend.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="font-semibold font-serif text-xl
-                       hover:text-primary transition-colors"
+                class="font-semibold font-serif text-lg sm:text-xl
+                       hover:text-primary transition-colors duration-200"
               >
                 {friend.name}
               </a>
@@ -75,9 +75,9 @@ const { sitename, email, author, sitelink, siteavatar, description: myDescriptio
     </div>
 
     <!-- 交换友链区域 -->
-    <div class="mt-12 px-6 sm:px-8">
-        <h2 class="text-2xl font-semibold mb-2">想和我交换友链吗？</h2>
-        <p class="text-muted-foreground mb-4">
+    <div class="mt-16 px-6 sm:px-8">
+        <h2 class="text-2xl sm:text-3xl font-semibold mb-4">想和我交换友链吗？</h2>
+        <p class="text-muted-foreground mb-6 text-sm sm:text-base">
           提供以下信息，我会在 1–2 天内添加：
         </p>
         <ul class="list-disc list-inside text-sm text-muted-foreground space-y-1">
@@ -97,9 +97,9 @@ const { sitename, email, author, sitelink, siteavatar, description: myDescriptio
         <p class="mt-1 text-sm">
           或在下方评论区域提交。
         </p>
-        <div class="mt-8 text-sm leading-relaxed text-black dark:text-white font-regular">
+        <div class="mt-10 text-sm leading-relaxed text-black dark:text-white font-regular">
             <!-- 信息表格 -->
-            <p class="font-semibold text-lg mb-4">我的友链信息（欢迎添加）</p>
+            <p class="font-semibold text-lg sm:text-xl mb-6">我的友链信息（欢迎添加）</p>
             <table class="w-full text-sm border border-muted rounded-lg overflow-hidden border-collapse">
             <tbody>
               <tr class="odd:bg-muted/10 even:bg-background dark:odd:bg-muted/20 dark:even:bg-background">

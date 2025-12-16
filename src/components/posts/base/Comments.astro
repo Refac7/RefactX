@@ -4,7 +4,9 @@ import { WALINE_CONFIG } from "~/config";
 
 {WALINE_CONFIG.enableComment && (
   <>
-    <div id="waline"></div>
+    <div id="waline-container" class="waline-lazy">
+      <div class="waline-loading">加载评论中...</div>
+    </div>
 
     <link
       rel="stylesheet"
@@ -12,6 +14,23 @@ import { WALINE_CONFIG } from "~/config";
     />
 
     <style is:global>
+      #waline-container {
+        width: 100%;
+      }
+
+      .waline-lazy {
+        min-height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--color-muted-foreground);
+      }
+
+      .waline-lazy:has(#waline) {
+        display: block;
+        min-height: unset;
+      }
+
       #waline .wl-editor,
       #waline .wl-input,
       #waline span.wl-badge,
@@ -80,17 +99,48 @@ import { WALINE_CONFIG } from "~/config";
 
     <script src="/js/waline.umd.js" defer></script>
     <script define:vars={{ serverURL: WALINE_CONFIG.serverURL }}>
+      // 使用 Intersection Observer 实现延迟加载
+      function initWalineLazyLoad() {
+        const container = document.querySelector('#waline-container');
+        if (!container) return;
+
+        // 创建一个容器用于初始化
+        const walineDiv = document.createElement('div');
+        walineDiv.id = 'waline';
+        
+        // 设置交叉观察器，当评论区滚入视口时加载
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting && !window.__walineLoaded) {
+                window.__walineLoaded = true;
+                observer.disconnect();
+                
+                // 替换加载提示
+                container.innerHTML = '';
+                container.appendChild(walineDiv);
+                
+                // 加载 Waline
+                setTimeout(loadWaline, 100);
+              }
+            }
+          },
+          { rootMargin: '200px' } // 提前 200px 加载
+        );
+        
+        observer.observe(container);
+      }
+
       function loadWaline() {
+        if (!window.Waline) return;
+
         const container = document.querySelector('#waline');
         if (!container) return;
-        if (!window.Waline) return;
 
         const oldInstance = window.__walineInstance;
         if (oldInstance && typeof oldInstance.destroy === 'function') {
           try {
-            if (container.childNodes.length > 0) {
-              oldInstance.destroy();
-            }
+            oldInstance.destroy();
           } catch (e) {
             console.warn('Waline destroy failed:', e);
           }
@@ -106,14 +156,41 @@ import { WALINE_CONFIG } from "~/config";
           requiredMeta: ['nick', 'mail'],
           locale: { placeholder: '写点什么吧…' },
           emoji: [],
-          imageUploader: false,
+          imageUploader: async (file) => {
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            try {
+              const response = await fetch('https://img.refact.cc/upload', {
+                method: 'POST',
+                body: formData,
+              });
+              
+              if (!response.ok) throw new Error('上传失败');
+              
+              const data = await response.json();
+              return data.url;
+            } catch (error) {
+              console.error('图片上传失败:', error);
+              throw error;
+            }
+          },
           search: false,
+          upload: false,
         });
       }
 
-      window.addEventListener('DOMContentLoaded', loadWaline);
-      document.addEventListener('pjax:complete', loadWaline);
-      document.addEventListener('astro:page-load', loadWaline);
+      // 页面加载完成后初始化
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initWalineLazyLoad);
+      } else {
+        initWalineLazyLoad();
+      }
+      
+      // 支持 pjax 和 astro 页面切换
+      document.addEventListener('pjax:complete', initWalineLazyLoad);
+      document.addEventListener('astro:page-load', initWalineLazyLoad);
     </script>
   </>
 )}
+

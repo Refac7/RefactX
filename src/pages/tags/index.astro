@@ -20,18 +20,18 @@ const maxCount = Math.max(...sortedTags.map((t) => t.count))
 ---
 
 <Layout {title} {description}>
-  <div class="relative z-[1] py-14 pb-10 px-6 sm:px-8 min-h-[70vh]">
+  <div class="relative z-[1] py-14 pb-12 px-6 sm:px-8 min-h-[70vh]">
     <!-- 标题区域 -->
-    <div class="mb-12">
-      <h1 class="tracking-tight text-5xl bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent pb-1.5">
+    <div class="mb-14">
+      <h1 class="tracking-tighter text-5xl sm:text-6xl font-semibold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent pb-1.5">
         {title}
       </h1>
       <div class="pro text-muted-foreground text-balance">
-        <p class="mt-2 text-sm sm:text-base">{introduce}</p>
+        <p class="mt-3 text-sm sm:text-base leading-relaxed">{introduce}</p>
       </div>
 
       <!-- 统计信息 -->
-      <div class="mt-6 flex items-center gap-6 text-sm text-muted-foreground">
+      <div class="mt-8 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8 text-sm text-muted-foreground">
         <span class="flex items-center gap-1.5">
           <span class="icon-[ph--hash] size-4"></span>
           共 {tags.length} 个标签
@@ -44,7 +44,7 @@ const maxCount = Math.max(...sortedTags.map((t) => t.count))
     </div>
 
     <!-- 标签网格 -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 fade-up" data-astro-transition="animate">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 fade-up" data-astro-transition="animate">
       {
         sortedTags.map((tag, index) => {
           const sizeClass = tag.count >= 10 ? 'text-base' : tag.count >= 5 ? 'text-sm' : 'text-xs'
@@ -53,7 +53,7 @@ const maxCount = Math.max(...sortedTags.map((t) => t.count))
           return (
             <a
               href={`/tags/${tag.name}`}
-              class={`group relative block p-4 rounded-lg bg-background border border-border/40 hover:border-border hover:bg-muted/30 transition-all duration-200 ${priorityClass}`}
+              class={`group relative block p-5 rounded-lg bg-background border border-border/40 hover:border-primary/20 hover:bg-muted/40 transition-all duration-300 ${priorityClass}`}
             >
               <div class="flex items-center justify-between">
                 <div class="flex items-center gap-2 min-w-0 flex-1">

@@ -389,3 +389,34 @@ input[type='search']::-moz-search-cancel-button {
   word-break: break-word;
   white-space: normal;
 }
+/* ===== 图片懒加载过渡 ===== */
+.lazy-image {
+  /* 加载中：模糊效果 */
+  filter: blur(4px);
+  opacity: 0.8;
+  transition: filter 0.3s ease-out, opacity 0.3s ease-out;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.lazy-image[complete],
+.lazy-image[loaded] {
+  filter: blur(0);
+  opacity: 1;
+  animation: none;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* 深色模式适配 */
+.dark .lazy-image {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+}

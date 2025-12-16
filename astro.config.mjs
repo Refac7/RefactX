@@ -32,16 +32,23 @@ export default defineConfig({
       },
     },
   },
-  image: {
-    service: {
-      entrypoint: 'astro/assets/services/sharp',
-    },
-    remotePatterns: [
-      {
-        protocol: 'https',
+  image: process.env.NODE_ENV === 'development'
+    ? {} // 开发阶段使用默认配置，不做优化
+    : {
+        service: {
+          entrypoint: 'astro/assets/services/sharp',
+        },
+        remotePatterns: [
+          {
+            hostname: 'www.refact.cc',
+            protocol: 'https',
+          },
+          {
+            hostname: 'img.refact.cc',
+            protocol: 'https',
+          },
+        ],
       },
-    ],
-  },
   markdown: {
     syntaxHighlight: false,
     remarkPlugins,

@@ -221,7 +221,7 @@ MAIL_TEMPLATE_ADMIN
 这个模版的效果如下，你必须更改其中的logo链接，或者是直接删除图标。
 
 :::image-figure[评论系统实例图]
-![](/assets/comment.png)(style: width:full;)
+![](https://img.refact.cc/comment.png)(style: width:full;)
 :::
 
 ## 结尾
