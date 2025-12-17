@@ -98,7 +98,7 @@ import { WALINE_CONFIG } from "~/config";
     </style>
 
     <script src="/js/waline.umd.js" defer></script>
-    <script define:vars={{ serverURL: WALINE_CONFIG.serverURL }}>
+    <script define:vars={{ serverURL: WALINE_CONFIG.serverURL, uploadToken: WALINE_CONFIG.uploadToken }}>
       // 使用 Intersection Observer 实现延迟加载
       function initWalineLazyLoad() {
         const container = document.querySelector('#waline-container');
@@ -267,6 +267,10 @@ import { WALINE_CONFIG } from "~/config";
                 
                 const response = await fetch('https://img.refact.cc/upload', {
                   method: 'POST',
+                  headers: {
+                    // 关键：带上和 Worker 对应的 Token
+                    Authorization: `Bearer ${uploadToken}`,
+                  },
                   body: formData,
                 });
                 
