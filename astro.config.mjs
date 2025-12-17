@@ -43,10 +43,6 @@ export default defineConfig({
             hostname: 'www.refact.cc',
             protocol: 'https',
           },
-          {
-            hostname: 'img.refact.cc',
-            protocol: 'https',
-          },
         ],
       },
   markdown: {
