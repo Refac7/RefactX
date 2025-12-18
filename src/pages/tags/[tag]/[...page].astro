@@ -35,7 +35,7 @@ const description = `Posts with the tag #${tag}`
 ---
 
 <Layout title={`#${tag}`} {description}>
-  <div class="relative z-[1] py-8 pb-10 px-6 sm:px-8">
+  <div class="min-h-[70vh] relative z-[1] py-14 pb-10 px-6 sm:px-8">
     <div class="mb-12 md:mb-16">
       <div class="flex flex-col gap-3">
         <nav class="flex items-center gap-3 text-sm text-muted-foreground/80">
@@ -48,7 +48,7 @@ const description = `Posts with the tag #${tag}`
         </nav>
 
         <div class="flex gap-2 justify-between">
-          <h1 class="text-3xl font-medium tracking-wide">
+          <h1 class="tracking-tighter text-5xl sm:text-6xl font-semibold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent pb-1.5">
             #{tag}
           </h1>
           <div class="flex flex-col items-end justify-center gap-1 text-sm text-muted-foreground/70">
