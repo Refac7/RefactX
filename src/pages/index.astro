@@ -9,7 +9,7 @@ import GithubContributions from '~/components/base/GithubContributions.tsx'
 import SocialLink from '~/components/base/SocialLink.astro'
 import List from '~/components/posts/card/List.astro'
 import SkillsShowcase from '~/components/base/SkillsShowcase.astro'
-import heroImage from './src/assets/hero.svg'
+import heroImage from '~/assets/hero.svg'
 
 const { ENABLED, GITHUB_USERNAME, TOOLTIP_ENABLED } = GITHUB_CONFIG
 const { size, type } = POSTS_CONFIG.homePageConfig
@@ -23,12 +23,20 @@ const posts = postsSort(allPosts).slice(0, size)
   <div class="relative z-[1]">
     <div class="px-6 sm:px-6 md:px-8 py-12 sm:py-16">
       <div class="max-w-4xl mx-auto">
-        <!-- 版本标签 -->
-        <h1 class="mb-6">
-          <span class="text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-400">
-            <span class="text-red-600 dark:text-red-500 font-bold">RefactX Theme v1.6.0 INDEV</span> BY Refactored.
-          </span>
-        </h1>
+        <!-- 简洁的版本标签 -->
+        <div class="mb-10 sm:mb-12">
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
+            <span class="relative flex h-2 w-2">
+              <span class="absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+            </span>
+            <span class="text-xs font-medium text-gray-700 dark:text-gray-300">
+              <span class="text-red-600 dark:text-red-500">RefactX v1.6.0</span>
+              <span class="text-gray-400 mx-1">•</span>
+              <span>INDEV</span>
+            </span>
+          </div>
+        </div>
 
         <!-- 标题 -->
         <h1 class="space-y-4 mb-8">
