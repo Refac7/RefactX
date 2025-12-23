@@ -1,5 +1,4 @@
 ---
-import { cn } from '~/lib/utils'
 import { FRIENDS_LIST, FRIENDS_CONFIG, FRIENDS_CONTACT } from '~/config'
 import Layout from '~/layouts/Layout.astro'
 import SectionDivider from '~/components/base/SectionDivider.astro'
@@ -24,7 +23,7 @@ const { sitename, email, author, sitelink, siteavatar, description: myDescriptio
 
     <!-- 友链列表 -->
     <div class="mt-12 grid grid-cols-1 fade-up">
-      {FRIENDS_LIST.map((friend, index) => (
+      {FRIENDS_LIST.map((friend) => (
         <div>
           <div
             class="group relative hover:bg-muted/40 dark:hover:bg-muted/40

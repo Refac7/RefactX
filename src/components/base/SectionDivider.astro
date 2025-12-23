@@ -6,7 +6,7 @@ interface Props {
   position?: 'top' | 'bottom'
 }
 
-const { className, position = undefined } = Astro.props
+const { className = undefined } = Astro.props
 ---
 
 <section class={cn(

@@ -5,8 +5,8 @@ pubDate: 2025-07-27
 author: 'Refact'
 tags: ['Me','杂谈']
 recommend: true
-heroImage: 'me.png'
-ogImage: 'me.png'
+heroImage: 'me.webp'
+ogImage: 'me.webp'
 heroImageAspectRatio: '16/9'
 ---
 

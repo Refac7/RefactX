@@ -3,8 +3,8 @@ title: '校园网有线多设备上网方案'
 description: '本文重点指出了河南某高校在校园网连接数上卡学生脖子的解决方案。'
 pubDate: 2025-11-28
 author: 'Refact'
-heroImage: 'me.png'
-ogImage: 'me.png'
+heroImage: 'me.webp'
+ogImage: 'me.webp'
 heroImageAspectRatio: '16/9'
 tags: ['笔记','网络']
 ---

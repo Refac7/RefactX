@@ -3,8 +3,8 @@ title: '系统性的回忆'
 description: '静思过往章节，我何以成为今日之我'
 pubDate: 2025-08-10
 author: 'Refact'
-heroImage: 'me.png'
-ogImage: 'me.png'
+heroImage: 'me.webp'
+ogImage: 'me.webp'
 heroImageAspectRatio: '16/9'
 tags: ['杂谈']
 ---

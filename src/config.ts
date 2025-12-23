@@ -199,7 +199,7 @@ export const POSTS_CONFIG: PostConfig = {
     size: 10,
     type: 'time-line'
   },
-  defaultHeroImage: '/og-image.png',
+  defaultHeroImage: '/og-image.webp',
   defaultHeroImageAspectRatio: '16/9',
   postType: 'jap',
   imageDarkenInDark: true,
