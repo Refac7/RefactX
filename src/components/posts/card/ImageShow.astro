@@ -8,7 +8,7 @@ import type { CardProps } from './List.astro'
 
 interface Props extends CardProps {}
 
-const { post, index, heroImageLayout }: Props = Astro.props
+const { post, heroImageLayout }: Props = Astro.props
 
 const aspectRatioClass: Record<HeroImageAspectRatio, string> = {
   '16/9': 'aspect-[16/9]',
@@ -16,7 +16,7 @@ const aspectRatioClass: Record<HeroImageAspectRatio, string> = {
 }
 
 const isVertical = post.data.heroImageAspectRatio === '3/4'
-const imagePosition = post.data.heroImageLayout || heroImageLayout || (index % 2 === 1 ? 'right' : 'left')
+const imagePosition = post.data.heroImageLayout || heroImageLayout || 'left'
 const isReverse = imagePosition === 'right'
 const defaultHeroImage = POSTS_CONFIG.defaultHeroImage
 ---

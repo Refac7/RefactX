@@ -24,8 +24,8 @@ const posts = postsSort(allPosts).slice(0, size)
     <div class="px-6 sm:px-6 md:px-8 py-12 sm:py-16">
       <div class="max-w-4xl mx-auto">
         <!-- 简洁的版本标签 -->
-        <div class="mb-6 sm:mb-12 font-mono">
-          <div class="inline-flex items-center gap-2 px-3 py-1.5 border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
+        <div class="mb-6 sm:mb-8 font-mono">
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
             <span class="relative flex h-2 w-2">
               <span class="absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
               <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
@@ -46,18 +46,7 @@ const posts = postsSort(allPosts).slice(0, size)
           </span>
         </h1>
 
-        <!-- 头像和个人信息 -->
         <div class="flex items-start gap-6 mt-16 md:mt-24 mb-12">
-          <div class="w-24 h-24 sm:w-28 sm:h-28 flex-shrink-0">
-            <img 
-              src={heroImage.src} 
-              alt="Refactored 头像" 
-              width={112}
-              height={112}
-              class="w-full h-full rounded-full object-cover border border-gray-300 dark:border-gray-700"
-            />
-          </div>
-          
           <div class="flex-1">
             <div class="font-normal text-black dark:text-white">
               <div class="space-y-4">
@@ -90,7 +79,7 @@ const posts = postsSort(allPosts).slice(0, size)
         </div>
 
         <!-- 社交链接 -->
-        <div class="flex items-center justify-between mb-4 gap-4">
+        <div class="flex items-center justify-between gap-4">
           <div class="flex gap-4">
             {SOCIAL_LINKS.map((item) => (
               <SocialLink
@@ -117,10 +106,10 @@ const posts = postsSort(allPosts).slice(0, size)
     {ENABLED && (
       <>
         <SectionDivider />
-        <div class="py-4 pb-10 px-6 max-md:px-6">
+        <div class="py-8 pb-10 px-6 max-md:px-6">
           <div class="max-w-4xl mx-auto px-2 max-md:px-0">
-            <h2 class="font-bold text-2xl sm:text-3xl">动态聚焦</h2>
-            <p class="text-muted-foreground mb-6 mt-1">近期代码贡献记录</p>
+            <h2 class="font-bold text-2xl sm:text-3xl mb-4">动态聚焦 / Spotlight</h2>
+            <p class="text-muted-foreground mb-6 mt-1">近期代码贡献记录 / Most recent contributions.</p>
             <GithubContributions
               username={GITHUB_USERNAME}
               tooltipEnabled={TOOLTIP_ENABLED}
@@ -137,8 +126,8 @@ const posts = postsSort(allPosts).slice(0, size)
         <SectionDivider />
         <div class="py-8 pb-10 px-6 max-md:px-6">
           <div class="max-w-4xl mx-auto px-2 max-md:px-0">
-            <h2 class="font-bold text-2xl sm:text-3xl">技术栈</h2>
-            <p class="text-muted-foreground mb-6 mt-1">以下是我常用的技术：</p>
+            <h2 class="font-bold text-2xl sm:text-3xl mb-4">技术栈 / Skills</h2>
+            <p class="text-muted-foreground mb-6 mt-1">以下是我常用的技术： / Here are some skills I have used:</p>
             <SkillsShowcase skillsData={SKILLS_DATA} />
           </div>
         </div>
@@ -148,9 +137,9 @@ const posts = postsSort(allPosts).slice(0, size)
     <SectionDivider />
     <div class="py-10 pb-12 px-6 sm:px-8">
       <div class="max-w-4xl mx-auto">
-        <h2 class="font-bold text-2xl sm:text-3xl">文章</h2>
+        <h2 class="font-bold text-2xl sm:text-3xl">文章 / Posts</h2>
         <p class="text-muted-foreground mb-8 mt-2 text-sm sm:text-base">
-          最近更新的 {posts.length} 篇文章
+          最近更新的 {posts.length} 篇文章 / Recent {posts.length} posts, worth a look.
         </p>
         <List {posts} {type} heroImageLayout={POSTS_CONFIG.homePageConfig?.heroImageLayout} />
       </div>

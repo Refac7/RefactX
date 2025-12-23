@@ -8,7 +8,6 @@ import { cn } from '~/lib/utils'
 
 export type CardProps = {
   post: CollectionEntry<'posts'>
-  index: number
   heroImageLayout?: HeroImageLayout
 }
 
@@ -37,5 +36,5 @@ const PostCardElement = POST_CARD_COMPONENTS[type]
 ---
 
 <div class={cn(spacingClass, 'content-visibility: auto')}>
-  {posts.map((post, index) => <PostCardElement {post} {index} {heroImageLayout} />)}
+  {posts.map((post, index) => <PostCardElement {post} {heroImageLayout} />)}
 </div>
