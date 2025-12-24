@@ -22,7 +22,7 @@ const maxCount = Math.max(...sortedTags.map((t) => t.count))
 <Layout {title} {description}>
   <div class="relative z-[1] py-14 pb-12 px-6 sm:px-8 min-h-[70vh]">
     <!-- 标题区域 -->
-    <div class="mb-14">
+    <div class="mb-18">
       <h1 class="tracking-tighter text-5xl sm:text-6xl font-semibold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent pb-1.5">
         {title}
       </h1>
@@ -33,11 +33,11 @@ const maxCount = Math.max(...sortedTags.map((t) => t.count))
       <!-- 统计信息 -->
       <div class="mt-8 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8 text-sm text-muted-foreground">
         <span class="flex items-center gap-1.5">
-          <span class="icon-[ph--hash] size-4"></span>
+          <span class="icon-[ph--hash] bg-red-600 size-4"></span>
           共 {tags.length} 个标签
         </span>
         <span class="flex items-center gap-1.5">
-          <span class="icon-[ph--article] size-4"></span>
+          <span class="icon-[ph--article] bg-red-600 size-4"></span>
           共 {allPosts.length} 篇文章
         </span>
       </div>

@@ -22,7 +22,8 @@ const defaultHeroImage = POSTS_CONFIG.defaultHeroImage
 ---
 
 <article class={`group flex flex-col md:flex-row gap-8 ${isReverse ? 'md:flex-row-reverse' : ''}`}>
-  <div class={`${isVertical ? 'md:w-1/4' : 'md:w-2/5'} flex flex-col overflow-hidden`}>
+  <!-- 在移动端隐藏图片 -->
+  <div class={`${isVertical ? 'md:w-1/4' : 'md:w-2/5'} hidden md:flex flex-col overflow-hidden`}>
     <a href={`/posts/${post.slug}`} class="block relative">
       <div class={`${aspectRatioClass[post.data.heroImageAspectRatio]} overflow-hidden bg-muted/30 relative`}>
         <div class="absolute inset-0 bg-gradient-to-br from-accent to-muted/50 animate-pulse"></div>
@@ -49,6 +50,7 @@ const defaultHeroImage = POSTS_CONFIG.defaultHeroImage
     }
   </div>
 
+  <!-- 调整文本容器宽度，移动端全宽 -->
   <div class={`w-full ${isVertical ? 'md:w-3/4' : 'md:w-3/5'} flex flex-col justify-start`}>
     <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-3 md:mb-4">
       {post.data.recommend && <RecommendBadge />}
@@ -57,7 +59,7 @@ const defaultHeroImage = POSTS_CONFIG.defaultHeroImage
 
     <div class="flex flex-wrap items-center gap-3 text-xs sm:text-sm text-muted-foreground/90">
       <time class="flex items-center gap-1.5">
-        <span class="icon-[ph--calendar-blank] size-3.5"></span>
+        <span class="icon-[ph--calendar-blank] bg-red-500 size-3.5"></span>
         {formatDate(post.data.pubDate)}
       </time>
 

@@ -20,7 +20,7 @@ const { title, description, introduce } = PROJECTS_CONFIG
       {
         ProjectList.map((project, index) => {
           return (
-            <div>
+            <div class="mt-8">
               <div class="group relative hover:bg-muted/30 dark:hover:bg-muted/30 transition-colors duration-300 px-8 py-4 ">
                 <div class="absolute right-8 top-4 hidden sm:block">
                   {project.type == 'icon' && <span class={cn('size-10', project.icon)} />}
