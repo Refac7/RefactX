@@ -131,6 +131,47 @@ const { sitename, email, author, sitelink, siteavatar, description: myDescriptio
               </tr>
             </tbody>
             </table>
+            <button
+              id="copy-btn"
+              class="mt-4 px-4 py-2 bg-primary text-white rounded hover:bg-primary/80 transition-colors flex items-center gap-2"
+              data-sitename={sitename}
+              data-author={author}
+              data-sitelink={sitelink}
+              data-siteavatar={siteavatar}
+              data-description={myDescription}
+            >
+              <span id="copy-icon" class="icon-[ph--article] size-5"></span>
+              <span id="copy-text">复制我的友链 JSON 信息</span>
+            </button>
+
+            <script>
+              const btn = document.getElementById("copy-btn");
+              const icon = document.getElementById("copy-icon");
+              const text = document.getElementById("copy-text");
+
+              if (btn && icon && text) {
+                btn.addEventListener("click", () => {
+                  const myInfo = {
+                    name: btn.dataset.sitename,
+                    author: btn.dataset.author,
+                    url: btn.dataset.sitelink,
+                    avatar: btn.dataset.siteavatar,
+                    description: btn.dataset.description,
+                  };
+
+                  navigator.clipboard.writeText(JSON.stringify(myInfo, null, 2));
+
+                  icon.className = "icon-[ph--check] size-5 text-green-500";
+                  text.textContent = "已复制！";
+
+                  setTimeout(() => {
+                    icon.className = "icon-[ph--article] size-5";
+                    text.textContent = "复制我的友链 JSON 信息";
+                  }, 2000);
+                });
+              }
+            </script>
+
         </div>
     </div>
   </div>

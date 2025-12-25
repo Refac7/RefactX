@@ -425,7 +425,6 @@ export const PhotosList: PhotoData[] = [
 ]
 
 // 友链配置
-// src/config.ts
 export const FRIENDS_CONFIG = {
   title: 'Friends',
   description: '我的朋友们都在这里，欢迎互访～',
@@ -502,6 +501,13 @@ export const FRIENDS_LIST = [
     author: '木竹',
     description: '喜欢把复杂的图纸变成简洁优雅的造价文件',
     avatar: 'https://www.laomuzhu.cn/img/touxiang.jpg',
+  },
+  {
+    name: "Nebula Blog",
+    url: 'https://www.996icu.eu.org/',
+    author: 'C-4-C-4',
+    description: 'No Further Infomation',
+    avatar: 'https://img.scdn.io/i/692d847f79589_1764590719.webp',
   },
 ]
 

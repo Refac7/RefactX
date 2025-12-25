@@ -16,7 +16,7 @@ const aspectRatioClass: Record<HeroImageAspectRatio, string> = {
 }
 
 const isVertical = post.data.heroImageAspectRatio === '3/4'
-const imagePosition = post.data.heroImageLayout || heroImageLayout || 'left'
+const imagePosition = post.data.heroImageLayout || heroImageLayout || 'right'
 const isReverse = imagePosition === 'right'
 const defaultHeroImage = POSTS_CONFIG.defaultHeroImage
 ---
