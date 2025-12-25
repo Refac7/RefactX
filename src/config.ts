@@ -506,7 +506,7 @@ export const FRIENDS_LIST = [
     name: "Nebula Blog",
     url: 'https://www.996icu.eu.org/',
     author: 'C-4-C-4',
-    description: 'No Further Infomation',
+    description: 'No Further Information',
     avatar: 'https://img.scdn.io/i/692d847f79589_1764590719.webp',
   },
 ]

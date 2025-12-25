@@ -1,5 +1,5 @@
 ---
-title: 'Refact Project v1.6 更新日志'
+title: 'RefactX Project v1.6 更新日志'
 description: '本次更新重点优化了项目结构及资源，提升访问速度和安全性，优化排版并新增文章内图片对外部 S3 对象存储的支持，以及其他若干漏洞修复。'
 pubDate: 2025-12-24
 author: 'Refact'
@@ -58,4 +58,5 @@ tags: ['更新日志','笔记']
 [TuBaiBai's Blog](https://tbbbk.com/archives/cloudflare-r2-imgbed)
 
 12月23日 初稿
+
 12月24日 第一次修改
