@@ -12,35 +12,94 @@ interface Props {
 const { photoData, class: className } = Astro.props
 ---
 
-<div class={cn(className)}>
+<div class={cn("relative space-y-2", className)}>
+  <!-- 全局左侧装饰轨道背景 -->
+  <div class="absolute left-[27px] top-0 bottom-0 w-px border-l border-dashed border-border/60 z-0 hidden sm:block"></div>
+
   {
-    photoData.map((timeline, index) => (
-      <div class="timeline-item relative group/item opacity-0 animate-slide-down" style={`animation-delay: ${index * 0.1}s`}>
-        <div class="flex gap-x-3">
-          <div class="relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-zinc-200/50 dark:after:bg-zinc-700/50">
-            <div class="relative z-10 size-7 flex justify-center items-center">
-              <TimelineIcon icon={timeline.icon} index={index} />
+    photoData.map((timeline, index) => {
+      // 格式化序号，例如 00, 01, 02
+      const indexId = index.toString().padStart(2, '0');
+      
+      return (
+        <div 
+          class="timeline-item relative group opacity-0 animate-slide-down" 
+          style={`animation-delay: ${index * 0.15}s`}
+        >
+          <div class="flex gap-x-6">
+            
+            {/* 1. 左侧：工业风时间轴节点 */}
+            <div class="relative z-10 flex flex-col items-center">
+              <!-- 图标容器：方正、边框 -->
+              <div class="size-14 flex justify-center items-center bg-background border border-border group-hover:border-primary/60 group-hover:bg-muted/10 transition-colors duration-300 relative">
+                 <!-- 只有被激活或Hover时才显示的微小角标 -->
+                 <div class="absolute top-0 right-0 size-1 bg-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                 <TimelineIcon icon={timeline.icon} index={index} />
+              </div>
+              
+              <!-- 移动端的连接线 (仅在两项之间显示) -->
+              <div class="grow w-px border-r border-dashed border-border/60 sm:hidden my-2"></div>
+              
+              <!-- 序号标识 (桌面端显示在图标下) -->
+              <div class="hidden sm:block mt-2 font-mono text-[10px] text-muted-foreground/40 writing-vertical-lr tracking-widest">
+                LOG_{indexId}
+              </div>
             </div>
-          </div>
-          <div class="grow pt-0.5 pb-8 relative">
-            <p class="text-xs block mt-1 sm:absolute sm:mt-0 sm:top-1.5 right-0 text-muted-foreground">{timeline.date}</p>
-            <h2 class="mt-0.5 sm:mt-0 font-sans text-md font-normal!">
-              <span class="font-semibold">{timeline.title}</span>
-            </h2>
-            <p class="mt-0.5 sm:mt-1 text-sm text-muted-foreground">
-              {timeline.description && (
-                <span>
-                  {timeline.description}
-                  <br />
-                </span>
-              )}
-            </p>
-            <div class="mt-4 py-2 sm:py-4">
-              <PolaroidStack photos={timeline.photos} title={timeline.title} description={timeline.description} client:load />
+
+            {/* 2. 右侧：档案内容卡片 */}
+            <div class="grow pb-12 relative min-w-0">
+              <!-- 装饰：连接线横杠 -->
+              <div class="absolute top-7 -left-6 w-6 h-px bg-border/60 hidden sm:block"></div>
+
+              <div class="border border-border/60 bg-background p-1 group-hover:border-border transition-colors duration-300">
+                <div class="relative p-5 sm:p-6 bg-muted/5 group-hover:bg-muted/10 transition-colors duration-300">
+                  
+                  <!-- 角落L型装饰 -->
+                  <div class="absolute top-0 left-0 size-2 border-t border-l border-primary/20 group-hover:border-primary transition-colors"></div>
+                  <div class="absolute bottom-0 right-0 size-2 border-b border-r border-primary/20 group-hover:border-primary transition-colors"></div>
+
+                  <!-- 头部信息 -->
+                  <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-4 border-b border-border/40 pb-3">
+                    <h2 class="font-sans text-lg font-bold uppercase tracking-tight text-foreground flex items-center gap-2">
+                      <span class="w-1.5 h-4 bg-primary/80 block"></span>
+                      {timeline.title}
+                    </h2>
+                    <span class="font-mono text-xs text-muted-foreground bg-muted/50 px-2 py-0.5 border border-border/30">
+                      {timeline.date}
+                    </span>
+                  </div>
+
+                  <!-- 描述 -->
+                  {timeline.description && (
+                    <p class="text-sm text-muted-foreground leading-relaxed font-sans mb-6 max-w-prose">
+                      {timeline.description}
+                    </p>
+                  )}
+
+                  <!-- 照片展示区容器：模拟灯箱或底片架 -->
+                  <div class="mt-4 relative bg-background border border-border/40 p-4 sm:p-6 overflow-hidden">
+                    <!-- 背景网格纹理 -->
+                    <div class="absolute inset-0 opacity-[0.03]" 
+                         style="background-image: radial-gradient(#000 1px, transparent 1px); background-size: 10px 10px;">
+                    </div>
+                    
+                    <!-- 媒体类型标签 -->
+                    <div class="absolute top-2 left-2 text-[9px] font-mono text-muted-foreground/40 uppercase tracking-widest pointer-events-none z-0">
+                      Attachment_IMG_Set_{indexId}
+                    </div>
+
+                    <!-- 实际组件 -->
+                    <div class="relative z-10 transform translate-y-2">
+                       <PolaroidStack photos={timeline.photos} title={timeline.title} description={timeline.description} client:load />
+                    </div>
+                  </div>
+                
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    ))
+      )
+    })
   }
 </div>

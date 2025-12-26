@@ -2,90 +2,135 @@
 import { cn } from '~/lib/utils'
 import { ProjectList, PROJECTS_CONFIG } from '~/config'
 import Layout from '~/layouts/Layout.astro'
-import SectionDivider from '~/components/base/SectionDivider.astro'
 import NumberTicker from '~/components/base/NumberTicker'
 
 const { title, description, introduce } = PROJECTS_CONFIG
 ---
 
 <Layout {title} {description}>
-  <div class="min-h-[70vh] relative z-[1] py-14 pb-12">
-    <div class="px-6 sm:px-8">
-      <h1 class="tracking-tighter text-5xl sm:text-6xl font-semibold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent pb-1.5">{title}</h1>
-      <div class="pro text-muted-foreground">
-        <p class="mt-3 text-sm sm:text-base leading-relaxed">{introduce}</p>
+  <div class="min-h-[70vh] relative py-14 px-6 sm:px-8 font-sans">
+    
+    <!-- 头部区域：工业蓝图风格 -->
+    <div class="mb-6 border-foreground/10 pb-8">
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 border-b-2 border-foreground/10 pb-8">
+        <!-- 标题与简介 -->
+        <div class="max-w-2xl">
+          <h1 class="text-6xl sm:text-7xl font-bold tracking-tighter text-foreground leading-none">
+            {title}
+          </h1>
+          <div class="mt-6 flex gap-4">
+             <div class="w-1 bg-primary/60 self-stretch"></div>
+             <p class="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-prose">
+              {introduce}
+             </p>
+          </div>
+        </div>
+        
+        <!-- 总数统计块 -->
+        <div class="flex items-center gap-2 px-4 py-2 bg-muted/20 border border-border font-mono text-sm">
+           <span class="text-muted-foreground uppercase tracking-wider">Total Modules:</span>
+           <span class="font-bold text-primary">{ProjectList.length.toString().padStart(2, '0')}</span>
+        </div>
       </div>
     </div>
-    <div class="grid grid-cols-1 fade-up">
+
+    <!-- 项目列表：机架堆叠风格 -->
+    <div class="flex flex-col gap-4 fade-up">
       {
         ProjectList.map((project, index) => {
+          const serialId = `PROJ-${(index + 1).toString().padStart(3, '0')}`;
+          
           return (
-            <div class="mt-8">
-              <div class="group relative hover:bg-muted/30 dark:hover:bg-muted/30 transition-colors duration-300 px-8 py-4 ">
-                <div class="absolute right-8 top-4 hidden sm:block">
-                  {project.type == 'icon' && <span class={cn('size-10', project.icon)} />}
-                  {project.type == 'image' && <img src={project.icon} alt="icon" class={cn('size-10', project.imageClass)} />}
+            <div class="group relative w-full bg-background border border-border hover:border-primary/50 transition-all duration-300 rounded-none overflow-hidden">
+              
+              <!-- 装饰：左侧强调条 -->
+              <div class="absolute left-0 top-0 bottom-0 w-1 bg-muted group-hover:bg-primary transition-colors duration-300"></div>
+              
+              <!-- 装饰：Hover时出现的角落标记 -->
+              <div class="absolute top-0 right-0 size-4 border-t-2 border-r-2 border-primary opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+
+              <div class="flex flex-col md:flex-row">
+                
+                <!-- 1. 左侧：图标与ID区 -->
+                <div class="md:w-48 shrink-0 flex md:flex-col items-center md:items-start justify-between md:justify-center p-6 bg-muted/5 border-b md:border-b-0 md:border-r border-border gap-4">
+                   <!-- 图标容器 -->
+                   <div class="size-12 flex items-center justify-center bg-background border border-border shadow-sm group-hover:shadow-md transition-shadow">
+                      {project.type === 'icon' && <span class={cn('size-6 text-foreground/80', project.icon)} />}
+                      {project.type === 'image' && <img src={project.icon} alt="icon" class={cn('size-full object-cover', project.imageClass)} />}
+                   </div>
+                   <!-- 序列号 -->
+                   <span class="font-mono text-xs text-muted-foreground/50 tracking-widest">{serialId}</span>
                 </div>
-                <a
-                  href={project.website}
-                  target="_blank"
-                  class="inline-flex items-center justify-between font-semibold font-serif hover:text-primary transition-colors duration-200 text-lg sm:text-xl"
-                >
-                  {project.name}
-                </a>
-                <p class="pr-0 sm:pr-14 text-muted-foreground mt-1">{project.description}</p>
-                <div class="flex flex-col sm:flex-row gap-4 sm:gap-0 items-start sm:items-center justify-between ">
-                  <div class="flex gap-4">
-                    <div class="flex items-center py-1.5 gap-3">
-                      {project.star && (
-                        <>
-                          <span class="text-xs uppercase tracking-wide font-medium text-muted-foreground">Stars</span>
-                          <span class="font-mono font-semibold text-lg">
-                            <NumberTicker play value={project.star} client:load />
-                          </span>
-                        </>
-                      )}
-                    </div>
-                    <div class="flex items-center py-1.5 gap-3">
-                      {project.fork && (
-                        <>
-                          <span class="text-xs uppercase tracking-wide font-medium text-muted-foreground">Forks</span>
-                          <span class="font-mono font-semibold text-lg">
-                            <NumberTicker play value={project.fork} client:load />
-                          </span>
-                        </>
-                      )}
-                    </div>
+
+                <!-- 2. 中间：信息主体 -->
+                <div class="flex-1 p-6 flex flex-col justify-center min-w-0">
+                  <div class="flex items-baseline justify-between mb-2">
+                     <a href={project.website} target="_blank" class="font-bold text-xl md:text-2xl text-foreground group-hover:text-primary transition-colors tracking-tight truncate pr-4">
+                        {project.name}
+                     </a>
                   </div>
-                  <div class="flex items-center gap-5 text-zinc-500 text-sm z-10">
+                  
+                  <p class="text-sm md:text-base text-muted-foreground leading-relaxed line-clamp-2 mb-6 md:mb-0">
+                    {project.description}
+                  </p>
+                </div>
+
+                <!-- 3. 右侧：数据与操作面板 -->
+                <div class="md:w-64 shrink-0 flex flex-col justify-between p-6 bg-muted/5 border-t md:border-t-0 md:border-l border-border/50 gap-6">
+                  
+                  <!-- 数据显示屏 -->
+                  <div class="grid grid-cols-2 gap-3">
+                    {project.star !== undefined && (
+                      <div class="bg-background border border-border p-2 flex flex-col items-center">
+                         <span class="text-[10px] uppercase text-muted-foreground/60 font-bold tracking-wider mb-1">Stars</span>
+                         <span class="font-mono font-bold text-sm text-foreground">
+                            <NumberTicker play value={project.star} client:load />
+                         </span>
+                      </div>
+                    )}
+                    {project.fork !== undefined && (
+                      <div class="bg-background border border-border p-2 flex flex-col items-center">
+                         <span class="text-[10px] uppercase text-muted-foreground/60 font-bold tracking-wider mb-1">Forks</span>
+                         <span class="font-mono font-bold text-sm text-foreground">
+                            <NumberTicker play value={project.fork} client:load />
+                         </span>
+                      </div>
+                    )}
+                  </div>
+
+                  <!-- 链接按钮组 -->
+                  <div class="flex flex-col gap-2 mt-auto">
                     {project.website && (
                       <a
                         href={project.website}
                         target="_blank"
-                        class="hover:text-zinc-600 dark:hover:text-zinc-100 flex items-center gap-1"
+                        class="flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold uppercase tracking-wide border border-foreground/20 hover:bg-foreground hover:text-background transition-colors duration-200"
                       >
-                        <span class="icon-[mdi--web] size-5" />
-                        <span>示例网站</span>
+                        <span class="icon-[ph--globe-simple] size-4"></span>
+                        <span>Live Demo</span>
                       </a>
                     )}
                     {project.githubUrl && (
                       <a
                         href={project.githubUrl}
                         target="_blank"
-                        class="hover:text-zinc-600 dark:hover:text-zinc-100 flex items-center gap-1"
+                        class="flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold uppercase tracking-wide border border-transparent bg-muted/50 hover:bg-primary hover:text-primary-foreground transition-colors duration-200 text-muted-foreground"
                       >
-                        <span class="icon-[mdi--github] size-5" />
-                        <span>GitHub</span>
+                        <span class="icon-[mdi--github] size-4"></span>
+                        <span>Source Code</span>
                       </a>
                     )}
                   </div>
                 </div>
+
               </div>
-              <SectionDivider className={index == ProjectList.length - 1 ? 'hidden' : ''} />
             </div>
           )
         })
       }
     </div>
+    
+    <!-- 底部装饰线 -->
+    <div class="mt-12 h-px w-full bg-gradient-to-r from-transparent via-border to-transparent"></div>
   </div>
 </Layout>

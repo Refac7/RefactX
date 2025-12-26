@@ -20,25 +20,28 @@ const posts = postsSort(allPosts).slice(0, size)
 ---
 
 <Layout title="主页" description={SITE.description}>
-  <div class="relative z-[1]">
-    <!-- 背景动画 -->
+  <!-- 添加 overflow-x-hidden 防止任何绝对定位元素导致横向滚动条 -->
+  <div class="relative min-h-screen w-full overflow-x-hidden font-sans">
+    
     <Snowfall />
 
-    <!-- 1. Hero 区域：减少垂直间距 (py-20 -> py-12) -->
-    <div class="px-6 sm:px-8 py-10 md:py-20 max-w-5xl mx-auto">
-      <div class="mb-10 fade-up">
-        <div class="inline-flex items-center gap-3 px-3 py-1.5 border border-border/60 bg-muted/20 backdrop-blur-sm rounded-sm font-mono text-xs text-muted-foreground/80">
+    <!-- 1. Hero 区域 -->
+    <div class="relative z-10 px-6 sm:px-8 py-16 max-w-5xl mx-auto border-r border-border/40 bg-background/50 backdrop-blur-[2px]">
+      
+      <!-- 状态栏 Badge -->
+      <div class="mb-12 fade-up">
+        <div class="inline-flex items-center gap-4 px-4 py-2 border border-foreground/80 bg-background rounded-none font-mono text-xs tracking-wider text-foreground shadow-[4px_4px_0_0_rgba(0,0,0,0.1)] dark:shadow-[4px_4px_0_0_rgba(255,255,255,0.1)]">
           <span class="relative flex h-2 w-2">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+            <span class="animate-ping absolute inline-flex h-full w-full bg-red-500 opacity-75 rounded-none"></span>
+            <span class="relative inline-flex h-2 w-2 bg-red-500 rounded-none"></span>
           </span>
-          <span class="font-semibold text-foreground">RefactX v1.6.0 Beta1</span>
+          <span class="font-bold">SYSTEM: ONLINE</span>
           <span class="w-px h-3 bg-border"></span>
-          <span>SYSTEM INDEV</span>
+          <span class="text-muted-foreground">V1.6.0_BETA</span>
         </div>
       </div>
 
-      <h1 class="space-y-3 sm:space-y-5 mb-14 fade-up" style="animation-delay: 100ms;">
+      <h1 class="space-y-3 sm:space-y-5 mb-20 fade-up" style="animation-delay: 100ms;">
         <span class="text-5xl sm:text-7xl font-bold tracking-tighter text-foreground leading-[1.1]">
           Welcome to
         </span>
@@ -48,7 +51,8 @@ const posts = postsSort(allPosts).slice(0, size)
         </span>
       </h1>
 
-      <div class="mt-10 sm:mt-16 max-w-2xl fade-up" style="animation-delay: 200ms;">
+      <!-- 简介 -->
+      <div class="mt-16 mb-12 max-w-2xl fade-up border-l-2 border-border pl-6" style="animation-delay: 200ms;">
         <p class="text-base sm:text-lg text-muted-foreground leading-relaxed font-mono">
           我是 <span class="text-foreground font-semibold">Refactored</span>，一名前端开发者和开源爱好者。<br class="hidden sm:block" />
           专注于探索各种技术栈，并将它们应用于实际项目中。<br class="hidden sm:block" />
@@ -56,28 +60,28 @@ const posts = postsSort(allPosts).slice(0, size)
         </p>
       </div>
 
-      <!-- 按钮区 -->
-      <div class="mt-12 flex flex-col sm:flex-row items-start sm:items-center gap-6 sm:gap-8 fade-up" style="animation-delay: 300ms;">
+      <!-- 按钮区：直角与高对比 -->
+      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6 fade-up" style="animation-delay: 300ms;">
         <div class="flex flex-wrap gap-4 w-full sm:w-auto">
           <a
             href="/posts"
-            class="flex-1 sm:flex-none inline-flex items-center justify-center px-6 py-3 bg-foreground text-background hover:bg-foreground/90 transition-all font-medium min-w-[140px]"
+            class="flex-1 sm:flex-none inline-flex items-center justify-center px-8 py-3 bg-foreground text-background hover:bg-muted/20 hover:text-black transition-colors font-bold uppercase tracking-widest text-sm rounded-none border border-transparent min-w-[140px]"
           >
             <span class="icon-[mdi--book-open] size-5 mr-2"></span>
             探索文章
           </a>
           <a
             href="/friends"
-            class="flex-1 sm:flex-none box-border inline-flex items-center justify-center px-6 py-3 border border-border text-foreground hover:border-primary/50 hover:text-primary transition-all duration-200 min-w-[140px]"
+            class="flex-1 sm:flex-none inline-flex items-center justify-center px-8 py-3 border border-border text-foreground hover:border-primary hover:bg-muted/10 transition-colors duration-200 font-bold uppercase tracking-widest text-sm rounded-none min-w-[140px]"
           >
             <span class="icon-[mdi--rocket-launch] size-5 mr-2"></span>
             加入星海
           </a>
         </div>
 
-        <div class="hidden sm:block w-px h-10 bg-border/50"></div>
+        <div class="hidden sm:block w-px h-8 bg-border"></div>
 
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-3">
           {SOCIAL_LINKS.map((item) => (
             <SocialLink
               href={item.url}
@@ -85,62 +89,64 @@ const posts = postsSort(allPosts).slice(0, size)
               aria-label={`${item.name}`}
               count={item.count}
               label="Follow"
+              class="hover:bg-muted/20 transition-all"
             />
           ))}
         </div>
       </div>
     </div>
 
-    <!-- 2. Github 贡献图：减少上下边距 (py-16 -> py-10) -->
+    <SectionDivider />
+
+    <!-- 2. Github 贡献图 (修复溢出问题) -->
     {ENABLED && (
-      <>
-        <SectionDivider />
-        <div class="py-10 px-6 sm:px-8">
-          <div class="max-w-5xl mx-auto">
-            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 mb-6">
-              <h2 class="font-bold text-2xl sm:text-3xl tracking-tight">动态聚焦 / <span class="font-light text-muted-foreground">Spotlight</span></h2>
-              <p class="text-sm text-muted-foreground font-mono mb-1">Recent code activity</p>
+      <div class="py-12 px-6 sm:px-8 border-b border-border/40">
+        <div class="max-w-5xl mx-auto">
+          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-l-4 border-primary pl-4">
+            <h2 class="font-bold text-3xl tracking-tight uppercase">Activity Graph</h2>
+            <p class="text-xs text-muted-foreground font-mono uppercase tracking-widest mb-1">// Commit History Visualization</p>
+          </div>
+          
+          <!-- 关键修复：添加 overflow-x-auto 和 w-full 防止图表撑破布局 -->
+          <div class="w-full overflow-x-auto pb-4 border border-dashed border-border p-2 bg-muted/5">
+            <div class="min-w-[700px] md:min-w-full">
+                <GithubContributions
+                  username={GITHUB_USERNAME}
+                  tooltipEnabled={TOOLTIP_ENABLED}
+                  client:load
+                  transition:animate="none"
+                />
             </div>
-            
-            <GithubContributions
-              username={GITHUB_USERNAME}
-              tooltipEnabled={TOOLTIP_ENABLED}
-              client:load
-              transition:animate="none"
-            />
           </div>
         </div>
-      </>
+      </div>
     )}
 
-    <!-- 3. 技术栈：减少上下边距 -->
+    <!-- 3. 技术栈 -->
     {SKILLS_ENABLED && SKILLS_DATA.length > 0 && (
-      <>
-        <SectionDivider />
-        <div class="py-10 px-6 sm:px-8">
-          <div class="max-w-5xl mx-auto">
-             <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 mb-6">
-                <h2 class="font-bold text-2xl sm:text-3xl tracking-tight">技术栈 / <span class="font-light text-muted-foreground">Skills</span></h2>
-                <p class="text-sm text-muted-foreground font-mono mb-1">Tools & Frameworks</p>
+      <div class="py-12 px-6 sm:px-8 border-b border-border/40">
+        <div class="max-w-5xl mx-auto">
+             <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-l-4 border-primary pl-4">
+                <h2 class="font-bold text-3xl tracking-tight uppercase">Arsenal</h2>
+                <p class="text-xs text-muted-foreground font-mono uppercase tracking-widest mb-1">// Tools & Frameworks</p>
             </div>
             <SkillsShowcase skillsData={SKILLS_DATA} />
           </div>
         </div>
-      </>
     )}
 
-    <SectionDivider />
-
     <!-- 4. 文章列表 -->
-    <div class="py-10 pb-20 px-6 sm:px-8">
+    <div class="py-12 pb-12 px-6 sm:px-8">
       <div class="max-w-5xl mx-auto">
-        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 mb-8">
-            <h2 class="font-bold text-2xl sm:text-3xl tracking-tight">最新文章 / <span class="font-light text-muted-foreground">Recent Posts</span></h2>
-            <a href="/posts" class="text-sm text-muted-foreground hover:text-primary transition-colors font-mono mb-1 flex items-center gap-1 group">
-               View all posts <span class="icon-[mdi--arrow-right] group-hover:translate-x-1 transition-transform"></span>
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10 border-b border-foreground pb-4">
+            <h2 class="font-bold text-3xl tracking-tight uppercase">Recent Logs</h2>
+            <a href="/posts" class="text-xs font-bold font-mono uppercase tracking-widest hover:text-primary transition-colors flex items-center gap-2 group">
+               View All Transmissions 
+               <span class="icon-[ph--arrow-right] group-hover:translate-x-1 transition-transform"></span>
             </a>
         </div>
         
+        <!-- List 组件调用，确保传入正确的 props -->
         <List {posts} {type} heroImageLayout={POSTS_CONFIG.homePageConfig?.heroImageLayout} />
       </div>
     </div>

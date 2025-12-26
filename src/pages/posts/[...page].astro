@@ -26,16 +26,83 @@ const { title, description, introduce } = POSTS_CONFIG
 ---
 
 <Layout {title} {description}>
-  <div class="min-h-[70vh] relative z-[1] py-14 pb-12 px-6 sm:px-8">
-    <h1 class="tracking-tighter text-5xl sm:text-6xl font-semibold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent pb-1.5">{title}</h1>
-    <div class="pro text-muted-foreground">
-      <p class="mt-3 text-sm sm:text-base leading-relaxed">{introduce}</p>
+  <div class="relative py-14 px-6 sm:px-8 font-sans min-h-[80vh]">
+    
+    <!-- 1. 顶部控制面板 -->
+    <div class="mb-12">
+      
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 border-b-2 border-foreground/10 pb-8">
+        <!-- 标题与简介 -->
+        <div class="max-w-2xl">
+          <h1 class="text-6xl sm:text-7xl font-bold tracking-tighter text-foreground leading-none">
+            {title}
+          </h1>
+          <div class="mt-6 flex gap-4">
+             <div class="w-1 bg-primary/60 self-stretch"></div>
+             <p class="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-prose">
+              {introduce}
+             </p>
+          </div>
+        </div>
+
+        <!-- 状态仪表盘 (显示页码信息) -->
+        <div class="flex flex-col gap-2 shrink-0 min-w-[200px]">
+          <div class="flex items-center justify-between text-xs font-mono uppercase text-muted-foreground/60 tracking-wider mb-1">
+             <span>System Status</span>
+             <span class="flex size-2">
+               <span class="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-primary opacity-75"></span>
+               <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+             </span>
+          </div>
+          
+          <div class="bg-muted/10 border border-border p-4 font-mono">
+            <div class="flex justify-between items-center border-b border-dashed border-border/50 pb-1.5 mb-2">
+              <span class="text-xs text-muted-foreground">TOTAL_POSTS</span>
+              <span class="font-bold text-foreground">{page.total}</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-xs text-muted-foreground">CURRENT_PAGE</span>
+              <span class="font-bold text-primary">
+                {page.currentPage.toString().padStart(2, '0')} <span class="text-muted-foreground/40">/</span> {page.lastPage.toString().padStart(2, '0')}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="fade-up mt-18">
-      <List posts={page.data} type={POSTS_CONFIG.postPageConfig.type} heroImageLayout={POSTS_CONFIG.postPageConfig?.heroImageLayout} />
+    <!-- 2. 内容区域标记 -->
+    <div class="flex items-center gap-4 mb-8">
+       <span class="icon-[ph--caret-double-down] text-primary"></span>
+       <span class="font-mono text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/50">
+          Feed Sequence // {new Date().getFullYear()}
+       </span>
+       <div class="h-px bg-border/40 flex-1"></div>
     </div>
 
-    <Pagination {page} baseUrl="/posts" />
+    <!-- 3. 文章列表 -->
+    <div class="fade-up min-h-[40vh]">
+      <List 
+        posts={page.data} 
+        type={POSTS_CONFIG.postPageConfig.type} 
+        heroImageLayout={POSTS_CONFIG.postPageConfig?.heroImageLayout} 
+      />
+    </div>
+
+    <!-- 4. 底部导航区 -->
+    <div class="mt-16 pt-8 border-t border-dashed border-border flex flex-col items-center relative">
+       <!-- 底部装饰角标 -->
+       <div class="absolute top-0 left-0 w-4 h-4 border-t border-l border-primary/50"></div>
+       <div class="absolute top-0 right-0 w-4 h-4 border-t border-r border-primary/50"></div>
+       
+       <div class="w-full flex justify-center">
+         <Pagination {page} baseUrl="/posts" />
+       </div>
+       
+       <span class="mt-6 font-mono text-[10px] text-muted-foreground/30 uppercase tracking-widest">
+         End of Ledger Segment
+       </span>
+    </div>
+
   </div>
 </Layout>
