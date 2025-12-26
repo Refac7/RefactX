@@ -5,9 +5,11 @@ import Prose from '~/components/posts/base/Prose.astro'
 interface Props {
   frontmatter: any
   minutesRead?: string
+  wordCount?: number // [新增] 字数统计属性
 }
 
-const { frontmatter, minutesRead } = Astro.props
+// 解构新增的 wordCount
+const { frontmatter, minutesRead, wordCount } = Astro.props
 ---
 
 <article class="relative fade-up">
@@ -29,7 +31,7 @@ const { frontmatter, minutesRead } = Astro.props
       <!-- 2. 标题与描述 -->
       <div class="space-y-6 mb-10">
         <h1 
-          class="text-4xl md:text-5xl lg:text-6xl font-bold font-serif leading-[1.1] tracking-tight text-foreground" 
+          class="text-4xl md:text-5xl font-bold font-serif leading-[1.1] tracking-tight text-foreground" 
           data-pagefind-body
         >
           {frontmatter.title}
@@ -56,6 +58,14 @@ const { frontmatter, minutesRead } = Astro.props
           <div class="flex items-center gap-2 text-primary/80">
             <span class="icon-[mdi--update] size-4"></span>
             <span>Upd: {formatDate(frontmatter.updatedDate)}</span>
+          </div>
+        )}
+
+        {/* [新增] 字数统计 */}
+        {wordCount && (
+          <div class="flex items-center gap-2">
+            <span class="icon-[mdi--text-box-outline] size-4 opacity-70"></span>
+            <span>{wordCount} Words</span>
           </div>
         )}
 

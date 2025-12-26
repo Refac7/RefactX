@@ -34,6 +34,30 @@ const { data: frontmatter } = post
 const { Content, headings, remarkPluginFrontmatter } = await post.render()
 
 const filterHeadings = headings.filter((heading) => heading.slug !== 'footnote-label')
+const getWordCount = (content: string) => {
+  if (!content) return 0;
+  
+  // 1. 简单清洗：去除 Markdown 代码块和图片链接，避免统计过多无用字符
+  // 去除 ```code``` 代码块
+  const cleanContent = content.replace(/```[\s\S]*?```/g, '')
+  // 去除 ![]() 图片链接
+  .replace(/!\[.*?\]\(.*?\)/g, '')
+  // 去除 * # > 等 Markdown 符号 (可选，简单去除行首符号)
+  .replace(/^(\s*[-*#>]+)+\s/gm, '');
+
+  // 2. 统计中文字符 (CJK)
+  const cn = (cleanContent.match(/[\u4e00-\u9fa5]/g) || []).length;
+
+  // 3. 统计英文单词 (先将中文替换为空格，再按非单词字符分割)
+  const en = (cleanContent.replace(/[\u4e00-\u9fa5]/g, ' ').match(/[a-zA-Z0-9_\-]+/g) || []).length;
+
+  return cn + en;
+};
+
+// 优先使用插件值（如果插件支持中文），否则使用我们自定义的统计函数
+const wordCount = remarkPluginFrontmatter.words && remarkPluginFrontmatter.words > 100 
+  ? remarkPluginFrontmatter.words 
+  : getWordCount(post.body);
 
 const hasValidHeadings = filterHeadings.length > 1
 const layoutMap = {
@@ -50,19 +74,29 @@ const PostLayout = layoutMap[layoutKey]
 <Layout title={frontmatter.title} description={frontmatter.description || frontmatter.title} image={frontmatter.ogImage}>
   <div class="relative flex flex-col justify-between h-fit">
     <TocMobile {post} {posts} headings={filterHeadings} />
-    <PostLayout {frontmatter} minutesRead={remarkPluginFrontmatter.minutesRead}>
+    
+    {/* 2. 将 wordCount 传递给 PostLayout */}
+    <PostLayout 
+      {frontmatter} 
+      minutesRead={remarkPluginFrontmatter.minutesRead}
+      wordCount={wordCount}
+    >
       <Content />
     </PostLayout>
-    <div class="px-6 sm:px-8 pb-6 sm:pb-8">
+
+    <!-- 底部导航区：增加 max-w 约束以对齐正文 -->
+    <div class="px-6 sm:px-8 pb-6 sm:pb-8 max-w-4xl mx-auto w-full">
       {posts.length > 1 && <PostNavigation {prev} {next} />}
     </div>
+
     {hasValidHeadings && <PostFeatures {post} {posts} headings={filterHeadings} />}
 
-    <SectionDivider/>
-    <!-- 评论区 -->
-    <div class="mt-6 px-4 sm:px-6 pb-6 sm:pb-8">
+    <div class="w-full">
+      <SectionDivider/>
+    </div>
+
+    <div class="mt-8 px-4 sm:px-6 pb-12 max-w-4xl mx-auto w-full">
       <Comments />
     </div>
   </div>
 </Layout>
-
