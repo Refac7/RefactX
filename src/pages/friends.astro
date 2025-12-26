@@ -14,13 +14,18 @@ const isEven = FRIENDS_LIST.length % 2 === 0;
 <Layout title={title} description={description}>
   <div class="relative z-[1] py-14 pb-12">
     <!-- 标题区 -->
-    <div class="px-6 sm:px-8 max-w-5xl mx-auto mb-16">
-      <h1 class="text-4xl sm:text-5xl font-semibold text-foreground tracking-tight">{title}</h1>
-      <p class="text-muted-foreground mt-4 text-lg leading-relaxed max-w-2xl">{introduce}</p>
+    <div class="px-6 sm:px-8 mb-16">
+      <h1
+        class="tracking-tighter text-5xl sm:text-6xl font-semibold bg-gradient-to-r from-primary to-primary/70
+               bg-clip-text text-transparent pb-1.5"
+      >
+        {title}
+      </h1>
+      <p class="pro text-muted-foreground mt-3 text-sm sm:text-base leading-relaxed">{introduce}</p>
     </div>
 
     <!-- 2. 友链列表 (复刻直角卡片风格) -->
-    <div class="max-w-6xl mx-auto px-6 sm:px-8">
+    <div class="max-w-6xl mx-auto px-7 sm:px-9">
       <!-- 使用 gap-6 让卡片分开，强调独立感 -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 fade-up">
         {FRIENDS_LIST.map((friend) => (
@@ -32,11 +37,9 @@ const isEven = FRIENDS_LIST.length % 2 === 0;
                    bg-background border border-border
                    hover:border-primary/50 transition-colors duration-300"
           >
-            <!-- 装饰：右上角和左下角的直角标记 (默认隐藏，Hover显示，或者保持淡色) -->
             <div class="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             <div class="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
-            <!-- 头部：头像 + 名称 + 箭头 -->
             <div class="flex items-start justify-between mb-4">
                 <div class="flex items-center gap-4">
                     <img
@@ -67,15 +70,6 @@ const isEven = FRIENDS_LIST.length % 2 === 0;
           </a>
         ))}
 
-        {/* 
-            === Waiting For You 占位卡片 === 
-            
-            逻辑：
-            - 单栏 (mobile): block (始终显示)
-            - 双栏 (md): 
-                - 偶数 (isEven=true) -> hidden
-                - 奇数 -> block (补位)
-        */}
         <a 
           href="#exchange-section"
           class={`group relative flex flex-col p-6 h-full cursor-pointer
@@ -121,8 +115,8 @@ const isEven = FRIENDS_LIST.length % 2 === 0;
         <SectionDivider />
     </div>
 
-    <!-- 4. 交换友链区域 (保持你喜欢的那个卡片样式) -->
-    <div id="exchange-section" class="mt-20 px-6 sm:px-8 max-w-5xl mx-auto scroll-mt-24">
+    <!-- 4. 交换友链区域 -->
+    <div id="exchange-section" class="mt-20 px-8 sm:px-10 max-w-5xl mx-auto scroll-mt-24">
         <div class="grid md:grid-cols-2 gap-12">
             {/* 左侧说明 */}
             <div>
