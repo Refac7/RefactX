@@ -29,7 +29,7 @@ const isEven = FRIENDS_LIST.length % 2 === 0;
              </div>
              <!-- 简单的统计标记 -->
              <div class="sm:ml-auto flex items-center gap-2 px-3 py-1 bg-muted/30 border border-border text-xs font-mono uppercase tracking-wider shrink-0">
-                <span class="size-2 bg-primary animate-pulse rounded-none"></span>
+                <span class="size-2 bg-red-600 animate-pulse rounded-none"></span>
                 <span>Links Status: Active</span>
              </div>
           </div>
@@ -97,7 +97,7 @@ const isEven = FRIENDS_LIST.length % 2 === 0;
         <!-- 占位卡片：虚线框风格 -->
         <a 
           href="#exchange-section"
-          class={`group relative flex flex-col p-5 h-full cursor-pointer
+          class={`group relative flex-col p-5 h-full cursor-pointer
                  bg-muted/5 border border-dashed border-border
                  hover:border-primary/50 hover:bg-muted/10 transition-all duration-300 rounded-none
                  ${isEven ? "block md:hidden lg:block" : "block"}`}

@@ -20,39 +20,47 @@ const posts = postsSort(allPosts).slice(0, size)
 ---
 
 <Layout title="主页" description={SITE.description}>
-  <div class="relative min-h-screen w-full overflow-x-hidden font-sans">
     <Snowfall />
     <!-- 1. Hero 区域 -->
-    <div class="relative z-10 px-6 sm:px-8 py-16 max-w-5xl mx-auto border-r border-border/40 bg-background/50 backdrop-blur-[2px]">
-      
-      <!-- 状态栏 Badge -->
-      <div class="mb-8 sm:mb-14 md:mb-12 fade-up">
-        <div class="inline-flex items-center gap-4 px-4 py-2 bg-muted/20 border border-border rounded-none font-mono text-xs tracking-wider text-foreground">
+    <div class="relative z-10 px-6 sm:px-8 py-12 max-w-5xl mx-auto bg-background/50 backdrop-blur-[2px]">
+      <!-- 顶部状态栏 -->
+      <div class="mb-12 fade-up flex items-center pb-2">
+        <div class="inline-flex items-center gap-3 px-3 py-1 bg-muted/30 border border-border font-mono text-[10px] sm:text-xs tracking-widest text-foreground/80">
           <span class="relative flex h-2 w-2">
-            <span class="animate-ping absolute inline-flex h-full w-full bg-red-500 opacity-75 rounded-none"></span>
-            <span class="relative inline-flex h-2 w-2 bg-red-500 rounded-none"></span>
+            <span class="animate-ping absolute inline-flex h-full w-full bg-red-600 opacity-75 rounded-none"></span>
+            <span class="relative inline-flex h-2 w-2 bg-red-600 rounded-none"></span>
           </span>
-          <span class="font-bold">SYSTEM: ONLINE</span>
+          <span class="font-bold">SYS:ONLINE</span>
           <span class="w-px h-3 bg-border"></span>
-          <span class="text-muted-foreground">V1.6.0_BETA</span>
+          <span>TERMINAL_ID: REF-007</span>
+        </div>
+        <div class="flex-1 hidden sm:block mx-4 h-px bg-dashed border-t border-dashed border-border/40"></div>
+        <div class="hidden sm:block font-mono text-[10px] text-muted-foreground/50">
+           V1.6.0_INDEV
         </div>
       </div>
 
-      <h1 class="space-y-3 sm:space-y-5 mb-10 md:mb-20 fade-up" style="animation-delay: 100ms;">
-        <span class="text-5xl sm:text-6xl font-bold tracking-tighter text-foreground leading-[1.1]">
-          Welcome to
+      <h1 class="space-y-2 mb-8 fade-up" style="animation-delay: 100ms;">
+        <span class="block text-xl sm:text-2xl font-mono text-primary/80 tracking-widest uppercase mb-2">:: Identify User</span>
+        <span class="block text-5xl sm:text-7xl font-black tracking-tighter text-foreground leading-[0.9] uppercase">
+          Refact<span class="text-transparent bg-clip-text bg-gradient-to-br from-primary to-primary/40">X</span>.
         </span>
-
-        <span class="block text-5xl sm:text-6xl font-light tracking-tighter text-muted-foreground leading-[1.2] pt-0.5">
-          the galaxy of <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/60 font-medium">RefactX.</span>
+        <span class="block text-2xl sm:text-4xl font-light tracking-tight text-muted-foreground leading-tight pt-2">
+          Architect of the <br class="hidden sm:block" /> Digital Void.
         </span>
       </h1>
 
-      <!-- 简介 -->
-      <div class="mt-16 mb-12 max-w-2xl fade-up border-l-2 border-border pl-6" style="animation-delay: 200ms;">
-        <p class="text-base sm:text-lg text-muted-foreground leading-relaxed font-mono">
-          你好，我是 Refac7, 一个热衷于代码与写作的时空修剪者。<br>
-          最终留下的，是事物本该是的模样：一个透明、自明而呼吸着的世界。
+      <!-- 简介区块 -->
+      <div class="relative mt-6 mb-10 p-6 border-l-2 border-primary max-w-2xl fade-up group" style="animation-delay: 200ms;">
+        <!-- 装饰角标 -->
+        <div class="absolute top-0 left-0 w-1 h-1 bg-primary"></div>
+        <div class="absolute bottom-0 left-0 w-1 h-1 bg-primary"></div>
+        
+        <p class="text-base sm:text-lg text-muted-foreground/90 leading-relaxed font-sans font-medium">
+          你好，我是 Refac7。一名试图在代码的混沌中寻找秩序的时空修剪者。
+          <span class="block mt-2 text-sm text-muted-foreground/60 font-mono">
+            > TARGET: Transparency, Clarity, Reality.
+          </span>
         </p>
       </div>
 
@@ -77,7 +85,7 @@ const posts = postsSort(allPosts).slice(0, size)
 
         <div class="hidden sm:block w-px h-8 bg-border"></div>
 
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-4">
           {SOCIAL_LINKS.map((item) => (
             <SocialLink
               href={item.url}
@@ -95,14 +103,13 @@ const posts = postsSort(allPosts).slice(0, size)
 
     <!-- 2. Github 贡献图 (修复溢出问题) -->
     {ENABLED && (
-      <div class="py-12 px-6 sm:px-8 border-b border-border/40">
+      <div class="py-8 px-6 sm:px-8">
         <div class="max-w-5xl mx-auto">
           <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-l-4 border-primary pl-4">
             <h2 class="font-bold text-3xl tracking-tight uppercase">Activity Graph</h2>
             <p class="text-xs text-muted-foreground font-mono uppercase tracking-widest mb-1">// Commit History Visualization</p>
           </div>
           
-          <!-- 关键修复：添加 overflow-x-auto 和 w-full 防止图表撑破布局 -->
           <div class="w-full overflow-x-auto border border-dashed border-border p-2 bg-muted/5">
             <div class="min-w-[700px] md:min-w-full">
                 <GithubContributions
@@ -113,13 +120,17 @@ const posts = postsSort(allPosts).slice(0, size)
                 />
             </div>
           </div>
+          <div class="mt-4 flex justify-between text-[10px] font-mono text-muted-foreground/40 border-t border-border/30 pt-2">
+              <span>DATA_SOURCE: GITHUB_API</span>
+              <span>SYNC_STATUS: OK</span>
+          </div>
         </div>
       </div>
     )}
-
+    <SectionDivider />
     <!-- 3. 技术栈 -->
     {SKILLS_ENABLED && SKILLS_DATA.length > 0 && (
-      <div class="py-12 px-6 sm:px-8 border-b border-border/40">
+      <div class="py-8 px-6 sm:px-8">
         <div class="max-w-5xl mx-auto">
              <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-l-4 border-primary pl-4">
                 <h2 class="font-bold text-3xl tracking-tight uppercase">Arsenal</h2>
@@ -130,19 +141,32 @@ const posts = postsSort(allPosts).slice(0, size)
         </div>
     )}
 
-    <!-- 4. 文章列表 -->
-    <div class="py-12 pb-12 px-6 sm:px-8">
-      <div class="max-w-5xl mx-auto">
-        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10 border-b border-foreground pb-4">
-            <h2 class="font-bold text-3xl tracking-tight uppercase">Recent Logs</h2>
-            <a href="/posts" class="text-xs font-bold font-mono uppercase tracking-widest hover:text-primary transition-colors flex items-center gap-2 group">
-               View All Transmissions 
-               <span class="icon-[ph--arrow-right] group-hover:translate-x-1 transition-transform"></span>
+    <SectionDivider />
+
+    <!-- 4. 文章列表：日志档案风格 -->
+    <div class="py-12 px-4 sm:px-8 bg-muted/5">
+      <div class="max-w-6xl mx-auto">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-12">
+            <div>
+                <h2 class="font-bold text-3xl tracking-tight uppercase flex items-center gap-3">
+                    <span class="icon-[ph--files-light] text-primary"></span>
+                    Recent Logs
+                </h2>
+                <p class="mt-1 text-sm text-muted-foreground font-mono">:: Latest Data Transmissions</p>
+            </div>
+
+            <a href="/posts" class="group flex items-center gap-3 px-5 py-2 border border-border bg-background hover:border-primary transition-all">
+               <span class="text-xs font-bold font-mono uppercase tracking-widest group-hover:text-primary transition-colors">
+                   View All Archives
+               </span>
+               <span class="icon-[ph--caret-right-bold] w-3 h-3 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-transform"></span>
             </a>
         </div>
         
-        <!-- List 组件调用，确保传入正确的 props -->
-        <List {posts} {type} heroImageLayout={POSTS_CONFIG.homePageConfig?.heroImageLayout} />
+        <!-- List 组件调用 -->
+        <div class="relative">
+            <List {posts} {type} heroImageLayout={POSTS_CONFIG.homePageConfig?.heroImageLayout} />
+        </div>
       </div>
     </div>
   </div>

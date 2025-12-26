@@ -37,8 +37,10 @@ const description = `Posts with the tag #${tag}`
 <Layout title={`#${tag}`} {description}>
   <div class="min-h-[70vh] relative z-[1] py-14 pb-10 px-6 sm:px-8">
     <div class="mb-12 md:mb-16">
-      <div class="flex flex-col md:flex-row md:items-center gap-3">
-        <nav class="flex items-center gap-3 text-sm text-muted-foreground/80">
+      <div class="flex flex-col gap-3">
+        
+        {/* 第一行：面包屑导航 */}
+        <nav class="flex items-center gap-3 text-sm text-muted-foreground/80 mb-8">
           <a href="/tags" class="group flex items-center gap-2 hover:text-primary transition-colors">
             <span class="icon-[ph--tag-simple] w-4 h-4"></span>
             <span>Tags</span>
@@ -47,8 +49,9 @@ const description = `Posts with the tag #${tag}`
           <span class="text-foreground/90">#{tag}</span>
         </nav>
 
+        {/* 第二行：标题和统计信息 */}
         <div class="flex gap-2 justify-between items-center">
-          <h1 class="tracking-tighter text-5xl sm:text-6xl font-semibold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent pb-1.5">
+          <h1 class="tracking-tighter text-4xl sm:text-5xl font-semibold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent pb-1.5">
             #{tag}
           </h1>
           <div class="flex flex-col items-end justify-center gap-1 text-sm text-muted-foreground/70">
@@ -58,6 +61,7 @@ const description = `Posts with the tag #${tag}`
             </div>
           </div>
         </div>
+
       </div>
     </div>
 
