@@ -39,7 +39,7 @@ const isEven = FRIENDS_LIST.length % 2 === 0;
     <!-- 2. 友链列表：机能风网格 -->
     <div class="max-w-full mx-auto">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-5 fade-up">
-        {FRIENDS_LIST.map((friend, index) => (
+        {FRIENDS_LIST.map((friend) => (
           <a 
             href={friend.url} 
             target="_blank" 

@@ -20,17 +20,14 @@ const posts = postsSort(allPosts).slice(0, size)
 ---
 
 <Layout title="主页" description={SITE.description}>
-  <!-- 添加 overflow-x-hidden 防止任何绝对定位元素导致横向滚动条 -->
   <div class="relative min-h-screen w-full overflow-x-hidden font-sans">
-    
     <Snowfall />
-
     <!-- 1. Hero 区域 -->
     <div class="relative z-10 px-6 sm:px-8 py-16 max-w-5xl mx-auto border-r border-border/40 bg-background/50 backdrop-blur-[2px]">
       
       <!-- 状态栏 Badge -->
-      <div class="mb-8 md:mb-12 fade-up">
-        <div class="inline-flex items-center gap-4 px-4 py-2 border border-foreground/80 bg-background rounded-none font-mono text-xs tracking-wider text-foreground shadow-[4px_4px_0_0_rgba(0,0,0,0.1)] dark:shadow-[4px_4px_0_0_rgba(255,255,255,0.1)]">
+      <div class="mb-8 sm:mb-14 md:mb-12 fade-up">
+        <div class="inline-flex items-center gap-4 px-4 py-2 border border-foreground/60 bg-background rounded-none font-mono text-xs tracking-wider text-foreground shadow-[4px_4px_0_0_rgba(0,0,0,0.1)] dark:shadow-[4px_4px_0_0_rgba(255,255,255,0.1)]">
           <span class="relative flex h-2 w-2">
             <span class="animate-ping absolute inline-flex h-full w-full bg-red-500 opacity-75 rounded-none"></span>
             <span class="relative inline-flex h-2 w-2 bg-red-500 rounded-none"></span>
@@ -54,9 +51,10 @@ const posts = postsSort(allPosts).slice(0, size)
       <!-- 简介 -->
       <div class="mt-16 mb-12 max-w-2xl fade-up border-l-2 border-border pl-6" style="animation-delay: 200ms;">
         <p class="text-base sm:text-lg text-muted-foreground leading-relaxed font-mono">
-          我是 <span class="text-foreground font-semibold">Refactored</span>，一名前端开发者和开源爱好者。<br class="hidden sm:block" />
-          专注于探索各种技术栈，并将它们应用于实际项目中。<br class="hidden sm:block" />
-          这里是我的数字花园，记录技术探索与思考。
+          你好，我是 Refac7, 一个热衷于代码与写作的时空修剪者。<br>
+          在 The Galaxy of RefactX 里，<br>
+          你修剪的并非错误，而是冗余的时空。<br>
+          最终留下的，是事物本该是的模样：一个透明、自明而呼吸着的世界。
         </p>
       </div>
 
@@ -89,7 +87,6 @@ const posts = postsSort(allPosts).slice(0, size)
               aria-label={`${item.name}`}
               count={item.count}
               label="Follow"
-              class="hover:bg-muted/20 transition-all"
             />
           ))}
         </div>

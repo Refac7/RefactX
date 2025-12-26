@@ -52,7 +52,7 @@ const { title, description, introduce } = PROJECTS_CONFIG
               <div class="flex flex-col md:flex-row">
                 
                 <!-- 1. 左侧：图标与ID区 -->
-                <div class="md:w-48 shrink-0 flex md:flex-col items-center md:items-start justify-between md:justify-center p-6 bg-muted/5 border-b md:border-b-0 md:border-r border-border gap-4">
+                <div class="md:w-36 shrink-0 flex md:flex-col items-center md:items-start justify-between md:justify-center p-6 bg-muted/5 border-b md:border-b-0 md:border-r border-border gap-4">
                    <!-- 图标容器 -->
                    <div class="size-12 flex items-center justify-center bg-background border border-border shadow-sm group-hover:shadow-md transition-shadow">
                       {project.type === 'icon' && <span class={cn('size-6 text-foreground/80', project.icon)} />}
@@ -129,8 +129,5 @@ const { title, description, introduce } = PROJECTS_CONFIG
         })
       }
     </div>
-    
-    <!-- 底部装饰线 -->
-    <div class="mt-12 h-px w-full bg-gradient-to-r from-transparent via-border to-transparent"></div>
   </div>
 </Layout>
