@@ -11,50 +11,90 @@ const { frontmatter, minutesRead } = Astro.props
 ---
 
 <article class="relative fade-up">
-  <div class="px-6 sm:px-8 py-10 sm:py-12">
-    <div class="max-w-4xl">
-      <header class="mb-16 space-y-10">
-        <div class="inline-block px-4 py-2 text-xs text-muted-foreground/70 bg-muted/50 rounded font-semibold tracking-wide">ARTICLE</div>
+  <!-- 顶部装饰线条 -->
+  <div class="h-1 w-20 bg-primary mb-0"></div>
 
-        <div class="space-y-8">
-          <h1 class="text-3xl md:text-4xl font-semibold font-serif leading-[1.1] tracking-tight text-foreground" data-pagefind-body>
-            {frontmatter.title}
-          </h1>
+  <div class="px-6 sm:px-8 py-10 sm:py-14 max-w-4xl mx-auto">
+    
+    <header class="mb-16">
+      
+      <!-- 1. 类型标识 -->
+      <div class="mb-6 flex items-center gap-2">
+        <span class="font-mono text-xs font-bold tracking-widest text-primary uppercase">
+          // Article
+        </span>
+        <div class="h-px w-8 bg-border"></div>
+      </div>
 
-          {frontmatter.description && <p class="text-base sm:text-lg text-muted-foreground leading-[1.7] max-w-2xl">{frontmatter.description}</p>}
+      <!-- 2. 标题与描述 -->
+      <div class="space-y-6 mb-10">
+        <h1 
+          class="text-4xl md:text-5xl lg:text-6xl font-bold font-serif leading-[1.1] tracking-tight text-foreground" 
+          data-pagefind-body
+        >
+          {frontmatter.title}
+        </h1>
+
+        {frontmatter.description && (
+          <p class="text-base sm:text-lg text-muted-foreground leading-[1.8] max-w-2xl border-l-2 border-primary/20 pl-4">
+            {frontmatter.description}
+          </p>
+        )}
+      </div>
+
+      <!-- 3. 硬朗风格元数据栏 (Info Bar) -->
+      <div class="py-4 border-y border-border/60 flex flex-wrap items-center gap-x-8 gap-y-3 text-xs font-mono uppercase tracking-wider text-muted-foreground">
+        
+        {/* 发布时间 */}
+        <div class="flex items-center gap-2">
+          <span class="icon-[mdi--calendar] size-4 opacity-70"></span>
+          <span>{formatDate(frontmatter.pubDate)}</span>
         </div>
 
-        <div class="text-xs text-muted-foreground/60 font-mono tracking-wide">
-          <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6">
-            <span>{formatDate(frontmatter.pubDate)}</span>
-            {frontmatter.updatedDate && <span>UPDATED {formatDate(frontmatter.updatedDate)}</span>}
-            {minutesRead && <span>{minutesRead} MIN READ</span>}
+        {/* 更新时间 (如果有) */}
+        {frontmatter.updatedDate && (
+          <div class="flex items-center gap-2 text-primary/80">
+            <span class="icon-[mdi--update] size-4"></span>
+            <span>Upd: {formatDate(frontmatter.updatedDate)}</span>
           </div>
-        </div>
+        )}
 
-        {
-          frontmatter.tags && frontmatter.tags.length > 0 && (
-            <div class="flex flex-wrap gap-3 max-w-2xl">
-              {frontmatter.tags.map((tag: string) => (
-                <a
-                  href={`/tags/${tag}`}
-                  class="px-4 py-2 text-xs font-semibold text-center 
-                       text-muted-foreground/70 bg-muted/40 
-                       hover:text-primary hover:bg-muted/60
-                       transition-all duration-300 rounded"
-                >
-                  {tag.toUpperCase()}
-                </a>
-              ))}
-            </div>
-          )
-        }
-        <div class="border-t border-border/40 mt-10 pt-0"></div>
-      </header>
+        {/* 阅读时间 */}
+        {minutesRead && (
+          <div class="flex items-center gap-2">
+            <span class="icon-[mdi--clock-outline] size-4 opacity-70"></span>
+            <span>{minutesRead} Min Read</span>
+          </div>
+        )}
 
+      </div>
+
+      <!-- 4. 标签区域 (方形按钮) -->
+      {
+        frontmatter.tags && frontmatter.tags.length > 0 && (
+          <div class="flex flex-wrap gap-2 mt-6">
+            {frontmatter.tags.map((tag: string) => (
+              <a
+                href={`/tags/${tag}`}
+                class="px-3 py-1.5 text-xs font-bold font-mono uppercase tracking-wide
+                       text-muted-foreground border border-border/60 bg-background
+                       hover:text-primary-foreground hover:bg-primary hover:border-primary
+                       transition-all duration-200 rounded-none"
+              >
+                #{tag}
+              </a>
+            ))}
+          </div>
+        )
+      }
+    </header>
+
+    <!-- 5. 正文区域 -->
+    <div class="relative">
       <Prose>
         <slot />
       </Prose>
     </div>
+    
   </div>
 </article>

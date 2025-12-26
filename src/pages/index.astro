@@ -9,6 +9,7 @@ import GithubContributions from '~/components/base/GithubContributions.tsx'
 import SocialLink from '~/components/base/SocialLink.astro'
 import List from '~/components/posts/card/List.astro'
 import SkillsShowcase from '~/components/base/SkillsShowcase.astro'
+import Snowfall from '~/components/base/Snowfall.astro'
 
 const { ENABLED, GITHUB_USERNAME, TOOLTIP_ENABLED } = GITHUB_CONFIG
 const { size, type } = POSTS_CONFIG.homePageConfig
@@ -20,95 +21,88 @@ const posts = postsSort(allPosts).slice(0, size)
 
 <Layout title="主页" description={SITE.description}>
   <div class="relative z-[1]">
-    <div class="px-6 sm:px-6 md:px-8 py-16">
-      <div class="max-w-4xl mx-auto">
-        <!-- 简洁的版本标签 -->
-        <div class="mb-8 sm:mb-12 font-mono">
-          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded bg-muted/50">
-            <span class="relative flex h-2 w-2">
-              <span class="absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-              <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
-            </span>
-            <span class="text-xs font-medium text-gray-700 dark:text-gray-300">
-              <span class="text-red-600 dark:text-red-500">RefactX v1.6.0</span>
-              <span class="text-gray-400 mx-1">•</span>
-              <span>INDEV</span>
-            </span>
-          </div>
-        </div>
+    <!-- 背景动画 -->
+    <Snowfall />
 
-        <!-- 标题 -->
-        <h1 class="space-y-4 mb-8">
-          <span class="block text-5xl sm:text-6xl font-semibold text-gray-900 dark:text-white tracking-tight leading-tight">
-            Welcome to<br>
-            <span class="text-5xl sm:text-6xl font-light">the galaxy of RefactX.</span>
+    <!-- 1. Hero 区域：减少垂直间距 (py-20 -> py-12) -->
+    <div class="px-6 sm:px-8 py-10 md:py-20 max-w-5xl mx-auto">
+      <div class="mb-10 fade-up">
+        <div class="inline-flex items-center gap-3 px-3 py-1.5 border border-border/60 bg-muted/20 backdrop-blur-sm rounded-sm font-mono text-xs text-muted-foreground/80">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
           </span>
-        </h1>
-
-        <div class="flex items-start gap-6 mt-16 md:mt-24 mb-12">
-          <div class="flex-1">
-            <div class="font-normal text-black dark:text-white">
-              <div class="space-y-4">
-                <p class="text-gray-700 dark:text-gray-300 text-sm md:text-base font-mono tracking-normal leading-relaxed">
-                  我是 Refactored，一名前端开发者和开源爱好者。<br>
-                  专注于探索各种技术栈，并将它们应用于实际项目中。<br>
-                  这个网站是我的技术博客和作品集，分享我的开发经验和见解。
-                </p>
-              </div>
-            </div>
-          </div>
+          <span class="font-semibold text-foreground">RefactX v1.6.0 Beta1</span>
+          <span class="w-px h-3 bg-border"></span>
+          <span>SYSTEM INDEV</span>
         </div>
+      </div>
 
-        <!-- 按钮（大于md） -->
-        <div class="items-center gap-4 mt-8 mb-12 hidden md:block">
+      <h1 class="space-y-3 sm:space-y-5 mb-14 fade-up" style="animation-delay: 100ms;">
+        <span class="text-5xl sm:text-7xl font-bold tracking-tighter text-foreground leading-[1.1]">
+          Welcome to
+        </span>
+
+        <span class="block text-5xl sm:text-7xl font-light tracking-tighter text-muted-foreground leading-[1.2] pt-0.5">
+          the galaxy of <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/60 font-medium">RefactX.</span>
+        </span>
+      </h1>
+
+      <!-- 简介：减少顶部边距 (mt-10 -> mt-6) -->
+      <div class="mt-6 sm:mt-12 max-w-2xl fade-up" style="animation-delay: 200ms;">
+        <p class="text-base sm:text-lg text-muted-foreground leading-relaxed font-mono">
+          我是 <span class="text-foreground font-semibold">Refactored</span>，一名前端开发者和开源爱好者。<br class="hidden sm:block" />
+          专注于探索各种技术栈，并将它们应用于实际项目中。<br class="hidden sm:block" />
+          这里是我的数字花园，记录技术探索与思考。
+        </p>
+      </div>
+
+      <!-- 按钮区 -->
+      <div class="mt-12 flex flex-col sm:flex-row items-start sm:items-center gap-6 sm:gap-8 fade-up" style="animation-delay: 300ms;">
+        <div class="flex flex-wrap gap-4 w-full sm:w-auto">
           <a
             href="/posts"
-            class="inline-flex items-center justify-center px-6 py-3 mr-6 transition-all bg-black hover:bg-primary/80 dark:bg-white dark:hover:bg-gray-700 text-white dark:text-black dark:hover:text-white font-medium"
+            class="flex-1 sm:flex-none inline-flex items-center justify-center px-6 py-3 bg-foreground text-background hover:bg-foreground/90 transition-all font-medium min-w-[140px]"
           >
             <span class="icon-[mdi--book-open] size-5 mr-2"></span>
             探索文章
           </a>
           <a
             href="/friends"
-            class="box-border inline-flex items-center justify-center px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-red-300 dark:hover:border-red-500 hover:text-red-600 dark:hover:text-red-400 font-medium transition-all duration-200"
+            class="flex-1 sm:flex-none box-border inline-flex items-center justify-center px-6 py-3 border border-border text-foreground hover:border-primary/50 hover:text-primary transition-all duration-200 min-w-[140px]"
           >
-            <span class="icon-[mdi--link] size-5 mr-2"></span>
+            <span class="icon-[mdi--rocket-launch] size-5 mr-2"></span>
             加入星海
           </a>
         </div>
 
-        <!-- 社交链接 -->
-        <div class="flex items-center justify-between gap-4">
-          <div class="flex gap-4">
-            {SOCIAL_LINKS.map((item) => (
-              <SocialLink
-                href={item.url}
-                icon={item.icon}
-                aria-label={`${item.name} 的链接`}
-                count={item.count}
-                label="关注者"
-              />
-            ))}
-          </div>
+        <div class="hidden sm:block w-px h-10 bg-border/50"></div>
 
-          <a
-            href="/friends"
-            class="inline-flex text-sm items-centertext-sm text-muted-foreground hover:text-primary transition-colors"
-          >
-            <span class="flex icon-[mdi--link] size-6 mr-2" />
-            <span class="mt-0.5">友链 / Links</span>
-          </a>
+        <div class="flex items-center gap-4">
+          {SOCIAL_LINKS.map((item) => (
+            <SocialLink
+              href={item.url}
+              icon={item.icon}
+              aria-label={`${item.name}`}
+              count={item.count}
+              label="Follow"
+            />
+          ))}
         </div>
       </div>
     </div>
 
+    <!-- 2. Github 贡献图：减少上下边距 (py-16 -> py-10) -->
     {ENABLED && (
       <>
         <SectionDivider />
-        <div class="py-8 pb-10 px-6 max-md:px-6">
-          <div class="max-w-4xl mx-auto px-2 max-md:px-0">
-            <h2 class="font-bold text-2xl sm:text-3xl mb-4">动态聚焦 / Spotlight</h2>
-            <p class="text-muted-foreground mb-6 mt-1">近期代码贡献记录 / Most recent contributions.</p>
+        <div class="py-10 px-6 sm:px-8">
+          <div class="max-w-5xl mx-auto">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 mb-6">
+              <h2 class="font-bold text-2xl sm:text-3xl tracking-tight">动态聚焦 / <span class="font-light text-muted-foreground">Spotlight</span></h2>
+              <p class="text-sm text-muted-foreground font-mono mb-1">Recent code activity</p>
+            </div>
+            
             <GithubContributions
               username={GITHUB_USERNAME}
               tooltipEnabled={TOOLTIP_ENABLED}
@@ -120,13 +114,16 @@ const posts = postsSort(allPosts).slice(0, size)
       </>
     )}
 
+    <!-- 3. 技术栈：减少上下边距 -->
     {SKILLS_ENABLED && SKILLS_DATA.length > 0 && (
       <>
         <SectionDivider />
-        <div class="py-8 pb-10 px-6 max-md:px-6">
-          <div class="max-w-4xl mx-auto px-2 max-md:px-0">
-            <h2 class="font-bold text-2xl sm:text-3xl mb-4">技术栈 / Skills</h2>
-            <p class="text-muted-foreground mb-6 mt-1">以下是我常用的技术： / Here are some skills I have used:</p>
+        <div class="py-10 px-6 sm:px-8">
+          <div class="max-w-5xl mx-auto">
+             <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 mb-6">
+                <h2 class="font-bold text-2xl sm:text-3xl tracking-tight">技术栈 / <span class="font-light text-muted-foreground">Skills</span></h2>
+                <p class="text-sm text-muted-foreground font-mono mb-1">Tools & Frameworks</p>
+            </div>
             <SkillsShowcase skillsData={SKILLS_DATA} />
           </div>
         </div>
@@ -134,12 +131,17 @@ const posts = postsSort(allPosts).slice(0, size)
     )}
 
     <SectionDivider />
-    <div class="py-10 pb-12 px-6 sm:px-8">
-      <div class="max-w-4xl mx-auto">
-        <h2 class="font-bold text-2xl sm:text-3xl">文章 / Posts</h2>
-        <p class="text-muted-foreground mb-8 mt-2 text-sm sm:text-base">
-          最近更新的 {posts.length} 篇文章 / Recent {posts.length} posts, worth a look.
-        </p>
+
+    <!-- 4. 文章列表 -->
+    <div class="py-10 pb-20 px-6 sm:px-8">
+      <div class="max-w-5xl mx-auto">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 mb-8">
+            <h2 class="font-bold text-2xl sm:text-3xl tracking-tight">最新文章 / <span class="font-light text-muted-foreground">Recent Posts</span></h2>
+            <a href="/posts" class="text-sm text-muted-foreground hover:text-primary transition-colors font-mono mb-1 flex items-center gap-1 group">
+               View all posts <span class="icon-[mdi--arrow-right] group-hover:translate-x-1 transition-transform"></span>
+            </a>
+        </div>
+        
         <List {posts} {type} heroImageLayout={POSTS_CONFIG.homePageConfig?.heroImageLayout} />
       </div>
     </div>

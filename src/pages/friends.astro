@@ -6,178 +6,238 @@ import Comments from '~/components/posts/base/Comments.astro'
 
 const { title, description, introduce } = FRIENDS_CONFIG
 const { sitename, email, author, sitelink, siteavatar, description: myDescription } = FRIENDS_CONTACT;
+
+// 逻辑：判断好友数量奇偶
+const isEven = FRIENDS_LIST.length % 2 === 0;
 ---
 
 <Layout title={title} description={description}>
   <div class="relative z-[1] py-14 pb-12">
     <!-- 标题区 -->
-    <div class="px-6 sm:px-8">
-      <h1
-        class="tracking-tighter text-5xl sm:text-6xl font-semibold bg-gradient-to-r from-primary to-primary/70
-               bg-clip-text text-transparent pb-1.5"
-      >
-        {title}
-      </h1>
-      <p class="pro text-muted-foreground mt-3 text-sm sm:text-base leading-relaxed">{introduce}</p>
+    <div class="px-6 sm:px-8 max-w-5xl mx-auto mb-16">
+      <h1 class="text-4xl sm:text-5xl font-semibold text-foreground tracking-tight">{title}</h1>
+      <p class="text-muted-foreground mt-4 text-lg leading-relaxed max-w-2xl">{introduce}</p>
     </div>
 
-    <!-- 友链列表 -->
-    <div class="mt-12 grid grid-cols-1 fade-up">
-      {FRIENDS_LIST.map((friend) => (
-        <div>
-          <div
-            class="group relative hover:bg-muted/40 dark:hover:bg-muted/40
-                   transition-colors duration-300 px-6 sm:px-8 py-5"
+    <!-- 2. 友链列表 (复刻直角卡片风格) -->
+    <div class="max-w-6xl mx-auto px-6 sm:px-8">
+      <!-- 使用 gap-6 让卡片分开，强调独立感 -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 fade-up">
+        {FRIENDS_LIST.map((friend) => (
+          <a 
+            href={friend.url} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="group relative flex flex-col p-6 h-full
+                   bg-background border border-border
+                   hover:border-primary/50 transition-colors duration-300"
           >
-            <div class="flex items-center gap-4">
-              <img
-                src={friend.avatar}
-                alt={friend.name}
-                class="w-10 h-10 rounded-lg"
-              />
-              <a
-                href={friend.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="font-semibold font-serif text-lg sm:text-xl
-                       hover:text-primary transition-colors duration-200"
-              >
-                {friend.name}
-              </a>
+            <!-- 装饰：右上角和左下角的直角标记 (默认隐藏，Hover显示，或者保持淡色) -->
+            <div class="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div class="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+            <!-- 头部：头像 + 名称 + 箭头 -->
+            <div class="flex items-start justify-between mb-4">
+                <div class="flex items-center gap-4">
+                    <img
+                        src={friend.avatar}
+                        alt={friend.name}
+                        class="w-12 h-12 object-cover bg-muted/50 border border-border rounded-sm shrink-0"
+                        loading="lazy"
+                    />
+                    <div class="flex flex-col">
+                        <span class="font-bold text-lg font-serif text-foreground group-hover:text-primary transition-colors">
+                            {friend.name}
+                        </span>
+                        <span class="text-xs font-mono text-muted-foreground/60">
+                            {friend.author}
+                        </span>
+                    </div>
+                </div>
+                <!-- 链接箭头 -->
+                <span class="icon-[mdi--arrow-top-right] size-5 text-muted-foreground/20 group-hover:text-primary transition-colors"></span>
             </div>
-            <p class="mt-2 pr-0 sm:pr-14 text-black dark:text-white font-bold">
-              描述/Description: <span class="mt-2 pr-0 sm:pr-14 font-normal text-muted-foreground">{friend.description}</span>
+
+            <!-- 描述：上下结构，确保有足够宽度显示 -->
+            <div class="border-t border-dashed border-border/60 my-2"></div>
+            
+            <p class="text-sm text-muted-foreground leading-relaxed line-clamp-2 mt-2">
+               {friend.description || "暂无描述..."}
             </p>
-            <div class="mt-4 flex gap-4 text-sm text-zinc-500">
-              <a
-                href={friend.url}
-                target="_blank"
-                class="flex items-center gap-1 hover:text-zinc-600
-                       dark:hover:text-zinc-100"
-              >
-                <div class="flex items-center flex-wrap text-sm text-zinc-500">
-                <div class="flex items-center gap-1 mr-4">
-                    <span class="icon-[mdi--user] size-5" />
-                    <span>{friend.author}</span>
+          </a>
+        ))}
+
+        {/* 
+            === Waiting For You 占位卡片 === 
+            
+            逻辑：
+            - 单栏 (mobile): block (始终显示)
+            - 双栏 (md): 
+                - 偶数 (isEven=true) -> hidden
+                - 奇数 -> block (补位)
+        */}
+        <a 
+          href="#exchange-section"
+          class={`group relative flex flex-col p-6 h-full cursor-pointer
+                 bg-muted/5 border border-dashed border-border
+                 hover:border-primary/50 hover:bg-muted/10 transition-all duration-300
+                 ${isEven ? "block md:hidden" : "block"}`}
+        >
+            <!-- 占位卡片也加上角落装饰，但用虚线或不同颜色区分 -->
+            <div class="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-muted-foreground/30 group-hover:border-primary transition-colors"></div>
+            <div class="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-muted-foreground/30 group-hover:border-primary transition-colors"></div>
+
+            <div class="flex items-start justify-between mb-4">
+                <div class="flex items-center gap-4">
+                    <!-- 占位头像框 -->
+                    <div class="w-12 h-12 flex items-center justify-center bg-muted/30 border border-dashed border-border rounded-sm shrink-0">
+                        <span class="icon-[ph--plus] size-5 text-muted-foreground"></span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-bold text-lg font-serif text-muted-foreground group-hover:text-primary transition-colors">
+                            Waiting for you
+                        </span>
+                        <span class="text-xs font-mono text-muted-foreground/40">
+                            Slot Available
+                        </span>
+                    </div>
                 </div>
-                <div class="flex items-center gap-1">
-                    <span class="icon-[mdi--web] size-5" />
-                    <span>访问站点</span>
-                </div>
-                </div>
-              </a>
+                <span class="icon-[mdi--arrow-down] size-5 text-muted-foreground/20 group-hover:text-primary transition-colors"></span>
             </div>
-          </div>
-          <SectionDivider/>
-        </div>
-      ))}
+
+            <div class="border-t border-dashed border-border/40 my-2"></div>
+            
+            <p class="text-sm text-muted-foreground/50 leading-relaxed mt-2 group-hover:text-muted-foreground transition-colors">
+               这里还空着一个位置。点击此处跳转到底部，提交你的博客信息进行交换。
+            </p>
+        </a>
+
+      </div>
     </div>
 
-    <!-- 交换友链区域 -->
-    <div class="mt-16 px-6 sm:px-8">
-        <h2 class="text-2xl sm:text-3xl font-semibold mb-4">想和我交换友链吗？</h2>
-        <p class="text-muted-foreground mb-6 text-sm sm:text-base">
-          提供以下信息，我会在 1–2 天内添加：
-        </p>
-        <ul class="list-disc list-inside text-sm text-muted-foreground space-y-1">
-          <li>站点名称</li>
-          <li>站点作者</li>
-          <li>站点链接 (URL)</li>
-          <li>描述</li>
-          <li>头像图片链接 (建议 48×48px)</li>
-        </ul>
-        <p class="mt-4 text-sm">
-            邮件：<a
-            href={`mailto:${email}`}
-          >
-            {email}
-          </a>
-        </p>
-        <p class="mt-1 text-sm">
-          或在下方评论区域提交。
-        </p>
-        <div class="mt-10 text-sm leading-relaxed text-black dark:text-white font-regular">
-            <!-- 信息表格 -->
-            <p class="font-semibold text-lg sm:text-xl mb-6">我的友链信息（欢迎添加）</p>
-            <table class="w-full text-sm border border-muted rounded-lg overflow-hidden border-collapse">
-            <tbody>
-              <tr class="odd:bg-muted/10 even:bg-background dark:odd:bg-muted/20 dark:even:bg-background">
-              <td class="py-2 px-4 font-semibold bg-muted/20 dark:bg-muted/30 text-primary">站点名称</td>
-              <td class="py-2 px-4 text-foreground">{sitename}</td>
-              </tr>
-              <tr class="odd:bg-muted/10 even:bg-background dark:odd:bg-muted/20 dark:even:bg-background">
-              <td class="py-2 px-4 font-semibold bg-muted/20 dark:bg-muted/30 text-primary">站点作者</td>
-              <td class="py-2 px-4 text-foreground">{author}</td>
-              </tr>
-              <tr class="odd:bg-muted/10 even:bg-background dark:odd:bg-muted/20 dark:even:bg-background">
-              <td class="py-2 px-4 font-semibold bg-muted/20 dark:bg-muted/30 text-primary">站点链接</td>
-              <td class="py-2 px-4">
-                <a href={sitelink} class="text-primary underline hover:text-primary/80 transition-colors">
-                {sitelink}
-                </a>
-              </td>
-              </tr>
-              <tr class="odd:bg-muted/10 even:bg-background dark:odd:bg-muted/20 dark:even:bg-background">
-              <td class="py-2 px-4 font-semibold bg-muted/20 dark:bg-muted/30 text-primary">头像图片链接</td>
-              <td class="py-2 px-4">
-                <a href={siteavatar} class="text-primary underline hover:text-primary/80 transition-colors">
-                {siteavatar}
-                </a>
-              </td>
-              </tr>
-              <tr class="odd:bg-muted/10 even:bg-background dark:odd:bg-muted/20 dark:even:bg-background">
-              <td class="py-2 px-4 font-semibold bg-muted/20 dark:bg-muted/30 text-primary">描述</td>
-              <td class="py-2 px-4 text-muted-foreground">{myDescription}</td>
-              </tr>
-            </tbody>
-            </table>
-            <button
-              id="copy-btn"
-              class="mt-10 px-4 py-2 bg-primary text-white dark:text-black rounded hover:bg-primary/80 transition-colors flex items-center gap-2"
-              data-sitename={sitename}
-              data-author={author}
-              data-sitelink={sitelink}
-              data-siteavatar={siteavatar}
-              data-description={myDescription}
-            >
-              <span id="copy-icon" class="icon-[ph--article] size-5"></span>
-              <span id="copy-text">复制我的友链 JSON 信息</span>
-            </button>
 
-            <script>
-              const btn = document.getElementById("copy-btn");
-              const icon = document.getElementById("copy-icon");
-              const text = document.getElementById("copy-text");
+    <!-- 3. 分割线 -->
+    <div class="mt-20 w-full">
+        <SectionDivider />
+    </div>
 
-              if (btn && icon && text) {
-                btn.addEventListener("click", () => {
-                  const myInfo = {
-                    name: btn.dataset.sitename,
-                    author: btn.dataset.author,
-                    url: btn.dataset.sitelink,
-                    avatar: btn.dataset.siteavatar,
-                    description: btn.dataset.description,
-                  };
+    <!-- 4. 交换友链区域 (保持你喜欢的那个卡片样式) -->
+    <div id="exchange-section" class="mt-20 px-6 sm:px-8 max-w-5xl mx-auto scroll-mt-24">
+        <div class="grid md:grid-cols-2 gap-12">
+            {/* 左侧说明 */}
+            <div>
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                    <span class="w-2 h-8 bg-primary"></span>
+                    交换友链
+                </h2>
+                <div class="text-muted-foreground space-y-4 text-sm leading-relaxed mb-8">
+                  <p>申请前请确保您的站点内容健康，长期不更新的站点可能会被清理。</p>
+                  <p>我会在收到邮件后的 1-2 天内处理。</p>
+                </div>
+                
+                <div class="flex flex-col gap-2">
+                    <span class="text-xs font-bold text-muted-foreground uppercase tracking-wider font-mono">Contact via Email</span>
+                    <a href={`mailto:${email}`} class="text-lg font-mono hover:text-primary hover:underline underline-offset-4 decoration-1 transition-all w-fit">
+                        {email}
+                    </a>
+                </div>
+            </div>
 
-                  navigator.clipboard.writeText(JSON.stringify(myInfo, null, 2));
+            {/* 右侧：原本的直角风格信息卡片 */}
+            <div class="border border-border p-6 bg-card relative">
+                <!-- 角落装饰 (原版) -->
+                <div class="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-primary"></div>
+                <div class="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-primary"></div>
 
-                  icon.className = "icon-[ph--check] size-5 text-green-500";
-                  text.textContent = "已复制！";
+                <p class="font-bold text-lg mb-6 border-b border-border pb-2">我的友链信息</p>
+                
+                <div class="space-y-4 text-sm font-mono">
+                    <div class="flex flex-col sm:flex-row sm:gap-4">
+                        <span class="text-muted-foreground w-16 shrink-0">Name</span>
+                        <span class="select-all border-b border-dashed border-border/50 w-full">{sitename}</span>
+                    </div>
+                    <div class="flex flex-col sm:flex-row sm:gap-4">
+                        <span class="text-muted-foreground w-16 shrink-0">Author</span>
+                        <span class="select-all border-b border-dashed border-border/50 w-full">{author}</span>
+                    </div>
+                    <div class="flex flex-col sm:flex-row sm:gap-4">
+                        <span class="text-muted-foreground w-16 shrink-0">URL</span>
+                        <span class="select-all border-b border-dashed border-border/50 w-full truncate">{sitelink}</span>
+                    </div>
+                     <div class="flex flex-col sm:flex-row sm:gap-4">
+                        <span class="text-muted-foreground w-16 shrink-0">Avatar</span>
+                        <span class="select-all border-b border-dashed border-border/50 w-full truncate">{siteavatar}</span>
+                    </div>
+                    <div class="flex flex-col sm:flex-row sm:gap-4">
+                        <span class="text-muted-foreground w-16 shrink-0">Desc</span>
+                        <span class="select-all border-b border-dashed border-border/50 w-full">{myDescription}</span>
+                    </div>
+                </div>
 
-                  setTimeout(() => {
-                    icon.className = "icon-[ph--article] size-5";
-                    text.textContent = "复制我的友链 JSON 信息";
-                  }, 2000);
-                });
-              }
-            </script>
-
+                <button
+                  id="copy-btn"
+                  class="mt-8 w-full py-3 bg-primary text-primary-foreground 
+                         hover:bg-primary/90 transition-colors 
+                         font-medium text-sm rounded-none border border-transparent
+                         active:translate-y-0.5"
+                  data-sitename={sitename}
+                  data-author={author}
+                  data-sitelink={sitelink}
+                  data-siteavatar={siteavatar}
+                  data-description={myDescription}
+                >
+                  <div class="flex items-center justify-center gap-2">
+                      <span id="copy-icon" class="icon-[ph--brackets-curly] size-4"></span>
+                      <span id="copy-text">COPY JSON CONFIG</span>
+                  </div>
+                </button>
+            </div>
         </div>
     </div>
   </div>
-  <SectionDivider/>
-  <!-- 评论区 -->
-  <div class="px-4 sm:px-6 pb-8 mt-6">
+
+  <div class="w-full">
+    <SectionDivider/>
+  </div>
+  
+  <div class="px-6 sm:px-8 pb-8 mt-6 max-w-5xl mx-auto">
     <Comments />
   </div>
 </Layout>
+
+<script>
+  const btn = document.getElementById("copy-btn");
+  const icon = document.getElementById("copy-icon");
+  const text = document.getElementById("copy-text");
+
+  if (btn && icon && text) {
+    btn.addEventListener("click", () => {
+      const myInfo = {
+        name: btn.dataset.sitename,
+        author: btn.dataset.author,
+        url: btn.dataset.sitelink,
+        avatar: btn.dataset.siteavatar,
+        description: btn.dataset.description,
+      };
+
+      navigator.clipboard.writeText(JSON.stringify(myInfo, null, 2))
+        .then(() => {
+             icon.className = "icon-[ph--check-bold] size-4";
+             text.textContent = "COPIED SUCCESSFULLY";
+             btn.classList.add('bg-zinc-800', 'text-white');
+             btn.classList.remove('bg-primary');
+             
+             setTimeout(() => {
+                icon.className = "icon-[ph--brackets-curly] size-4";
+                text.textContent = "COPY JSON CONFIG";
+                btn.classList.remove('bg-zinc-800', 'text-white');
+                btn.classList.add('bg-primary');
+             }, 2000);
+        })
+        .catch(err => {
+            console.error('Copy failed:', err);
+            text.textContent = "MANUAL COPY REQUIRED";
+        });
+    });
+  }
+</script>

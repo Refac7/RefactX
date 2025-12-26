@@ -21,7 +21,7 @@ const isReverse = imagePosition === 'right'
 const defaultHeroImage = POSTS_CONFIG.defaultHeroImage
 ---
 
-<article class={`group flex flex-col md:flex-row gap-8 ${isReverse ? 'md:flex-row-reverse' : ''}`}>
+<article class={`group flex flex-col md:flex-row gap-8 ${isReverse ? 'md:flex-row-reverse' : ''} pb-10 border-b border-border/40`}>
   <!-- 在移动端隐藏图片 -->
   <div class={`${isVertical ? 'md:w-1/4' : 'md:w-2/5'} hidden md:flex flex-col overflow-hidden`}>
     <a href={`/posts/${post.slug}`} class="block relative">
@@ -59,7 +59,7 @@ const defaultHeroImage = POSTS_CONFIG.defaultHeroImage
 
     <div class="flex flex-wrap items-center gap-3 text-xs sm:text-sm text-muted-foreground/90">
       <time class="flex items-center gap-1.5">
-        <span class="icon-[ph--calendar-blank] bg-red-500 size-3.5"></span>
+        <span class="icon-[ph--calendar-blank] size-3.5"></span>
         {formatDate(post.data.pubDate)}
       </time>
 
