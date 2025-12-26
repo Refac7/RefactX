@@ -29,7 +29,7 @@ const posts = postsSort(allPosts).slice(0, size)
     <div class="relative z-10 px-6 sm:px-8 py-16 max-w-5xl mx-auto border-r border-border/40 bg-background/50 backdrop-blur-[2px]">
       
       <!-- 状态栏 Badge -->
-      <div class="mb-12 fade-up">
+      <div class="mb-8 md:mb-12 fade-up">
         <div class="inline-flex items-center gap-4 px-4 py-2 border border-foreground/80 bg-background rounded-none font-mono text-xs tracking-wider text-foreground shadow-[4px_4px_0_0_rgba(0,0,0,0.1)] dark:shadow-[4px_4px_0_0_rgba(255,255,255,0.1)]">
           <span class="relative flex h-2 w-2">
             <span class="animate-ping absolute inline-flex h-full w-full bg-red-500 opacity-75 rounded-none"></span>
@@ -41,7 +41,7 @@ const posts = postsSort(allPosts).slice(0, size)
         </div>
       </div>
 
-      <h1 class="space-y-3 sm:space-y-5 mb-20 fade-up" style="animation-delay: 100ms;">
+      <h1 class="space-y-3 sm:space-y-5 mb-10 md:mb-20 fade-up" style="animation-delay: 100ms;">
         <span class="text-5xl sm:text-7xl font-bold tracking-tighter text-foreground leading-[1.1]">
           Welcome to
         </span>
@@ -65,14 +65,14 @@ const posts = postsSort(allPosts).slice(0, size)
         <div class="flex flex-wrap gap-4 w-full sm:w-auto">
           <a
             href="/posts"
-            class="flex-1 sm:flex-none inline-flex items-center justify-center px-8 py-3 bg-foreground text-background hover:bg-muted/20 hover:text-black transition-colors font-bold uppercase tracking-widest text-sm rounded-none border border-transparent min-w-[140px]"
+            class="flex-1 sm:flex-none inline-flex items-center justify-center px-8 py-3 bg-foreground text-background hover:bg-muted/20 hover:text-black dark:hover:text-white transition-colors font-bold uppercase tracking-normal text-sm rounded-none border border-transparent min-w-[140px]"
           >
             <span class="icon-[mdi--book-open] size-5 mr-2"></span>
             探索文章
           </a>
           <a
             href="/friends"
-            class="flex-1 sm:flex-none inline-flex items-center justify-center px-8 py-3 border border-border text-foreground hover:border-primary hover:bg-muted/10 transition-colors duration-200 font-bold uppercase tracking-widest text-sm rounded-none min-w-[140px]"
+            class="flex-1 sm:flex-none inline-flex items-center justify-center px-8 py-3 border border-border text-foreground hover:border-primary hover:bg-muted/10 transition-colors duration-200 font-bold uppercase tracking-normal text-sm rounded-none min-w-[140px]"
           >
             <span class="icon-[mdi--rocket-launch] size-5 mr-2"></span>
             加入星海
