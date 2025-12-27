@@ -11,8 +11,8 @@ const { title, description, introduce } = PROJECTS_CONFIG
   <div class="min-h-[70vh] relative py-14 px-6 sm:px-8 font-sans">
     
     <!-- 头部区域：工业蓝图风格 -->
-    <div class="border-foreground/10 pb-2">
-      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-8">
+    <div class="mb-6 border-foreground/10 pb-8">
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 border-b-2 border-foreground/10 pb-8">
         <!-- 标题与简介 -->
         <div class="max-w-2xl">
           <h1 class="text-5xl sm:text-6xl font-bold tracking-tighter text-foreground leading-none">
@@ -79,7 +79,7 @@ const { title, description, introduce } = PROJECTS_CONFIG
                 <div class="md:w-64 shrink-0 flex flex-col justify-between p-6 bg-muted/5 border-t md:border-t-0 md:border-l border-border/50 gap-6">
                   
                   <!-- 数据显示屏 -->
-                  <div class="grid grid-cols-2 gap-3">
+                  <div class="hidden md:block grid-cols-2 gap-3">
                     {project.star !== undefined && (
                       <div class="bg-background border border-border p-2 flex flex-col items-center">
                          <span class="text-[10px] uppercase text-muted-foreground/60 font-bold tracking-wider mb-1">Stars</span>
