@@ -36,8 +36,8 @@ const description = `Posts with the tag #${tag}`
 
 <Layout title={`#${tag}`} {description}>
   <div class="min-h-[70vh] relative z-[1] py-14 pb-10 px-6 sm:px-8">
-    <div class="mb-12 md:mb-16">
-      <div class="flex flex-col gap-3">
+    <div class="mb-12 pb-8 border-b-2 border-foreground/10">
+      <div class="flex flex-col gap-2">
         
         {/* 第一行：面包屑导航 */}
         <nav class="flex items-center gap-3 text-sm text-muted-foreground/80 mb-8">
@@ -61,8 +61,16 @@ const description = `Posts with the tag #${tag}`
             </div>
           </div>
         </div>
-
       </div>
+    </div>
+
+    <!-- 2. 内容区域标记 -->
+    <div class="flex items-center gap-4 mb-8">
+       <span class="icon-[ph--caret-double-down] text-primary"></span>
+       <span class="font-mono text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/50">
+          Feed Sequence // {new Date().getFullYear()}
+       </span>
+       <div class="h-px bg-border/40 flex-1"></div>
     </div>
 
     <div class="fade-up space-y-8">

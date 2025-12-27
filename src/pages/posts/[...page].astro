@@ -35,6 +35,7 @@ const { title, description, introduce } = POSTS_CONFIG
         <!-- 标题与简介 -->
         <div class="max-w-2xl">
           <h1 class="text-5xl sm:text-6xl font-bold tracking-tighter text-foreground leading-none">
+            <span class="relative inline-flex h-4 w-4 bg-red-600 rounded-none"></span>
             {title}
           </h1>
           <div class="mt-6 flex gap-4">
@@ -50,8 +51,8 @@ const { title, description, introduce } = POSTS_CONFIG
           <div class="flex items-center justify-between text-xs font-mono uppercase text-muted-foreground/60 tracking-wider mb-1">
              <span>System Status</span>
              <span class="flex size-2">
-               <span class="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-red-600 opacity-75"></span>
-               <span class="relative inline-flex rounded-full h-2 w-2 bg-red-600"></span>
+               <span class="animate-ping absolute inline-flex h-2 w-2 bg-foreground opacity-75"></span>
+               <span class="relative inline-flex h-2 w-2 bg-foreground"></span>
              </span>
           </div>
           

@@ -15,9 +15,10 @@ const isEven = FRIENDS_LIST.length % 2 === 0;
   <div class="relative py-14 px-6 sm:px-8 font-sans min-h-[60vh]">
     
     <!-- 1. 头部区域：工业铭牌风格 -->
-    <div class="mb-16 border-b-2 border-foreground/10 pb-8">
+    <div class="mb-12 border-b-2 border-foreground/10 pb-8">
         <div class="max-w-3xl">
           <h1 class="text-5xl sm:text-6xl font-bold tracking-tight text-foreground">
+            <span class="relative inline-flex h-4 w-4 bg-red-600 rounded-none"></span>
             {title}
           </h1>
           <div class="mt-6 flex flex-col sm:flex-row gap-6 items-start">
@@ -29,11 +30,20 @@ const isEven = FRIENDS_LIST.length % 2 === 0;
              </div>
              <!-- 简单的统计标记 -->
              <div class="sm:ml-auto flex items-center gap-2 px-3 py-1 bg-muted/30 border border-border text-xs font-mono uppercase tracking-wider shrink-0">
-                <span class="size-2 bg-red-600 animate-pulse rounded-none"></span>
+                <span class="size-2 bg-white animate-pulse rounded-none"></span>
                 <span>Links Status: Active</span>
              </div>
           </div>
         </div>
+    </div>
+
+    <!-- 2. 内容区域标记 -->
+    <div class="flex items-center gap-4 mb-8">
+       <span class="icon-[ph--caret-double-down] text-primary"></span>
+       <span class="font-mono text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/50">
+          Feed Sequence // {new Date().getFullYear()}
+       </span>
+       <div class="h-px bg-border/40 flex-1"></div>
     </div>
 
     <!-- 2. 友链列表：机能风网格 -->

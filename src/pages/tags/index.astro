@@ -27,6 +27,7 @@ const maxCount = Math.max(...sortedTags.map((t) => t.count))
       <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div class="max-w-2xl">
           <h1 class="text-5xl sm:text-6xl font-bold tracking-tight text-foreground">
+            <span class="relative inline-flex h-4 w-4 bg-red-600 rounded-none"></span>
             {title}
           </h1>
           <p class="mt-6 text-base sm:text-lg text-muted-foreground leading-relaxed border-l-4 border-primary/60 pl-4">
@@ -48,6 +49,15 @@ const maxCount = Math.max(...sortedTags.map((t) => t.count))
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- 2. 内容区域标记 -->
+    <div class="flex items-center gap-4 mb-8">
+       <span class="icon-[ph--caret-double-down] text-primary"></span>
+       <span class="font-mono text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/50">
+          Feed Sequence // {new Date().getFullYear()}
+       </span>
+       <div class="h-px bg-border/40 flex-1"></div>
     </div>
 
     <!-- 标签矩阵：方正网格 -->

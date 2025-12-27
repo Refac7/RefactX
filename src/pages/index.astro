@@ -29,15 +29,15 @@ const posts = postsSort(allPosts).slice(0, size)
       <div class="mb-12 fade-up flex items-center pb-2">
         <div class="inline-flex items-center gap-3 px-3 py-1 bg-muted/30 border border-border font-mono text-[10px] sm:text-xs tracking-widest text-foreground/80">
           <span class="relative flex h-2 w-2">
-            <span class="animate-ping absolute inline-flex h-full w-full bg-red-600 opacity-75 rounded-none"></span>
-            <span class="relative inline-flex h-2 w-2 bg-red-600 rounded-none"></span>
+            <span class="animate-ping absolute inline-flex h-full w-full bg-foreground opacity-75 rounded-none"></span>
+            <span class="relative inline-flex h-2 w-2 bg-foreground rounded-none"></span>
           </span>
           <span class="font-bold">SYS:ONLINE</span>
           <span class="w-px h-3 bg-border"></span>
           <span>TERMINAL_ID: REF-007</span>
         </div>
         <div class="flex-1 hidden sm:block mx-4 h-px bg-dashed border-t border-dashed border-border/40"></div>
-        <div class="hidden sm:block font-mono text-[10px] text-muted-foreground/50">
+        <div class="hidden sm:block font-mono text-[10px] text-muted-foreground">
            V1.6.0_INDEV
         </div>
       </div>
@@ -55,8 +55,8 @@ const posts = postsSort(allPosts).slice(0, size)
       <!-- 简介区块 -->
       <div class="relative mt-6 mb-10 p-6 border-l-2 border-primary max-w-2xl fade-up group" style="animation-delay: 200ms;">
         <!-- 装饰角标 -->
-        <div class="absolute top-0 left-0 w-1 h-1 bg-primary"></div>
-        <div class="absolute bottom-0 left-0 w-1 h-1 bg-primary"></div>
+        <div class="absolute top-0 left-0 w-0.5 h-1 bg-primary"></div>
+        <div class="absolute bottom-0 left-0 w-0.5 h-1 bg-primary"></div>
         
         <p class="text-base sm:text-lg text-muted-foreground/90 leading-relaxed font-sans font-medium">
           你好，我是 Refac7。一名试图在代码的混沌中寻找秩序的时空修剪者。
@@ -71,7 +71,7 @@ const posts = postsSort(allPosts).slice(0, size)
         <div class="flex flex-wrap gap-4 w-full sm:w-auto">
           <a
             href="/posts"
-            class="flex-1 sm:flex-none inline-flex items-center justify-center px-8 py-3 bg-foreground text-background hover:bg-muted/20 hover:text-black dark:hover:text-white transition-colors font-bold uppercase tracking-normal text-sm rounded-none border border-transparent min-w-[140px]"
+            class="flex-1 sm:flex-none inline-flex items-center justify-center px-8 py-3 bg-foreground text-background hover:bg-muted-foreground/60 hover:text-black dark:hover:text-white transition-colors font-bold uppercase tracking-normal text-sm rounded-none border border-transparent min-w-[140px]"
           >
             <span class="icon-[mdi--book-open] size-5 mr-2"></span>
             探索文章
@@ -108,7 +108,7 @@ const posts = postsSort(allPosts).slice(0, size)
       <div class="py-8 px-6 sm:px-8">
         <div class="max-w-5xl mx-auto">
           <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-l-4 border-primary pl-4">
-            <h2 class="font-bold text-3xl tracking-tight uppercase">Activity Graph</h2>
+            <h2 class="font-normal text-3xl tracking-tight uppercase">Activity Graph</h2>
             <p class="text-xs text-muted-foreground font-mono uppercase tracking-widest mb-1">// Commit History Visualization</p>
           </div>
           
@@ -122,7 +122,7 @@ const posts = postsSort(allPosts).slice(0, size)
                 />
             </div>
           </div>
-          <div class="mt-4 flex justify-between text-[10px] font-mono text-muted-foreground/40 border-t border-border/30 pt-2">
+          <div class="mt-4 flex justify-between text-[10px] font-mono text-muted-foreground pt-2">
               <span>DATA_SOURCE: GITHUB_API</span>
               <span>SYNC_STATUS: OK</span>
           </div>
@@ -135,7 +135,7 @@ const posts = postsSort(allPosts).slice(0, size)
       <div class="py-8 px-6 sm:px-8">
         <div class="max-w-5xl mx-auto">
              <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-l-4 border-primary pl-4">
-                <h2 class="font-bold text-3xl tracking-tight uppercase">Arsenal</h2>
+                <h2 class="font-normal text-3xl tracking-tight uppercase">Arsenal</h2>
                 <p class="text-xs text-muted-foreground font-mono uppercase tracking-widest mb-1">// Tools & Frameworks</p>
             </div>
             <SkillsShowcase skillsData={SKILLS_DATA} />
@@ -150,7 +150,7 @@ const posts = postsSort(allPosts).slice(0, size)
       <div class="max-w-6xl mx-auto">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-12">
             <div>
-                <h2 class="font-bold text-3xl tracking-tight uppercase flex items-center gap-3">
+                <h2 class="font-normal text-3xl tracking-tight uppercase flex items-center gap-3">
                     <span class="icon-[ph--files-light] text-primary"></span>
                     Recent Logs
                 </h2>

@@ -428,7 +428,7 @@ export const PhotosList: PhotoData[] = [
 export const FRIENDS_CONFIG = {
   title: 'Friends',
   description: '我的朋友们都在这里，欢迎互访～',
-  introduce: '相隔万里遇见你，真的很幸运！',
+  introduce: '已获取星图定位，正在前往友链星系的路上……',
 }
 
 export const FRIENDS_LIST = [

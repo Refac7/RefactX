@@ -11,11 +11,12 @@ const { title, description, introduce } = PROJECTS_CONFIG
   <div class="min-h-[70vh] relative py-14 px-6 sm:px-8 font-sans">
     
     <!-- 头部区域：工业蓝图风格 -->
-    <div class="mb-6 border-foreground/10 pb-8">
+    <div class="mb-6 border-foreground/10 pb-6">
       <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 border-b-2 border-foreground/10 pb-8">
         <!-- 标题与简介 -->
         <div class="max-w-2xl">
           <h1 class="text-5xl sm:text-6xl font-bold tracking-tighter text-foreground leading-none">
+            <span class="relative inline-flex h-4 w-4 bg-red-600 rounded-none"></span>
             {title}
           </h1>
           <div class="mt-6 flex gap-4">
@@ -27,11 +28,30 @@ const { title, description, introduce } = PROJECTS_CONFIG
         </div>
         
         <!-- 总数统计块 -->
-        <div class="flex items-center gap-2 px-4 py-2 bg-muted/20 border border-border font-mono text-sm">
-           <span class="text-muted-foreground uppercase tracking-wider">Total Modules:</span>
-           <span class="font-bold text-primary">{ProjectList.length.toString().padStart(2, '0')}</span>
+        <div class="flex flex-col gap-2 shrink-0 min-w-[200px]">
+          <div class="flex items-center justify-between text-xs font-mono uppercase text-muted-foreground/60 tracking-wider mb-1">
+             <span>System Status</span>
+             <span class="flex size-2">
+               <span class="animate-ping absolute inline-flex h-2 w-2 bg-foreground opacity-75"></span>
+               <span class="relative inline-flex h-2 w-2 bg-foreground"></span>
+             </span>
+          </div>
+          
+          <div class="flex items-center gap-2 px-4 py-2 bg-muted/20 border border-border font-mono text-sm">
+            <span class="text-muted-foreground uppercase tracking-wider">Total Modules:</span>
+            <span class="font-bold text-primary">{ProjectList.length.toString().padStart(2, '0')}</span>
+          </div>
         </div>
       </div>
+    </div>
+
+    <!-- 内容区域标记 -->
+    <div class="flex items-center gap-4 mb-8">
+       <span class="icon-[ph--caret-double-down] text-primary"></span>
+       <span class="font-mono text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/50">
+          Feed Sequence // {new Date().getFullYear()}
+       </span>
+       <div class="h-px bg-border/40 flex-1"></div>
     </div>
 
     <!-- 项目列表：机架堆叠风格 -->
@@ -76,53 +96,52 @@ const { title, description, introduce } = PROJECTS_CONFIG
                 </div>
 
                 <!-- 3. 右侧：数据与操作面板 -->
-                <div class="md:w-64 shrink-0 flex flex-col justify-between p-6 bg-muted/5 border-t md:border-t-0 md:border-l border-border/50 gap-6">
+                <div class="md:w-64 shrink-0 flex flex-col justify-between p-6 bg-muted/5 border-t md:border-t-0 md:border-l border-border/50 gap-4">
                   
                   <!-- 数据显示屏 -->
-                  <div class="hidden md:block grid-cols-2 gap-3">
+                  <div class="hidden md:flex">
                     {project.star !== undefined && (
-                      <div class="bg-background border border-border p-2 flex flex-col items-center">
-                         <span class="text-[10px] uppercase text-muted-foreground/60 font-bold tracking-wider mb-1">Stars</span>
-                         <span class="font-mono font-bold text-sm text-foreground">
+                      <div class="bg-background border border-border p-2 flex flex-col items-center flex-1">
+                        <span class="text-[10px] uppercase text-muted-foreground/60 font-bold tracking-wider mb-1">Stars</span>
+                        <span class="font-mono font-bold text-sm text-foreground">
                             <NumberTicker play value={project.star} client:load />
-                         </span>
+                        </span>
                       </div>
                     )}
                     {project.fork !== undefined && (
-                      <div class="bg-background border border-border p-2 flex flex-col items-center">
-                         <span class="text-[10px] uppercase text-muted-foreground/60 font-bold tracking-wider mb-1">Forks</span>
-                         <span class="font-mono font-bold text-sm text-foreground">
+                      <div class="bg-background border border-border p-2 flex flex-col items-center flex-1">
+                        <span class="text-[10px] uppercase text-muted-foreground/60 font-bold tracking-wider mb-1">Forks</span>
+                        <span class="font-mono font-bold text-sm text-foreground">
                             <NumberTicker play value={project.fork} client:load />
-                         </span>
+                        </span>
                       </div>
                     )}
                   </div>
 
                   <!-- 链接按钮组 -->
-                  <div class="flex flex-col gap-2 mt-auto">
+                  <div class="flex flex-row gap-2">
                     {project.website && (
                       <a
                         href={project.website}
                         target="_blank"
-                        class="flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold uppercase tracking-wide border border-foreground/20 hover:bg-foreground hover:text-background transition-colors duration-200"
+                        class="flex items-center justify-center gap-2 px-4 py-4 text-xs font-bold uppercase tracking-wide border border-foreground/20 hover:bg-foreground hover:text-background transition-colors duration-200"
                       >
                         <span class="icon-[ph--globe-simple] size-4"></span>
-                        <span>Live Demo</span>
+                        <span>Demo</span>
                       </a>
                     )}
                     {project.githubUrl && (
                       <a
                         href={project.githubUrl}
                         target="_blank"
-                        class="flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold uppercase tracking-wide border border-transparent bg-muted/50 hover:bg-primary hover:text-primary-foreground transition-colors duration-200 text-muted-foreground"
+                        class="flex items-center justify-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-wide border border-transparent bg-muted/50 hover:bg-primary hover:text-primary-foreground transition-colors duration-200 text-muted-foreground flex-1"
                       >
                         <span class="icon-[mdi--github] size-4"></span>
-                        <span>Source Code</span>
+                        <span>Code</span>
                       </a>
                     )}
                   </div>
                 </div>
-
               </div>
             </div>
           )

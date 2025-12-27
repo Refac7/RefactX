@@ -8,9 +8,10 @@ const { title, description, introduce } = PHOTOS_CONFIG
 
 <Layout {title} {description}>
     <div class="min-h-[70vh] relative z-[1] py-14 pb-12 px-6 sm:px-8">
-      <div class="mb-16 border-b-2 border-foreground/10 pb-8">
+      <div class="mb-12 border-b-2 border-foreground/10 pb-8">
           <div class="max-w-3xl">
             <h1 class="text-5xl sm:text-6xl font-bold tracking-tight text-foreground">
+              <span class="relative inline-flex h-4 w-4 bg-red-600 rounded-none"></span>
               {title}
             </h1>
             <div class="mt-6 flex flex-col sm:flex-row gap-6 items-start">
@@ -22,11 +23,20 @@ const { title, description, introduce } = PHOTOS_CONFIG
               </div>
               <!-- 简单的统计标记 -->
               <div class="sm:ml-auto flex items-center gap-2 px-3 py-1 bg-muted/30 border border-border text-xs font-mono uppercase tracking-wider shrink-0">
-                  <span class="size-2 bg-red-600 animate-pulse rounded-none"></span>
+                  <span class="size-2 bg-foreground animate-pulse rounded-none"></span>
                   <span>Links Status: Active</span>
               </div>
             </div>
           </div>
+      </div>
+
+      <!-- 2. 内容区域标记 -->
+      <div class="flex items-center gap-4 mb-8">
+        <span class="icon-[ph--caret-double-down] text-primary"></span>
+        <span class="font-mono text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/50">
+            Feed Sequence // {new Date().getFullYear()}
+        </span>
+        <div class="h-px bg-border/40 flex-1"></div>
       </div>
     <div class="mt-10">
       {
