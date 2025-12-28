@@ -34,30 +34,40 @@ const { data: frontmatter } = post
 const { Content, headings, remarkPluginFrontmatter } = await post.render()
 
 const filterHeadings = headings.filter((heading) => heading.slug !== 'footnote-label')
+
+// --- 修复后的字数统计函数 ---
 const getWordCount = (content: string) => {
   if (!content) return 0;
+  let cleanContent = content;
+
+  // 1. 去除 Frontmatter (以防万一 post.body 包含了 YAML 头)
+  cleanContent = cleanContent.replace(/^---[\s\S]*?---\s*/, '');
+
+  // 2. 去除代码块 (``` code ```)
+  cleanContent = cleanContent.replace(/```[\s\S]*?```/g, '');
   
-  // 1. 简单清洗：去除 Markdown 代码块和图片链接，避免统计过多无用字符
-  // 去除 ```code``` 代码块
-  const cleanContent = content.replace(/```[\s\S]*?```/g, '')
-  // 去除 ![]() 图片链接
-  .replace(/!\[.*?\]\(.*?\)/g, '')
-  // 去除 * # > 等 Markdown 符号 (可选，简单去除行首符号)
-  .replace(/^(\s*[-*#>]+)+\s/gm, '');
+  // 3. 去除 HTML 标签 (防止 class, id, src 等属性被统计)
+  cleanContent = cleanContent.replace(/<[^>]+>/g, '');
 
-  // 2. 统计中文字符 (CJK)
+  // 4. 处理 Markdown 链接: [描述](链接) -> 描述
+  // 这一步很重要，否则长 URL 会产生巨大的字数误差
+  cleanContent = cleanContent.replace(/\[([^\]]*)\]\([^)]*\)/g, '$1');
+
+  // 5. 去除图片: ![]() 及其描述
+  cleanContent = cleanContent.replace(/!\[.*?\]\(.*?\)/g, '');
+
+  // 6. 去除常见 Markdown 符号 (*, #, >, ~, - 等)
+  cleanContent = cleanContent.replace(/[*#>`~\-\[\]]/g, '');
+
+  // 7. 统计中文字符 (CJK)
   const cn = (cleanContent.match(/[\u4e00-\u9fa5]/g) || []).length;
-
-  // 3. 统计英文单词 (先将中文替换为空格，再按非单词字符分割)
+  // 8. 统计英文单词 (以空格和标点分隔)
   const en = (cleanContent.replace(/[\u4e00-\u9fa5]/g, ' ').match(/[a-zA-Z0-9_\-]+/g) || []).length;
 
   return cn + en;
 };
 
-// 优先使用插件值（如果插件支持中文），否则使用我们自定义的统计函数
-const wordCount = remarkPluginFrontmatter.words && remarkPluginFrontmatter.words > 100 
-  ? remarkPluginFrontmatter.words 
-  : getWordCount(post.body);
+const wordCount = getWordCount(post.body);
 
 const hasValidHeadings = filterHeadings.length > 1
 const layoutMap = {

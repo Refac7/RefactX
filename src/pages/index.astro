@@ -53,7 +53,11 @@ const posts = postsSort(allPosts).slice(0, size)
       </h1>
 
       <!-- 简介区块 -->
-      <div class="relative mt-8 mb-6 md:mb-10 p-6 border-l-4 border-primary max-w-2xl fade-up group" style="animation-delay: 200ms;">
+      <div class="relative mt-6 mb-10 p-6 border-l-2 border-primary max-w-2xl fade-up group" style="animation-delay: 200ms;">
+        <!-- 装饰角标 -->
+        <div class="absolute top-0 left-0 w-0.5 h-1 bg-primary"></div>
+        <div class="absolute bottom-0 left-0 w-0.5 h-1 bg-primary"></div>
+        
         <p class="text-base sm:text-lg text-muted-foreground/90 leading-relaxed font-sans font-medium">
           你好，我是 Refac7。一名试图在代码的混沌中寻找秩序的时空修剪者。
           <span class="block mt-2 text-sm text-muted-foreground/60 font-mono">
@@ -72,7 +76,7 @@ const posts = postsSort(allPosts).slice(0, size)
                    transition-all duration-300 font-bold uppercase tracking-wide text-sm rounded-none min-w-[140px]"
           >
             <span class="icon-[ph--read-cv-logo] size-5 mr-2"></span>
-            Logs
+            the Logs
           </a>
           <a
             href="/friends"
@@ -81,7 +85,7 @@ const posts = postsSort(allPosts).slice(0, size)
                    transition-all duration-300 font-bold uppercase tracking-wide text-sm rounded-none min-w-[140px]"
           >
             <span class="icon-[ph--planet] size-5 mr-2"></span>
-            Link
+            the Links
           </a>
         </div>
 
