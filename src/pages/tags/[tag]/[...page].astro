@@ -59,7 +59,7 @@ const progressPercent = Math.round((page.currentPage / page.lastPage) * 100);
             <span class="icon-[ph--folder-open] text-xl"></span>
             <span class="font-mono text-sm tracking-wider">DIRECTORY</span>
           </div>
-          <h1 class="text-6xl sm:text-7xl font-black tracking-tighter text-foreground leading-[0.9] -ml-1 break-all">
+          <h1 class="text-6xl sm:text-7xl font-bold tracking-tighter text-foreground leading-[0.9] -ml-1 break-all">
             <span class="text-primary/40 mr-2">#</span>{tag}
           </h1>
         </div>
@@ -109,7 +109,7 @@ const progressPercent = Math.round((page.currentPage / page.lastPage) * 100);
 
     <!-- 2. 内容区域标记 -->
     <div class="flex items-end gap-4 mb-10 select-none">
-       <span class="font-mono text-4xl font-black text-muted-foreground/10 leading-none -mb-1">05</span>
+       <span class="font-mono text-4xl font-bold text-muted-foreground/10 leading-none -mb-1">05</span>
        <span class="font-mono text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/50 mb-1">
           Filtered_Results
        </span>
@@ -117,7 +117,7 @@ const progressPercent = Math.round((page.currentPage / page.lastPage) * 100);
     </div>
 
     <!-- 3. 文章列表 -->
-    <div class="fade-up space-y-8 min-h-[40vh]">
+    <div class=" space-y-8 min-h-[40vh]">
       <List 
         posts={page.data} 
         type={POSTS_CONFIG.tagsPageConfig.type} 

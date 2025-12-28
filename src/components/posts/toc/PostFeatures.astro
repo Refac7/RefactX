@@ -15,7 +15,7 @@ const { post, posts, headings } = Astro.props
 const hasHeadings = headings.length > 0
 ---
 
-{hasHeadings && <TableOfContents headings={headings} class="hidden xl:block fade-up animation-delay-150" />}
+{hasHeadings && <TableOfContents headings={headings} class="hidden xl:block  animation-delay-150" />}
 
 <BackToTop id="backToTopMobile" class="xl:hidden fixed bottom-14 sm:right-8 right-6 z-50 flex flex-col gap-3" />
 

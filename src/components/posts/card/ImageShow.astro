@@ -123,18 +123,6 @@ const serialNo = post.slug.slice(0, 4).toUpperCase();
            </div>
         ))}
       </div>
-
-      <!-- Read More 按钮化 -->
-      <a
-        href={`/posts/${post.slug}`}
-        class="inline-flex items-center justify-between gap-6 px-4 py-2 text-xs font-bold font-mono tracking-widest uppercase
-               border border-foreground/20 text-foreground 
-               hover:bg-foreground hover:text-background hover:border-foreground
-               transition-all duration-200 group/read min-w-[140px]"
-      >
-        <span>{POSTS_CONFIG.readMoreText || 'ACCESS'}</span>
-        <span class="icon-[ph--arrow-right] size-3.5 transition-transform group-hover/read:translate-x-1"></span>
-      </a>
     </div>
   </div>
 </article>

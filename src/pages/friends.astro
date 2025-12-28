@@ -34,7 +34,7 @@ const isEven = FRIENDS_LIST.length % 2 === 0;
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
         <!-- 左侧：超大标题 -->
         <div class="lg:col-span-7">
-          <h1 class="text-6xl sm:text-7xl font-black tracking-tighter text-foreground leading-[0.9] -ml-1">
+          <h1 class="text-6xl sm:text-7xl font-bold tracking-tighter text-foreground leading-[0.9] -ml-1">
             {title}<span class="text-primary">.</span>
           </h1>
         </div>
@@ -67,7 +67,7 @@ const isEven = FRIENDS_LIST.length % 2 === 0;
 
     <!-- 2. 内容区域标记 -->
     <div class="flex items-end gap-4 mb-10 select-none">
-       <span class="font-mono text-4xl font-black text-muted-foreground/10 leading-none -mb-1">03</span>
+       <span class="font-mono text-4xl font-bold text-muted-foreground/10 leading-none -mb-1">03</span>
        <span class="font-mono text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/50 mb-1">
           Node_Sequence
        </span>
@@ -76,7 +76,7 @@ const isEven = FRIENDS_LIST.length % 2 === 0;
 
     <!-- 3. 友链列表 -->
     <div class="max-w-full mx-auto">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 fade-up">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 ">
         {FRIENDS_LIST.map((friend) => (
           <a 
             href={friend.url} 
@@ -170,28 +170,28 @@ const isEven = FRIENDS_LIST.length % 2 === 0;
             </div>
 
             {/* 右侧：规格表风格信息卡片 */}
-            <div class="relative bg-card border border-border">
+            <div class="relative bg-card border border-border p-1">
                 <div class="absolute -top-1 -left-1 size-3 border-t-2 border-l-2 border-primary"></div>
                 <div class="absolute -bottom-1 -right-1 size-3 border-b-2 border-r-2 border-primary"></div>
 
-                <div class="bg-background/50 p-4 sm:p-8 h-full">
+                <div class="bg-background/50 p-6 sm:p-8 h-full">
                     <div class="flex justify-between items-end mb-6 border-b-2 border-foreground pb-2">
                          <span class="font-bold text-lg uppercase">Site Configuration</span>
                          <span class="font-mono text-xs text-muted-foreground">JSON_V1.0</span>
                     </div>
                     
-                    <div class="space-y-3 font-mono text-xs sm:text-sm">
+                    <div class="space-y-3 font-mono text-sm">
                         {[
-                            { label: '"name"', value: sitename },
-                            { label: '"author"', value: author },
-                            { label: '"url"', value: sitelink },
-                            { label: '"avatar"', value: siteavatar },
-                            { label: '"desc"', value: myDescription },
-                        ].map((item, i) => (
-                            <div class="flex gap-4 group/item">
-                                <span class="text-pink-500/80 shrink-0 select-none">{item.label}:</span>
-                                <span class="text-foreground/80 break-all">
-                                    "{item.value}"<span class="text-muted-foreground/30">{i < 4 ? ',' : ''}</span>
+                            { label: 'NAME', value: sitename },
+                            { label: 'AUTHOR', value: author },
+                            { label: 'URL', value: sitelink },
+                            { label: 'AVATAR', value: siteavatar },
+                            { label: 'DESC', value: myDescription },
+                        ].map(item => (
+                            <div class="grid grid-cols-[80px_1fr] gap-4 group/item">
+                                <span class="text-muted-foreground/60 text-xs py-1 select-none">{item.label}</span>
+                                <span class="text-foreground border-b border-dashed border-border group-hover/item:border-primary/50 py-1 transition-colors break-all">
+                                    {item.value}
                                 </span>
                             </div>
                         ))}
@@ -202,7 +202,7 @@ const isEven = FRIENDS_LIST.length % 2 === 0;
                       class="mt-8 w-full py-3 bg-primary text-primary-foreground 
                              hover:bg-primary/90 transition-all duration-200
                              font-mono text-xs font-bold tracking-widest rounded-none
-                             flex items-center justify-center gap-2 group active:translate-y-0.5"
+                             flex items-center justify-center gap-2 group active:scale-[0.99]"
                       data-sitename={sitename}
                       data-author={author}
                       data-sitelink={sitelink}

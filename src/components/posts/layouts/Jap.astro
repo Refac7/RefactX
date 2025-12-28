@@ -5,105 +5,146 @@ import Prose from '~/components/posts/base/Prose.astro'
 interface Props {
   frontmatter: any
   minutesRead?: string
-  wordCount?: number // [新增] 字数统计属性
+  wordCount?: number
 }
 
-// 解构新增的 wordCount
 const { frontmatter, minutesRead, wordCount } = Astro.props
+
+const serialCode = `FIG-${new Date(frontmatter.pubDate).getFullYear()}-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`
 ---
 
-<article class="relative fade-up">
-  <!-- 顶部装饰线条 -->
-  <div class="h-1 w-20 bg-primary mb-0"></div>
-
-  <div class="px-6 sm:px-8 py-10 sm:py-14 max-w-4xl mx-auto">
-    
+<article class="relative w-full max-w-5xl">
+  
+  <div class="px-6 md:px-8 py-12">
     <header class="mb-16">
       
-      <!-- 1. 类型标识 -->
-      <div class="mb-6 flex items-center gap-2">
-        <span class="font-mono text-xs font-bold tracking-widest text-primary uppercase">
-          // Article
+      <!-- 1. 顶部状态栏: 模拟机器界面 -->
+      <div class="flex justify-between items-end mb-8 pb-2">
+        <span class="font-mono text-[10px] text-muted-foreground uppercase tracking-widest mb-4">
+          System: Blog_Engine_v2.0
         </span>
-        <div class="h-px w-8 bg-border"></div>
+        <div class="text-right">
+           <span class="font-mono text-xl md:text-2xl font-black text-border/40 select-none">
+             {serialCode}
+           </span>
+        </div>
       </div>
 
-      <!-- 2. 标题与描述 -->
-      <div class="space-y-6 mb-10">
+      <!-- 2. 标题区域 -->
+      <div class="mb-10">
         <h1 
-          class="text-4xl md:text-5xl font-bold font-serif leading-[1.1] tracking-tight text-foreground" 
+          class="text-4xl md:text-5xl font-bold uppercase leading-[0.9] tracking-tighter text-foreground mb-6" 
           data-pagefind-body
         >
           {frontmatter.title}
         </h1>
 
         {frontmatter.description && (
-          <p class="text-base sm:text-lg text-muted-foreground leading-[1.8] max-w-2xl border-l-2 border-primary/20 pl-4">
-            {frontmatter.description}
-          </p>
+          <div class="flex gap-4 items-start max-w-3xl">
+            <span class="shrink-0 font-mono text-xs text-primary pt-1.5 hidden sm:block">NO.01_DESC &darr;</span>
+            <p class="text-md font-medium text-muted-foreground leading-relaxed">
+              {frontmatter.description}
+            </p>
+          </div>
         )}
       </div>
 
-      <!-- 3. 硬朗风格元数据栏 (Info Bar) -->
-      <div class="py-4 border-y border-border/60 flex flex-wrap items-center gap-x-8 gap-y-3 text-xs font-mono uppercase tracking-wider text-muted-foreground">
-        
-        {/* 发布时间 */}
-        <div class="flex items-center gap-2">
-          <span class="icon-[mdi--calendar] size-4 opacity-70"></span>
-          <span>{formatDate(frontmatter.pubDate)}</span>
+      <!-- 3. 数据仪表盘 (Industrial Grid): 替代原本的 Info Bar -->
+      <!-- 使用 grid 和 divide 创造表格感 -->
+      <div class="border-1 border-border bg-card/30 backdrop-blur-sm">
+        <div class="grid grid-cols-2 md:grid-cols-4 divide-x-1 divide-y-1 md:divide-y-0 divide-border">
+          
+          <!-- Cell 1: Date -->
+          <div class="p-4 flex flex-col justify-between h-24 hover:bg-muted/50 transition-colors">
+            <span class="font-mono text-[10px] uppercase text-muted-foreground tracking-widest">Date_Log</span>
+            <div class="flex items-end gap-2">
+              <span class="icon-[mdi--calendar-blank] size-5 text-primary"></span>
+              <span class="font-mono text-sm font-bold">{formatDate(frontmatter.pubDate)}</span>
+            </div>
+          </div>
+
+          <!-- Cell 2: Words -->
+          <div class="p-4 flex flex-col justify-between h-24 hover:bg-muted/50 transition-colors">
+            <span class="font-mono text-[10px] uppercase text-muted-foreground tracking-widest">Data_Size</span>
+            <div class="flex items-end gap-2">
+              <span class="icon-[mdi--database-outline] size-5 text-primary"></span>
+              <span class="font-mono text-sm font-bold">
+                {wordCount} <span class="text-[10px] text-muted-foreground font-normal">WORDS</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Cell 3: Time -->
+          <div class="p-4 flex flex-col justify-between h-24 hover:bg-muted/50 transition-colors">
+            <span class="font-mono text-[10px] uppercase text-muted-foreground tracking-widest">Est_Time</span>
+            <div class="flex items-end gap-2">
+               <span class="icon-[mdi--timer-sand] size-5 text-primary"></span>
+              <span class="font-mono text-sm font-bold">{minutesRead || 'Unknown'}</span>
+            </div>
+          </div>
+
+          <!-- Cell 4: Tags (Interactive) -->
+          <div class="p-4 flex flex-col justify-between h-24 overflow-hidden relative group">
+             <span class="font-mono text-[10px] uppercase text-muted-foreground tracking-widest z-10">Categories</span>
+             <div class="flex flex-wrap gap-1 z-10">
+                {frontmatter.tags && frontmatter.tags.slice(0, 2).map((tag: string) => (
+                  <span class="text-xs font-bold font-mono bg-foreground text-background px-1.5 py-0.5">
+                    #{tag}
+                  </span>
+                ))}
+                {(frontmatter.tags?.length > 2) && <span class="text-xs font-mono text-muted-foreground">...</span>}
+             </div>
+             <!-- 装饰背景字 -->
+             <span class="absolute -bottom-2 -right-2 text-6xl text-border/20 icon-[mdi--tag] group-hover:text-primary/10 transition-colors"></span>
+          </div>
+
         </div>
-
-        {/* 更新时间 (如果有) */}
+        
+        <!-- 更新提示条 (如果有) -->
         {frontmatter.updatedDate && (
-          <div class="flex items-center gap-2 text-primary/80">
-            <span class="icon-[mdi--update] size-4"></span>
-            <span>Upd: {formatDate(frontmatter.updatedDate)}</span>
+          <div class="border-t-2 border-border bg-primary/5 p-2 px-4 flex justify-between items-center">
+            <span class="font-mono text-xs font-bold text-primary uppercase">
+              <span class="animate-pulse mr-2">⚠</span> 
+              Last Updated
+            </span>
+            <span class="font-mono text-xs">{formatDate(frontmatter.updatedDate)}</span>
           </div>
         )}
-
-        {/* [新增] 字数统计 */}
-        {wordCount && (
-          <div class="flex items-center gap-2">
-            <span class="icon-[mdi--text-box-outline] size-4 opacity-70"></span>
-            <span>{wordCount} Words</span>
-          </div>
-        )}
-
-        {/* 阅读时间 */}
-        {minutesRead && (
-          <div class="flex items-center gap-2">
-            <span class="icon-[mdi--clock-outline] size-4 opacity-70"></span>
-            <span>{minutesRead} Min Read</span>
-          </div>
-        )}
-
       </div>
+      
+      <!-- 4. 完整的 Tags 区域 (如果是列表形式) -->
+      {frontmatter.tags && frontmatter.tags.length > 0 && (
+         <div class="flex items-center gap-4 mt-6">
+            <div class="h-px bg-border flex-1"></div>
+            <div class="flex gap-2">
+              {frontmatter.tags.map((tag: string) => (
+                <a
+                  href={`/tags/${tag}`}
+                  class="font-mono text-xs font-bold uppercase tracking-wider
+                         border border-border px-3 py-1
+                         hover:bg-primary hover:text-primary-foreground hover:border-primary hover:shadow-[2px_2px_0px_0px_currentColor]
+                         transition-all duration-200"
+                >
+                  {tag}
+                </a>
+              ))}
+            </div>
+         </div>
+      )}
 
-      <!-- 4. 标签区域 (方形按钮) -->
-      {
-        frontmatter.tags && frontmatter.tags.length > 0 && (
-          <div class="flex flex-wrap gap-2 mt-6">
-            {frontmatter.tags.map((tag: string) => (
-              <a
-                href={`/tags/${tag}`}
-                class="px-3 py-1.5 text-xs font-bold font-mono uppercase tracking-wide
-                       text-muted-foreground border border-border/60 bg-background
-                       hover:text-primary-foreground hover:bg-primary hover:border-primary
-                       transition-all duration-200 rounded-none"
-              >
-                #{tag}
-              </a>
-            ))}
-          </div>
-        )
-      }
     </header>
 
     <!-- 5. 正文区域 -->
     <div class="relative">
+      
       <Prose>
         <slot />
       </Prose>
+
+      <!-- 底部结束符 -->
+      <div class="mt-16 flex justify-center opacity-50">
+        <span class="font-mono text-sm tracking-[1em] text-muted-foreground">/// END_OF_FILE ///</span>
+      </div>
     </div>
     
   </div>

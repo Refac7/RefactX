@@ -12,10 +12,8 @@
     
     <!-- 动态图标 -->
     <div class="relative w-16 h-16 border border-border bg-muted/10 flex items-center justify-center overflow-hidden">
-        <!-- 扫描线动画 -->
-        <div class="absolute top-0 left-0 w-full h-[2px] bg-primary/50 shadow-[0_0_10px_rgba(var(--primary),0.8)] animate-scan"></div>
         
-        <span class="font-mono text-2xl font-black text-foreground animate-pulse">
+        <span class="font-mono text-2xl font-bold text-foreground animate-pulse">
             R<span class="text-primary">X</span>
         </span>
         
@@ -33,7 +31,7 @@
             <span id="loader-text">Processing</span>
         </div>
         <div class="w-24 h-[2px] bg-muted relative overflow-hidden">
-             <div class="absolute left-0 top-0 h-full w-full bg-primary origin-left animate-progress"></div>
+             <div class="absolute left-0 top-0 h-full w-full bg-primary"></div>
         </div>
     </div>
   </div>
@@ -45,20 +43,6 @@
 </div>
 
 <style>
-  @keyframes scan {
-    0%, 100% { top: 0%; opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
-    50% { top: 100%; }
-  }
-
-  @keyframes progress {
-    0% { transform: scaleX(0); }
-    30% { transform: scaleX(0.4); }
-    60% { transform: scaleX(0.7); }
-    100% { transform: scaleX(1); }
-  }
-  
   /* 隐藏状态 */
   .loader-hidden {
     opacity: 0 !important;

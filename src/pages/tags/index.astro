@@ -44,7 +44,7 @@ const lastUpdate = new Date().toLocaleDateString('en-US', { month: 'short', day:
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
         <!-- 左侧：超大标题 -->
         <div class="lg:col-span-7">
-          <h1 class="text-6xl sm:text-7xl font-black tracking-tighter text-foreground leading-[0.9] -ml-1">
+          <h1 class="text-6xl sm:text-7xl font-bold tracking-tighter text-foreground leading-[0.9] -ml-1">
             {title}<span class="text-primary">.</span>
           </h1>
         </div>
@@ -83,7 +83,7 @@ const lastUpdate = new Date().toLocaleDateString('en-US', { month: 'short', day:
 
     <!-- 2. 内容区域标记 -->
     <div class="flex items-end gap-4 mb-10 select-none">
-       <span class="font-mono text-4xl font-black text-muted-foreground/10 leading-none -mb-1">04</span>
+       <span class="font-mono text-4xl font-bold text-muted-foreground/10 leading-none -mb-1">04</span>
        <span class="font-mono text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/50 mb-1">
           Memory_Blocks
        </span>
@@ -91,7 +91,7 @@ const lastUpdate = new Date().toLocaleDateString('en-US', { month: 'short', day:
     </div>
 
     <!-- 3. 标签矩阵：数据存储块风格 -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 fade-up" data-astro-transition="animate">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 " data-astro-transition="animate">
       {
         sortedTags.map((tag, index) => {
           // 计算占比
