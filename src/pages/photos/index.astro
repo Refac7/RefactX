@@ -4,50 +4,100 @@ import Layout from '~/layouts/Layout.astro'
 import PhotoTimeline from '~/components/photos/PhotoTimeline.astro'
 
 const { title, description, introduce } = PHOTOS_CONFIG
+
+// 计算统计数据（补零处理）
+const totalCollections = PhotosList.length.toString().padStart(2, '0');
 ---
 
 <Layout {title} {description}>
-    <div class="min-h-[70vh] relative z-[1] py-14 pb-12 px-6 sm:px-8">
-      <div class="mb-12 border-b-2 border-foreground/10 pb-8">
-          <div class="max-w-3xl">
-            <h1 class="text-5xl sm:text-6xl font-bold tracking-tight text-foreground">
-              <span class="relative inline-flex h-4 w-4 bg-red-600 rounded-none"></span>
-              {title}
-            </h1>
-            <div class="mt-6 flex flex-col sm:flex-row gap-6 items-start">
-              <!-- 左侧装饰竖线 -->
-              <div class="border-l-4 border-primary/60 pl-4">
-                  <p class="text-base sm:text-lg text-muted-foreground leading-relaxed">
-                      {introduce}
-                  </p>
-              </div>
-              <!-- 简单的统计标记 -->
-              <div class="sm:ml-auto flex items-center gap-2 px-3 py-1 bg-muted/30 border border-border text-xs font-mono uppercase tracking-wider shrink-0">
-                  <span class="size-2 bg-foreground animate-pulse rounded-none"></span>
-                  <span>Links Status: Active</span>
+  <div class="min-h-[70vh] relative z-[1] py-12 px-6 sm:px-8 font-sans">
+      
+    <!-- 1. 头部区域：Grid 布局重构 -->
+    <div class="pb-10">
+      
+      <!-- 顶栏状态条：模拟相机/系统参数栏 -->
+      <div class="flex items-center justify-between mb-8 text-[10px] font-mono uppercase tracking-widest text-muted-foreground/60">
+        <span>// SYSTEM_VISUALS // ARCHIVE</span>
+        <div class="flex items-center gap-2 text-primary">
+             <span class="relative flex h-2 w-2">
+               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+               <span class="relative inline-flex rounded-full h-2 w-2 bg-red-600"></span>
+             </span>
+             <span class="font-bold text-foreground">REC</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
+        <!-- 左侧：超大标题 -->
+        <div class="lg:col-span-7">
+          <h1 class="text-6xl sm:text-7xl font-black tracking-tighter text-foreground leading-[0.9] -ml-1">
+            {title}<span class="text-primary">.</span>
+          </h1>
+        </div>
+
+        <!-- 右侧：简介与数据面板 -->
+        <div class="lg:col-span-5 flex flex-col gap-6">
+          <!-- 简介 -->
+          <div class="border-l-2 border-primary/40 pl-5">
+             <p class="text-base sm:text-lg text-muted-foreground leading-relaxed">
+              {introduce}
+             </p>
+          </div>
+
+          <!-- 数据网格：模拟仪表盘 -->
+          <div class="grid grid-cols-2 gap-px bg-border/50 border border-border/50">
+            <!-- Total Count -->
+            <div class="bg-background/50 p-3 flex flex-col gap-1">
+              <span class="text-[9px] uppercase tracking-widest text-muted-foreground/70 font-mono">Total_Frames</span>
+              <span class="text-2xl font-mono font-bold text-foreground">{totalCollections}</span>
+            </div>
+            
+            <!-- Status -->
+            <div class="bg-background/50 p-3 flex flex-col gap-1">
+              <span class="text-[9px] uppercase tracking-widest text-muted-foreground/70 font-mono">Device_Status</span>
+              <div class="flex items-center gap-2 mt-1">
+                 <span class="size-1.5 bg-primary rounded-full"></span>
+                 <span class="text-xs font-bold text-foreground uppercase tracking-wider">Online</span>
               </div>
             </div>
           </div>
+        </div>
       </div>
+    </div>
 
-      <!-- 2. 内容区域标记 -->
-      <div class="flex items-center gap-4 mb-8">
-        <span class="icon-[ph--caret-double-down] text-primary"></span>
-        <span class="font-mono text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/50">
-            Feed Sequence // {new Date().getFullYear()}
-        </span>
-        <div class="h-px bg-border/40 flex-1"></div>
-      </div>
-    <div class="mt-10">
+    <!-- 2. 内容区域标记 -->
+    <div class="flex items-end gap-4 mb-10 select-none">
+       <span class="font-mono text-4xl font-black text-muted-foreground/10 leading-none -mb-1">02</span>
+       <span class="font-mono text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/50 mb-1">
+          Visual_Feed
+       </span>
+       <div class="h-px bg-gradient-to-r from-border to-transparent flex-1 mb-1.5"></div>
+    </div>
+
+    <!-- 3. 照片时间轴主体 -->
+    <div class="mt-8 fade-up min-h-[40vh]">
       {
         PhotosList.length > 0 ? (
-          <PhotoTimeline photoData={PhotosList} />
+          <div class="relative">
+             <!-- 增加一个左侧装饰线条，贯穿整个时间轴 -->
+             <div class="absolute left-[19px] top-0 bottom-0 w-px bg-border/40 hidden md:block -z-10"></div>
+             <PhotoTimeline photoData={PhotosList} />
+          </div>
         ) : (
-          <div class="text-muted-foreground mb-4">
-            <p class="text-sm">No photos yet, wait for me to return, OvO</p>
+          <div class="flex flex-col items-center justify-center py-20 border border-dashed border-border/60 bg-muted/5">
+             <span class="icon-[ph--camera-slash] text-4xl text-muted-foreground/30 mb-4"></span>
+             <p class="font-mono text-sm text-muted-foreground/60 uppercase tracking-widest">Signal Lost // No Data</p>
           </div>
         )
       }
     </div>
+    
+    <!-- 底部结束标记 -->
+    <div class="mt-16 flex justify-center">
+        <span class="font-mono text-[10px] text-muted-foreground/30 uppercase tracking-[0.5em]">
+            // End of Reel //
+        </span>
+    </div>
+
   </div>
 </Layout>

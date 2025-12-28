@@ -5,139 +5,141 @@ import Layout from '~/layouts/Layout.astro'
 import NumberTicker from '~/components/base/NumberTicker'
 
 const { title, description, introduce } = PROJECTS_CONFIG
+// 补零处理总数
+const totalCount = ProjectList.length.toString().padStart(2, '0');
 ---
 
 <Layout {title} {description}>
-  <div class="min-h-[70vh] relative py-14 px-6 sm:px-8 font-sans">
-    
-    <!-- 头部区域：工业蓝图风格 -->
-    <div class="mb-6 border-foreground/10 pb-6">
-      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 border-b-2 border-foreground/10 pb-8">
-        <!-- 标题与简介 -->
-        <div class="max-w-2xl">
-          <h1 class="text-5xl sm:text-6xl font-bold tracking-tighter text-foreground leading-none">
-            <span class="relative inline-flex h-4 w-4 bg-red-600 rounded-none"></span>
-            {title}
+  <div class="min-h-[70vh] relative py-12 px-6 sm:px-8 font-sans overflow-hidden">
+
+    <!-- 头部区域：重构为 Grid 布局 -->
+    <div class="mb-10 relative">
+      <!-- 顶部装饰线与标签 -->
+      <div class="flex items-center justify-between pb-2 mb-6">
+        <span class="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/70">
+           // SYSTEM_MANIFEST // {new Date().getFullYear()}
+        </span>
+        <div class="flex items-center gap-2">
+            <span class="relative flex h-2 w-2">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+            </span>
+            <span class="font-mono text-[10px] uppercase text-primary font-bold">Online</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
+        
+        <!-- 左侧：主标题 -->
+        <div class="lg:col-span-7">
+          <h1 class="text-6xl sm:text-7xl font-black tracking-tighter text-foreground leading-[0.9] -ml-1">
+            {title}<span class="text-primary/80">.</span>
           </h1>
-          <div class="mt-6 flex gap-4">
-             <div class="w-1 bg-primary/60 self-stretch"></div>
-             <p class="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-prose">
+        </div>
+
+        <!-- 右侧：简介与数据聚合 -->
+        <div class="lg:col-span-5 flex flex-col justify-end pb-2">
+          <!-- 简介块：带左侧装饰边框 -->
+          <div class="border-l-2 border-primary/50 pl-6 flex flex-col gap-6">
+             <p class="text-base sm:text-lg text-muted-foreground leading-relaxed">
               {introduce}
              </p>
-          </div>
-        </div>
-        
-        <!-- 总数统计块 -->
-        <div class="flex flex-col gap-2 shrink-0 min-w-[200px]">
-          <div class="flex items-center justify-between text-xs font-mono uppercase text-muted-foreground/60 tracking-wider mb-1">
-             <span>System Status</span>
-             <span class="flex size-2">
-               <span class="animate-ping absolute inline-flex h-2 w-2 bg-foreground opacity-75"></span>
-               <span class="relative inline-flex h-2 w-2 bg-foreground"></span>
-             </span>
-          </div>
-          
-          <div class="flex items-center gap-2 px-4 py-2 bg-muted/20 border border-border font-mono text-sm">
-            <span class="text-muted-foreground uppercase tracking-wider">Total Modules:</span>
-            <span class="font-bold text-primary">{ProjectList.length.toString().padStart(2, '0')}</span>
+             
+             <!-- 数据展示下沉到此处，形成视觉闭环 -->
+             <div class="flex items-center gap-4 pt-4 border-t border-dashed border-border/60">
+                <div class="flex flex-col">
+                    <span class="text-[10px] uppercase text-muted-foreground/60 font-mono tracking-wider">Total Modules</span>
+                    <span class="text-3xl font-mono font-bold text-foreground tracking-tight">
+                        {totalCount}
+                    </span>
+                </div>
+                <div class="h-8 w-px bg-border/60"></div>
+                <div class="flex flex-col">
+                    <span class="text-[10px] uppercase text-muted-foreground/60 font-mono tracking-wider">Last Update</span>
+                    <span class="text-sm font-mono text-foreground mt-1">
+                        {new Date().toLocaleDateString('en-US', {month: 'short', day: '2-digit'})}
+                    </span>
+                </div>
+             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- 内容区域标记 -->
-    <div class="flex items-center gap-4 mb-8">
-       <span class="icon-[ph--caret-double-down] text-primary"></span>
-       <span class="font-mono text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/50">
-          Feed Sequence // {new Date().getFullYear()}
+    <!-- 内容区域标记：更简约的分割 -->
+    <div class="flex items-end gap-4 mb-10 select-none">
+       <span class="font-mono text-4xl font-black text-muted-foreground/10 leading-none -mb-1">01</span>
+       <span class="font-mono text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/50 mb-1">
+          Component_Sequence
        </span>
-       <div class="h-px bg-border/40 flex-1"></div>
+       <div class="h-px bg-gradient-to-r from-border to-transparent flex-1 mb-1.5"></div>
     </div>
 
-    <!-- 项目列表：机架堆叠风格 -->
+    <!-- 项目列表：保持原有逻辑，微调间距 -->
     <div class="flex flex-col gap-4 fade-up">
       {
         ProjectList.map((project, index) => {
           const serialId = `PROJ-${(index + 1).toString().padStart(3, '0')}`;
           
           return (
-            <div class="group relative w-full bg-background border border-border hover:border-primary/50 transition-all duration-300 rounded-none overflow-hidden">
+            <div class="group relative w-full bg-background border border-border hover:border-primary/50 transition-all duration-300 rounded-none overflow-hidden hover:shadow-[0_0_20px_-12px_rgba(0,0,0,0.2)]">
               
-              <!-- 装饰：左侧强调条 -->
               <div class="absolute left-0 top-0 bottom-0 w-1 bg-muted group-hover:bg-primary transition-colors duration-300"></div>
-              
-              <!-- 装饰：Hover时出现的角落标记 -->
-              <div class="absolute top-0 right-0 size-4 border-t-2 border-r-2 border-primary opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+              <!-- 右上角装饰改为更细腻的角标 -->
+              <svg class="absolute top-0 right-0 size-6 text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                 <path d="M4 4h16v16" />
+              </svg>
 
               <div class="flex flex-col md:flex-row">
-                
                 <!-- 1. 左侧：图标与ID区 -->
-                <div class="md:w-36 shrink-0 flex md:flex-col items-center md:items-start justify-between md:justify-center p-6 bg-muted/5 border-b md:border-b-0 md:border-r border-border gap-4">
-                   <!-- 图标容器 -->
-                   <div class="size-12 flex items-center justify-center bg-background border border-border shadow-sm group-hover:shadow-md transition-shadow">
-                      {project.type === 'icon' && <span class={cn('size-6 text-foreground/80', project.icon)} />}
+                <div class="md:w-32 shrink-0 flex md:flex-col items-center md:items-start justify-between md:justify-center p-5 bg-muted/5 border-b md:border-b-0 md:border-r border-border gap-3">
+                   <div class="size-10 flex items-center justify-center bg-background border border-border shadow-sm">
+                      {project.type === 'icon' && <span class={cn('size-5 text-foreground/80', project.icon)} />}
                       {project.type === 'image' && <img src={project.icon} alt="icon" class={cn('size-full object-cover', project.imageClass)} />}
                    </div>
-                   <!-- 序列号 -->
-                   <span class="font-mono text-xs text-muted-foreground/50 tracking-widest">{serialId}</span>
+                   <span class="font-mono text-[10px] text-muted-foreground/40 tracking-widest">{serialId}</span>
                 </div>
 
                 <!-- 2. 中间：信息主体 -->
-                <div class="flex-1 p-6 flex flex-col justify-center min-w-0">
+                <div class="flex-1 p-5 md:p-6 flex flex-col justify-center min-w-0">
                   <div class="flex items-baseline justify-between mb-2">
-                     <a href={project.website} target="_blank" class="font-bold text-xl md:text-2xl text-foreground group-hover:text-primary transition-colors tracking-tight truncate pr-4">
+                     <a href={project.website} target="_blank" class="font-bold text-xl text-foreground group-hover:text-primary transition-colors tracking-tight truncate pr-4">
                         {project.name}
                      </a>
                   </div>
-                  
-                  <p class="text-sm md:text-base text-muted-foreground leading-relaxed line-clamp-2 mb-6 md:mb-0">
+                  <p class="text-sm text-muted-foreground leading-relaxed line-clamp-2 mb-4 md:mb-0">
                     {project.description}
                   </p>
                 </div>
 
-                <!-- 3. 右侧：数据与操作面板 -->
-                <div class="md:w-64 shrink-0 flex flex-col justify-between p-6 bg-muted/5 border-t md:border-t-0 md:border-l border-border/50 gap-4">
-                  
-                  <!-- 数据显示屏 -->
-                  <div class="hidden md:flex">
+                <!-- 3. 右侧：操作面板 -->
+                <div class="md:w-64 shrink-0 flex flex-col justify-between p-5 md:p-6 bg-muted/5 border-t md:border-t-0 md:border-l border-border/50 gap-4">
+                  <!-- 数据显示 -->
+                  <div class="hidden md:grid grid-cols-2 gap-2">
                     {project.star !== undefined && (
-                      <div class="bg-background border border-border p-2 flex flex-col items-center flex-1">
-                        <span class="text-[10px] uppercase text-muted-foreground/60 font-bold tracking-wider mb-1">Stars</span>
-                        <span class="font-mono font-bold text-sm text-foreground">
-                            <NumberTicker play value={project.star} client:load />
-                        </span>
+                      <div class="flex flex-col">
+                        <span class="text-[9px] uppercase text-muted-foreground/50 font-bold tracking-wider">Stars</span>
+                        <span class="font-mono text-xs font-bold"><NumberTicker play value={project.star} client:load /></span>
                       </div>
                     )}
                     {project.fork !== undefined && (
-                      <div class="bg-background border border-border p-2 flex flex-col items-center flex-1">
-                        <span class="text-[10px] uppercase text-muted-foreground/60 font-bold tracking-wider mb-1">Forks</span>
-                        <span class="font-mono font-bold text-sm text-foreground">
-                            <NumberTicker play value={project.fork} client:load />
-                        </span>
+                      <div class="flex flex-col">
+                        <span class="text-[9px] uppercase text-muted-foreground/50 font-bold tracking-wider">Forks</span>
+                        <span class="font-mono text-xs font-bold"><NumberTicker play value={project.fork} client:load /></span>
                       </div>
                     )}
                   </div>
 
-                  <!-- 链接按钮组 -->
-                  <div class="flex flex-row gap-2">
+                  <!-- 按钮组 -->
+                  <div class="flex items-stretch gap-2 mt-auto h-8">
                     {project.website && (
-                      <a
-                        href={project.website}
-                        target="_blank"
-                        class="flex items-center justify-center gap-2 px-4 py-4 text-xs font-bold uppercase tracking-wide border border-foreground/20 hover:bg-foreground hover:text-background transition-colors duration-200"
-                      >
-                        <span class="icon-[ph--globe-simple] size-4"></span>
-                        <span>Demo</span>
+                      <a href={project.website} target="_blank" class="flex items-center justify-center px-8 bg-foreground text-background text-[10px] font-bold uppercase hover:bg-foreground/90 transition-colors">
+                        Demo
                       </a>
                     )}
                     {project.githubUrl && (
-                      <a
-                        href={project.githubUrl}
-                        target="_blank"
-                        class="flex items-center justify-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-wide border border-transparent bg-muted/50 hover:bg-primary hover:text-primary-foreground transition-colors duration-200 text-muted-foreground flex-1"
-                      >
+                      <a href={project.githubUrl} target="_blank" class="flex items-center justify-center px-8 border border-border bg-background hover:border-primary hover:text-primary transition-colors text-muted-foreground">
                         <span class="icon-[mdi--github] size-4"></span>
-                        <span>Code</span>
                       </a>
                     )}
                   </div>

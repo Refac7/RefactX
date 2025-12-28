@@ -16,114 +16,149 @@ const sortedTags = tags
 
 const { title, description, introduce } = TAGS_CONFIG
 
+// 统计数据计算
 const maxCount = Math.max(...sortedTags.map((t) => t.count))
+const totalTags = tags.length.toString().padStart(3, '0');
+const totalPosts = allPosts.length.toString().padStart(3, '0');
+const lastUpdate = new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit' });
 ---
 
 <Layout {title} {description}>
-  <div class="relative z-[1] py-14 px-6 sm:px-8 min-h-[70vh] font-sans">
+  <div class="relative z-[1] py-12 px-6 sm:px-8 min-h-[70vh] font-sans">
     
-    <!-- 头部区域：工业铭牌风格 -->
-    <div class="mb-12 border-b-2 border-foreground/10 pb-8">
-      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
-        <div class="max-w-2xl">
-          <h1 class="text-5xl sm:text-6xl font-bold tracking-tight text-foreground">
-            <span class="relative inline-flex h-4 w-4 bg-red-600 rounded-none"></span>
-            {title}
+    <!-- 1. 头部区域：Grid 布局重构 -->
+    <div class="pb-10">
+      
+      <!-- 顶栏状态条 -->
+      <div class="flex items-center justify-between mb-8 text-[10px] font-mono uppercase tracking-widest text-muted-foreground/60">
+        <span>// SYSTEM_INDEX // KEYWORDS</span>
+        <div class="flex items-center gap-2 text-primary">
+             <span class="relative flex h-2 w-2">
+               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-500 opacity-75"></span>
+               <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
+             </span>
+             <span class="font-bold text-foreground">INDEXING</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
+        <!-- 左侧：超大标题 -->
+        <div class="lg:col-span-7">
+          <h1 class="text-6xl sm:text-7xl font-black tracking-tighter text-foreground leading-[0.9] -ml-1">
+            {title}<span class="text-primary">.</span>
           </h1>
-          <p class="mt-6 text-base sm:text-lg text-muted-foreground leading-relaxed border-l-4 border-primary/60 pl-4">
-            {introduce}
-          </p>
         </div>
 
-        <!-- 数据仪表盘 -->
-        <div class="flex flex-row md:flex-col gap-4 md:gap-2 text-right font-mono text-sm shrink-0">
-          <div class="flex items-center justify-end gap-3 px-3 py-1 bg-muted/30 border border-border">
-            <span class="text-muted-foreground uppercase text-xs tracking-wider">Total Tags</span>
-            <span class="font-bold text-primary">{tags.length.toString().padStart(3, '0')}</span>
-            <span class="icon-[ph--hash] text-foreground/50"></span>
+        <!-- 右侧：简介与数据面板 -->
+        <div class="lg:col-span-5 flex flex-col gap-6">
+          <div class="border-l-2 border-primary/40 pl-5">
+             <p class="text-base sm:text-lg text-muted-foreground leading-relaxed">
+              {introduce}
+             </p>
           </div>
-          <div class="flex items-center justify-end gap-3 px-3 py-1 bg-muted/30 border border-border">
-            <span class="text-muted-foreground uppercase text-xs tracking-wider">Total Posts</span>
-            <span class="font-bold text-primary">{allPosts.length.toString().padStart(3, '0')}</span>
-            <span class="icon-[ph--article] text-foreground/50"></span>
+
+          <!-- 数据网格：索引统计 -->
+          <div class="grid grid-cols-2 gap-px bg-border/50 border border-border/50">
+            <!-- Total Tags -->
+            <div class="bg-background/50 p-3 flex flex-col gap-1">
+              <span class="text-[9px] uppercase tracking-widest text-muted-foreground/70 font-mono">Index_Count</span>
+              <span class="text-2xl font-mono font-bold text-foreground">{totalTags}</span>
+            </div>
+            
+            <!-- Linked Posts -->
+            <div class="bg-background/50 p-3 flex flex-col gap-1">
+              <span class="text-[9px] uppercase tracking-widest text-muted-foreground/70 font-mono">Linked_Files</span>
+              <span class="text-2xl font-mono font-bold text-foreground">{totalPosts}</span>
+            </div>
+            
+            <!-- Update Info (跨两列) -->
+            <div class="col-span-2 bg-background/50 p-2 flex items-center justify-between border-t border-border/50">
+               <span class="text-[9px] uppercase tracking-widest text-muted-foreground/70 font-mono">Last_Rebuild</span>
+               <span class="text-xs font-mono font-bold text-primary">{lastUpdate}</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
     <!-- 2. 内容区域标记 -->
-    <div class="flex items-center gap-4 mb-8">
-       <span class="icon-[ph--caret-double-down] text-primary"></span>
-       <span class="font-mono text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/50">
-          Feed Sequence // {new Date().getFullYear()}
+    <div class="flex items-end gap-4 mb-10 select-none">
+       <span class="font-mono text-4xl font-black text-muted-foreground/10 leading-none -mb-1">04</span>
+       <span class="font-mono text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/50 mb-1">
+          Memory_Blocks
        </span>
-       <div class="h-px bg-border/40 flex-1"></div>
+       <div class="h-px bg-gradient-to-r from-border to-transparent flex-1 mb-1.5"></div>
     </div>
 
-    <!-- 标签矩阵：方正网格 -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" data-astro-transition="animate">
+    <!-- 3. 标签矩阵：数据存储块风格 -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4" data-astro-transition="animate">
       {
         sortedTags.map((tag, index) => {
-          // 计算占比，用于硬朗的进度条
+          // 计算占比
           const percent = Math.min((tag.count / maxCount) * 100, 100)
-          const indexStr = (index + 1).toString().padStart(2, '0')
+          const indexStr = `IDX-${(index + 1).toString().padStart(2, '0')}`;
           
           return (
             <a
               href={`/tags/${tag.name}`}
-              class="group relative flex flex-col justify-between p-5 bg-background border border-border hover:border-primary/60 transition-colors duration-200 rounded-none overflow-hidden"
+              class="group relative flex flex-col justify-between p-5 h-32
+                     bg-background border border-border 
+                     hover:border-primary/60 transition-all duration-300 rounded-none overflow-hidden"
             >
-              <!-- 装饰性角标 -->
-              <div class="absolute top-0 right-0 size-3 border-t border-r border-primary/30 group-hover:border-primary transition-colors"></div>
-              <div class="absolute bottom-0 left-0 size-3 border-b border-l border-primary/30 group-hover:border-primary transition-colors"></div>
+              <!-- 装饰：四角定位标 -->
+              <div class="absolute top-0 right-0 size-2 border-t border-r border-primary/20 group-hover:border-primary transition-colors"></div>
+              <div class="absolute bottom-0 left-0 size-2 border-b border-l border-primary/20 group-hover:border-primary transition-colors"></div>
 
-              <div class="flex items-start justify-between mb-6">
-                <div class="flex flex-col">
-                  <!-- 序号 -->
-                  <span class="text-[10px] font-mono text-muted-foreground/60 mb-1">NO.{indexStr}</span>
-                  <!-- 标签名 -->
-                  <div class="flex items-center gap-2">
-                    <span class="icon-[ph--hash] text-primary/70"></span>
-                    <span class="font-bold text-lg text-foreground group-hover:text-primary transition-colors tracking-tight">
-                      {tag.name}
-                    </span>
-                  </div>
-                </div>
-                <!-- 数量Badge -->
-                <div class="font-mono text-sm bg-muted px-2 py-0.5 border border-border text-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                  {tag.count}
-                </div>
+              <!-- 顶部信息 -->
+              <div class="flex justify-between items-start z-10">
+                 <span class="text-[10px] font-mono text-muted-foreground/40 tracking-widest group-hover:text-primary/70 transition-colors">
+                    {indexStr}
+                 </span>
+                 <span class="icon-[ph--arrow-up-right] size-3 text-muted-foreground/20 group-hover:text-primary transition-colors"></span>
               </div>
 
-              <!-- 工业风进度条：实心硬朗线条 -->
-              <div class="w-full relative">
-                 <div class="flex justify-between text-[10px] text-muted-foreground/50 font-mono mb-1">
-                    <span>REQ</span>
-                    <span>{percent.toFixed(0)}%</span>
-                 </div>
-                 <div class="h-1.5 w-full bg-muted overflow-hidden">
-                    <div
-                      class="h-full bg-primary transition-all duration-300 ease-out"
-                      style={`width: ${percent}%`}
-                    />
-                 </div>
+              <!-- 中间：标签名 -->
+              <div class="relative z-10 flex items-baseline gap-2 mt-auto mb-3">
+                 <h3 class="font-bold text-xl text-foreground group-hover:text-primary transition-colors tracking-tight">
+                    {tag.name}
+                 </h3>
+                 <span class="text-xs font-mono text-muted-foreground/50">
+                    ({tag.count})
+                 </span>
+              </div>
+
+              <!-- 底部：数据条 -->
+              <div class="w-full h-1 bg-muted relative z-10 overflow-hidden">
+                 <div 
+                   class="h-full bg-primary/80 group-hover:bg-primary transition-all duration-500 ease-out" 
+                   style={`width: ${percent}%`}
+                 ></div>
               </div>
               
-              <!-- Hover时的背景微弱扫描效果 -->
-              <div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none" />
+              <!-- Hover 背景特效：微弱的扫描光 -->
+              <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
             </a>
           )
         })
       }
     </div>
 
+    <!-- Empty State -->
     {
       tags.length === 0 && (
-        <div class="flex flex-col items-center justify-center py-20 border border-dashed border-border mt-8">
-          <span class="icon-[ph--warning-octagon] size-12 text-muted-foreground/30 mb-4" />
-          <p class="font-mono text-muted-foreground uppercase tracking-widest">Data Not Found</p>
+        <div class="flex flex-col items-center justify-center py-24 border border-dashed border-border mt-8 bg-muted/5">
+          <span class="icon-[ph--warning-octagon] size-10 text-muted-foreground/30 mb-4" />
+          <p class="font-mono text-sm text-muted-foreground/50 uppercase tracking-widest">Database Empty // No Keywords</p>
         </div>
       )
     }
+
+    <!-- 底部结束标记 -->
+    <div class="mt-16 flex justify-center border-t border-dashed border-border/40 pt-6">
+        <span class="font-mono text-[10px] text-muted-foreground/30 uppercase tracking-[0.5em]">
+            End of Index
+        </span>
+    </div>
+
   </div>
 </Layout>

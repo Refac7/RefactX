@@ -223,7 +223,7 @@ export const TAGS_CONFIG: TagsConfig = {
 export const PROJECTS_CONFIG: ProjectConfig = {
   title: 'Projects',
   description: '我的项目案例',
-  introduce: '以下是我的项目案例展示。'
+  introduce: '以下是我的项目案例展示，不定期维护项目。'
 }
 
 export const ProjectList: Project[] = [

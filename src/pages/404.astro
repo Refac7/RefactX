@@ -2,80 +2,130 @@
 import Layout from '~/layouts/Layout.astro'
 ---
 
-<Layout title="Page Not Found" description="404 Page">
-  <div class="not-found flex-1 flex justify-center font-mono min-h-[70vh]">
-    <div class="relative z-[1] w-full max-w-3xl py-12 px-8 text-sm">
-      <div class="flex items-center text-muted-foreground mb-2 animate-fade-in">
-        <span class="text-green-500 mr-2 w-4 text-center">$</span>
-        <span class="animate-typing" style="animation-delay: 0s;">Nice to meet you！</span>
+<Layout title="System Failure" description="404 Page Not Found">
+  <div class="relative min-h-[80vh] flex flex-col items-center justify-center p-6 sm:p-8 font-sans overflow-hidden">
+    <div class="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      
+      <!-- 左侧：视觉冲击区 -->
+      <div class="relative flex flex-col select-none">
+         
+         <span class="font-mono text-xs font-bold text-primary uppercase tracking-[0.3em] mb-2">
+            // Critical_Error
+         </span>
+         
+         <h1 class="text-[10rem] sm:text-[12rem] leading-[0.8] font-black tracking-tighter text-foreground/5 mix-blend-overlay select-none absolute -top-10 -left-10 z-0">
+            404
+         </h1>
+         
+         <div class="relative z-10">
+            <h2 class="text-7xl sm:text-8xl font-bold tracking-tighter text-foreground mb-4">
+              404<span class="text-primary animate-pulse">_</span>
+            </h2>
+            <div class="h-1 w-24 bg-primary mb-6"></div>
+            <p class="text-lg sm:text-xl text-muted-foreground max-w-md leading-relaxed">
+              The requested module could not be located in the memory banks. It may have been moved, deleted, or never existed.
+            </p>
+         </div>
       </div>
-      <div class="flex items-center text-muted-foreground mb-2 animate-fade-in" style="animation-delay: 0.3s">
-        <span class="text-green-500 mr-2 w-4 text-center">$</span>
-        <span class="animate-typing" style="animation-delay: 0.3s">cd /home</span>
+
+      <!-- 右侧：交互终端区 -->
+      <div class="w-full">
+        <!-- 终端窗口 -->
+        <div class="border border-border bg-background shadow-2xl relative overflow-hidden">
+           <!-- 终端标题栏 -->
+           <div class="flex items-center justify-between px-4 py-2 bg-muted/20 border-b border-border">
+              <span class="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">sys_diagnostic.log</span>
+              <div class="flex gap-1.5">
+                 <div class="size-2 rounded-full bg-red-500/50"></div>
+                 <div class="size-2 rounded-full bg-yellow-500/50"></div>
+                 <div class="size-2 rounded-full bg-green-500/50"></div>
+              </div>
+           </div>
+           
+           <!-- 终端内容 -->
+           <div class="p-6 font-mono text-sm min-h-[200px] flex flex-col justify-center bg-black/5 dark:bg-black/20">
+              <div class="flex items-center text-muted-foreground mb-2 animate-fade-in opacity-0">
+                <span class="text-emerald-500 mr-3 font-bold">➜</span>
+                <span class="animate-typing">initiating search_protocol...</span>
+              </div>
+              <div class="flex items-center text-muted-foreground mb-2 animate-fade-in opacity-0" style="animation-delay: 0.8s">
+                <span class="text-emerald-500 mr-3 font-bold">➜</span>
+                <span class="animate-typing">scanning directory /root/pages</span>
+              </div>
+              <div class="flex items-center text-red-500 mb-4 animate-fade-in opacity-0" style="animation-delay: 1.6s">
+                <span class="mr-3 font-bold">✗</span>
+                <span class="animate-typing bg-red-500/10 px-1">Error: Target not found</span>
+              </div>
+              
+              <div class="border-t border-dashed border-border/40 my-2 w-full animate-fade-in opacity-0" style="animation-delay: 2.2s"></div>
+
+              <div class="flex flex-col gap-2 mt-2 animate-fade-in opacity-0" style="animation-delay: 2.5s">
+                <span class="text-muted-foreground/60 text-xs uppercase tracking-wider mb-1">// Recovery Options:</span>
+                
+                <button onclick="history.back()" class="group flex items-center gap-2 text-foreground hover:text-primary transition-colors text-left w-fit">
+                    <span class="text-blue-500">›</span>
+                    <span class="border-b border-transparent group-hover:border-primary">cd ..</span>
+                    <span class="text-xs text-muted-foreground/40 ml-2">(Go Back)</span>
+                </button>
+                
+                <button onclick="window.location.href='/'" class="group flex items-center gap-2 text-foreground hover:text-primary transition-colors text-left w-fit">
+                    <span class="text-blue-500">›</span>
+                    <span class="border-b border-transparent group-hover:border-primary">cd /home</span>
+                    <span class="text-xs text-muted-foreground/40 ml-2">(Return Home)</span>
+                </button>
+              </div>
+           </div>
+        </div>
+
+        <!-- 底部装饰数据 -->
+        <div class="flex justify-between mt-4 font-mono text-[10px] text-muted-foreground/30 uppercase tracking-widest">
+           <span>ERR_CODE: 0x00F4</span>
+           <span>MEM_DUMP: EMPTY</span>
+        </div>
       </div>
-      <div class="flex items-center text-muted-foreground mb-2 animate-fade-in" style="animation-delay: 0.5s">
-        <span class="text-red-500 mr-2 w-4 text-center">✗</span>
-        <span class="animate-typing" style="animation-delay: 0.5s">Error: Directory not found！</span>
-      </div>
-      <div class="flex items-center text-muted-foreground mb-2 animate-fade-in" style="animation-delay: 0.7s">
-        <span class="text-green-500 mr-2 w-4 text-center">$</span>
-        <span class="animate-typing text-muted-foreground/50" style="animation-delay: 0.7s">Available commands:</span>
-      </div>
-      <div class="flex items-center text-muted-foreground mb-2 ml-5 animate-fade-in" style="animation-delay: 0.9s">
-        <span class="text-blue-500 mr-2 w-4 text-center">›</span>
-        <span class="animate-typing cursor-pointer hover:text-foreground" style="animation-delay: 0.9s" onclick="history.back()">cd ..</span
-        >
-      </div>
-      <div class="flex items-center text-muted-foreground mb-2 ml-5 animate-fade-in" style="animation-delay: 1.1s">
-        <span class="text-blue-500 mr-2 w-4 text-center">›</span>
-        <span class="animate-typing cursor-pointer hover:text-foreground" style="animation-delay: 1.1s" onclick="window.location.href='/'"
-          >cd /</span
-        >
-      </div>
+
     </div>
   </div>
 </Layout>
 
 <style>
+  /* 打字机光标效果 */
   .animate-typing {
-    animation: typing 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    display: inline-block;
     overflow: hidden;
     white-space: nowrap;
-    display: inline-block;
+    border-right: 2px solid transparent;
+    width: 0;
+    animation: typing 0.8s steps(30, end) forwards, blink 0.7s step-end infinite;
+  }
+  /* 只有最后一行或者正在打字的那一行才闪烁光标，这里为了简单让所有打字动画结束后移除边框 */
+  .animate-typing:last-child {
+      border-right-color: rgba(var(--primary), 0.5);
   }
 
   @keyframes typing {
-    from {
-      width: 0ch;
-    }
-    to {
-      width: var(--typing-width, 20ch);
-    }
+    from { width: 0 }
+    to { width: 100% }
+  }
+  
+  @keyframes blink {
+    from, to { border-color: transparent }
+    50% { border-color: currentColor }
   }
 
   @keyframes fadeIn {
-    0% {
-      opacity: 0;
-      transform: translateY(-4px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(2px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   .animate-fade-in {
-    animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    opacity: 0;
-    will-change: transform;
+    animation: fadeIn 0.3s ease-out forwards;
   }
 </style>
 
 <script>
+  // 简单的脚本来处理打字动画宽度的兼容性（虽然主要靠CSS steps实现）
   document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.animate-typing').forEach((el) => {
-      const text = el.textContent || ''
-      ;(el as HTMLElement).style.setProperty('--typing-width', `${text.length}ch`)
-    })
+    // 可以在这里添加更复杂的音效或逻辑
   })
 </script>

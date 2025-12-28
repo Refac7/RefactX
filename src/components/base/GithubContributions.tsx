@@ -150,7 +150,7 @@ export default function GithubContributions({ username, tooltipEnabled }: Props)
               })
 
               const tooltipContent = `${formattedDate} — ${
-                count === 1 ? '1 contribution 💤' : count === 0 ? 'Rest day 🪴' : `${count} contributions`
+                count === 1 ? '1 contribution' : count === 0 ? 'Rest day' : `${count} contributions`
               }`
 
               return (

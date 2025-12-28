@@ -5,7 +5,7 @@ import { WALINE_CONFIG } from "~/config";
 {WALINE_CONFIG.enableComment && (
   <>
     <div id="waline-container" class="waline-lazy">
-      <div class="waline-loading">加载评论中...</div>
+      <div class="waline-loading font-mono">Loading...</div>
     </div>
 
     <link
@@ -31,19 +31,24 @@ import { WALINE_CONFIG } from "~/config";
         min-height: unset;
       }
 
-      #waline .wl-editor,
+      #waline .wl-panel,
+      #waline .wl-user-avatar,
+      #waline .wl-login-nick,
       #waline .wl-input,
-      #waline span.wl-badge,
       #waline .wl-btn,
       #waline .wl-comment,
       #waline .wl-card,
-      #waline .wl-panel,
       #waline .wl-header,
       #waline .wl-gif-popup,
       #waline .wl-emoji-popup,
       #waline .wl-footer {
         border-radius: 0 !important;
         font-family: 'ShangguSansSC Variable', system-ui, -apple-system, sans-serif !important;
+      }
+
+      .wl-editor{
+        border-radius: 0 !important;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace !important;
       }
 
       .wl-gif-tab {
@@ -94,6 +99,32 @@ import { WALINE_CONFIG } from "~/config";
         box-shadow: none !important;
         outline: none !important;
         border-color: var(--waline-border-color) !important;
+      }
+
+      /* 元数据标签 (日期、系统) - 只有这里用等宽字体 */
+      #waline .wl-time,
+      #waline .wl-meta span {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace !important;
+        font-size: 0.75rem !important;
+        color: var(--waline-color) !important;
+      }
+
+      /* 系统/浏览器标签样式优化 */
+      #waline .wl-meta span {
+        background: transparent !important;
+        border: 1px solid var(--waline-border-color);
+        padding: 1px 5px !important;
+        margin-right: 6px !important;
+        text-transform: uppercase;
+      }
+
+      /* 引用块样式 */
+      #waline .wl-quote {
+        border-left: 2px solid var(--waline-border-color) !important; /* 实线强调 */
+        background: var(--waline-bgcolor-light) !important;
+        color: var(--waline-color) !important;
+        font-style: italic;
+        margin-bottom: 1rem !important;
       }
     </style>
 

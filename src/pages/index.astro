@@ -26,7 +26,7 @@ const posts = postsSort(allPosts).slice(0, size)
     <!-- 1. Hero 区域 -->
     <div class="relative z-10 px-6 sm:px-8 py-12 max-w-5xl mx-auto">
       <!-- 顶部状态栏 -->
-      <div class="mb-12 fade-up flex items-center pb-2">
+      <div class="mb-12 md:mb-24 fade-up flex items-center pb-2">
         <div class="inline-flex items-center gap-3 px-3 py-1 bg-muted/30 border border-border font-mono text-[10px] sm:text-xs tracking-widest text-foreground/80">
           <span class="relative flex h-2 w-2">
             <span class="animate-ping absolute inline-flex h-full w-full bg-foreground opacity-75 rounded-none"></span>
@@ -43,21 +43,17 @@ const posts = postsSort(allPosts).slice(0, size)
       </div>
 
       <h1 class="space-y-2 mb-8 fade-up" style="animation-delay: 100ms;">
-        <span class="block text-xl sm:text-2xl font-mono text-primary/80 tracking-widest uppercase mb-2">:: Identify User</span>
-        <span class="block text-5xl sm:text-7xl font-black tracking-tighter text-foreground leading-[0.9] uppercase">
+        <span class="block text-xl sm:text-2xl font-mono text-primary/80 tracking-widest uppercase">:: Identify User</span>
+        <span class="block text-6xl sm:text-7xl font-black tracking-tighter text-foreground leading-[0.9] uppercase">
           Refact<span class="text-transparent bg-clip-text bg-gradient-to-br from-primary to-primary/40">X</span>.
         </span>
-        <span class="block text-2xl sm:text-4xl font-light tracking-tight text-muted-foreground leading-tight pt-2">
+        <span class="block text-2xl sm:text-4xl font-light tracking-tight text-muted-foreground leading-tight">
           Architect of the <br class="hidden sm:block" /> Digital Void.
         </span>
       </h1>
 
       <!-- 简介区块 -->
-      <div class="relative mt-6 mb-10 p-6 border-l-2 border-primary max-w-2xl fade-up group" style="animation-delay: 200ms;">
-        <!-- 装饰角标 -->
-        <div class="absolute top-0 left-0 w-0.5 h-1 bg-primary"></div>
-        <div class="absolute bottom-0 left-0 w-0.5 h-1 bg-primary"></div>
-        
+      <div class="relative mt-8 md:mt-12 mb-10 p-6 border-l-4 border-primary max-w-2xl fade-up group" style="animation-delay: 200ms;">
         <p class="text-base sm:text-lg text-muted-foreground/90 leading-relaxed font-sans font-medium">
           你好，我是 Refac7。一名试图在代码的混沌中寻找秩序的时空修剪者。
           <span class="block mt-2 text-sm text-muted-foreground/60 font-mono">
@@ -66,28 +62,32 @@ const posts = postsSort(allPosts).slice(0, size)
         </p>
       </div>
 
-      <!-- 按钮区：直角与高对比 -->
-      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6 fade-up" style="animation-delay: 300ms;">
-        <div class="flex flex-wrap gap-4 w-full sm:w-auto">
+      <!-- 按钮区 -->
+      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-8 fade-up" style="animation-delay: 300ms;">
+        <div class="flex gap-4 w-full sm:w-auto">
           <a
             href="/posts"
-            class="flex-1 sm:flex-none inline-flex items-center justify-center px-8 py-3 bg-foreground text-background hover:bg-muted-foreground/60 hover:text-black dark:hover:text-white transition-colors font-bold uppercase tracking-normal text-sm rounded-none border border-transparent min-w-[140px]"
+            class="flex-1 sm:flex-none inline-flex items-center justify-center px-8 py-3.5 
+                   bg-foreground hover:bg-foreground/90 text-background
+                   transition-all duration-300 font-bold uppercase tracking-wide text-sm rounded-none min-w-[140px]"
           >
-            <span class="icon-[mdi--book-open] size-5 mr-2"></span>
-            探索文章
+            <span class="icon-[ph--read-cv-logo] size-5 mr-2"></span>
+            Logs
           </a>
           <a
             href="/friends"
-            class="flex-1 sm:flex-none inline-flex items-center justify-center px-8 py-3 border border-border text-foreground hover:border-primary hover:bg-muted/10 transition-colors duration-200 font-bold uppercase tracking-normal text-sm rounded-none min-w-[140px]"
+            class="flex-1 sm:flex-none inline-flex items-center justify-center px-8 py-3.5 
+                   border border-border text-foreground hover:border-primary hover:text-primary 
+                   transition-all duration-300 font-bold uppercase tracking-wide text-sm rounded-none min-w-[140px]"
           >
-            <span class="icon-[mdi--rocket-launch] size-5 mr-2"></span>
-            加入星海
+            <span class="icon-[ph--planet] size-5 mr-2"></span>
+            Link
           </a>
         </div>
 
-        <div class="hidden sm:block w-px h-8 bg-border"></div>
+        <div class="hidden sm:block w-px h-8 bg-border/60"></div>
 
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-5">
           {SOCIAL_LINKS.map((item) => (
             <SocialLink
               href={item.url}

@@ -8,40 +8,53 @@ interface Props extends CardProps {}
 const { post }: Props = Astro.props
 ---
 
-<div class="group relative block py-6 border-b border-border/60 last:border-none">
-  <article class="relative z-1 flex flex-col gap-3 transform transition-transform duration-300 group-hover:translate-x-4">
-    <div class="flex sm:items-center gap-2 sm:gap-3 text-sm text-muted-foreground">
+<!-- 外层容器：改为四面边框，直角，背景微调，悬停时边框变色 -->
+<div class="group relative block p-5 border border-border/70 bg-card/30 hover:border-primary/60 hover:bg-accent/5 transition-colors duration-200">
+  
+  <!-- 工业风装饰：右上角的小方块/刻度 -->
+  <div class="absolute top-0 right-0 size-3 border-t border-r border-border group-hover:border-primary transition-colors"></div>
+
+  <article class="relative z-1 flex flex-col gap-3">
+    <!-- Meta 信息：使用等宽字体 (font-mono) 和大写，增强技术感 -->
+    <div class="flex sm:items-center gap-3 text-xs text-muted-foreground font-mono uppercase tracking-wider">
       <span class="inline-flex items-center gap-1.5">
-        <span class="icon-[ph--calendar-blank] size-3.5 sm:size-4"></span>
-        <time datetime={post.data.pubDate.toISOString()} class="text-xs sm:text-sm">
+        <span class="icon-[ph--calendar-blank] size-3.5"></span>
+        <time datetime={post.data.pubDate.toISOString()}>
           {formatDate(post.data.pubDate)}
         </time>
       </span>
       {
         post.data.updatedDate && (
-          <span class="inline-flex items-center gap-1.5">
-            <span class="icon-[ph--clock-clockwise-light] size-3.5 sm:size-4" />
-            <time datetime={post.data.updatedDate.toISOString()} class="text-xs sm:text-sm">
-              {formatDate(post.data.updatedDate)}
-            </time>
-          </span>
+          <>
+            <span class="text-border">/</span> {/* 工业风分隔符 */}
+            <span class="inline-flex items-center gap-1.5">
+              <span class="icon-[ph--clock-clockwise-light] size-3.5" />
+              <time datetime={post.data.updatedDate.toISOString()}>
+                {formatDate(post.data.updatedDate)}
+              </time>
+            </span>
+          </>
         )
       }
     </div>
-    <a href={`/posts/${post.slug}`} class="block -my-[2px]">
-      <h3 class="text-base sm:text-lg font-medium text-foreground group-hover:text-primary transition-colors">
+
+    <a href={`/posts/${post.slug}`} class="block group/title">
+      <h3 class="text-base sm:text-lg font-bold text-foreground group-hover/title:text-primary transition-colors tracking-tight">
         {post.data.title}
       </h3>
-      {post.data.description && <p class="mt-1.5 text-xs sm:text-sm text-muted-foreground/80 line-clamp-2">{post.data.description}</p>}
+      {post.data.description && <p class="mt-2 text-sm text-muted-foreground/80 line-clamp-2 leading-relaxed">{post.data.description}</p>}
     </a>
 
     {
       post.data.tags?.length > 0 && (
-        <div class="flex flex-wrap gap-1.5 mt-2">
+        <div class="flex flex-wrap gap-2 mt-2">
+          {/* 注意：PostTag 组件内部也建议去除圆角以保持风格统一 */}
           {post.data.tags.slice(0, 4).map((tag) => (
-            <PostTag tag={tag} />
+            <div class="scale-90 origin-left">
+                <PostTag tag={tag} />
+            </div>
           ))}
-          {post.data.tags.length > 4 && <span class="text-xs text-muted-foreground/60">+{post.data.tags.length - 4} more</span>}
+          {post.data.tags.length > 4 && <span class="text-xs font-mono text-muted-foreground/60 self-center">[+{post.data.tags.length - 4}]</span>}
         </div>
       )
     }
@@ -49,10 +62,12 @@ const { post }: Props = Astro.props
 
   {
     post.data.recommend && (
-      <span class="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 -translate-x-4 size-16 sm:size-20 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-primary/10 dark:text-primary/20 icon-[solar--star-rainbow-bold-duotone]" />
+      // 推荐图标：位置微调，更加几何化
+      <span class="absolute right-4 bottom-4 text-primary/10 dark:text-primary/20 icon-[solar--star-rainbow-bold-duotone] size-12 opacity-80 group-hover:text-primary/30 transition-colors" />
     )
   }
 
-  <div class="absolute left-0 top-0 h-full w-0.5 sm:w-1 scale-y-0 bg-accent/80 transition-transform duration-300 group-hover:scale-y-100">
+  <!-- 左侧装饰条：更粗，无动画伸缩，保持常驻或颜色切换，像一个状态指示灯 -->
+  <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-border/50 group-hover:bg-primary transition-colors duration-200">
   </div>
 </div>
