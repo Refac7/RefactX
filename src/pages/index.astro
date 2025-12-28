@@ -6,7 +6,6 @@ import { getCollection } from 'astro:content'
 import Layout from '~/layouts/Layout.astro'
 import SectionDivider from '~/components/base/SectionDivider.astro'
 import GithubContributions from '~/components/base/GithubContributions.tsx'
-import SocialLink from '~/components/base/SocialLink.astro'
 import List from '~/components/posts/card/List.astro'
 import SkillsShowcase from '~/components/base/SkillsShowcase.astro'
 import Snowfall from '~/components/base/Snowfall.astro'
@@ -24,152 +23,180 @@ const posts = postsSort(allPosts).slice(0, size)
     <Snowfall />
   </div>
     <!-- 1. Hero 区域 -->
-    <div class="relative z-10 px-6 sm:px-8 py-12 max-w-5xl mx-auto">
+    <div class="relative z-10 px-6 sm:px-8 py-12 max-w-[1400px] mx-auto">
+      
       <!-- 顶部状态栏 -->
-      <div class="mb-12 md:mb-24 fade-up flex items-center pb-2">
-        <div class="inline-flex items-center gap-3 px-3 py-1 bg-muted/30 border border-border font-mono text-[10px] sm:text-xs tracking-widest text-foreground/80">
-          <span class="relative flex h-2 w-2">
-            <span class="animate-ping absolute inline-flex h-full w-full bg-foreground opacity-75 rounded-none"></span>
-            <span class="relative inline-flex h-2 w-2 bg-foreground rounded-none"></span>
-          </span>
-          <span class="font-bold">SYS:ONLINE</span>
-          <span class="w-px h-3 bg-border"></span>
-          <span>TERMINAL_ID: REF-007</span>
-        </div>
-        <div class="flex-1 hidden sm:block mx-4 h-px bg-dashed border-t border-dashed border-border/40"></div>
-        <div class="hidden sm:block font-mono text-[10px] text-muted-foreground">
-           V1.6.0_INDEV
+      <div class="flex items-center justify-between mb-12 md:mb-36 text-[10px] font-mono uppercase tracking-widest text-muted-foreground/60">
+        <span>// IDENTITY_CORE // V.1.6</span>
+        <div class="flex items-center gap-2 text-primary">
+             <span class="relative flex h-1.5 w-1.5">
+               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+               <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary"></span>
+             </span>
+             <span>SYS: ONLINE</span>
         </div>
       </div>
 
-      <h1 class="space-y-2 mb-8 fade-up" style="animation-delay: 100ms;">
-        <span class="block text-xl sm:text-2xl font-mono text-primary/80 tracking-widest uppercase">:: Identify User</span>
-        <span class="block text-6xl sm:text-7xl font-black tracking-tighter text-foreground leading-[0.9] uppercase">
-          Refact<span class="text-transparent bg-clip-text bg-gradient-to-br from-primary to-primary/40">X</span>.
-        </span>
-        <span class="block text-2xl sm:text-4xl font-light tracking-tight text-muted-foreground leading-tight">
-          Architect of the <br class="hidden sm:block" /> Digital Void.
-        </span>
-      </h1>
-
-      <!-- 简介区块 -->
-      <div class="relative mt-6 mb-10 p-6 border-l-2 border-primary max-w-2xl fade-up group" style="animation-delay: 200ms;">
-        <!-- 装饰角标 -->
-        <div class="absolute top-0 left-0 w-0.5 h-1 bg-primary"></div>
-        <div class="absolute bottom-0 left-0 w-0.5 h-1 bg-primary"></div>
+      <!-- 主体内容 Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-end">
         
-        <p class="text-base sm:text-lg text-muted-foreground/90 leading-relaxed font-sans font-medium">
-          你好，我是 Refac7。一名试图在代码的混沌中寻找秩序的时空修剪者。
-          <span class="block mt-2 text-sm text-muted-foreground/60 font-mono">
-            > TARGET: Transparency, Clarity, Reality.
-          </span>
-        </p>
+        <!-- 左侧 (7列)：核心标题 -->
+        <div class="lg:col-span-7">
+
+          <div class="mb-3 sm:mb-4">
+            <span class="font-mono text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-primary/80">
+              :: Identify User
+            </span>
+          </div>
+          
+          <!-- 修改后的 H1 标题 -->
+          <h1 class="relative inline-block text-6xl lg:text-7xl font-black tracking-tighter text-foreground leading-[0.9] -ml-0.5 sm:-ml-1">
+            <!-- 1. 文字层：设置 z-10 确保在色带上方 -->
+            <span class="relative z-10">
+              Refac<span class="text-primary">7</span>.
+            </span>
+            
+            <!-- 2. 红色色带：设置 z-0 在文字下方，absolute定位贯穿底部 -->
+            <span class="absolute bottom-1 sm:bottom-2 left-0 w-full h-3 sm:h-5 bg-red-600 -z-0 opacity-80 -skew-x-6"></span>
+          </h1>
+
+          <h2 class="mt-3 sm:mt-4 text-lg sm:text-2xl font-light tracking-tight text-muted-foreground">
+            Architect of the Digital Void.
+          </h2>
+        </div>
+
+        <!-- 右侧 (5列)：信息面板 -->
+        <div class="lg:col-span-5 flex flex-col gap-6">
+          
+          <!-- 优化：社交链接工具栏 -->
+          <div class="flex items-center justify-between border-b border-border/40 pb-4">
+             <span class="text-[10px] font-mono text-muted-foreground/40 uppercase tracking-widest">
+               Connect_Protocol
+             </span>
+             <div class="flex items-center gap-3">
+                {SOCIAL_LINKS.map((item) => (
+                   <a 
+                     href={item.url} 
+                     target="_blank" 
+                     class="text-muted-foreground hover:text-primary transition-colors duration-300"
+                     aria-label={item.name}
+                   >
+                     <span class={`${item.icon} size-5`}></span>
+                   </a>
+                 ))}
+             </div>
+          </div>
+
+          <!-- 简介文本 -->
+          <div class="border-l-2 border-primary/40 pl-5">
+             <p class="text-[14px] text-muted-foreground leading-relaxed">
+              你好，我是 Refac7。一名试图在代码的混沌中寻找秩序的时空修剪者。<br>
+              <span class="hidden md:block text-[10px] leading-[1rem] mt-0.5">Hello, I am Refac7, a temporal editor striving to find order within the chaos of code.</span>
+              <span class="block mt-2 text-xs font-mono text-muted-foreground/60">
+                > TARGET: Transparency, Clarity, Reality.
+              </span>
+             </p>
+          </div>
+
+          <!-- 功能控制台 -->
+          <div class="grid grid-cols-2 gap-px bg-border/50 border border-border/50 shadow-sm mt-2">
+            
+            <!-- 按钮 1: Logs -->
+            <a href="/posts" class="group bg-background/50 hover:bg-primary/5 p-4 flex flex-col gap-1 transition-colors duration-300">
+              <div class="flex justify-between items-start">
+                <span class="text-[9px] uppercase tracking-widest text-muted-foreground/70 font-mono group-hover:text-primary">Function_01</span>
+                <span class="icon-[ph--read-cv-logo] size-4 text-muted-foreground group-hover:text-primary transition-colors"></span>
+              </div>
+              <span class="text-lg font-mono font-bold text-foreground mt-1 group-hover:translate-x-1 transition-transform">
+                READ_LOGS
+              </span>
+            </a>
+            
+            <!-- 按钮 2: Links -->
+            <a href="/friends" class="group bg-background/50 hover:bg-primary/5 p-4 flex flex-col gap-1 transition-colors duration-300">
+              <div class="flex justify-between items-start">
+                <span class="text-[9px] uppercase tracking-widest text-muted-foreground/70 font-mono group-hover:text-primary">Function_02</span>
+                <span class="icon-[ph--planet] size-4 text-muted-foreground group-hover:text-primary transition-colors"></span>
+              </div>
+              <span class="text-lg font-mono font-bold text-foreground mt-1 group-hover:translate-x-1 transition-transform">
+                THE_LINKS
+              </span>
+            </a>
+          </div>
+
+        </div>
       </div>
 
-      <!-- 按钮区 -->
-      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-8 fade-up" style="animation-delay: 300ms;">
-        <div class="flex gap-4 w-full sm:w-auto">
-          <a
-            href="/posts"
-            class="flex-1 sm:flex-none inline-flex items-center justify-center px-8 py-3.5 
-                   bg-foreground hover:bg-foreground/90 text-background
-                   transition-all duration-300 font-bold uppercase tracking-wide text-sm rounded-none min-w-[140px]"
-          >
-            <span class="icon-[ph--read-cv-logo] size-5 mr-2"></span>
-            the Logs
-          </a>
-          <a
-            href="/friends"
-            class="flex-1 sm:flex-none inline-flex items-center justify-center px-8 py-3.5 
-                   border border-border text-foreground hover:border-primary hover:text-primary 
-                   transition-all duration-300 font-bold uppercase tracking-wide text-sm rounded-none min-w-[140px]"
-          >
-            <span class="icon-[ph--planet] size-5 mr-2"></span>
-            the Links
-          </a>
-        </div>
-
-        <div class="hidden sm:block w-px h-8 bg-border/60"></div>
-
-        <div class="flex items-center gap-5">
-          {SOCIAL_LINKS.map((item) => (
-            <SocialLink
-              href={item.url}
-              icon={item.icon}
-              aria-label={`${item.name}`}
-              count={item.count}
-              label="Follow"
-            />
-          ))}
-        </div>
+      <!-- 分割线装饰 -->
+      <div class="flex items-end gap-4 mt-16 select-none">
+         <span class="font-mono text-4xl font-black text-muted-foreground/10 leading-none -mb-1">00</span>
+         <span class="font-mono text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/50 mb-1">
+            Start_Sequence
+         </span>
+         <div class="h-px bg-gradient-to-r from-border to-transparent flex-1 mb-1.5"></div>
       </div>
     </div>
 
-    <SectionDivider />
-
-    <!-- 2. Github 贡献图 (修复溢出问题) -->
+    <!-- 2. Github 贡献图 -->
     {ENABLED && (
-      <div class="py-8 px-6 sm:px-8">
-        <div class="max-w-5xl mx-auto">
-          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-l-4 border-primary pl-4">
-            <h2 class="font-normal text-3xl tracking-tight uppercase">Activity Graph</h2>
-            <p class="text-xs text-muted-foreground font-mono uppercase tracking-widest mb-1">// Commit History Visualization</p>
+      <div class="py-8 px-6 sm:px-8 fade-up">
+        <div class="max-w-[1400px] mx-auto">
+          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-l-2 border-primary/40 pl-4">
+            <h2 class="font-bold text-3xl tracking-tighter uppercase text-foreground">Activity Graph</h2>
+            <p class="text-[10px] text-muted-foreground font-mono uppercase tracking-widest mb-1.5">// Commit History Visualization</p>
           </div>
           
-          <div class="w-full overflow-x-auto border border-dashed border-border p-2 bg-muted/5">
-            <div class="md:min-w-full">
-                <GithubContributions
-                  username={GITHUB_USERNAME}
-                  tooltipEnabled={TOOLTIP_ENABLED}
-                  client:load
-                  transition:animate="none"
-                />
-            </div>
-          </div>
-          <div class="mt-4 flex justify-between text-[10px] font-mono text-muted-foreground pt-2">
-              <span>DATA_SOURCE: GITHUB_API</span>
-              <span>SYNC_STATUS: OK</span>
+          <GithubContributions
+            username={GITHUB_USERNAME}
+            tooltipEnabled={TOOLTIP_ENABLED}
+            client:load
+            transition:animate="none"
+          />
+          
+          <div class="mt-4 flex justify-between text-[10px] font-mono text-muted-foreground/40 pt-2 border-t border-dashed border-border/40">
+            <span>DATA_SOURCE: GITHUB_API</span>
+            <span>SYNC_STATUS: OK</span>
           </div>
         </div>
       </div>
     )}
+
     <SectionDivider />
-    <!-- 3. 技术栈 -->
+
+    <!-- 3. 技术栈 (Arsenal) -->
     {SKILLS_ENABLED && SKILLS_DATA.length > 0 && (
       <div class="py-8 px-6 sm:px-8">
-        <div class="max-w-5xl mx-auto">
-             <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-l-4 border-primary pl-4">
-                <h2 class="font-normal text-3xl tracking-tight uppercase">Arsenal</h2>
-                <p class="text-xs text-muted-foreground font-mono uppercase tracking-widest mb-1">// Tools & Frameworks</p>
+        <div class="max-w-[1400px] mx-auto">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-l-2 border-primary/40 pl-4">
+                <h2 class="font-bold text-3xl tracking-tighter uppercase text-foreground">Arsenal</h2>
+                <p class="text-[10px] text-muted-foreground font-mono uppercase tracking-widest mb-1.5">// Tools & Frameworks</p>
             </div>
             <SkillsShowcase skillsData={SKILLS_DATA} />
-          </div>
         </div>
+      </div>
     )}
 
     <SectionDivider />
 
-    <!-- 4. 文章列表：日志档案风格 -->
-    <div class="py-12 px-6 sm:px-8 bg-muted/5">
-      <div class="max-w-6xl mx-auto">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-12">
+    <!-- 4. 文章列表 (Recent Logs) -->
+    <div class="py-12 px-6 sm:px-8">
+      <div class="max-w-[1400px] mx-auto">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-12 border-l-2 border-primary/40 pl-4">
             <div>
-                <h2 class="font-normal text-3xl tracking-tight uppercase flex items-center gap-3">
-                    <span class="icon-[ph--files-light] text-primary"></span>
+                <h2 class="font-bold text-3xl tracking-tighter uppercase text-foreground flex items-center gap-3">
                     Recent Logs
                 </h2>
-                <p class="mt-1 text-sm text-muted-foreground font-mono">:: Latest Data Transmissions</p>
+                <p class="mt-1 text-[10px] text-muted-foreground font-mono uppercase tracking-widest">:: Latest Data Transmissions</p>
             </div>
 
-            <a href="/posts" class="group flex items-center gap-3 px-5 py-2 border border-border bg-background hover:border-primary transition-all">
+            <a href="/posts" class="group flex items-center gap-3 px-6 py-3 border border-border bg-background hover:border-primary/50 hover:bg-primary/5 transition-all duration-300">
                <span class="text-xs font-bold font-mono uppercase tracking-widest group-hover:text-primary transition-colors">
-                   View All Archives
+                   View_All_Archives
                </span>
                <span class="icon-[ph--caret-right-bold] w-3 h-3 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-transform"></span>
             </a>
         </div>
         
-        <!-- List 组件调用 -->
         <div class="relative">
             <List {posts} {type} heroImageLayout={POSTS_CONFIG.homePageConfig?.heroImageLayout} />
         </div>

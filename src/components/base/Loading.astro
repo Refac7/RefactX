@@ -1,0 +1,141 @@
+<!-- src/components/base/Loading.astro -->
+<div 
+  id="system-loader" 
+  class="fixed inset-0 z-[9999] bg-background flex flex-col items-center justify-center transition-opacity duration-500 opacity-100 pointer-events-auto"
+  aria-hidden="false"
+>
+  
+  <!-- 核心加载视觉 -->
+  <div class="relative flex flex-col items-center gap-4">
+    <!-- 装饰：外圈呼吸效果 -->
+    <div class="absolute inset-0 bg-primary/20 blur-[60px] rounded-full animate-pulse"></div>
+    
+    <!-- 动态图标 -->
+    <div class="relative w-16 h-16 border border-border bg-muted/10 flex items-center justify-center overflow-hidden">
+        <!-- 扫描线动画 -->
+        <div class="absolute top-0 left-0 w-full h-[2px] bg-primary/50 shadow-[0_0_10px_rgba(var(--primary),0.8)] animate-scan"></div>
+        
+        <span class="font-mono text-2xl font-black text-foreground animate-pulse">
+            R<span class="text-primary">X</span>
+        </span>
+        
+        <!-- 四角装饰 -->
+        <div class="absolute top-0 left-0 w-1.5 h-1.5 border-t border-l border-primary"></div>
+        <div class="absolute top-0 right-0 w-1.5 h-1.5 border-t border-r border-primary"></div>
+        <div class="absolute bottom-0 left-0 w-1.5 h-1.5 border-b border-l border-primary"></div>
+        <div class="absolute bottom-0 right-0 w-1.5 h-1.5 border-b border-r border-primary"></div>
+    </div>
+
+    <!-- 文字终端打字效果 -->
+    <div class="flex flex-col items-center gap-1">
+        <div class="flex items-center gap-2 font-mono text-xs text-primary/80 uppercase tracking-widest">
+            <span class="w-1.5 h-1.5 bg-primary animate-ping"></span>
+            <span id="loader-text">Processing</span>
+        </div>
+        <div class="w-24 h-[2px] bg-muted relative overflow-hidden">
+             <div class="absolute left-0 top-0 h-full w-full bg-primary origin-left animate-progress"></div>
+        </div>
+    </div>
+  </div>
+
+  <!-- 底部版本号 -->
+  <div class="absolute bottom-8 text-[10px] font-mono text-muted-foreground/30 uppercase tracking-[0.2em]">
+    Sys_Kernel_V1.6.0 // Loading
+  </div>
+</div>
+
+<style>
+  @keyframes scan {
+    0%, 100% { top: 0%; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    50% { top: 100%; }
+  }
+
+  @keyframes progress {
+    0% { transform: scaleX(0); }
+    30% { transform: scaleX(0.4); }
+    60% { transform: scaleX(0.7); }
+    100% { transform: scaleX(1); }
+  }
+  
+  /* 隐藏状态 */
+  .loader-hidden {
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+</style>
+
+<script>
+  // 定义核心逻辑函数，避免全局变量污染
+  function setupLoader() {
+    const loader = document.getElementById('system-loader');
+    const textElement = document.getElementById('loader-text');
+    const texts = ['Decrypting...', 'Handshaking...', 'Access Granted'];
+    
+    if (!loader) return;
+
+    // 1. 文字动画逻辑
+    let step = 0;
+    const textInterval = setInterval(() => {
+        if(textElement && step < texts.length) {
+            textElement.innerText = texts[step];
+            step++;
+        }
+    }, 150);
+
+    // 2. 隐藏 Loader 的函数
+    const hide = () => {
+      clearInterval(textInterval);
+      loader.classList.add('loader-hidden');
+      
+      // 动画结束后（500ms duration），彻底隐藏以防万一
+      setTimeout(() => {
+        loader.style.display = 'none';
+      }, 500);
+    };
+
+    // 3. 强制超时保护 (防止页面卡死在 Loading 状态)
+    // 如果 5秒后还没加载完（或事件没触发），强制移除
+    const safetyTimeout = setTimeout(() => {
+        hide();
+    }, 5000);
+
+    // 4. 立即执行隐藏逻辑 (通过 setTimeout 稍微延迟以展示动画)
+    // 600ms 是为了让用户看清动画，如果你希望更快，可以改为 100ms
+    setTimeout(() => {
+      clearTimeout(safetyTimeout); // 取消超时保护
+      hide();
+    }, 600);
+  }
+
+  // ==========================================
+  // 事件监听：处理 Astro 视图过渡
+  // ==========================================
+
+  // 1. astro:page-load
+  // 这个事件在“初次加载”和“视图过渡完成”后都会触发。
+  // 它是隐藏 Loader 的最佳时机。
+  document.addEventListener('astro:page-load', () => {
+    setupLoader();
+  });
+
+  // 2. astro:before-preparation
+  // 这个事件在“点击链接，开始加载新页面之前”触发。
+  // 我们在这里把 Loader 重新显示出来。
+  document.addEventListener('astro:before-preparation', () => {
+    const loader = document.getElementById('system-loader');
+    if (loader) {
+      loader.style.display = 'flex';
+      // 使用 requestAnimationFrame 确保 display:flex 生效后再改 opacity
+      requestAnimationFrame(() => {
+        loader.classList.remove('loader-hidden');
+      });
+      
+      // 重置文字
+      const textElement = document.getElementById('loader-text');
+      if (textElement) textElement.innerText = 'Redirecting...';
+    }
+  });
+
+</script>

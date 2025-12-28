@@ -91,7 +91,7 @@ const lastUpdate = new Date().toLocaleDateString('en-US', { month: 'short', day:
     </div>
 
     <!-- 3. 标签矩阵：数据存储块风格 -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4" data-astro-transition="animate">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 fade-up" data-astro-transition="animate">
       {
         sortedTags.map((tag, index) => {
           // 计算占比

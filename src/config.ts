@@ -70,13 +70,11 @@ export const SOCIAL_LINKS: SocialLink[] = [
     name: 'github',
     url: 'https://github.com/Refac7',
     icon: 'icon-[ri--github-fill]',
-    count: 1,
   },
   {
     name: 'bilibili',
     url: 'https://space.bilibili.com/441325177',
     icon: 'icon-[ri--bilibili-fill]',
-    count: 77,
   },
 ]
 
