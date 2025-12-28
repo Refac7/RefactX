@@ -136,15 +136,9 @@ const serialCode = `FIG-${new Date(frontmatter.pubDate).getFullYear()}-${Math.fl
 
     <!-- 5. 正文区域 -->
     <div class="relative">
-      
       <Prose>
         <slot />
       </Prose>
-
-      <!-- 底部结束符 -->
-      <div class="mt-16 flex justify-center opacity-50">
-        <span class="font-mono text-sm tracking-[1em] text-muted-foreground">/// END_OF_FILE ///</span>
-      </div>
     </div>
     
   </div>
