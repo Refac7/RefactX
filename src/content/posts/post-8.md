@@ -3,8 +3,8 @@ title: '2025年度总结'
 description: '本文从多方面总结了今年的经历，大学生活，和自己的感受。'
 pubDate: 2025-12-28
 author: 'Refact'
-heroImage: 'me.webp'
-ogImage: 'me.webp'
+heroImage: none
+ogImage: none
 heroImageAspectRatio: '16/9'
 tags: ['年度总结','杂谈']
 ---

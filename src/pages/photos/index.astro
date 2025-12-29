@@ -79,8 +79,6 @@ const totalCollections = PhotosList.length.toString().padStart(2, '0');
       {
         PhotosList.length > 0 ? (
           <div class="relative">
-             <!-- 增加一个左侧装饰线条，贯穿整个时间轴 -->
-             <div class="absolute left-[19px] top-0 bottom-0 w-px bg-border/40 hidden md:block -z-10"></div>
              <PhotoTimeline photoData={PhotosList} />
           </div>
         ) : (

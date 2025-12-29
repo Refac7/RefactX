@@ -15,6 +15,9 @@ const aspectRatioClass: Record<HeroImageAspectRatio, string> = {
   '3/4': 'aspect-[3/4]',
 }
 
+// 1. 判断是否显示图片：只要不是 'none' 就显示（包含 undefined/null 会回落到默认图的情况）
+const showHeroImage = post.data.heroImage !== 'none'
+
 const isVertical = post.data.heroImageAspectRatio === '3/4'
 const imagePosition = post.data.heroImageLayout || heroImageLayout || 'right'
 const isReverse = imagePosition === 'right'
@@ -24,53 +27,57 @@ const defaultHeroImage = POSTS_CONFIG.defaultHeroImage
 const serialNo = post.slug.slice(0, 4).toUpperCase();
 ---
 
-<article class="group relative flex flex-col md:flex-row bg-background border border-border hover:border-primary/60 transition-colors duration-300 rounded-none overflow-hidden mb-6">
+<article class="group relative flex flex-col md:flex-row bg-background border border-border/60 hover:border-primary/60 transition-colors duration-300 rounded-none overflow-hidden mb-6">
   
   <!-- 装饰：Hover时的角落高亮 -->
   <div class="absolute top-0 right-0 w-0 h-0 border-t-[3px] border-r-[3px] border-primary opacity-0 group-hover:opacity-100 group-hover:w-3 group-hover:h-3 transition-all duration-200 z-20"></div>
 
   <!-- 图片区域：工业风处理 -->
-  <div 
-    class={`
-      hidden md:flex flex-col relative shrink-0 
-      ${isVertical ? 'md:w-1/4' : 'md:w-2/5'} 
-      ${isReverse ? 'md:order-2 border-l border-border' : 'md:order-1 border-r border-border'}
-    `}
-  >
-    <a href={`/posts/${post.slug}`} class="block w-full h-full relative overflow-hidden bg-muted">
-      
-      <!-- 图片容器 -->
-      <div class={`w-full h-full ${aspectRatioClass[post.data.heroImageAspectRatio]} relative`}>
-        <!-- 加载占位 -->
-        <div class="absolute inset-0 bg-muted/20 animate-pulse z-0"></div>
+  <!-- 2. 使用 showHeroImage 控制渲染 -->
+  {showHeroImage && (
+    <div 
+      class={`
+        hidden md:flex flex-col relative shrink-0 
+        ${isVertical ? 'md:w-1/4' : 'md:w-2/5'} 
+        ${isReverse ? 'md:order-2 border-l border-border' : 'md:order-1 border-r border-border'}
+      `}
+    >
+      <a href={`/posts/${post.slug}`} class="block w-full h-full relative overflow-hidden bg-muted">
         
-        <!-- 图片：默认去色，Hover恢复 -->
-        <img
-          src={post.data.heroImage || defaultHeroImage}
-          alt={post.data.title}
-          loading="eager"
-          decoding="async"
-          onload="this.style.opacity='1'"
-          class="w-full h-full object-cover grayscale transition-all duration-500 ease-out group-hover:grayscale-0 group-hover:scale-105 opacity-0 will-change-transform"
-        />
+        <!-- 图片容器 -->
+        <div class={`w-full h-full ${aspectRatioClass[post.data.heroImageAspectRatio]} relative`}>
+          <!-- 加载占位 -->
+          <div class="absolute inset-0 bg-muted/20 animate-pulse z-0"></div>
+          
+          <!-- 图片：默认去色，Hover恢复 -->
+          <img
+            src={post.data.heroImage || defaultHeroImage}
+            alt={post.data.title}
+            loading="eager"
+            decoding="async"
+            onload="this.style.opacity='1'"
+            class="w-full h-full object-cover grayscale transition-all duration-500 ease-out group-hover:grayscale-0 group-hover:scale-105 opacity-0 will-change-transform"
+          />
 
-        <!-- 覆盖层：图纸网格纹理 -->
-        <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDUiLz4KPHBhdGggZD0iTTEgMmgydjJIMUMyeiIgZmlsbD0iIzAwMCIgZmlsbC1vcGFjaXR5PSIwLjEiLz4KPC9zdmc+')] pointer-events-none mix-blend-overlay"></div>
-        
-        <!-- 标签：FIG 编号 -->
-        <div class="absolute bottom-0 left-0 bg-background/90 border-t border-r border-border px-2 py-1 text-[10px] font-mono font-bold uppercase tracking-wider text-muted-foreground z-10">
-          FIG.{serialNo}
+          <!-- 覆盖层：图纸网格纹理 -->
+          <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDUiLz4KPHBhdGggZD0iTTEgMmgydjJIMUMyeiIgZmlsbD0iIzAwMCIgZmlsbC1vcGFjaXR5PSIwLjEiLz4KPC9zdmc+')] pointer-events-none mix-blend-overlay"></div>
+          
+          <!-- 标签：FIG 编号 -->
+          <div class="absolute bottom-0 left-0 bg-background/90 border-t border-r border-border px-2 py-1 text-[10px] font-mono font-bold uppercase tracking-wider text-muted-foreground z-10">
+            FIG.{serialNo}
+          </div>
         </div>
-      </div>
-    </a>
-  </div>
+      </a>
+    </div>
+  )}
 
   <!-- 内容区域：调整为紧凑布局 -->
+  <!-- 3. 根据是否显示图片调整宽度 (md:w-full) 和顺序 -->
   <div 
     class={`
       flex flex-col w-full p-5 sm:p-6 md:p-8 
-      ${isVertical ? 'md:w-3/4' : 'md:w-3/5'} 
-      ${isReverse ? 'md:order-1' : 'md:order-2'}
+      ${!showHeroImage ? 'md:w-full' : (isVertical ? 'md:w-3/4' : 'md:w-3/5')} 
+      ${!showHeroImage ? '' : (isReverse ? 'md:order-1' : 'md:order-2')}
     `}
   >
     <!-- 头部元数据行 -->

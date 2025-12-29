@@ -19,18 +19,24 @@ const posts = defineCollection({
     // 文章作者，默认使用全局配置中的作者
     author: z.string().default(POSTS_CONFIG.author),
     // 文章封面图（可选）
+    // 修改 heroImage 字段：
     heroImage: z
       .string()
       .transform((val) => {
         if (!val) return undefined
+        // 👇 新增这一行：如果是 none，直接返回，不加前缀
+        if (val === 'none') return 'none' 
+        
         return val.startsWith('http') ? val : `/hero-images/${val}`
       })
       .optional(),
-    // Open Graph 图片（可选）
+
+    // 建议把 ogImage 也顺手改了，防止未来出现类似问题
     ogImage: z
       .string()
       .transform((val) => {
         if (!val) return undefined
+        if (val === 'none') return 'none' // 👇 同步修改
         return val.startsWith('http') ? val : `/og-images/${val}`
       })
       .optional(),
