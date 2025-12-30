@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { cn } from '~/lib/utils'
 import Tooltip, { TooltipProvider } from './Tooltip.tsx'
 
-// API from https://github.com/grubersjoe/github-contributions-api
+// --- Types ---
 interface Contribution {
   date: string
   count: number
@@ -14,7 +14,7 @@ interface Contribution {
 interface Response {
   total: {
     [year: number]: number
-    [year: string]: number // 'lastYear'
+    [year: string]: number 
   }
   contributions: Array<Contribution>
 }
@@ -28,7 +28,7 @@ interface Props {
   tooltipEnabled: boolean
 }
 
-// ERROR图案配置
+// --- Configuration ---
 const ERROR_PATTERN = [
   [1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1],
   [1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
@@ -37,72 +37,46 @@ const ERROR_PATTERN = [
   [1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1],
 ] as const
 
-// 生成ERROR贡献数据
+// --- Helpers ---
 function generateErrorContributions(): Response {
   const contributions = Array.from({ length: 371 }, (_, index): Contribution => {
     const weekIndex = Math.floor(index / 7)
     const dayIndex = index % 7
-
-    // 计算居中位置
     const patternStartWeek = Math.floor((53 - 19) / 2)
     const patternStartRow = Math.floor((7 - 5) / 2)
     const relativeWeek = weekIndex - patternStartWeek
     const relativeRow = dayIndex - patternStartRow
-
     let count = 0
     if (relativeWeek >= 0 && relativeWeek < 19 && relativeRow >= 0 && relativeRow < 5) {
-      count = ERROR_PATTERN[relativeRow]?.[relativeWeek] === 1 ? 10 : 0 // 10表示最深色
+      count = ERROR_PATTERN[relativeRow]?.[relativeWeek] === 1 ? 10 : 0
     }
-
-    return {
-      date: '1',
-      count,
-      level: 0,
-    }
+    return { date: '', count, level: 0 }
   })
-
-  return {
-    contributions,
-    total: {
-      lastYear: 0,
-    },
-  }
+  return { contributions, total: { lastYear: 0 } }
 }
 
-// 生成默认占位数据
 function generatePlaceholderContributions(): Response {
-  const contributions = Array.from(
-    { length: 371 },
-    (_, index): Contribution => ({
-      date: new Date(Date.now() - (371 - index) * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-      count: 0,
-      level: 0,
-    })
-  )
-
-  return {
-    contributions,
-    total: {
-      lastYear: 0,
-    },
-  }
+  const contributions = Array.from({ length: 371 }, (_, index): Contribution => ({
+    date: new Date(Date.now() - (371 - index) * 86400000).toISOString().split('T')[0],
+    count: 0,
+    level: 0,
+  }))
+  return { contributions, total: { lastYear: 0 } }
 }
 
 async function fetchContributions(username: string): Promise<Response> {
   const response = await fetch(`https://github-contributions-api.jogruber.de/v4/${username}?y=last`)
   const data: Response | ErrorData = await response.json()
-
-  if (!response.ok) {
-    throw Error(`Fetching GitHub contribution data for "${username}" failed: ${(data as ErrorData).error}`)
-  }
-
+  if (!response.ok) throw Error((data as ErrorData).error)
   return data as Response
 }
 
 export default function GithubContributions({ username, tooltipEnabled }: Props) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [data, setData] = useState<Response | null>(generatePlaceholderContributions())
-  const [errorVisible, setErrorVisible] = useState(true)
+  const [totalCount, setTotalCount] = useState(0)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
 
   const scrollToRight = useCallback(() => {
     if (containerRef.current) {
@@ -111,67 +85,103 @@ export default function GithubContributions({ username, tooltipEnabled }: Props)
   }, [])
 
   const fetchData = useCallback(() => {
+    setLoading(true)
+    setError(false)
     fetchContributions(username)
-      .then(setData)
-      .then(scrollToRight)
-      .then(() => {
-        setErrorVisible(false)
+      .then((res) => {
+        setData(res)
+        const total = res.total?.lastYear ?? res.contributions.reduce((acc, curr) => acc + curr.count, 0) ?? 0
+        setTotalCount(total)
+        setLoading(false)
       })
+      .then(scrollToRight)
       .catch(() => {
         setData(generateErrorContributions())
+        setTotalCount(0)
+        setError(true)
+        setLoading(false)
       })
-  }, [username])
+  }, [username, scrollToRight])
 
   useEffect(fetchData, [fetchData])
 
-  // 将贡献数据按周分组
-  const weeks =
-    data?.contributions.reduce<Contribution[][]>((acc, day, index) => {
-      const weekIndex = Math.floor(index / 7)
-      if (!acc[weekIndex]) {
-        acc[weekIndex] = []
-      }
-      acc[weekIndex].push(day)
-      return acc
-    }, []) || []
+  const weeks = data?.contributions.reduce<Contribution[][]>((acc, day, index) => {
+    const weekIndex = Math.floor(index / 7)
+    if (!acc[weekIndex]) acc[weekIndex] = []
+    acc[weekIndex].push(day)
+    return acc
+  }, []) || []
+
+  // 极简配色逻辑：只使用 Primary 色，通过透明度区分
+  const getLevelClass = (count: number) => {
+    // 0: 极淡的背景色，作为占位符
+    if (count === 0) return 'bg-primary/5' 
+    // 有数据: 实心色块，透明度递增
+    if (count < 5) return 'bg-primary/40'
+    if (count < 10) return 'bg-primary/60'
+    if (count < 20) return 'bg-primary/80'
+    return 'bg-primary'
+  }
 
   return (
     <TooltipProvider>
-      <div ref={containerRef} className="grid grid-flow-col gap-1 overflow-x-auto py-2 px-2 max-md:px-0 scroll-smooth">
-        {weeks.map((week, weekIndex) => (
-          <div key={weekIndex} className="grid grid-rows-7 gap-1">
-            {week.map((contribution, dayIndex) => {
-              const { date, count } = contribution
-              const formattedDate = new Date(date).toLocaleDateString('en-US', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })
-
-              const tooltipContent = `${formattedDate} — ${
-                count === 1 ? '1 contribution' : count === 0 ? 'Rest day' : `${count} contributions`
-              }`
-
-              return (
-                <Tooltip key={dayIndex} content={tooltipContent} disabled={!tooltipEnabled || errorVisible}>
-                  <div
-                    className={cn(
-                      'size-2 relative transition-colors duration-500 hover:scale-125 hover:transition-none',
-                      count === 0
-                        ? 'bg-zinc-200/70 dark:bg-zinc-900'
-                        : count < 5
-                          ? 'bg-zinc-400/70 dark:bg-zinc-700'
-                          : count < 10
-                            ? 'bg-zinc-500'
-                            : 'bg-zinc-900 dark:bg-zinc-50'
-                    )}
-                  />
-                </Tooltip>
-              )
-            })}
+      {/* 
+        主容器：无边框，无背景 
+        w-full: 占满 5xl 宽度
+      */}
+      <div className="w-full flex flex-col items-center select-none font-mono mt-4">
+        
+        {/* 
+          顶部信息栏：悬浮文字风格
+          使用 w-full max-w-[53*gap] 来尝试和下方图表对齐，或者直接居中
+        */}
+        <div className="flex justify-between items-end w-full px-1 mb-2 opacity-70 hover:opacity-100 transition-opacity duration-300">
+          <div className="flex flex-col">
+             <span className="text-[9px] text-muted-foreground uppercase tracking-widest">Target</span>
+             <span className="text-xs font-bold text-foreground">@{username}</span>
           </div>
-        ))}
+
+          {/* 中间装饰线条，可选 */}
+          <div className="flex-1 mx-4 border-b border-dashed border-primary/20 h-[1px] mb-1.5" />
+
+          <div className="flex flex-col items-end">
+            <span className="text-[9px] text-muted-foreground uppercase tracking-widest flex items-center gap-1">
+              Status
+              <span className={cn("size-1 rounded-full", loading ? "bg-yellow-500" : error ? "bg-red-500" : "bg-primary")} />
+            </span>
+             <span className="text-xs font-bold text-foreground">{loading ? '---' : totalCount} <span className="text-[9px] font-normal text-muted-foreground">OPS</span></span>
+          </div>
+        </div>
+
+        <div 
+          ref={containerRef} 
+          className="w-full overflow-x-auto scrollbar-hide"
+        >
+          <div className="grid grid-flow-col gap-1 w-max mx-auto">
+            {weeks.map((week, weekIndex) => (
+              <div key={weekIndex} className="grid grid-rows-7 gap-1">
+                {week.map((contribution, dayIndex) => {
+                  const { date, count } = contribution
+                  const dateStr = date ? new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).toUpperCase() : 'N/A'
+                  const tooltipText = `${dateStr} — ${count} LOGS`
+
+                  return (
+                    <Tooltip key={dayIndex} content={tooltipText} disabled={!tooltipEnabled || error}>
+                      <div
+                        className={cn(
+                          'size-3.5 transition-all duration-300',
+                          getLevelClass(count),
+                          // Hover 效果：不再变色，而是稍微放大发光
+                          'hover:scale-125 hover:z-10 hover:shadow-[0_0_8px_rgba(var(--primary),0.6)]'
+                        )}
+                      />
+                    </Tooltip>
+                  )
+                })}
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </TooltipProvider>
   )

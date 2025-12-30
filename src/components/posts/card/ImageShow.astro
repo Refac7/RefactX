@@ -10,77 +10,119 @@ interface Props extends CardProps {}
 
 const { post, heroImageLayout }: Props = Astro.props
 
-const aspectRatioClass: Record<HeroImageAspectRatio, string> = {
-  '16/9': 'aspect-[16/9]',
-  '3/4': 'aspect-[3/4]',
-}
+// 1. 判断是否有图
+const hasImage = post.data.heroImage !== 'none'
 
-// 1. 判断是否显示图片：只要不是 'none' 就显示（包含 undefined/null 会回落到默认图的情况）
-const showHeroImage = post.data.heroImage !== 'none'
-
-const isVertical = post.data.heroImageAspectRatio === '3/4'
 const imagePosition = post.data.heroImageLayout || heroImageLayout || 'right'
 const isReverse = imagePosition === 'right'
 const defaultHeroImage = POSTS_CONFIG.defaultHeroImage
 
-// 生成伪随机编号，增加工业感
+// 生成装饰用的序列号
 const serialNo = post.slug.slice(0, 4).toUpperCase();
+
+// --- 布局配置 ---
+// 固定侧边栏宽度，防止拉伸。
+const sideWidthClass = "md:w-[280px] lg:w-[320px]" 
 ---
 
-<article class="group relative flex flex-col md:flex-row bg-background border border-border/60 hover:border-primary/60 transition-colors duration-300 rounded-none overflow-hidden mb-6">
+<article class="group relative flex flex-col md:flex-row bg-background border border-border/60 hover:border-primary/60 transition-colors duration-300 rounded-none overflow-hidden mb-6 h-full min-h-[16rem]">
   
-  <!-- 装饰：Hover时的角落高亮 -->
+  <!-- 全局装饰：Hover角落高亮 -->
   <div class="absolute top-0 right-0 w-0 h-0 border-t-[3px] border-r-[3px] border-primary opacity-0 group-hover:opacity-100 group-hover:w-3 group-hover:h-3 transition-all duration-200 z-20"></div>
 
-  <!-- 图片区域：工业风处理 -->
-  <!-- 2. 使用 showHeroImage 控制渲染 -->
-  {showHeroImage && (
+  <!-- 
+    A. 图片区域 (Has Image) 
+    已经是 <a> 标签，保持不变
+  -->
+  {hasImage && (
     <div 
       class={`
-        hidden md:flex flex-col relative shrink-0 
-        ${isVertical ? 'md:w-1/4' : 'md:w-2/5'} 
+        hidden md:flex flex-col relative shrink-0 h-auto min-h-full
+        ${sideWidthClass}
         ${isReverse ? 'md:order-2 border-l border-border' : 'md:order-1 border-r border-border'}
       `}
     >
-      <a href={`/posts/${post.slug}`} class="block w-full h-full relative overflow-hidden bg-muted">
-        
-        <!-- 图片容器 -->
-        <div class={`w-full h-full ${aspectRatioClass[post.data.heroImageAspectRatio]} relative`}>
-          <!-- 加载占位 -->
-          <div class="absolute inset-0 bg-muted/20 animate-pulse z-0"></div>
-          
-          <!-- 图片：默认去色，Hover恢复 -->
-          <img
-            src={post.data.heroImage || defaultHeroImage}
-            alt={post.data.title}
-            loading="eager"
-            decoding="async"
-            onload="this.style.opacity='1'"
-            class="w-full h-full object-cover grayscale transition-all duration-500 ease-out group-hover:grayscale-0 group-hover:scale-105 opacity-0 will-change-transform"
-          />
-
-          <!-- 覆盖层：图纸网格纹理 -->
-          <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDUiLz4KPHBhdGggZD0iTTEgMmgydjJIMUMyeiIgZmlsbD0iIzAwMCIgZmlsbC1vcGFjaXR5PSIwLjEiLz4KPC9zdmc+')] pointer-events-none mix-blend-overlay"></div>
-          
-          <!-- 标签：FIG 编号 -->
-          <div class="absolute bottom-0 left-0 bg-background/90 border-t border-r border-border px-2 py-1 text-[10px] font-mono font-bold uppercase tracking-wider text-muted-foreground z-10">
-            FIG.{serialNo}
-          </div>
+      <a href={`/posts/${post.slug}`} class="block w-full h-full relative overflow-hidden bg-muted group/img">
+        <img
+          src={post.data.heroImage || defaultHeroImage}
+          alt={post.data.title}
+          loading="eager"
+          decoding="async"
+          class="absolute inset-0 w-full h-full object-cover grayscale transition-all duration-500 ease-out group-hover/img:grayscale-0 group-hover/img:scale-105"
+        />
+        <!-- 纹理覆盖 -->
+        <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDUiLz4KPHBhdGggZD0iTTEgMmgydjJIMUMyeiIgZmlsbD0iIzAwMCIgZmlsbC1vcGFjaXR5PSIwLjEiLz4KPC9zdmc+')] pointer-events-none mix-blend-overlay"></div>
+        <div class="absolute bottom-0 left-0 bg-background/90 border-t border-r border-border px-2 py-1 text-[10px] font-mono font-bold uppercase tracking-wider text-muted-foreground z-10">
+          FIG.{serialNo}
         </div>
       </a>
     </div>
   )}
 
-  <!-- 内容区域：调整为紧凑布局 -->
-  <!-- 3. 根据是否显示图片调整宽度 (md:w-full) 和顺序 -->
+  <!-- 
+    B. 无图占位区域 (No Image Placeholder)
+    修改为 <a> 标签，使其可点击
+    添加 group/placeholder 用于内部元素的 hover 控制
+  -->
+  {!hasImage && (
+    <a 
+      href={`/posts/${post.slug}`}
+      class={`
+        hidden md:flex shrink-0 h-auto min-h-full relative overflow-hidden flex-col justify-between p-6 select-none bg-muted/5
+        ${sideWidthClass}
+        border-l border-border/50 md:order-2
+        group/placeholder hover:bg-muted/10 transition-colors duration-300 cursor-pointer
+      `}
+    >
+        <!-- 背景纹理 -->
+        <div class="absolute inset-0 opacity-[0.03] bg-[repeating-linear-gradient(45deg,currentColor_0px,currentColor_1px,transparent_1px,transparent_10px)] pointer-events-none"></div>
+
+        <!-- 顶部标签 -->
+        <div class="flex justify-between items-start">
+           <!-- 模拟文件状态标签 -->
+           <span class="text-[9px] font-mono text-muted-foreground/40 border border-muted-foreground/20 px-1 py-0.5 group-hover/placeholder:border-primary/40 group-hover/placeholder:text-primary/70 transition-colors">
+             NO_MEDIA
+           </span>
+           <!-- 悬停时显示的跳转箭头 -->
+           <span class="opacity-0 -translate-x-2 group-hover/placeholder:opacity-100 group-hover/placeholder:translate-x-0 transition-all duration-300 text-primary text-xs font-bold">
+             ↗
+           </span>
+        </div>
+
+        <!-- 
+          中间巨大的装饰字
+          添加了 group-hover/placeholder 动画：放大 + 变色
+        -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center pointer-events-none overflow-hidden">
+           <span class="text-[8rem] leading-none font-black text-foreground/5 font-mono tracking-tighter group-hover/placeholder:text-primary/5 group-hover/placeholder:scale-110 group-hover/placeholder:rotate-3 transition-all duration-500 ease-out select-none block origin-center">
+             {serialNo}
+           </span>
+        </div>
+        
+        <!-- 底部信息 -->
+        <div class="flex flex-col gap-1 z-10">
+           <!-- 装饰线：悬停时伸长变色 -->
+           <div class="h-px w-8 bg-border group-hover/placeholder:w-full group-hover/placeholder:bg-primary/50 transition-all duration-500 ease-out"></div>
+           
+           <div class="flex justify-between items-center text-[9px] font-mono text-muted-foreground/60 group-hover/placeholder:text-muted-foreground/80 transition-colors">
+             <span>TXT_LOG</span>
+             <span class="group-hover/placeholder:text-primary transition-colors">ACCESS -></span>
+           </div>
+        </div>
+    </a>
+  )}
+
+  <!-- 
+    C. 内容区域 
+    flex-1 自动填充剩余空间
+  -->
   <div 
     class={`
-      flex flex-col w-full p-5 sm:p-6 md:p-8 
-      ${!showHeroImage ? 'md:w-full' : (isVertical ? 'md:w-3/4' : 'md:w-3/5')} 
-      ${!showHeroImage ? '' : (isReverse ? 'md:order-1' : 'md:order-2')}
+      flex flex-col w-full p-5 sm:p-6 md:p-8 flex-1
+      ${hasImage && isReverse ? 'md:order-1' : 'md:order-1'} 
     `}
   >
-    <!-- 头部元数据行 -->
+    <!-- 头部元数据 -->
     <div class="flex items-center justify-between border-b border-dashed border-border/50 pb-3 mb-4">
       <div class="flex items-center gap-3 text-xs font-mono text-muted-foreground uppercase tracking-tight">
         <time class="flex items-center gap-1.5">
@@ -96,7 +138,6 @@ const serialNo = post.slug.slice(0, 4).toUpperCase();
         }
       </div>
       
-      <!-- 推荐徽章 (如果有) -->
       {post.data.recommend && (
         <div class="scale-90 origin-right">
            <RecommendBadge />
@@ -120,9 +161,8 @@ const serialNo = post.slug.slice(0, 4).toUpperCase();
       )
     }
 
-    <!-- 底部功能区：Tags 和 Action -->
+    <!-- 底部功能区 -->
     <div class="mt-auto pt-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-      <!-- Tags 区域 -->
       <div class="flex flex-wrap gap-2">
         {post.data.tags?.map((tag) => (
            <div class="scale-95 origin-left">

@@ -25,7 +25,7 @@ const allPosts = await getCollection('posts')
 const posts = postsSort(allPosts).slice(0, size)
 
 // 样式常量 (统一页面边距)
-const LAYOUT_CONTAINER = "max-w-[1400px] mx-auto px-6 sm:px-8"
+const LAYOUT_CONTAINER = "mx-auto px-6 sm:px-8"
 ---
 
 <Layout title="主页" description={SITE.description}>
@@ -71,14 +71,14 @@ const LAYOUT_CONTAINER = "max-w-[1400px] mx-auto px-6 sm:px-8"
       <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
         
         <!-- 左侧：核心标题 -->
-        <div class="lg:col-span-6">
+        <div class="lg:col-span-7">
           <div class="mb-3 sm:mb-4">
             <span class="font-mono text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-primary/80">
               :: Identify User
             </span>
           </div>
           
-          <h1 class="relative inline-block text-7xl font-bold tracking-tighter text-foreground leading-[0.9] -ml-1">
+          <h1 class="relative inline-block text-7xl md:text-8xl font-bold tracking-tighter text-foreground leading-[0.9] -ml-1">
             <span class="relative z-10">Refac<span class="text-primary">7</span>.</span>
             <span class="absolute bottom-2 left-0 w-full h-4 bg-red-600/80 -z-0 opacity-80 -skew-x-6"></span>
           </h1>
@@ -102,7 +102,7 @@ const LAYOUT_CONTAINER = "max-w-[1400px] mx-auto px-6 sm:px-8"
         </div>
 
         <!-- 右侧：信息面板 -->
-        <div class="lg:col-span-6 flex flex-col gap-6">
+        <div class="lg:col-span-5 flex flex-col gap-6">
           <!-- 简介 -->
           <div class="border-l-2 border-primary/40 pl-5">
             <p class="text-base text-muted-foreground leading-relaxed">
@@ -157,10 +157,7 @@ const LAYOUT_CONTAINER = "max-w-[1400px] mx-auto px-6 sm:px-8"
           transition:animate="none"
         />
         
-        <div class="mt-4 flex justify-between text-[10px] font-mono text-muted-foreground/40 pt-2 border-t border-dashed border-border/40">
-          <span>DATA_SOURCE: GITHUB_API</span>
-          <span>SYNC_STATUS: OK</span>
-        </div>
+        <div class="mt-4 flex justify-between text-[10px] font-mono text-muted-foreground/40 pt-2 border-t border-dashed border-primary/20"></div>
       </div>
     )}
 

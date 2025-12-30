@@ -190,11 +190,11 @@ export const POSTS_CONFIG: PostConfig = {
     type: 'compact'
   },
   postPageConfig: {
-    size: 10,
+    size: 5,
     type: 'image'
   },
   tagsPageConfig: {
-    size: 10,
+    size: 5,
     type: 'time-line'
   },
   defaultHeroImage: '/og-image.webp',
