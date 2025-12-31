@@ -170,9 +170,7 @@ export default function GithubContributions({ username, tooltipEnabled }: Props)
                       <div
                         className={cn(
                           'size-3.5 transition-all duration-300',
-                          getLevelClass(count),
-                          // Hover 效果：不再变色，而是稍微放大发光
-                          'hover:scale-125 hover:z-10 hover:shadow-[0_0_8px_rgba(var(--primary),0.6)]'
+                          getLevelClass(count)
                         )}
                       />
                     </Tooltip>

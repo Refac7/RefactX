@@ -56,7 +56,7 @@ ISP连接超时。（未知错误）或认证失败。我去运营商处咨询�
 我终于摆脱了每次打开电脑输入密码的时代。
 
 :::image-figure[多设备连接]
-![](https://img.refact.cc/post-6-1.png)
+![](https://img.refact.cc/post-6-1.png)(style: width:600px;)
 :::
 
 :::image-figure[5GHz频段测速]

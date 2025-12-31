@@ -28,7 +28,7 @@ https://www.refact.cc/posts/post-9
 根据实际测试，在 InPrivate 窗口清除缓存并进行硬刷新后，Lighthouse 测试的四项指标均能达到 100 分（结果受多种因素影响，仅供参考）。
 
 :::image-figure[lighthouse]
-![](https://img.refact.cc/lighthouse.png)
+![](https://img.refact.cc/lighthouse.png)(style: width:600px;)
 :::
 
 ## 外观优化

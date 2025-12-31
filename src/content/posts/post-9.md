@@ -194,7 +194,7 @@ Waline评论上传的图片默认统一保存在comment文件夹下。
 ```markdown
 // 带描述的图片
 :::image-figure[lighthouse]
-![](https://img.refact.cc/lighthouse.png)
+![](https://img.refact.cc/lighthouse.png)(style: width:600px;)
 :::
 ```
 
