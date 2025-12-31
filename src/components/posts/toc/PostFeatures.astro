@@ -13,9 +13,9 @@ interface Props {
 const { post, posts } = Astro.props
 ---
 
-<BackToTop id="backToTopMobile" class="xl:hidden fixed bottom-14 sm:right-8 right-6 z-50 flex flex-col gap-3" />
+<BackToTop id="backToTopMobile" class="2xl:hidden fixed bottom-14 sm:right-8 right-6 z-50 flex flex-col gap-3" />
 
-<div class="hidden xl:flex fixed bottom-24 right-[calc(50%-32rem)] translate-x-full p-4">
+<div class="hidden 2xl:flex fixed bottom-24 right-[calc(50%-32rem)] translate-x-full p-4">
   <div class="flex items-center gap-2">
     <BackButton {post} {posts} />
     <BackToTop id="backToTopDesktop" />
