@@ -1,8 +1,14 @@
-# RefactX 主题  
+# RefactX Galaxy 主题  
 
 ![RefactX 封面](./src/assets/cover@2x.png)  
 
-一款为内容创作者和开发者打造的现代、优雅的 Astro 主题。  
+一款为内容创作者和开发者打造的现代、优雅的 Astro 主题。
+
+IMPORTANT: 此分支为测试分支，如果遇到了由本主题导致的问题，请提交issues
+
+NOTE: 开发者对于开源程序没有必须的维护义务，如果你希望实现某些功能，请先尝试自行解决，可能的话，欢迎提交PR
+
+你必须修改 ./src/config.ts 中的相关内容，不得直接用于生产环境。
 
 ## 核心功能  
 
@@ -43,5 +49,9 @@
 - 多种内容布局可选  
 - 代码语法高亮  
 - 响应式图片画廊  
+
+本项目使用**pnpm**包管理器。
+
+原始版本来自 [Litos theme](https://github.com/Dnzzk2/Litos) MIT License.
 
 由 Refact 维护此副本，MIT许可证沿用原始版本
