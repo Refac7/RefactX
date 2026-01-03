@@ -12,8 +12,8 @@ import rawProjectList from '~/content/data/projects.json'
 interface Project {
   name: string;
   description: string;
-  githubUrl?: string;
-  website?: string;
+  githubUrl: string | null;  // 改为允许 null
+  website: string | null;    // 也可以改为允许 null
   type: string;
   icon: string;
   imageClass?: string;

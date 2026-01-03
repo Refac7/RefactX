@@ -4,8 +4,8 @@ import { cn } from '~/lib/utils';
 
 // --- 配置区域 ---
 const REPO_CONFIG = {
-  owner: 'Refac7', // 请修改
-  repo: 'RefactX',        // 请修改
+  owner: 'Refac7',
+  repo: 'RefactX',
   branch: 'main',
   pathPrefix: 'src/content/posts/' 
 };
@@ -74,7 +74,7 @@ export default function AdminDashboard() {
   const [password, setPassword] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isValidating, setIsValidating] = useState(false);
-  const [loginError, setLoginError] = useState(false); // 新增：错误状态
+  const [loginError, setLoginError] = useState(false);
 
   // Data
   const [remoteFiles, setRemoteFiles] = useState<RemoteFile[]>([]);
@@ -104,18 +104,49 @@ export default function AdminDashboard() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const jsonTextareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const uploadTargetRef = useRef<string>('body'); 
+  const uploadTargetRef = useRef<string>('body');
+
+  // --- 自动保存暂存区到本地存储 ---
+  useEffect(() => {
+    // 1. 初始化时加载
+    const saved = localStorage.getItem('admin_queue_v1');
+    if (saved) {
+      try { 
+        const parsed = JSON.parse(saved);
+        // 确保状态重置为 pending
+        const resetQueue = parsed.map((item: QueueItem) => ({
+          ...item,
+          status: 'pending' // 重置状态，避免之前的状态影响
+        }));
+        setQueue(resetQueue); 
+      } catch (e) {
+        console.error('Failed to parse saved queue:', e);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    // 2. 变化时自动保存
+    if (queue.length > 0) {
+      localStorage.setItem('admin_queue_v1', JSON.stringify(queue));
+    } else {
+      localStorage.removeItem('admin_queue_v1');
+    }
+  }, [queue]);
 
   // --- Auth Logic ---
   useEffect(() => {
     const savedPass = localStorage.getItem('admin_simple_pass');
-    if (savedPass) { setPassword(savedPass); performLogin(savedPass); }
+    if (savedPass) { 
+      setPassword(savedPass); 
+      performLogin(savedPass); 
+    }
   }, []);
 
   const performLogin = async (pass: string) => {
     if (!pass) return;
     setIsValidating(true);
-    setLoginError(false); // 重置错误状态
+    setLoginError(false);
     
     try {
       const res = await fetch('/api/auth', { 
@@ -143,7 +174,13 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleLogout = () => { localStorage.removeItem('admin_simple_pass'); setIsLoggedIn(false); setPassword(''); };
+  const handleLogout = () => { 
+    localStorage.removeItem('admin_simple_pass'); 
+    localStorage.removeItem('admin_queue_v1'); // 同时清除暂存区
+    setIsLoggedIn(false); 
+    setPassword(''); 
+    setQueue([]); // 清空队列
+  };
 
   // --- Logic: Markdown Parser ---
   const parseContent = (raw: string) => {
@@ -178,10 +215,19 @@ export default function AdminDashboard() {
   const fetchRemoteFiles = async (pass = password) => {
     setIsLoadingFiles(true);
     try {
-      const res = await fetch('/api/list-files', { method: 'POST', body: JSON.stringify({ password: pass, config: REPO_CONFIG }) });
+      const res = await fetch('/api/list-files', { 
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: pass, config: REPO_CONFIG }) 
+      });
       const data = await res.json();
       if (data.files) setRemoteFiles(data.files);
-    } catch (e) { console.error(e); } finally { setIsLoadingFiles(false); }
+    } catch (e) { 
+      console.error('Failed to fetch files:', e);
+      toast.error('Failed to load file list');
+    } finally { 
+      setIsLoadingFiles(false); 
+    }
   };
 
   // --- Logic: Load Content ---
@@ -190,10 +236,16 @@ export default function AdminDashboard() {
     setIsFetchingContent(true);
     const toastId = toast.loading(`Fetching ${name}...`);
     
-    const requestBody = isData ? { password, config: REPO_CONFIG, absolutePath: path } : { password, config: REPO_CONFIG, filename: name };
+    const requestBody = isData ? 
+      { password, config: REPO_CONFIG, absolutePath: path } : 
+      { password, config: REPO_CONFIG, filename: name };
 
     try {
-        const res = await fetch('/api/get-content', { method: 'POST', body: JSON.stringify(requestBody) });
+        const res = await fetch('/api/get-content', { 
+          method: 'POST', 
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(requestBody) 
+        });
         
         if (res.status === 404 && isData) {
             setFilename(name); setJsonContent('[]'); setParsedJson([]);
@@ -226,8 +278,11 @@ export default function AdminDashboard() {
         }
         setMobileView('editor');
         toast.success('Loaded', { id: toastId });
-    } catch (e) { toast.error('Failed to fetch', { id: toastId }); } 
-    finally { setIsFetchingContent(false); }
+    } catch (e) { 
+      toast.error('Failed to fetch', { id: toastId }); 
+    } finally { 
+      setIsFetchingContent(false); 
+    }
   };
 
   // --- Logic: Visual JSON Editing ---
@@ -284,25 +339,45 @@ ${body}`;
         content = jsonContent;
     }
 
+    // --- 智能暂存逻辑 ---
     setQueue(prev => {
-        const filtered = prev.filter(p => p.filename !== finalFilename);
-        return [...filtered, {
-            id: Date.now().toString(), type: 'write', filename: finalFilename,
-            content, status: 'pending', isDataFile: currentMode === 'data'
-        }];
+        // 检查这个文件是不是已经在暂存区了
+        const existingIndex = prev.findIndex(p => p.filename === finalFilename);
+        
+        const newItem: QueueItem = {
+            id: Date.now().toString(), 
+            type: 'write', 
+            filename: finalFilename,
+            content, 
+            status: 'pending', 
+            isDataFile: currentMode === 'data'
+        };
+
+        // 如果已经在暂存区，就覆盖它（去重）
+        if (existingIndex !== -1) {
+            const newQueue = [...prev];
+            newQueue[existingIndex] = newItem;
+            return newQueue;
+        }
+        // 否则追加到最后
+        return [...prev, newItem];
     });
     
-    if (window.innerWidth < 1024) toast.success('Check [BUFFER] tab.');
+    if (window.innerWidth < 1024) toast.success('Saved to BUFFER');
     else toast.success('Added to Buffer');
   };
 
   const stageForDelete = (file: RemoteFile) => {
     if (!confirm(`Delete ${file.name}?`)) return;
-    setQueue(prev => [...prev.filter(p => p.filename !== file.name), {
-        id: Date.now().toString(), type: 'delete', filename: file.name,
-        sha: file.sha, status: 'pending'
+    setQueue(prev => [...prev, {
+        id: Date.now().toString(), 
+        type: 'delete', 
+        filename: file.name,
+        sha: file.sha, 
+        status: 'pending',
+        isDataFile: false // 删除的通常是文章文件
     }]);
-    toast.success(`Marked delete`);
+    toast.success(`Marked for deletion`);
   };
 
   const removeFromQueue = (id: string) => {
@@ -310,25 +385,48 @@ ${body}`;
   };
 
   const processQueue = async () => {
-    if (queue.length === 0 || !confirm(`Execute ${queue.length} ops?`)) return;
+    if (queue.length === 0) return toast.error('Buffer is empty');
+    if (!confirm(`Execute ${queue.length} tasks?`)) return;
+    
     setIsProcessingQueue(true);
-    for (const item of queue) {
-        setQueue(prev => prev.map(q => q.id === item.id ? { ...q, status: 'processing' } : q));
-        try {
-            const reqBody = {
-                password, config: REPO_CONFIG,
-                content: item.content, action: item.type, sha: item.sha,
-                filename: item.filename, 
-                isAbsolutePath: item.isDataFile || item.filename.includes('/') 
-            };
-            const res = await fetch('/api/publish', { method: 'POST', body: JSON.stringify(reqBody) });
-            if (!res.ok) throw new Error('Error');
-            setQueue(prev => prev.filter(q => q.id !== item.id));
-        } catch (error) { setQueue(prev => prev.map(q => q.id === item.id ? { ...q, status: 'error' } : q)); }
+    const toastId = toast.loading('Batch uploading...');
+
+    try {
+        // 调用新的批量接口
+        const res = await fetch('/api/batch-commit', { 
+            method: 'POST', 
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                password,
+                config: REPO_CONFIG,
+                operations: queue.map(item => ({
+                    type: item.type,
+                    filename: item.filename,
+                    content: item.content,
+                    sha: item.sha,
+                    isDataFile: item.isDataFile
+                }))
+            }) 
+        });
+
+        const result = await res.json();
+        if (!res.ok) throw new Error(result.error || 'Batch failed');
+
+        // 成功后清空暂存区
+        setQueue([]);
+        localStorage.removeItem('admin_queue_v1'); 
+        
+        toast.success(`Batch completed! ${queue.length} files processed. Build triggered.`, { id: toastId });
+        
+        // 刷新文件列表
+        await fetchRemoteFiles();
+
+    } catch (error: any) { 
+        console.error('Batch error:', error);
+        toast.error(`Error: ${error.message}`, { id: toastId });
+    } finally {
+        setIsProcessingQueue(false);
     }
-    setIsProcessingQueue(false);
-    toast.success('Batch Complete');
-    fetchRemoteFiles();
   };
 
   // --- Upload ---
@@ -339,7 +437,11 @@ ${body}`;
     try {
         const formData = new FormData();
         formData.append('file', file);
-        const res = await fetch(UPLOAD_CONFIG.url, { method: 'POST', body: formData, headers: { 'Authorization': `Bearer ${UPLOAD_CONFIG.token}` } });
+        const res = await fetch(UPLOAD_CONFIG.url, { 
+          method: 'POST', 
+          body: formData, 
+          headers: { 'Authorization': `Bearer ${UPLOAD_CONFIG.token}` } 
+        });
         if (!res.ok) throw new Error('Failed');
         const { url } = await res.json();
         
@@ -366,21 +468,33 @@ ${body}`;
         else if (target === 'og') setMeta(p => ({ ...p, ogImage: url }));
         
         toast.success('Uploaded', { id: toastId });
-    } catch(e) { toast.error('Error', { id: toastId }); }
-    finally { if(fileInputRef.current) fileInputRef.current.value = ''; }
+    } catch(e) { 
+      toast.error('Upload failed', { id: toastId }); 
+    } finally { 
+      if(fileInputRef.current) fileInputRef.current.value = ''; 
+    }
   };
 
-  const triggerUpload = (t: string) => { uploadTargetRef.current = t; fileInputRef.current?.click(); };
+  const triggerUpload = (t: string) => { 
+    uploadTargetRef.current = t; 
+    fileInputRef.current?.click(); 
+  };
   
   const handleNewPost = async () => {
     if ((body+jsonContent).length > 20 && !confirm("Clear workspace?")) return;
     setCurrentMode('post');
     setFilename(''); setBody(''); setMeta(DEFAULT_META);
     try {
-        const res = await fetch('/api/next-filename', { method: 'POST', body: JSON.stringify({ password, config: REPO_CONFIG }) });
+        const res = await fetch('/api/next-filename', { 
+          method: 'POST', 
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password, config: REPO_CONFIG }) 
+        });
         const d = await res.json();
         if(d.filename) setFilename(d.filename);
-    } catch(e){}
+    } catch(e){
+        console.error('Failed to get next filename:', e);
+    }
     setMobileView('editor');
     toast('New Post Ready', { icon: '✨' });
   };
@@ -412,8 +526,20 @@ ${body}`;
                             
                             {field.type === 'textarea' || field.type === 'json' ? (
                                 <textarea 
-                                    value={typeof item[field.key] === 'object' ? JSON.stringify(item[field.key], null, 2) : item[field.key]} 
-                                    onChange={e => handleUpdateItem(editingItemIndex, field.key, field.type === 'json' ? JSON.parse(e.target.value || '{}') : e.target.value)}
+                                    value={typeof item[field.key] === 'object' ? JSON.stringify(item[field.key], null, 2) : item[field.key] || ''} 
+                                    onChange={e => {
+                                      try {
+                                        const newValue = field.type === 'json' ? 
+                                          JSON.parse(e.target.value || '{}') : 
+                                          e.target.value;
+                                        handleUpdateItem(editingItemIndex, field.key, newValue);
+                                      } catch (err) {
+                                        // 如果 JSON 解析失败，保持原样
+                                        if (field.type !== 'json') {
+                                          handleUpdateItem(editingItemIndex, field.key, e.target.value);
+                                        }
+                                      }
+                                    }}
                                     className="w-full bg-muted/20 border border-border/50 p-2 text-sm rounded font-mono focus:border-primary/50 focus:outline-none min-h-[100px]"
                                 />
                             ) : (
@@ -485,13 +611,20 @@ ${body}`;
   if (!isLoggedIn) {
      return (
         <div className="min-h-[80vh] flex items-center justify-center bg-background text-foreground font-mono p-4 relative overflow-hidden">
-            <Toaster toastOptions={{ style: { background: '#111', color: '#fff', border: '1px solid #333', fontFamily: 'monospace' } }} />
+            <Toaster toastOptions={{ 
+              style: { 
+                background: '#111', 
+                color: '#fff', 
+                border: '1px solid #333', 
+                fontFamily: 'monospace',
+                fontSize: '12px',
+                borderRadius: '0'
+              } 
+            }} />
             
-            {/* Background Decoration */}
             <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none opacity-50"></div>
             
             <div className="w-full max-w-md border border-border bg-background/50 backdrop-blur-md p-8 relative shadow-xl overflow-hidden group">
-                {/* Decorative Corners */}
                 <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-primary"></div>
                 <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-primary"></div>
                 <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-primary"></div>
@@ -555,7 +688,16 @@ ${body}`;
   // --- Render: Dashboard ---
   return (
     <div className="text-foreground font-sans p-4 lg:p-6 flex flex-col">
-      <Toaster toastOptions={{ style: { background: '#111', color: '#fff', border: '1px solid #333', fontFamily: 'monospace' } }} />
+      <Toaster toastOptions={{ 
+        style: { 
+          background: '#111', 
+          color: '#fff', 
+          border: '1px solid #333', 
+          fontFamily: 'monospace',
+          fontSize: '12px',
+          borderRadius: '0'
+        } 
+      }} />
       <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
 
       {/* Header */}
@@ -591,6 +733,11 @@ ${body}`;
                   </div>
                   <div className="h-8 w-px bg-border/60"></div>
                   <div className="flex flex-col">
+                      <span className="text-[10px] uppercase text-muted-foreground/60 font-mono tracking-wider">Buffer Tasks</span>
+                      <span className="text-3xl font-mono font-bold text-foreground tracking-tight">{queue.length}</span>
+                  </div>
+                  <div className="h-8 w-px bg-border/60"></div>
+                  <div className="flex flex-col">
                       <span className="text-[10px] uppercase text-muted-foreground/60 font-mono tracking-wider">Target Repo</span>
                       <span className="text-sm font-mono text-foreground mt-1 truncate max-w-[150px]" title={REPO_CONFIG.repo}>{REPO_CONFIG.repo}</span>
                   </div>
@@ -605,7 +752,16 @@ ${body}`;
       {/* Mobile Tabs */}
       <div className="flex lg:hidden mb-4 border border-border/60 bg-muted/5 font-mono text-xs">
           {['files', 'editor', 'queue'].map(v => (
-             <button key={v} onClick={() => setMobileView(v as MobileView)} className={cn("flex-1 py-2 border-r border-border/40 text-center uppercase", mobileView === v ? 'bg-primary/10 text-primary font-bold' : 'text-muted-foreground')}>{v === 'files' ? 'DATA' : v === 'queue' ? `BUFFER [${queue.length}]` : v}</button>
+             <button 
+               key={v} 
+               onClick={() => setMobileView(v as MobileView)} 
+               className={cn(
+                 "flex-1 py-2 border-r border-border/40 text-center uppercase", 
+                 mobileView === v ? 'bg-primary/10 text-primary font-bold' : 'text-muted-foreground'
+               )}
+             >
+               {v === 'files' ? 'DATA' : v === 'queue' ? `BUFFER [${queue.length}]` : v}
+             </button>
           ))}
       </div>
 
@@ -701,17 +857,68 @@ ${body}`;
 
          {/* 3. BUFFER */}
          <div className={cn("lg:col-span-3 flex-col border border-border/60 bg-muted/5 min-h-[300px] lg:flex", mobileView === 'queue' ? 'flex h-[60vh] lg:h-auto' : 'hidden')}>
-            <div className="p-3 border-b border-border/40 flex justify-between items-center bg-muted/10"><span className="text-xs font-mono font-bold">BUFFER</span><span className="text-[10px] font-mono text-muted-foreground">{queue.length} OPS</span></div>
+            <div className="p-3 border-b border-border/40 flex justify-between items-center bg-muted/10">
+              <span className="text-xs font-mono font-bold">BUFFER</span>
+              <span className="text-[10px] font-mono text-muted-foreground">{queue.length} OPS</span>
+            </div>
             <div className="flex-1 overflow-y-auto p-2 space-y-2 custom-scrollbar">
-                {queue.map(item => (
+                {queue.length === 0 ? (
+                  <div className="text-center p-8 text-muted-foreground/50 text-xs">
+                    <span className="icon-[ph--queue] size-8 block mx-auto mb-2 opacity-30"></span>
+                    Buffer is empty
+                  </div>
+                ) : (
+                  queue.map(item => (
                     <div key={item.id} className="relative bg-background border border-border/50 p-3 flex flex-col gap-1 group">
                         <div className={cn("absolute left-0 top-0 bottom-0 w-1", item.status === 'done' ? 'bg-green-500' : item.status === 'processing' ? 'bg-yellow-500 animate-pulse' : item.type === 'delete' ? 'bg-red-500' : 'bg-primary')}></div>
-                        <div className="flex justify-between"><span className={cn("text-[10px] font-bold uppercase", item.type === 'delete' ? 'text-red-500' : 'text-primary')}>{item.type} {item.isDataFile ? 'DATA' : 'POST'}</span>{item.status === 'pending' && <button onClick={()=>removeFromQueue(item.id)}><span className="icon-[ph--x] size-3"></span></button>}</div>
+                        <div className="flex justify-between">
+                          <span className={cn("text-[10px] font-bold uppercase", item.type === 'delete' ? 'text-red-500' : 'text-primary')}>
+                            {item.type} {item.isDataFile ? 'DATA' : 'POST'}
+                          </span>
+                          {item.status === 'pending' && (
+                            <button onClick={()=>removeFromQueue(item.id)} className="hover:bg-muted/50 p-1 rounded">
+                              <span className="icon-[ph--x] size-3"></span>
+                            </button>
+                          )}
+                        </div>
                         <div className="text-xs font-mono truncate" title={item.filename}>{item.filename.split('/').pop()}</div>
+                        {item.type === 'write' && (
+                          <div className="text-[10px] text-muted-foreground mt-1">
+                            {item.content && item.content.length > 100 ? 
+                              `${item.content.substring(0, 100)}...` : 
+                              item.content || 'Empty content'}
+                          </div>
+                        )}
                     </div>
-                ))}
+                  ))
+                )}
             </div>
-            <div className="p-3 border-t"><button onClick={processQueue} disabled={isProcessingQueue || queue.length === 0} className="w-full bg-primary text-primary-foreground py-2 text-xs font-bold font-mono hover:opacity-90 disabled:opacity-50">{isProcessingQueue ? 'SENDING...' : 'EXECUTE'}</button></div>
+            <div className="p-3 border-t">
+              <button 
+                onClick={processQueue} 
+                disabled={isProcessingQueue || queue.length === 0} 
+                className={cn(
+                  "w-full py-2 text-xs font-bold font-mono hover:opacity-90 transition-all",
+                  isProcessingQueue || queue.length === 0 
+                    ? "bg-gray-500/20 text-gray-500 cursor-not-allowed" 
+                    : "bg-primary text-primary-foreground hover:bg-primary/90"
+                )}
+              >
+                {isProcessingQueue ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <span className="icon-[ph--spinner] animate-spin size-3"></span>
+                    PROCESSING...
+                  </span>
+                ) : (
+                  `EXECUTE (${queue.length})`
+                )}
+              </button>
+              {queue.length > 0 && (
+                <div className="text-[10px] text-muted-foreground/60 text-center mt-2">
+                  All files in one commit • Only triggers 1 build
+                </div>
+              )}
+            </div>
          </div>
       </div>
     </div>
