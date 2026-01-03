@@ -1,8 +1,24 @@
 ---
-import { FRIENDS_LIST, FRIENDS_CONFIG, FRIENDS_CONTACT } from '~/config'
+// 1. 导入 JSON 数据
+import rawFriendsList from '~/content/data/friends.json'
+
+// 2. 导入配置 (保持联系方式等静态配置不变)
+import { FRIENDS_CONFIG, FRIENDS_CONTACT } from '~/config'
 import Layout from '~/layouts/Layout.astro'
 import SectionDivider from '~/components/base/SectionDivider.astro'
 import Comments from '~/components/posts/base/Comments.astro'
+
+// 3. 定义数据类型
+interface Friend {
+  name: string;
+  url: string;
+  author: string;
+  description: string;
+  avatar: string;
+}
+
+// 4. 类型转换
+const FRIENDS_LIST = rawFriendsList as Friend[];
 
 const { title, description, introduce } = FRIENDS_CONFIG
 const { sitename, email, author, sitelink, siteavatar, description: myDescription } = FRIENDS_CONTACT;
@@ -246,7 +262,7 @@ const isEven = FRIENDS_LIST.length % 2 === 0;
              // 成功状态
              icon.className = "icon-[ph--check-bold] size-4";
              text.textContent = "COPIED TO CLIPBOARD";
-             btn.classList.add('bg-zinc-800', 'text-white', 'dark:bg-zinc-100', 'dark:text-black'); // 适配暗色模式
+             btn.classList.add('bg-zinc-800', 'text-white', 'dark:bg-zinc-100', 'dark:text-black');
              btn.classList.remove('bg-primary', 'text-primary-foreground');
              
              setTimeout(() => {

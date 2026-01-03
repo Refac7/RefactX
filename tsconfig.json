@@ -4,6 +4,8 @@
   "exclude": ["dist", "node_modules", "public/js"],
   "compilerOptions": {
     "ignoreDeprecations": "6.0",
+    "resolveJsonModule": true,  // [!code ++] 必须添加这一行
+    "esModuleInterop": true,    // [!code ++] 建议添加，防止导入报错
     "strictNullChecks": true,
     "baseUrl": ".",
     "paths": {

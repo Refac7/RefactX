@@ -1,4 +1,4 @@
-export const prerender = false; // 标记此路由为动态渲染 (SSR)
+export const prerender = false;
 
 import type { APIRoute } from 'astro';
 import { Octokit } from '@octokit/rest';
@@ -6,51 +6,70 @@ import { Octokit } from '@octokit/rest';
 export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
-    const { password, filename, content, config } = body;
+    // 新增 action 参数，默认为 'write'
+    const { password, filename, content, config, action = 'write', sha } = body;
 
-    // 1. 验证密码 (读取服务端环境变量)
     const CORRECT_PASSWORD = import.meta.env.ADMIN_PASSWORD;
-    
-    if (!CORRECT_PASSWORD) {
-      return new Response(JSON.stringify({ error: 'Server misconfiguration: ADMIN_PASSWORD not set' }), { status: 500 });
-    }
+    if (password !== CORRECT_PASSWORD) return new Response(JSON.stringify({ error: 'Access Denied' }), { status: 401 });
 
-    if (password !== CORRECT_PASSWORD) {
-      return new Response(JSON.stringify({ error: 'Access Denied: Wrong Password' }), { status: 401 });
-    }
-
-    // 2. 验证 Token
     const GITHUB_TOKEN = import.meta.env.GITHUB_TOKEN;
-    if (!GITHUB_TOKEN) {
-      return new Response(JSON.stringify({ error: 'Server misconfiguration: GITHUB_TOKEN not set' }), { status: 500 });
-    }
-
-    // 3. 操作 GitHub
     const octokit = new Octokit({ auth: GITHUB_TOKEN });
     const fullPath = `${config.pathPrefix}${filename}`;
-    
-    // 检查文件是否存在以获取 SHA
-    let sha;
-    try {
-      const { data } = await octokit.repos.getContent({
+
+    // --- 删除逻辑 ---
+    if (action === 'delete') {
+      // 删除需要提供文件的 SHA
+      let fileSha = sha;
+      
+      // 如果前端没传 SHA，尝试先获取一下
+      if (!fileSha) {
+        try {
+          const { data } = await octokit.repos.getContent({
+            owner: config.owner,
+            repo: config.repo,
+            path: fullPath,
+          });
+          // @ts-ignore
+          fileSha = data.sha;
+        } catch (e) {
+          return new Response(JSON.stringify({ error: 'File not found to delete' }), { status: 404 });
+        }
+      }
+
+      await octokit.repos.deleteFile({
         owner: config.owner,
         repo: config.repo,
         path: fullPath,
+        message: `chore(content): delete ${filename} via Admin Panel`,
+        sha: fileSha,
+        branch: config.branch
       });
-      // @ts-ignore
-      if (data.sha) sha = data.sha;
-    } catch (e) {
-      // 文件不存在，说明是新建
+
+      return new Response(JSON.stringify({ success: true, message: 'Deleted successfully' }), { status: 200 });
     }
 
-    // 推送更新
+    // --- 写入/更新逻辑 (原有逻辑) ---
+    let currentSha = sha;
+    // 如果是写入操作，为了防止冲突，最好先检查是否存在（获取 SHA）
+    if (!currentSha) {
+       try {
+        const { data } = await octokit.repos.getContent({
+            owner: config.owner,
+            repo: config.repo,
+            path: fullPath,
+        });
+        // @ts-ignore
+        currentSha = data.sha;
+       } catch(e) {} // 文件不存在，则是新建
+    }
+
     await octokit.repos.createOrUpdateFileContents({
       owner: config.owner,
       repo: config.repo,
       path: fullPath,
-      message: `feat(content): update ${filename} via Vercel Admin`,
-      content: Buffer.from(content).toString('base64'), // Node环境使用 Buffer 编码更方便
-      sha,
+      message: `feat(content): ${currentSha ? 'update' : 'create'} ${filename} via Admin Panel`,
+      content: Buffer.from(content).toString('base64'),
+      sha: currentSha, 
       branch: config.branch
     });
 

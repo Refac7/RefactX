@@ -1,25 +1,42 @@
 ---
 import { cn } from '~/lib/utils'
-import { ProjectList, PROJECTS_CONFIG } from '~/config'
+import { PROJECTS_CONFIG } from '~/config'
 import Layout from '~/layouts/Layout.astro'
 import NumberTicker from '~/components/base/NumberTicker'
 
+// 1. 导入 JSON 数据
+import rawProjectList from '../../content/data/projects.json'
+
+// 2. 定义项目数据的类型结构
+interface Project {
+  name: string;
+  description: string;
+  githubUrl?: string;
+  website?: string;
+  type: string;
+  icon: string;
+  star?: number;
+  fork?: number;
+  imageClass?: string;
+}
+
+// 3. 将 JSON 数据强制转换为类型数组
+const ProjectList = rawProjectList as Project[];
+
 const { title, description, introduce } = PROJECTS_CONFIG
 
-// --- GitHub 数据爬取逻辑 ---
+// --- GitHub 数据爬取逻辑 (保持不变) ---
 const GITHUB_TOKEN = import.meta.env.GITHUB_TOKEN;
 
 const projectsWithStats = await Promise.all(
-  ProjectList.map(async (project) => {
-    // 1. 如果没有 GitHub 链接，直接返回原数据
+  ProjectList.map(async (project: Project) => { // 4. 这里显式声明类型，解决 implicitly has an 'any' type
     if (!project.githubUrl) return project;
 
     try {
-      // 提取 owner/repo
       const repoPath = project.githubUrl.replace(/^https?:\/\/github\.com\//, '').replace(/\/$/, '');
       if (!repoPath.includes('/')) return project;
 
-      const headers = {
+      const headers: HeadersInit = {
         'Accept': 'application/vnd.github.v3+json',
         ...(GITHUB_TOKEN ? { 'Authorization': `token ${GITHUB_TOKEN}` } : {}),
       };
@@ -27,7 +44,6 @@ const projectsWithStats = await Promise.all(
       const res = await fetch(`https://api.github.com/repos/${repoPath}`, { headers });
       
       if (!res.ok) {
-        console.warn(`[GitHub API Error] Failed to fetch ${repoPath}: ${res.status}`);
         return project;
       }
 
@@ -35,12 +51,10 @@ const projectsWithStats = await Promise.all(
 
       return {
         ...project,
-        // 确保数据是数字类型
         star: Number(data.stargazers_count ?? project.star ?? 0),
         fork: Number(data.forks_count ?? project.fork ?? 0),
       };
     } catch (error) {
-      console.error(`[GitHub Fetch Error] ${project.name}:`, error);
       return project;
     }
   })

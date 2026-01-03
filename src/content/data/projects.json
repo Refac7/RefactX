@@ -1,0 +1,62 @@
+[
+  {
+    "name": "RefactZ",
+    "description": "基于 Astro 开发的 Material Design 3 风格轻量简洁个人主页。",
+    "githubUrl": "https://github.com/Refac7/RefactZ_Template",
+    "website": "https://dash.refact.cc",
+    "type": "icon",
+    "icon": "icon-[ri--pages-line]",
+    "star": 1,
+    "fork": 1
+  },
+  {
+    "name": "RefactX",
+    "description": "基于Astro的简洁现代博客",
+    "githubUrl": "https://github.com/Refac7/RefactX_Template",
+    "website": "/",
+    "type": "icon",
+    "icon": "icon-[ri--xing-fill]",
+    "star": 4,
+    "fork": 5
+  },
+  {
+    "name": "MC服务器状态嵌入式组件",
+    "description": "基于 React 开发了独立的 Vercel 应用，通过 URL 嵌入状态页面，无需修改网站源码。",
+    "githubUrl": "https://github.com/Refac7/minecraft-status-widget",
+    "website": "https://www.neotec.uk/serverstatus.html",
+    "type": "icon",
+    "icon": "icon-[ri--puzzle-line]",
+    "star": 1,
+    "fork": 4
+  },
+  {
+    "name": "NotionNext主题 - Neo",
+    "description": "基于内置的 Heo 主题进行了大量修改，是现代化的博客设计方案（项目已归档）",
+    "githubUrl": "https://github.com/Refac7/Reborn/",
+    "website": null,
+    "type": "icon",
+    "icon": "icon-[ri--terminal-box-line]",
+    "star": 1,
+    "fork": 9
+  },
+  {
+    "name": "Neotec. 主站",
+    "description": "基于 Vitepress 构建，储存官方文档",
+    "githubUrl": "https://github.com/Refac7/VitePress/",
+    "website": "https://www.neotec.uk/",
+    "type": "icon",
+    "icon": "icon-[ri--terminal-box-line]",
+    "star": 1,
+    "fork": 9
+  },
+  {
+    "name": "Neotec. 整合包",
+    "description": "Neotec整合包平台是一个以开源、自由、社区驱动为核心的Minecraft模组整合服务。",
+    "githubUrl": null,
+    "website": "https://www.neotec.uk/modpacks.html",
+    "type": "icon",
+    "icon": "icon-[ri--archive-line]",
+    "star": 8,
+    "fork": 1
+  }
+]
