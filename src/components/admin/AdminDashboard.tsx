@@ -3,8 +3,8 @@ import toast, { Toaster } from 'react-hot-toast';
 
 // 配置：你的仓库信息
 const REPO_CONFIG = {
-  owner: 'YOUR_GITHUB_USERNAME', // 请确保这里修改成了你的 GitHub 用户名
-  repo: 'YOUR_REPO_NAME',        // 请确保这里修改成了你的仓库名
+  owner: 'Refac7', // 请确保这里修改成了你的 GitHub 用户名
+  repo: 'RefactX',        // 请确保这里修改成了你的仓库名
   branch: 'main',
   pathPrefix: 'src/content/posts/' 
 };
