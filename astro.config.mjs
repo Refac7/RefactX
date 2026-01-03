@@ -16,10 +16,6 @@ export default defineConfig({
   
   // [!code warning] 修改这里：Astro 5 中使用 static 配合 adapter 即可支持 SSR
   output: 'static', 
-  
-  adapter: vercel({
-    webAnalytics: { enabled: true },
-  }),
 
   prefetch: {
     prefetchAll: true,
