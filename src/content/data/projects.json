@@ -16,8 +16,8 @@
     "website": "/",
     "type": "icon",
     "icon": "icon-[ri--xing-fill]",
-    "star": 4,
-    "fork": 5
+    "star": "0",
+    "fork": "0"
   },
   {
     "name": "MC服务器状态嵌入式组件",
@@ -26,8 +26,8 @@
     "website": "https://www.neotec.uk/serverstatus.html",
     "type": "icon",
     "icon": "icon-[ri--puzzle-line]",
-    "star": 1,
-    "fork": 4
+    "star": "0",
+    "fork": "0"
   },
   {
     "name": "NotionNext主题 - Neo",
