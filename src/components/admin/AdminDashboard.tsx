@@ -1,62 +1,114 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
-// 这里不需要 Token 了，只需要仓库信息
+// 配置：你的仓库信息
 const REPO_CONFIG = {
-  owner: 'YOUR_GITHUB_USERNAME', 
-  repo: 'YOUR_REPO_NAME',
+  owner: 'YOUR_GITHUB_USERNAME', // 请确保这里修改成了你的 GitHub 用户名
+  repo: 'YOUR_REPO_NAME',        // 请确保这里修改成了你的仓库名
   branch: 'main',
   pathPrefix: 'src/content/posts/' 
 };
 
 export default function AdminDashboard() {
+  // --- 状态定义 ---
   const [password, setPassword] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isValidating, setIsValidating] = useState(false);
   
   const [filename, setFilename] = useState('');
   const [content, setContent] = useState('---\ntitle: New Post\n---\n\nWrite here...');
   const [isPublishing, setIsPublishing] = useState(false);
 
-  // 检查本地是否有保存的简单密码
-  useEffect(() => {
-    const savedPass = localStorage.getItem('admin_simple_pass');
-    if (savedPass) {
-      setPassword(savedPass);
-      setIsLoggedIn(true); // 自动进入，稍后发布时 API 还会校验一次
-      loadDraft();
+  // --- 辅助函数定义 ---
+  
+  // 1. 加载草稿
+  const loadDraft = () => {
+    const draft = localStorage.getItem('admin_draft');
+    if (draft) {
+      try {
+        const d = JSON.parse(draft);
+        if (d.filename) setFilename(d.filename);
+        if (d.content) setContent(d.content);
+        toast.success('Restored from draft', { icon: '📂' });
+      } catch (e) {
+        console.error('Failed to parse draft');
+      }
     }
-  }, []);
-
-  const handleLogin = () => {
-    if (!password) return toast.error('Password required');
-    localStorage.setItem('admin_simple_pass', password);
-    setIsLoggedIn(true);
-    toast.success('Session Active');
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('admin_simple_pass');
-    setPassword('');
-    setIsLoggedIn(false);
-  };
-
+  // 2. 保存草稿
   const saveDraft = () => {
     localStorage.setItem('admin_draft', JSON.stringify({ filename, content }));
     toast.success('Draft Saved');
   };
 
-  const loadDraft = () => {
-    const draft = localStorage.getItem('admin_draft');
-    if (draft) {
-      const d = JSON.parse(draft);
-      setFilename(d.filename);
-      setContent(d.content);
+  // 3. 登出
+  const handleLogout = () => {
+    localStorage.removeItem('admin_simple_pass');
+    setPassword('');
+    setIsLoggedIn(false);
+    toast('Session Terminated', { icon: '🔒' });
+  };
+
+  // --- 核心逻辑 ---
+
+  // 4. 初始化检查（自动登录）
+  useEffect(() => {
+    const checkSavedPassword = async () => {
+      const savedPass = localStorage.getItem('admin_simple_pass');
+      if (savedPass) {
+        setPassword(savedPass);
+        // 尝试静默验证
+        try {
+          const res = await fetch('/api/auth', {
+            method: 'POST',
+            body: JSON.stringify({ password: savedPass })
+          });
+          if (res.ok) {
+            setIsLoggedIn(true);
+            loadDraft(); // 这里调用 loadDraft
+          } else {
+            localStorage.removeItem('admin_simple_pass');
+          }
+        } catch (e) {
+          // 网络错误忽略，等待手动登录
+        }
+      }
+    };
+    checkSavedPassword();
+  }, []);
+
+  // 5. 登录处理
+  const handleLogin = async () => {
+    if (!password) return toast.error('Password required');
+    
+    setIsValidating(true);
+    try {
+      const response = await fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password })
+      });
+
+      if (response.ok) {
+        localStorage.setItem('admin_simple_pass', password);
+        setIsLoggedIn(true);
+        toast.success('Access Granted');
+        loadDraft();
+      } else {
+        toast.error('Access Denied: Wrong Password');
+        localStorage.removeItem('admin_simple_pass');
+      }
+    } catch (error) {
+      toast.error('Network error during auth');
+    } finally {
+      setIsValidating(false);
     }
   };
 
-  // --- 核心修改：调用 API 而不是直接调用 GitHub ---
+  // 6. 发布处理
   const handlePublish = async () => {
-    if (!filename || !content) return toast.error('Missing fields');
+    if (!filename || !content) return toast.error('Missing filename or content');
     
     setIsPublishing(true);
     const finalFilename = filename.endsWith('.md') ? filename : `${filename}.md`;
@@ -66,7 +118,7 @@ export default function AdminDashboard() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          password: password, // 发送密码给服务器验证
+          password: password,
           filename: finalFilename,
           content: content,
           config: REPO_CONFIG
@@ -84,7 +136,6 @@ export default function AdminDashboard() {
     } catch (error: any) {
       console.error(error);
       toast.error(error.message);
-      // 如果是密码错误，强制退出
       if (error.message.includes('Access Denied')) {
         handleLogout();
       }
@@ -93,7 +144,9 @@ export default function AdminDashboard() {
     }
   };
 
-  // --- 登录界面 ---
+  // --- 渲染部分 ---
+
+  // A. 登录界面
   if (!isLoggedIn) {
     return (
       <div className="max-w-[1400px] mx-auto min-h-[60vh] flex flex-col items-center justify-center p-6">
@@ -112,9 +165,14 @@ export default function AdminDashboard() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
+                disabled={isValidating}
              />
-             <button onClick={handleLogin} className="w-full bg-primary text-primary-foreground py-2 font-mono text-sm uppercase tracking-wider hover:opacity-90">
-                Unlock
+             <button 
+                onClick={handleLogin}
+                disabled={isValidating}
+                className="w-full bg-primary text-primary-foreground py-2 font-mono text-sm uppercase tracking-wider hover:opacity-90 disabled:opacity-50 transition-opacity"
+             >
+                {isValidating ? 'Verifying...' : 'Unlock'}
              </button>
            </div>
         </div>
@@ -122,7 +180,7 @@ export default function AdminDashboard() {
     );
   }
 
-  // --- 主界面 (复刻 Project 页面风格) ---
+  // B. 主界面
   return (
     <div className="min-h-[70vh] relative py-12 px-6 sm:px-8 font-sans overflow-hidden max-w-[1400px] mx-auto">
       <Toaster 
@@ -131,7 +189,7 @@ export default function AdminDashboard() {
         }}
       />
 
-      {/* 头部区域：Grid 布局 */}
+      {/* 头部区域 */}
       <div className="mb-10 relative">
         <div className="flex items-center justify-between pb-2 mb-6">
           <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/70">
@@ -147,14 +205,11 @@ export default function AdminDashboard() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
-          {/* 左侧：标题 */}
           <div className="lg:col-span-7">
             <h1 className="text-6xl sm:text-7xl font-bold tracking-tighter text-foreground leading-[0.9] -ml-1">
               Control<span className="text-primary/80">.</span>
             </h1>
           </div>
-
-          {/* 右侧：状态面板 */}
           <div className="lg:col-span-5 flex flex-col justify-end pb-2">
             <div className="border-l-2 border-primary/40 pl-6 flex flex-col gap-6">
                <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
@@ -180,7 +235,6 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* 分割线 */}
       <div className="flex items-end gap-4 mb-10 select-none">
          <span className="font-mono text-4xl font-black text-muted-foreground/10 leading-none -mb-1">01</span>
          <span className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/50 mb-1">
@@ -189,15 +243,11 @@ export default function AdminDashboard() {
          <div className="h-px bg-gradient-to-r from-border to-transparent flex-1 mb-1.5"></div>
       </div>
 
-      {/* 编辑区域：复刻 Project Card 样式 */}
       <div className="group relative flex flex-col bg-background border border-border/60 hover:border-primary/30 transition-all duration-500 p-0 overflow-hidden shadow-sm">
-        
-        {/* 背景装饰 */}
         <span className="absolute -right-4 -top-6 text-[120px] font-black text-muted-foreground/[0.03] pointer-events-none select-none font-mono">
           EDIT
         </span>
 
-        {/* 工具栏 */}
         <div className="flex justify-between items-center p-4 border-b border-border/40 bg-muted/5 relative z-10">
           <div className="flex gap-4 w-full max-w-md">
              <div className="flex items-center gap-2 text-muted-foreground">
@@ -239,7 +289,6 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* 内容编辑区 */}
         <div className="relative z-10 flex-1 min-h-[500px]">
            <textarea 
               value={content}
@@ -249,7 +298,6 @@ export default function AdminDashboard() {
            />
         </div>
 
-        {/* 底部信息栏 */}
         <div className="mt-auto px-6 py-3 border-t border-dashed border-border/40 flex items-center justify-between text-[10px] font-mono text-muted-foreground/60 uppercase tracking-wider relative z-10 bg-muted/5">
            <span>Length: {content.length} chars</span>
            <div className="flex items-center gap-2">
