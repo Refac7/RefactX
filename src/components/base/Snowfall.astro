@@ -1,99 +1,101 @@
-<div id="snow-container" aria-hidden="true"></div>
+<div id="snow-container" style="position: absolute; inset: 0; pointer-events: none; z-index: 1; overflow: hidden;" aria-hidden="true"></div>
 
 <script>
-  const createSnow = () => {
+  function initSnow() {
     const container = document.getElementById('snow-container');
     if (!container) return;
-
-    container.innerHTML = '';
-
-    // 1. 数量：大幅减少，只有 12 片大雪花
-    const snowflakeCount = 12; 
     
-    for (let i = 0; i < snowflakeCount; i++) {
+    container.innerHTML = '';
+    
+    // 增加数量，因为粒子变小了，需要多一点才显得丰富
+    const count = 60; 
+    const fragment = document.createDocumentFragment();
+
+    for (let i = 0; i < count; i++) {
       const flake = document.createElement('div');
-      flake.className = 'snowflake';
+      flake.className = 'digital-dust'; // 改名：数字尘埃
       
-      // 2. 尺寸：大幅增加，15px 到 30px 之间
-      const size = Math.random() * 15 + 15 + 'px';
-      const left = Math.random() * 100 + 'vw';
+      // 1. 极小尺寸：2px - 5px (像素点风格)
+      const size = Math.random() * 3 + 2; 
       
-      // 透明度：因为雪花大且快，透明度要低一点，否则会抢视觉重点
-      const opacity = Math.random() * 0.15 + 0.05; 
+      // 2. 随机位置
+      const left = Math.random() * 100;
       
-      // 3. 速度：明显加快，3秒到8秒之间落地
-      const duration = Math.random() * 5 + 3 + 's'; 
-      const delay = Math.random() * -10 + 's';
+      // 3. 随机速度：慢速漂浮
+      const duration = Math.random() * 20 + 10; // 10s - 30s
+      
+      // 4. 随机延迟
+      const delay = Math.random() * -30;
+
+      // 5. 随机初始透明度 (0.1 - 0.5) - 更加隐约
+      const opacity = Math.random() * 0.4 + 0.1;
 
       Object.assign(flake.style, {
-        width: size,
-        height: size,
-        left: left,
-        opacity: opacity,
-        animationDuration: duration,
-        animationDelay: delay,
+        position: 'absolute',
+        width: `${size}px`,
+        height: `${size}px`,
+        left: `${left}%`,
+        opacity: `${opacity}`,
+        animationDuration: `${duration}s`,
+        animationDelay: `${delay}s`,
+        // 传递随机变量给闪烁动画
+        '--twinkle-duration': `${Math.random() * 5 + 2}s`
       });
 
-      container.appendChild(flake);
+      fragment.appendChild(flake);
     }
-  };
+    
+    container.appendChild(fragment);
+  }
 
-  document.addEventListener('astro:page-load', createSnow);
-  createSnow();
+  initSnow();
+  document.addEventListener('astro:page-load', initSnow);
 </script>
 
 <style is:global>
-  #snow-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    /* 保持在底层，大雪花如果遮住文字会非常干扰阅读，必须置底 */
-    z-index: -1; 
-    overflow: hidden;
-  }
-
-  .snowflake {
+  .digital-dust {
     position: absolute;
-    top: -40px; /* 因为雪花变大了，起始位置要更靠上 */
-    border-radius: 50%;
-    animation: fall linear infinite;
-    will-change: transform;
+    top: -10px;
+    
+    /* 
+       【关键风格】
+       1. 不设圆角 -> 正方形像素点 (Square Pixels)
+       2. 纯色填充 -> 硬朗科技感
+    */
+    background-color: var(--dust-color);
+    
+    /* 复合动画：缓慢下落 + 忽明忽暗 (闪烁) */
+    animation-name: digital-fall, twinkle;
+    animation-timing-function: linear, ease-in-out;
+    animation-iteration-count: infinite, infinite;
   }
 
   /* 
-     4. 样式优化：大雪花使用径向渐变，模拟蓬松感 
-     中心亮，边缘透明，避免像贴了贴纸一样的生硬感
+     === 颜色配置 (极简主义) ===
+  */
+  :root {
+    /* 浅色模式：极淡的蓝灰色，像屏幕坏点或灰尘，非常含蓄 */
+    --dust-color: rgba(71, 85, 105, 0.4); 
+  }
+
+  :root.dark, html.dark {
+    /* 深色模式：微弱的白色噪点 */
+    --dust-color: rgba(255, 255, 255, 0.3);
+  }
+
+  /* 
+     === 动画定义 ===
   */
   
-  /* 深色模式 */
-  .dark .snowflake {
-    background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 70%);
+  /* 垂直下落 */
+  @keyframes digital-fall {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(110vh); }
   }
 
-  /* 浅色模式：使用极淡的蓝灰色渐变 */
-  :not(.dark) .snowflake {
-    background: radial-gradient(circle, rgba(203, 213, 225, 1) 0%, rgba(203, 213, 225, 0) 70%);
-  }
-
-  @keyframes fall {
-    0% {
-      transform: translate3d(0, -40px, 0);
-    }
-    25% {
-      /* 速度快了，左右摇摆幅度稍微加大一点点更有动感 */
-      transform: translate3d(20px, 20vh, 0); 
-    }
-    50% {
-      transform: translate3d(-20px, 50vh, 0);
-    }
-    75% {
-      transform: translate3d(20px, 80vh, 0);
-    }
-    100% {
-      transform: translate3d(0, 110vh, 0);
-    }
+  /* 闪烁呼吸效果：模拟信号不稳 */
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.8; }
   }
 </style>
