@@ -2,12 +2,13 @@
 import { cn } from '~/lib/utils'
 import { PROJECTS_CONFIG } from '~/config'
 import Layout from '~/layouts/Layout.astro'
-import NumberTicker from '~/components/base/NumberTicker'
+// [!code ++] 引入新组件
+import ProjectStats from '~/components/projects/ProjectStats'
 
-// 1. 导入 JSON 数据
-import rawProjectList from '../../content/data/projects.json'
+// [!code ++] 导入 JSON 数据
+import rawProjectList from '~/content/data/projects.json'
 
-// 2. 定义项目数据的类型结构
+// [!code ++] 定义并转换类型
 interface Project {
   name: string;
   description: string;
@@ -15,58 +16,23 @@ interface Project {
   website?: string;
   type: string;
   icon: string;
+  imageClass?: string;
+  // JSON里可能存了手动填写的 star/fork 作为默认值
   star?: number;
   fork?: number;
-  imageClass?: string;
 }
-
-// 3. 将 JSON 数据强制转换为类型数组
 const ProjectList = rawProjectList as Project[];
 
 const { title, description, introduce } = PROJECTS_CONFIG
 
-// --- GitHub 数据爬取逻辑 (保持不变) ---
-const GITHUB_TOKEN = import.meta.env.GITHUB_TOKEN;
-
-const projectsWithStats = await Promise.all(
-  ProjectList.map(async (project: Project) => { // 4. 这里显式声明类型，解决 implicitly has an 'any' type
-    if (!project.githubUrl) return project;
-
-    try {
-      const repoPath = project.githubUrl.replace(/^https?:\/\/github\.com\//, '').replace(/\/$/, '');
-      if (!repoPath.includes('/')) return project;
-
-      const headers: HeadersInit = {
-        'Accept': 'application/vnd.github.v3+json',
-        ...(GITHUB_TOKEN ? { 'Authorization': `token ${GITHUB_TOKEN}` } : {}),
-      };
-
-      const res = await fetch(`https://api.github.com/repos/${repoPath}`, { headers });
-      
-      if (!res.ok) {
-        return project;
-      }
-
-      const data = await res.json();
-
-      return {
-        ...project,
-        star: Number(data.stargazers_count ?? project.star ?? 0),
-        fork: Number(data.forks_count ?? project.fork ?? 0),
-      };
-    } catch (error) {
-      return project;
-    }
-  })
-);
-
-const totalCount = projectsWithStats.length.toString().padStart(2, '0');
+// 计算总数
+const totalCount = ProjectList.length.toString().padStart(2, '0');
 ---
 
 <Layout {title} {description}>
   <div class="min-h-[70vh] relative py-12 px-6 sm:px-8 font-sans overflow-hidden max-w-[1400px] mx-auto">
 
-    <!-- 头部区域 -->
+    <!-- 头部区域 (保持不变) -->
     <div class="mb-10 relative">
       <div class="flex items-center justify-between pb-2 mb-6">
         <span class="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/70">
@@ -122,10 +88,10 @@ const totalCount = projectsWithStats.length.toString().padStart(2, '0');
        <div class="h-px bg-gradient-to-r from-border to-transparent flex-1 mb-1.5"></div>
     </div>
 
-    <!-- 项目列表 -->
+    <!-- 项目列表：直接使用 ProjectList 渲染 -->
     <div class="flex flex-col gap-4 fade-up">
       {
-        projectsWithStats.map((project, index) => {
+        ProjectList.map((project, index) => {
           const serialId = `0${index + 1}`.slice(-2);
           
           return (
@@ -170,33 +136,14 @@ const totalCount = projectsWithStats.length.toString().padStart(2, '0');
               <div class="mt-6 pt-4 border-t border-dashed border-border/40 flex items-center justify-between text-[10px] font-mono text-muted-foreground/60 uppercase tracking-wider relative z-10">
                  <span>System_Status: Stable</span>
                  
+                 {/* [!code ++] 使用 React 组件替代，client:visible 实现懒加载 */}
                  {project.githubUrl && (
-                    <div class="flex gap-4">
-                        {/* 
-                           修复逻辑：
-                           1. 检查值不为 null/undefined
-                           2. 如果值 > 0，使用 NumberTicker
-                           3. 如果值 == 0，直接显示文本 "0"
-                        */}
-                        {(project.star !== undefined && project.star !== null) && (
-                          <div class="flex items-center gap-1">
-                            <span class="icon-[ph--star-fill] size-3"></span>
-                            {project.star > 0 
-                              ? <NumberTicker client:visible value={project.star} /> 
-                              : "0"
-                            }
-                          </div>
-                        )}
-                        {(project.fork !== undefined && project.fork !== null) && (
-                          <div class="flex items-center gap-1">
-                             <span class="icon-[ph--git-fork-fill] size-3"></span>
-                             {project.fork > 0 
-                               ? <NumberTicker client:visible value={project.fork} /> 
-                               : "0"
-                             }
-                          </div>
-                        )}
-                    </div>
+                    <ProjectStats 
+                        client:visible 
+                        repoUrl={project.githubUrl} 
+                        initialStar={project.star} 
+                        initialFork={project.fork} 
+                    />
                  )}
               </div>
             </div>

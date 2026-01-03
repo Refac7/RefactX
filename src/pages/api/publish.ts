@@ -6,22 +6,23 @@ import { Octokit } from '@octokit/rest';
 export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
-    // 新增 action 参数，默认为 'write'
-    const { password, filename, content, config, action = 'write', sha } = body;
+    const { password, filename, content, config, action = 'write', sha, isAbsolutePath } = body;
 
     const CORRECT_PASSWORD = import.meta.env.ADMIN_PASSWORD;
     if (password !== CORRECT_PASSWORD) return new Response(JSON.stringify({ error: 'Access Denied' }), { status: 401 });
 
     const GITHUB_TOKEN = import.meta.env.GITHUB_TOKEN;
     const octokit = new Octokit({ auth: GITHUB_TOKEN });
-    const fullPath = `${config.pathPrefix}${filename}`;
+    
+    // 关键：如果是绝对路径模式，直接使用 filename（前端已传入完整路径）
+    const fullPath = isAbsolutePath ? filename : `${config.pathPrefix}${filename}`;
+
+    console.log(`[API] ${action.toUpperCase()}: ${fullPath}`);
 
     // --- 删除逻辑 ---
     if (action === 'delete') {
-      // 删除需要提供文件的 SHA
       let fileSha = sha;
-      
-      // 如果前端没传 SHA，尝试先获取一下
+      // 如果没传 SHA，尝试现查
       if (!fileSha) {
         try {
           const { data } = await octokit.repos.getContent({
@@ -40,17 +41,18 @@ export const POST: APIRoute = async ({ request }) => {
         owner: config.owner,
         repo: config.repo,
         path: fullPath,
-        message: `chore(content): delete ${filename} via Admin Panel`,
+        message: `chore(data): delete ${filename} via Admin`,
         sha: fileSha,
         branch: config.branch
       });
 
-      return new Response(JSON.stringify({ success: true, message: 'Deleted successfully' }), { status: 200 });
+      return new Response(JSON.stringify({ success: true }), { status: 200 });
     }
 
-    // --- 写入/更新逻辑 (原有逻辑) ---
+    // --- 写入/更新逻辑 ---
     let currentSha = sha;
-    // 如果是写入操作，为了防止冲突，最好先检查是否存在（获取 SHA）
+    
+    // 为了防止冲突，先检查文件是否存在（获取 SHA）
     if (!currentSha) {
        try {
         const { data } = await octokit.repos.getContent({
@@ -60,23 +62,25 @@ export const POST: APIRoute = async ({ request }) => {
         });
         // @ts-ignore
         currentSha = data.sha;
-       } catch(e) {} // 文件不存在，则是新建
+       } catch(e) {
+         // 404 忽略，说明是新建文件
+       }
     }
 
     await octokit.repos.createOrUpdateFileContents({
       owner: config.owner,
       repo: config.repo,
       path: fullPath,
-      message: `feat(content): ${currentSha ? 'update' : 'create'} ${filename} via Admin Panel`,
+      message: `feat(data): update ${filename} via Admin`,
       content: Buffer.from(content).toString('base64'),
       sha: currentSha, 
       branch: config.branch
     });
 
-    return new Response(JSON.stringify({ success: true, message: 'Published successfully' }), { status: 200 });
+    return new Response(JSON.stringify({ success: true }), { status: 200 });
 
   } catch (error: any) {
-    console.error(error);
+    console.error('[API Publish Error]', error);
     return new Response(JSON.stringify({ error: error.message }), { status: 500 });
   }
 }

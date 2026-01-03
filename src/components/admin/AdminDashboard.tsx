@@ -5,7 +5,7 @@ import { cn } from '~/lib/utils';
 // --- 配置区域 ---
 const REPO_CONFIG = {
   owner: 'Refac7', // 请修改
-  repo: 'RefactX', // 请修改
+  repo: 'RefactX',        // 请修改
   branch: 'main',
   pathPrefix: 'src/content/posts/' 
 };
@@ -17,7 +17,7 @@ const DATA_FILES = [
   { name: 'photos.json', path: 'src/content/data/photos.json', label: 'PHOTOS' }
 ];
 
-// Schema 定义 (可视化表单结构)
+// Schema 定义
 const SCHEMAS: Record<string, { key: string; label: string; type: 'text' | 'image' | 'textarea' | 'json' }[]> = {
   'friends.json': [
     { key: 'name', label: 'Site Name', type: 'text' },
@@ -32,15 +32,15 @@ const SCHEMAS: Record<string, { key: string; label: string; type: 'text' | 'imag
     { key: 'website', label: 'Website', type: 'text' },
     { key: 'githubUrl', label: 'GitHub', type: 'text' },
     { key: 'type', label: 'Type (icon/image)', type: 'text' },
-    { key: 'icon', label: 'Icon/Image', type: 'image' },
-    { key: 'star', label: 'Stars (Override)', type: 'text' },
-    { key: 'fork', label: 'Forks (Override)', type: 'text' },
+    { key: 'icon', label: 'Icon Class / Image URL', type: 'text' },
+    { key: 'star', label: 'Stars', type: 'text' },
+    { key: 'fork', label: 'Forks', type: 'text' },
   ],
   'photos.json': [
     { key: 'title', label: 'Album Title', type: 'text' },
     { key: 'date', label: 'Date', type: 'text' },
     { key: 'description', label: 'Description', type: 'text' },
-    { key: 'icon', label: 'Icon (JSON)', type: 'json' },
+    { key: 'icon', label: 'Icon (JSON Object)', type: 'json' },
     { key: 'photos', label: 'Photos List (JSON)', type: 'json' },
   ]
 };
@@ -74,6 +74,7 @@ export default function AdminDashboard() {
   const [password, setPassword] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isValidating, setIsValidating] = useState(false);
+  const [loginError, setLoginError] = useState(false); // 新增：错误状态
 
   // Data
   const [remoteFiles, setRemoteFiles] = useState<RemoteFile[]>([]);
@@ -105,23 +106,41 @@ export default function AdminDashboard() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const uploadTargetRef = useRef<string>('body'); 
 
-  // --- Auth ---
+  // --- Auth Logic ---
   useEffect(() => {
     const savedPass = localStorage.getItem('admin_simple_pass');
     if (savedPass) { setPassword(savedPass); performLogin(savedPass); }
   }, []);
 
   const performLogin = async (pass: string) => {
+    if (!pass) return;
     setIsValidating(true);
+    setLoginError(false); // 重置错误状态
+    
     try {
-      const res = await fetch('/api/auth', { method: 'POST', body: JSON.stringify({ password: pass }) });
+      const res = await fetch('/api/auth', { 
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: pass }) 
+      });
+      
       if (res.ok) {
         localStorage.setItem('admin_simple_pass', pass);
-        setIsLoggedIn(true); setPassword(pass);
-        toast.success('System Online');
+        setIsLoggedIn(true); 
+        setPassword(pass);
+        toast.success('IDENTITY CONFIRMED // SYSTEM ONLINE');
         fetchRemoteFiles(pass);
-      } else { toast.error('Auth Failed'); localStorage.removeItem('admin_simple_pass'); }
-    } catch { toast.error('Connection Error'); } finally { setIsValidating(false); }
+      } else { 
+        setLoginError(true);
+        localStorage.removeItem('admin_simple_pass'); 
+        toast.error('ACCESS DENIED // INVALID CREDENTIALS');
+      }
+    } catch { 
+      setLoginError(true);
+      toast.error('CONNECTION FAILURE'); 
+    } finally { 
+      setIsValidating(false); 
+    }
   };
 
   const handleLogout = () => { localStorage.removeItem('admin_simple_pass'); setIsLoggedIn(false); setPassword(''); };
@@ -165,10 +184,9 @@ export default function AdminDashboard() {
     } catch (e) { console.error(e); } finally { setIsLoadingFiles(false); }
   };
 
-  // --- Logic: Load Content (包含 404 处理) ---
+  // --- Logic: Load Content ---
   const loadFile = async (name: string, isData = false, path?: string) => {
     if ((isData ? jsonContent : body).length > 50 && !confirm("Replace current content?")) return;
-    
     setIsFetchingContent(true);
     const toastId = toast.loading(`Fetching ${name}...`);
     
@@ -177,16 +195,9 @@ export default function AdminDashboard() {
     try {
         const res = await fetch('/api/get-content', { method: 'POST', body: JSON.stringify(requestBody) });
         
-        // --- 修复点：处理 404 不存在的情况 ---
         if (res.status === 404 && isData) {
-            // 如果是数据文件且不存在，则初始化为空数组，允许用户新建
-            setFilename(name);
-            setJsonContent('[]');
-            setParsedJson([]);
-            setCurrentMode('data');
-            setEditorMode('visual');
-            setEditingItemIndex(null);
-            setMobileView('editor');
+            setFilename(name); setJsonContent('[]'); setParsedJson([]);
+            setCurrentMode('data'); setEditorMode('visual'); setEditingItemIndex(null); setMobileView('editor');
             toast('File not found remotely. Initialized empty.', { icon: '🆕', id: toastId });
             return;
         }
@@ -195,8 +206,7 @@ export default function AdminDashboard() {
         const data = await res.json();
 
         if (isData) {
-            setFilename(name);
-            setCurrentMode('data');
+            setFilename(name); setCurrentMode('data');
             try {
                 const parsed = JSON.parse(data.content);
                 const formatted = JSON.stringify(parsed, null, 2);
@@ -216,7 +226,7 @@ export default function AdminDashboard() {
         }
         setMobileView('editor');
         toast.success('Loaded', { id: toastId });
-    } catch (e) { toast.error('Failed to fetch. Does it exist?', { id: toastId }); } 
+    } catch (e) { toast.error('Failed to fetch', { id: toastId }); } 
     finally { setIsFetchingContent(false); }
   };
 
@@ -282,7 +292,7 @@ ${body}`;
         }];
     });
     
-    if (window.innerWidth < 1024) toast.success('Added to Buffer. Check [BUFFER] tab.');
+    if (window.innerWidth < 1024) toast.success('Check [BUFFER] tab.');
     else toast.success('Added to Buffer');
   };
 
@@ -378,7 +388,7 @@ ${body}`;
   // --- Render Visual JSON ---
   const renderVisualEditor = () => {
     const schema = SCHEMAS[filename] || [];
-    if (schema.length === 0) return <div className="p-8 text-center text-muted-foreground text-xs font-mono">No schema for this file. Use CODE mode to edit.</div>;
+    if (schema.length === 0) return <div className="p-8 text-center text-muted-foreground text-xs font-mono">No schema for this file. Use CODE mode.</div>;
 
     if (editingItemIndex !== null) {
         const item = parsedJson[editingItemIndex] || {};
@@ -413,7 +423,7 @@ ${body}`;
                                         onChange={e => handleUpdateItem(editingItemIndex, field.key, e.target.value)}
                                         className="w-full bg-muted/20 border border-border/50 p-2 text-sm rounded font-mono focus:border-primary/50 focus:outline-none"
                                     />
-                                    {field.type === 'image' && item[field.key] && (
+                                    {field.type === 'image' && item[field.key] && !item[field.key].startsWith('icon-') && (
                                         <div className="size-9 shrink-0 border border-border rounded overflow-hidden">
                                             <img src={item[field.key]} className="size-full object-cover" alt="preview"/>
                                         </div>
@@ -437,57 +447,160 @@ ${body}`;
                 </button>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                {parsedJson.map((item, idx) => (
-                    <div key={idx} onClick={() => setEditingItemIndex(idx)} className="group bg-background border border-border/60 p-3 rounded cursor-pointer hover:border-primary/50 hover:shadow-sm transition-all relative">
-                        <div className="flex items-start gap-3">
-                            {(item.avatar || item.icon) && (
+                {parsedJson.map((item, idx) => {
+                    const iconValue = item.avatar || item.icon;
+                    let iconEl;
+                    if (typeof iconValue === 'string') {
+                        if (iconValue.startsWith('icon-')) iconEl = <span className={cn(iconValue, "text-xl")} />;
+                        else iconEl = <img src={iconValue} className="size-full object-cover" alt="icon" onError={(e) => (e.currentTarget.style.display = 'none')} />;
+                    } else if (typeof iconValue === 'object') {
+                        iconEl = <span className="text-lg">{iconValue.value}</span>;
+                    } else {
+                        iconEl = <span className="text-[10px] font-mono">JSON</span>;
+                    }
+
+                    return (
+                        <div key={idx} onClick={() => setEditingItemIndex(idx)} className="group bg-background border border-border/60 p-3 rounded cursor-pointer hover:border-primary/50 hover:shadow-sm transition-all relative">
+                            <div className="flex items-start gap-3">
                                 <div className="size-10 bg-muted/20 rounded-full overflow-hidden shrink-0 border border-border flex items-center justify-center">
-                                    {typeof (item.avatar || item.icon) === 'string' ? (
-                                        <img src={item.avatar || item.icon} className="size-full object-cover" alt="icon" onError={(e) => (e.currentTarget.style.display = 'none')} />
-                                    ) : (
-                                        <span className="text-xs">JSON</span>
-                                    )}
+                                    {iconEl}
                                 </div>
-                            )}
-                            <div className="min-w-0">
-                                <div className="text-sm font-bold truncate">{item.name || item.title || 'Untitled'}</div>
-                                <div className="text-xs text-muted-foreground truncate">{item.description || item.date || 'No description'}</div>
+                                <div className="min-w-0">
+                                    <div className="text-sm font-bold truncate">{item.name || item.title || 'Untitled'}</div>
+                                    <div className="text-xs text-muted-foreground truncate">{item.description || item.date || 'No description'}</div>
+                                </div>
+                            </div>
+                            <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <span className="icon-[ph--pencil-simple] size-4 text-primary"></span>
                             </div>
                         </div>
-                        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <span className="icon-[ph--pencil-simple] size-4 text-primary"></span>
-                        </div>
-                    </div>
-                ))}
+                    );
+                })}
             </div>
         </div>
     );
   };
 
-  // --- Render ---
+  // --- Render: Login ---
   if (!isLoggedIn) {
-     return <div className="min-h-screen flex items-center justify-center p-4"><div className="w-full max-w-sm border p-8"><input type="password" value={password} onChange={e=>setPassword(e.target.value)} className="w-full border p-2 mb-4" placeholder="TOKEN"/><button onClick={()=>performLogin(password)} className="w-full bg-primary text-white py-2">CONNECT</button></div></div>;
+     return (
+        <div className="min-h-[80vh] flex items-center justify-center bg-background text-foreground font-mono p-4 relative overflow-hidden">
+            <Toaster toastOptions={{ style: { background: '#111', color: '#fff', border: '1px solid #333', fontFamily: 'monospace' } }} />
+            
+            {/* Background Decoration */}
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none opacity-50"></div>
+            
+            <div className="w-full max-w-md border border-border bg-background/50 backdrop-blur-md p-8 relative shadow-xl overflow-hidden group">
+                {/* Decorative Corners */}
+                <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-primary"></div>
+                <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-primary"></div>
+                <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-primary"></div>
+                <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-primary"></div>
+
+                <div className="mb-8">
+                    <h1 className="text-2xl font-bold tracking-tighter mb-2">IDENTITY_CORE</h1>
+                    <p className="text-xs text-muted-foreground">Restricted Access // Authorization Required</p>
+                </div>
+
+                <div className="space-y-4 relative z-10">
+                    <div>
+                        <input 
+                            type="password" 
+                            value={password}
+                            onChange={e => {
+                                setPassword(e.target.value);
+                                setLoginError(false);
+                            }}
+                            onKeyDown={e => e.key === 'Enter' && performLogin(password)}
+                            className={cn(
+                                "w-full bg-muted/30 border p-3 text-center tracking-[0.5em] text-sm focus:outline-none transition-all duration-300 placeholder:tracking-normal",
+                                loginError 
+                                    ? "border-red-500 text-red-500 placeholder:text-red-500/50 animate-pulse" 
+                                    : "border-border focus:border-primary text-foreground"
+                            )}
+                            placeholder="PASSKEY"
+                            disabled={isValidating}
+                            autoFocus
+                        />
+                        {loginError && <div className="text-[10px] text-red-500 mt-2 text-center font-bold tracking-wider">ERROR: INVALID CREDENTIALS</div>}
+                    </div>
+
+                    <button 
+                        onClick={() => performLogin(password)} 
+                        disabled={isValidating}
+                        className={cn(
+                            "w-full py-3 text-xs font-bold tracking-widest uppercase transition-all duration-300 relative overflow-hidden group/btn",
+                            loginError ? "bg-red-500/10 text-red-500 border border-red-500/50 hover:bg-red-500/20" : "bg-primary text-primary-foreground hover:opacity-90"
+                        )}
+                    >
+                        {isValidating ? (
+                            <span className="flex items-center justify-center gap-2">
+                                <span className="icon-[ph--spinner] animate-spin size-4"></span>
+                                VERIFYING...
+                            </span>
+                        ) : (
+                            <span className="group-hover/btn:tracking-[0.2em] transition-all">ESTABLISH LINK</span>
+                        )}
+                    </button>
+                </div>
+
+                <div className="mt-8 text-[9px] text-center text-muted-foreground/40 font-mono">
+                    SECURE CONNECTION :: V.3.2
+                </div>
+            </div>
+        </div>
+    );
   }
 
+  // --- Render: Dashboard ---
   return (
-    <div className="min-h-screen bg-background text-foreground font-sans p-4 lg:p-6 flex flex-col">
+    <div className="text-foreground font-sans p-4 lg:p-6 flex flex-col">
       <Toaster toastOptions={{ style: { background: '#111', color: '#fff', border: '1px solid #333', fontFamily: 'monospace' } }} />
       <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
 
       {/* Header */}
-      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-6 border-b border-border/40 pb-4 shrink-0 gap-4 sm:gap-0">
-         <div>
-            <div className="text-[10px] font-mono text-muted-foreground/60 mb-1">// SYSTEM_ADMIN // V.3.2</div>
-            <h1 className="text-3xl font-bold tracking-tight">Command Center<span className="text-primary">.</span></h1>
-         </div>
-         <div className="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-end">
-            <div className="text-right hidden sm:block">
-                <div className="text-[10px] font-mono text-muted-foreground">REPO</div>
-                <div className="text-sm font-mono truncate max-w-[120px]">{REPO_CONFIG.repo}</div>
+      <div className="mb-10 relative">
+        <div className="flex items-center justify-between pb-2 mb-6">
+          <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/70">
+             // SYSTEM_CONTROLLER // V.3.2
+          </span>
+          <div className="flex items-center gap-2 cursor-pointer hover:text-red-500 transition-colors" onClick={handleLogout}>
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span className="font-mono text-[10px] uppercase text-emerald-500 font-bold">Admin_Active</span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
+          <div className="lg:col-span-7">
+            <h1 className="text-6xl sm:text-7xl font-bold tracking-tighter text-foreground leading-[0.9] -ml-1">
+              Control<span className="text-primary/80">.</span>
+            </h1>
+          </div>
+          <div className="lg:col-span-5 flex flex-col justify-end pb-2">
+            <div className="border-l-2 border-primary/40 pl-6 flex flex-col gap-6">
+               <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
+                Centralized management for Markdown posts and JSON data configurations.
+               </p>
+               <div className="flex items-center gap-4 pt-4 border-t border-dashed border-border/60">
+                  <div className="flex flex-col">
+                      <span className="text-[10px] uppercase text-muted-foreground/60 font-mono tracking-wider">Total Modules</span>
+                      <span className="text-3xl font-mono font-bold text-foreground tracking-tight">{remoteFiles.length}</span>
+                  </div>
+                  <div className="h-8 w-px bg-border/60"></div>
+                  <div className="flex flex-col">
+                      <span className="text-[10px] uppercase text-muted-foreground/60 font-mono tracking-wider">Target Repo</span>
+                      <span className="text-sm font-mono text-foreground mt-1 truncate max-w-[150px]" title={REPO_CONFIG.repo}>{REPO_CONFIG.repo}</span>
+                  </div>
+                  <div className="h-8 w-px bg-border/60"></div>
+                  <button onClick={handleLogout} className="text-xs text-red-500 hover:text-red-400 font-mono underline decoration-dotted underline-offset-4">LOGOUT</button>
+               </div>
             </div>
-            <button onClick={handleLogout} className="text-xs text-red-500 hover:text-red-400 font-mono border border-red-500/20 px-3 py-1 bg-red-500/5">EXIT</button>
-         </div>
-      </header>
+          </div>
+        </div>
+      </div>
 
       {/* Mobile Tabs */}
       <div className="flex lg:hidden mb-4 border border-border/60 bg-muted/5 font-mono text-xs">

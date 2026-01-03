@@ -13,7 +13,7 @@ const description = "Authorized Personnel Only";
     这告诉 Astro 不要尝试在服务端渲染这个组件（因为里面用到了 localStorage 和 window 对象），
     而是完全在浏览器中加载和运行。
   -->
-  <div class="min-h-[70vh]">
+  <div class="min-h-[70vh] px-2 pt-6">
     <AdminDashboard client:only="react" />
   </div>
 </Layout>
