@@ -52,7 +52,7 @@ Chromium 在 Electron 中主要负责网页的渲染、网络请求的处理（�
 | `Electron 桥接层`               |
 | `Chromium + Node.js 运行时环境` |
 
-我们知道，不同的操作系统的操作有所差异比如Windows上的Alt键对应着macOS的Option键，文件系统目录/Macintosh HD/Application Supports（macOS）对应了C://Program Files(Windows)，所以Electron程序会根据所打包的程序类型转换按键绑定和文件系统定位等，而开发者也需要在各个平台进行充分测试和调试。
+我们知道，不同的操作系统的操作有所差异比如Windows上的Alt键对应着macOS的Option键，文件系统目录`/Macintosh HD/Application Supports`（macOS）对应了`C:\Program Files`(Windows)，所以Electron程序会根据所打包的程序类型转换按键绑定和文件系统定位等，而开发者也需要在各个平台进行充分测试和调试。
 
 ## **对于软件开发的影响力**
 
