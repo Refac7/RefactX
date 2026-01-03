@@ -13,7 +13,7 @@ const REPO_CONFIG = {
 // 上传配置 (对应你的 Waline 图床)
 const UPLOAD_CONFIG = {
   url: 'https://img.refact.cc/upload?path=root', 
-  token: import.meta.env.PUBLIC_UPLOAD_TOKEN || 'YOUR_UPLOAD_TOKEN'
+  token: import.meta.env.PUBLIC_UPLOAD_TOKEN || 'd4f1c8e7a9b24f0c8d3e1a6f9b7c42e1f3a9d8c4b2e7f1a6c9d3b8e4f7a1c2d'
 };
 
 const DEFAULT_META = {
