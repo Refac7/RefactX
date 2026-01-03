@@ -3,7 +3,7 @@ title: '关于 RefactX Project'
 description: '关于此项目的详细信息。我的看法以及有关我的一些信息。'
 pubDate: 2025-07-27
 author: 'Refact'
-tags: ['Me','杂谈']
+tags: ['Me', '杂谈']
 recommend: true
 heroImage: none
 ogImage: none
@@ -68,3 +68,5 @@ sudo sh -c 'echo "127.0.0.1 refact.cc" >> /etc/hosts"
 > 此 HeroImage 的原始版本来自 https://icha.win/
 
 由 Refact 二次绘制
+
+1月3日 第一次修改
