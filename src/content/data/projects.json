@@ -46,8 +46,8 @@
     "website": "https://www.neotec.uk/",
     "type": "icon",
     "icon": "icon-[ri--terminal-box-line]",
-    "star": 1,
-    "fork": 9
+    "star": "0",
+    "fork": "0"
   },
   {
     "name": "Neotec. 整合包",
