@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
 // 这里不需要 Token 了，只需要仓库信息
