@@ -3,10 +3,11 @@ title: '从 JavaScript 前端开发到 Electron 框架跨平台开发'
 description: '本文主要描述了 JavaScript 和 Electron 的发展，关系，以及对于软件开发和原生开发可能存在的影响进行了分析。'
 pubDate: 2026-01-02
 author: 'Refact'
+tags: ['笔记']
+recommend: false
 heroImage: none
 ogImage: none
 heroImageAspectRatio: '16/9'
-tags: ['笔记']
 ---
 
 **关键词**：全栈开发、JavaScript、Electron等。
@@ -85,3 +86,5 @@ Chromium 在 Electron 中主要负责网页的渲染、网络请求的处理（�
 12月19日 起稿
 
 1月2日 初稿
+
+1月3日 第一次修改
