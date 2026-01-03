@@ -5,16 +5,55 @@ import Layout from '~/layouts/Layout.astro'
 import NumberTicker from '~/components/base/NumberTicker'
 
 const { title, description, introduce } = PROJECTS_CONFIG
-// 补零处理总数
-const totalCount = ProjectList.length.toString().padStart(2, '0');
+
+// --- GitHub 数据爬取逻辑 ---
+const GITHUB_TOKEN = import.meta.env.GITHUB_TOKEN;
+
+const projectsWithStats = await Promise.all(
+  ProjectList.map(async (project) => {
+    // 1. 如果没有 GitHub 链接，直接返回原数据
+    if (!project.githubUrl) return project;
+
+    try {
+      // 提取 owner/repo
+      const repoPath = project.githubUrl.replace(/^https?:\/\/github\.com\//, '').replace(/\/$/, '');
+      if (!repoPath.includes('/')) return project;
+
+      const headers = {
+        'Accept': 'application/vnd.github.v3+json',
+        ...(GITHUB_TOKEN ? { 'Authorization': `token ${GITHUB_TOKEN}` } : {}),
+      };
+
+      const res = await fetch(`https://api.github.com/repos/${repoPath}`, { headers });
+      
+      if (!res.ok) {
+        console.warn(`[GitHub API Error] Failed to fetch ${repoPath}: ${res.status}`);
+        return project;
+      }
+
+      const data = await res.json();
+
+      return {
+        ...project,
+        // 确保数据是数字类型
+        star: Number(data.stargazers_count ?? project.star ?? 0),
+        fork: Number(data.forks_count ?? project.fork ?? 0),
+      };
+    } catch (error) {
+      console.error(`[GitHub Fetch Error] ${project.name}:`, error);
+      return project;
+    }
+  })
+);
+
+const totalCount = projectsWithStats.length.toString().padStart(2, '0');
 ---
 
 <Layout {title} {description}>
   <div class="min-h-[70vh] relative py-12 px-6 sm:px-8 font-sans overflow-hidden max-w-[1400px] mx-auto">
 
-    <!-- 头部区域：重构为 Grid 布局 -->
+    <!-- 头部区域 -->
     <div class="mb-10 relative">
-      <!-- 顶部装饰线与标签 -->
       <div class="flex items-center justify-between pb-2 mb-6">
         <span class="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/70">
            // SYSTEM_MANIFEST // {new Date().getFullYear()}
@@ -29,23 +68,17 @@ const totalCount = ProjectList.length.toString().padStart(2, '0');
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
-        
-        <!-- 左侧：主标题 -->
         <div class="lg:col-span-7">
           <h1 class="text-6xl sm:text-7xl font-bold tracking-tighter text-foreground leading-[0.9] -ml-1">
             {title}<span class="text-primary/80">.</span>
           </h1>
         </div>
 
-        <!-- 右侧：简介与数据聚合 -->
         <div class="lg:col-span-5 flex flex-col justify-end pb-2">
-          <!-- 简介块：带左侧装饰边框 -->
           <div class="border-l-2 border-primary/40 pl-6 flex flex-col gap-6">
              <p class="text-base sm:text-lg text-muted-foreground leading-relaxed">
               {introduce}
              </p>
-             
-             <!-- 数据展示下沉到此处，形成视觉闭环 -->
              <div class="flex items-center gap-4 pt-4 border-t border-dashed border-border/60">
                 <div class="flex flex-col">
                     <span class="text-[10px] uppercase text-muted-foreground/60 font-mono tracking-wider">Total Modules</span>
@@ -66,7 +99,7 @@ const totalCount = ProjectList.length.toString().padStart(2, '0');
       </div>
     </div>
 
-    <!-- 内容区域标记：更简约的分割 -->
+    <!-- 内容区域标记 -->
     <div class="flex items-end gap-4 mb-10 select-none">
        <span class="font-mono text-4xl font-black text-muted-foreground/10 leading-none -mb-1">01</span>
        <span class="font-mono text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/50 mb-1">
@@ -75,29 +108,25 @@ const totalCount = ProjectList.length.toString().padStart(2, '0');
        <div class="h-px bg-gradient-to-r from-border to-transparent flex-1 mb-1.5"></div>
     </div>
 
-    <!-- 项目列表：保持原有逻辑，微调间距 -->
+    <!-- 项目列表 -->
     <div class="flex flex-col gap-4 fade-up">
       {
-        ProjectList.map((project, index) => {
+        projectsWithStats.map((project, index) => {
           const serialId = `0${index + 1}`.slice(-2);
           
           return (
             <div class="group relative flex flex-col bg-background border border-border/60 hover:border-primary/50 transition-all duration-300 p-6 overflow-hidden hover:shadow-lg hover:shadow-primary/5">
               
-              <!-- 背景装饰：序列号水印 -->
               <span class="absolute -right-4 -top-6 text-[120px] font-black text-muted-foreground/[0.03] group-hover:text-primary/[0.05] transition-colors pointer-events-none select-none font-mono">
                 {serialId}
               </span>
               
-              <!-- 顶部：图标与链接动作区 -->
               <div class="flex justify-between items-start mb-6 relative z-10">
-                <!-- 图标容器 -->
                 <div class="size-12 flex items-center justify-center bg-muted/10 border border-border/50 group-hover:border-primary/30 transition-colors">
                    {project.type === 'icon' && <span class={cn('size-6 text-foreground/80 group-hover:text-primary transition-colors', project.icon)} />}
                    {project.type === 'image' && <img src={project.icon} alt={project.name} class={cn('size-full object-cover opacity-80 group-hover:opacity-100 transition-opacity', project.imageClass)} />}
                 </div>
 
-                <!-- 动作区：仅保留图标链接 -->
                 <div class="flex gap-3">
                    {project.githubUrl && (
                       <a href={project.githubUrl} target="_blank" class="text-muted-foreground hover:text-primary transition-colors" aria-label="Github">
@@ -112,7 +141,6 @@ const totalCount = ProjectList.length.toString().padStart(2, '0');
                 </div>
               </div>
 
-              <!-- 中部：内容 -->
               <div class="flex-1 relative z-10">
                 <a href={project.website || project.githubUrl} target="_blank" class="block group-hover:translate-x-1 transition-transform duration-300">
                     <h3 class="text-xl font-bold text-foreground tracking-tight mb-2 group-hover:text-primary transition-colors">
@@ -128,20 +156,34 @@ const totalCount = ProjectList.length.toString().padStart(2, '0');
               <div class="mt-6 pt-4 border-t border-dashed border-border/40 flex items-center justify-between text-[10px] font-mono text-muted-foreground/60 uppercase tracking-wider relative z-10">
                  <span>System_Status: Stable</span>
                  
-                 <div class="flex gap-4">
-                    {(project.star || project.star === 0) && (
-                      <div class="flex items-center gap-1">
-                        <span class="icon-[ph--star-fill] size-3"></span>
-                        <NumberTicker client:visible value={project.star} />
-                      </div>
-                    )}
-                    {(project.fork || project.fork === 0) && (
-                      <div class="flex items-center gap-1">
-                         <span class="icon-[ph--git-fork-fill] size-3"></span>
-                         <NumberTicker client:visible value={project.fork} />
-                      </div>
-                    )}
-                 </div>
+                 {project.githubUrl && (
+                    <div class="flex gap-4">
+                        {/* 
+                           修复逻辑：
+                           1. 检查值不为 null/undefined
+                           2. 如果值 > 0，使用 NumberTicker
+                           3. 如果值 == 0，直接显示文本 "0"
+                        */}
+                        {(project.star !== undefined && project.star !== null) && (
+                          <div class="flex items-center gap-1">
+                            <span class="icon-[ph--star-fill] size-3"></span>
+                            {project.star > 0 
+                              ? <NumberTicker client:visible value={project.star} /> 
+                              : "0"
+                            }
+                          </div>
+                        )}
+                        {(project.fork !== undefined && project.fork !== null) && (
+                          <div class="flex items-center gap-1">
+                             <span class="icon-[ph--git-fork-fill] size-3"></span>
+                             {project.fork > 0 
+                               ? <NumberTicker client:visible value={project.fork} /> 
+                               : "0"
+                             }
+                          </div>
+                        )}
+                    </div>
+                 )}
               </div>
             </div>
           )

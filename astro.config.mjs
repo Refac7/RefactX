@@ -6,12 +6,21 @@ import mdx from '@astrojs/mdx'
 import sitemap from '@astrojs/sitemap'
 import robotsTxt from 'astro-robots-txt'
 import expressiveCode from 'astro-expressive-code'
+import vercel from '@astrojs/vercel/serverless'
 import { remarkPlugins, rehypePlugins } from './plugins'
 import { SITE } from './src/config'
 
 export default defineConfig({
   site: SITE.website,
   base: SITE.base,
+  
+  // [!code warning] 修改这里：Astro 5 中使用 static 配合 adapter 即可支持 SSR
+  output: 'static', 
+  
+  adapter: vercel({
+    webAnalytics: { enabled: true },
+  }),
+
   prefetch: {
     prefetchAll: true,
     defaultStrategy: 'viewport',
@@ -33,7 +42,7 @@ export default defineConfig({
     },
   },
   image: process.env.NODE_ENV === 'development'
-    ? {} // 开发阶段使用默认配置，不做优化
+    ? {} 
     : {
         service: {
           entrypoint: 'astro/assets/services/sharp',

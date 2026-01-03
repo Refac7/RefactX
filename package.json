@@ -14,8 +14,10 @@
   },
   "dependencies": {
     "@astrojs/react": "4.4.2",
+    "@astrojs/vercel": "^9.0.2",
     "@floating-ui/react": "^0.27.12",
     "@nanostores/react": "^0.8.4",
+    "@octokit/rest": "^22.0.1",
     "@waline/client": "^3.6.0",
     "astro": "^5.16.4",
     "clsx": "^2.1.1",
@@ -24,6 +26,7 @@
     "nanostores": "^0.11.4",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
+    "react-hot-toast": "^2.6.0",
     "tailwind-merge": "^3.0.2",
     "typescript": "^5.9.3"
   },

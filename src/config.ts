@@ -258,7 +258,7 @@ export const ProjectList: Project[] = [
   {
     name: 'NotionNext主题 - Neo',
     description: '基于内置的 Heo 主题进行了大量修改，是现代化的博客设计方案（项目已归档)',
-    githubUrl: 'https://github.com/Refac7/WebsiteKit/',
+    githubUrl: 'https://github.com/Refac7/Reborn/',
     type: 'icon',
     icon: 'icon-[ri--terminal-box-line]',
     star: 1,

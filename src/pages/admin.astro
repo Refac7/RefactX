@@ -1,0 +1,19 @@
+---
+import Layout from '~/layouts/Layout.astro'
+import AdminDashboard from '~/components/admin/AdminDashboard'
+
+// 你可以在这里定义特定于 admin 页面的 SEO 信息
+const title = "System Controller";
+const description = "Authorized Personnel Only";
+---
+
+<Layout {title} {description} >
+  <!-- 
+    client:only="react" 非常重要！
+    这告诉 Astro 不要尝试在服务端渲染这个组件（因为里面用到了 localStorage 和 window 对象），
+    而是完全在浏览器中加载和运行。
+  -->
+  <div class="min-h-[70vh]">
+    <AdminDashboard client:only="react" />
+  </div>
+</Layout>
