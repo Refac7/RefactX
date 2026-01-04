@@ -49,7 +49,7 @@ export default defineConfig({
         },
         remotePatterns: [
           {
-            hostname: 'www.refact.cc',
+            hostname: '*.refact.cc',  // 通配符匹配所有子域名
             protocol: 'https',
           },
         ],

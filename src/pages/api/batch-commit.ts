@@ -58,7 +58,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     // 4. 创建树对象：一次性创建所有文件变更
     const tree = await Promise.all(
-      operations.map(async (item: BatchOperation, index: number) => {
+      operations.map(async (item: BatchOperation) => {
         const fullPath = item.isDataFile || item.filename.includes('/') 
           ? item.filename 
           : `${pathPrefix}${item.filename}`;

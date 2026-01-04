@@ -1,10 +1,7 @@
 import type {
   GithubConfig,
   Link,
-  PhotoData,
-  PhotosConfig,
   PostConfig,
-  Project,
   ProjectConfig,
   Site,
   SkillsShowcaseConfig,
