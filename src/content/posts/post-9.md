@@ -3,11 +3,11 @@ title: '图床配置指南'
 description: '如何在 RefactX v1.6中使用图床以及在Waline 评论系统中启用图片上传'
 pubDate: 2025-12-30
 author: 'Refact'
+tags: ['笔记']
+recommend: false
 heroImage: none
 ogImage: none
 heroImageAspectRatio: '16/9'
-tags: ['笔记']
-
 ---
 
 注意：启用图床将会禁用图片优化功能。如果你希望优化图床的照片，请在`./astro.config.mjs`的52行处修改为你的图床地址。
@@ -202,7 +202,7 @@ Waline评论上传的图片默认统一保存在comment文件夹下。
 
 ## 外部访问提示
 
-你可以在存储桶的根目录放置一张提示图，大概就是提示禁止从外部访问，不放也会有相应的文字提示。
+你可以在存储桶的根目录放置一张提示图,命名为`hotlink-warning.png`，大概就是提示禁止从外部访问，不放也会有相应的文字提示。
 
 12月26日 起稿
 
