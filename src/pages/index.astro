@@ -234,7 +234,7 @@ const LAYOUT_CONTAINER = "mx-auto px-6 sm:px-8"
     // 4. 读取本地存储状态 (默认为 'true' 开启)
     const storedState = localStorage.getItem('snowfall_enabled');
     // 如果没有存过，默认是 true；否则按存储的值
-    const isEnabled = storedState === null ? true : storedState === 'true';
+    const isEnabled = storedState === null ? false : storedState === 'true';
 
     // 5. 定义更新 UI 的函数
     const updateUI = (active) => {

@@ -4,6 +4,10 @@ import { WALINE_CONFIG } from "~/config";
 
 {WALINE_CONFIG.enableComment && (
   <>
+    <div class="waline-section-title">
+      <span class="prefix text-4xl">//COMMENTS_</span>
+    </div>
+
     <div id="waline-container" class="waline-lazy">
       <div class="waline-loading font-mono">Loading...</div>
     </div>
@@ -14,117 +18,358 @@ import { WALINE_CONFIG } from "~/config";
     />
 
     <style is:global>
-      #waline-container {
+      /* =========================================
+         新增：标题样式
+         ========================================= */
+      .waline-section-title {
         width: 100%;
+        margin-top: 3rem;       /* 与上方内容的间距 */
+        margin-bottom: 1rem;    /* 与评论区的间距 */
+        padding-bottom: 0.5rem; /* 文字与下划线的距离 */
+        display: flex;
+
+        /* 字体与排版 */
+        font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, monospace;
+        font-size: 0.875rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        
+        /* 默认浅色模式颜色 (与下方 #waline 变量对应) */
+        color: #333333; 
+        border-bottom: 1px solid #e0e0e0;
+      }
+      
+      .waline-section-title .prefix {
+        color: #888888; /* 符号颜色稍淡 */
+        margin-right: 0.5em;
       }
 
+      /* 深色模式标题适配 */
+      html.dark .waline-section-title {
+        color: #d4d4d8;
+        border-bottom: 1px solid #2e2e2e;
+      }
+      html.dark .waline-section-title .prefix {
+        color: #71717a;
+      }
+
+      /* =========================================
+         全局容器设置
+         ========================================= */
+      #waline-container {
+        width: 100%;
+        position: relative;
+        /* 核心变量：极细实线 */
+        --industrial-line: 1px solid var(--waline-border-color);
+      }
+
+      /* 懒加载占位 */
       .waline-lazy {
         min-height: 200px;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: var(--color-muted-foreground);
+        color: var(--waline-color);
+        font-family: ui-monospace, SFMono-Regular, monospace;
+        font-size: 0.875rem;
+        letter-spacing: 1px;
+        background: transparent;
+        border: 1px dashed var(--waline-border-color);
       }
 
       .waline-lazy:has(#waline) {
         display: block;
         min-height: unset;
+        border: none;
       }
 
+      /* =========================================
+         核心变量定义
+         ========================================= */
+      #waline {
+        /* 基础排版 */
+        --waline-font-size: 15px !important;
+        --waline-line-height: 1.6 !important; /* 行高稍微收紧 */
+        
+        /* 字体 */
+        --waline-font-family: 'ShangguSansSC Variable', system-ui, -apple-system, sans-serif !important;
+        --waline-mono-font: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, monospace !important;
+
+        /* 浅色模式 - 纸张感 */
+        --waline-theme-color: #000000 !important;
+        --waline-active-color: #000000 !important;
+        --waline-bgcolor: #ffffff !important;
+        --waline-bgcolor-light: #fafafa !important;
+        --waline-bgcolor-hover: #f0f0f0 !important;
+        --waline-border-color: #e0e0e0 !important; /* 稍微加深一点点灰，保证细线可见 */
+        --waline-disable-bg-color: #fafafa !important;
+        --waline-disable-color: #ccc !important;
+        --waline-code-bg-color: #f9f9f9 !important;
+        
+        /* 文本颜色 */
+        --waline-color: #333333 !important;
+        --waline-info-color: #888888 !important;
+
+        /* 结构重置 - 移除圆角和阴影 */
+        --waline-box-shadow: none !important;
+        --waline-avatar-radius: 0 !important; 
+        --waline-border: var(--industrial-line) !important;
+      }
+
+      /* 深色模式 - CAD 界面感 */
+      html.dark #waline {
+        --waline-theme-color: #ffffff !important;
+        --waline-active-color: #ffffff !important;
+        --waline-bgcolor: #09090b !important;
+        --waline-bgcolor-light: #121212 !important;
+        --waline-bgcolor-hover: #27272a !important;
+        --waline-border-color: #2e2e2e !important;
+        --waline-color: #d4d4d8 !important;
+        --waline-info-color: #71717a !important;
+        --waline-code-bg-color: #121212 !important;
+      }
+
+      /* =========================================
+         组件样式重写
+         ========================================= */
+
+      /* 1. 全局直角化 */
       #waline .wl-panel,
       #waline .wl-user-avatar,
       #waline .wl-login-nick,
       #waline .wl-input,
       #waline .wl-btn,
-      #waline .wl-comment,
       #waline .wl-card,
       #waline .wl-header,
+      #waline .wl-editor,
       #waline .wl-gif-popup,
       #waline .wl-emoji-popup,
-      #waline .wl-footer {
+      #waline .wl-content pre,
+      #waline .wl-meta span {
         border-radius: 0 !important;
-        font-family: 'ShangguSansSC Variable', system-ui, -apple-system, sans-serif !important;
       }
 
-      .wl-editor{
-        border-radius: 0 !important;
-        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace !important;
-      }
-
-      .wl-gif-tab {
-        display: none !important;
-      }
-
-      .wl-content,
-      .wl-content * {
-        white-space: normal !important;
-        word-break: break-word !important;
-        overflow-wrap: anywhere !important;
-      }
-
-      /* 浅色模式 */
-      #waline {
-        --waline-theme-color: #000000 !important;
-        --waline-active-color: #dc2626 !important;
-        --waline-font-size: 1rem !important;
-        --waline-font-family: 'Onest Variable', 'Geist Variable', 'ShangguSansSC Variable', system-ui, -apple-system, sans-serif !important;
-        --waline-border-color: #F0F1F5 !important;
-      }
-
-      /* 为输入框和评论卡片设置边框颜色 */
-      #waline .wl-editor,
-      #waline .wl-input,
-      #waline .wl-card,
+      /* 2. 输入面板 (.wl-panel) - 紧凑型 */
       #waline .wl-panel {
-        border-color: var(--waline-border-color) !important;
+        border: var(--industrial-line) !important;
+        background: var(--waline-bgcolor) !important;
       }
 
-      /* 深色模式 */
-      html.dark #waline {
-        --waline-theme-color: #ffffff !important;
-        --waline-active-color: #dc2626 !important;
-        --waline-border-color: #18181B !important;
+      /* 头部信息栏 */
+      #waline .wl-header {
+        border-bottom: var(--industrial-line) !important;
+        background: var(--waline-bgcolor-light) !important;
+        display: flex;
       }
 
-      html.dark #waline .wl-panel {
-        --waline-bgcolor: #09090B !important;
-        background-color: #09090B !important;
+      #waline .wl-header-item {
+        border-right: var(--industrial-line) !important;
+        flex: 1;
+      }
+      
+      #waline .wl-header-item:last-child {
+        border-right: none !important;
       }
 
-      /* 禁用输入框聚焦样式 */
-      #waline .wl-editor:focus,
-      #waline .wl-editor:focus-within,
-      #waline .wl-input:focus {
-        background-color: var(--waline-bgcolor) !important;
-        box-shadow: none !important;
-        outline: none !important;
-        border-color: var(--waline-border-color) !important;
-      }
-
-      /* 元数据标签 (日期、系统) - 只有这里用等宽字体 */
-      #waline .wl-time,
-      #waline .wl-meta span {
-        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace !important;
+      #waline .wl-header label {
+        color: var(--waline-info-color) !important;
+        font-weight: 500;
+        font-family: var(--waline-mono-font) !important;
         font-size: 0.75rem !important;
-        color: var(--waline-color) !important;
-      }
-
-      /* 系统/浏览器标签样式优化 */
-      #waline .wl-meta span {
-        background: transparent !important;
-        border: 1px solid var(--waline-border-color);
-        padding: 1px 5px !important;
-        margin-right: 6px !important;
         text-transform: uppercase;
       }
 
-      /* 引用块样式 */
-      #waline .wl-quote {
-        border-left: 2px solid var(--waline-border-color) !important; /* 实线强调 */
-        background: var(--waline-bgcolor-light) !important;
+      #waline .wl-input {
+        font-family: var(--waline-mono-font) !important;
+        font-size: 0.85rem !important;
+        padding: 0.5rem 0.75rem !important; /* 稍微紧凑的内边距 */
+      }
+
+      /* 编辑器 */
+      #waline .wl-editor {
+        min-height: 8rem; /* 高度适中 */
+        padding: 0.75rem !important;
+        background: var(--waline-bgcolor) !important;
+        font-family: var(--waline-font-family) !important;
+        font-size: 0.95rem !important;
+        line-height: 1.75;
+        resize: vertical;
         color: var(--waline-color) !important;
-        font-style: italic;
-        margin-bottom: 1rem !important;
+      }
+      
+      #waline .wl-editor:focus,
+      #waline .wl-input:focus {
+        background: transparent !important;
+        box-shadow: none !important;
+      }
+
+      /* 底部操作栏 */
+      #waline .wl-footer {
+        margin: 0 !important;
+        padding: 0.5rem !important;
+        border-top: var(--industrial-line) !important;
+        background: var(--waline-bgcolor-light) !important;
+      }
+
+      #waline .wl-btn {
+        border: var(--industrial-line) !important;
+        color: var(--waline-color) !important;
+        background: var(--waline-bgcolor) !important;
+        font-family: var(--waline-mono-font) !important;
+        font-size: 0.75rem !important;
+        padding: 0.25em 1em !important; /* 按钮变薄一点 */
+        margin-left: 0.5em;
+      }
+
+      /* 按钮交互 */
+      #waline .wl-btn:not(:disabled):hover {
+        background: var(--waline-theme-color) !important;
+        color: var(--waline-bgcolor) !important;
+        border-color: var(--waline-theme-color) !important;
+      }
+
+      /* 图标 */
+      #waline .wl-action {
+        width: 22px;
+        height: 22px;
+        color: var(--waline-info-color) !important;
+      }
+      #waline .wl-action:hover {
+        color: var(--waline-theme-color) !important;
+      }
+      .wl-gif-tab { display: none !important; }
+
+      /* =========================================
+         评论列表布局修正 (重点修改区域)
+         ========================================= */
+      
+      /* 列表项 */
+      #waline .wl-card {
+        border-bottom: var(--industrial-line) !important;
+        padding: 1.25rem 0 !important; /* 减小垂直间距 */
+        margin: 0 !important;
+      }
+      #waline .wl-card:last-child {
+        border-bottom: none !important;
+      }
+
+      /* 1. 头像区域 (.wl-user) - 缩减右侧外边距 */
+      #waline .wl-cards .wl-user {
+        margin-inline-end: 0.6rem !important; /* 核心修正：大幅减小头像与内容的距离 */
+        width: auto !important; /* 防止容器过大 */
+        flex-shrink: 0; /* 防止头像被压缩 */
+      }
+
+      /* 2. 头像图片本身 */
+      #waline .wl-user-avatar {
+        width: 2.25rem !important; /* 稍微调小头像，更精致 */
+        height: 2.25rem !important;
+        background: var(--waline-bgcolor-light);
+        border: var(--industrial-line);
+        margin: 0 !important; /* 移除头像本身的边距 */
+      }
+      
+      #waline .wl-user-avatar img {
+        border: none !important;
+        transform: scale(0.92); /* 边框留白 */
+      }
+
+      /* 3. 右侧内容区域 */
+      #waline .wl-card-item .wl-card {
+        padding-bottom: 0 !important; /* 移除内部多余padding */
+        border: none !important; /* 内部不需要边框 */
+      }
+
+      /* 昵称 */
+      #waline .wl-nick {
+        font-weight: 600;
+        color: var(--waline-theme-color) !important;
+        font-size: 0.9rem !important;
+        margin-right: 0.5rem !important;
+      }
+
+      /* 标签与元数据 - 紧凑排列 */
+      #waline .wl-head {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        line-height: 1.2;
+        margin-bottom: 0.25rem;
+      }
+
+      #waline .wl-badge {
+        border: none !important;
+        background: var(--waline-theme-color) !important;
+        color: var(--waline-bgcolor) !important;
+        font-size: 0.65rem !important;
+        padding: 1px 3px !important;
+        margin-right: 0.5rem !important;
+      }
+
+      #waline .wl-meta > span {
+        background: transparent !important;
+        border: var(--industrial-line) !important;
+        color: var(--waline-info-color) !important;
+        font-family: var(--waline-mono-font) !important;
+        font-size: 0.65rem !important;
+        padding: 0px 4px !important;
+        margin-right: 0.4rem !important;
+        text-transform: uppercase;
+      }
+
+      /* 时间 */
+      #waline .wl-time {
+        font-family: var(--waline-mono-font) !important;
+        color: var(--waline-info-color) !important;
+        font-size: 0.75rem !important;
+        margin-left: auto !important; /* 靠右对齐 */
+      }
+
+      /* 引用块 */
+      #waline .wl-quote {
+        border-left: 1px solid var(--waline-theme-color) !important;
+        background: transparent !important;
+        padding-left: 0.75rem !important;
+        margin: 0.5rem 0 !important;
+        color: var(--waline-info-color) !important;
+        font-size: 0.9em;
+      }
+
+      /* 评论正文 */
+      #waline .wl-content {
+        font-size: 0.95rem !important;
+        color: var(--waline-color) !important;
+        line-height: 1.75 !important;
+        margin-top: 0.25rem;
+      }
+
+      /* 代码块 */
+      #waline .wl-content pre {
+        background: var(--waline-code-bg-color) !important;
+        border: var(--industrial-line);
+        padding: 0.75rem;
+        margin: 0.75rem 0;
+        font-size: 0.85em;
+      }
+
+      /* 移动端适配 */
+      @media (max-width: 580px) {
+        #waline .wl-header {
+          display: block;
+        }
+        #waline .wl-header-item {
+          border-right: none !important;
+          border-bottom: var(--industrial-line) !important;
+        }
+        /* 移动端头像更近 */
+        #waline .wl-cards .wl-user {
+          margin-inline-end: 0.5rem !important;
+        }
+        #waline .wl-time {
+          width: 100%;
+          margin-top: 0.25rem;
+        }
       }
     </style>
 
