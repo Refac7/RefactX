@@ -17,7 +17,7 @@ const DATA_FILES = [
   { name: 'photos.json', path: 'src/content/data/photos.json', label: 'PHOTOS' }
 ];
 
-// Schema 定义
+// Schema 定义 (保持不变)
 const SCHEMAS: Record<string, { key: string; label: string; type: 'text' | 'image' | 'textarea' | 'json' }[]> = {
   'friends.json': [
     { key: 'name', label: 'Site Name', type: 'text' },
@@ -312,6 +312,45 @@ export default function AdminDashboard() {
   };
 
   // --- Logic: Queue ---
+  // 🔥🔥🔥 新增功能：从暂存区回读 🔥🔥🔥
+  const loadFromQueue = (item: QueueItem) => {
+    if (item.type === 'delete') return toast('Cannot edit a deletion task', { icon: '🚫' });
+    if ((body.length > 20 || jsonContent.length > 20) && !confirm("Discard current changes and load from buffer?")) return;
+
+    try {
+        // 恢复文件名
+        let displayFilename = item.filename;
+        if (displayFilename.includes('/')) displayFilename = displayFilename.split('/').pop() || displayFilename;
+        
+        setFilename(displayFilename);
+
+        if (item.isDataFile) {
+            // 恢复 JSON
+            setCurrentMode('data');
+            setJsonContent(item.content || '');
+            try {
+                const p = JSON.parse(item.content || '[]');
+                setParsedJson(p);
+                setEditorMode('visual');
+            } catch {
+                setEditorMode('raw');
+            }
+        } else {
+            // 恢复 Markdown
+            setCurrentMode('post');
+            const { meta: m, body: b } = parseContent(item.content || '');
+            setMeta(m);
+            setBody(b);
+        }
+
+        setMobileView('editor');
+        toast.success('Restored from Buffer');
+    } catch (e) {
+        console.error(e);
+        toast.error('Failed to parse buffer content');
+    }
+  };
+
   const stageForWrite = () => {
     let content = '';
     let finalFilename = '';
@@ -339,11 +378,8 @@ ${body}`;
         content = jsonContent;
     }
 
-    // --- 智能暂存逻辑 ---
     setQueue(prev => {
-        // 检查这个文件是不是已经在暂存区了
         const existingIndex = prev.findIndex(p => p.filename === finalFilename);
-        
         const newItem: QueueItem = {
             id: Date.now().toString(), 
             type: 'write', 
@@ -352,19 +388,15 @@ ${body}`;
             status: 'pending', 
             isDataFile: currentMode === 'data'
         };
-
-        // 如果已经在暂存区，就覆盖它（去重）
         if (existingIndex !== -1) {
             const newQueue = [...prev];
             newQueue[existingIndex] = newItem;
             return newQueue;
         }
-        // 否则追加到最后
         return [...prev, newItem];
     });
     
-    if (window.innerWidth < 1024) toast.success('Saved to BUFFER');
-    else toast.success('Added to Buffer');
+    toast.success('Saved to BUFFER');
   };
 
   const stageForDelete = (file: RemoteFile) => {
@@ -375,12 +407,13 @@ ${body}`;
         filename: file.name,
         sha: file.sha, 
         status: 'pending',
-        isDataFile: false // 删除的通常是文章文件
+        isDataFile: false
     }]);
     toast.success(`Marked for deletion`);
   };
 
-  const removeFromQueue = (id: string) => {
+  const removeFromQueue = (id: string, e?: React.MouseEvent) => {
+    e?.stopPropagation();
     setQueue(prev => prev.filter(item => item.id !== id));
   };
 
@@ -392,7 +425,6 @@ ${body}`;
     const toastId = toast.loading('Batch uploading...');
 
     try {
-        // 调用新的批量接口
         const res = await fetch('/api/batch-commit', { 
             method: 'POST', 
             headers: { 'Content-Type': 'application/json' },
@@ -412,13 +444,10 @@ ${body}`;
         const result = await res.json();
         if (!res.ok) throw new Error(result.error || 'Batch failed');
 
-        // 成功后清空暂存区
         setQueue([]);
         localStorage.removeItem('admin_queue_v1'); 
         
         toast.success(`Batch completed! ${queue.length} files processed. Build triggered.`, { id: toastId });
-        
-        // 刷新文件列表
         await fetchRemoteFiles();
 
     } catch (error: any) { 
@@ -499,7 +528,7 @@ ${body}`;
     toast('New Post Ready', { icon: '✨' });
   };
 
-  // --- Render Visual JSON ---
+  // --- Render Visual JSON (已修复 src="" 报错) ---
   const renderVisualEditor = () => {
     const schema = SCHEMAS[filename] || [];
     if (schema.length === 0) return <div className="p-8 text-center text-muted-foreground text-xs font-mono">No schema for this file. Use CODE mode.</div>;
@@ -534,7 +563,6 @@ ${body}`;
                                           e.target.value;
                                         handleUpdateItem(editingItemIndex, field.key, newValue);
                                       } catch (err) {
-                                        // 如果 JSON 解析失败，保持原样
                                         if (field.type !== 'json') {
                                           handleUpdateItem(editingItemIndex, field.key, e.target.value);
                                         }
@@ -549,9 +577,10 @@ ${body}`;
                                         onChange={e => handleUpdateItem(editingItemIndex, field.key, e.target.value)}
                                         className="w-full bg-muted/20 border border-border/50 p-2 text-sm rounded font-mono focus:border-primary/50 focus:outline-none"
                                     />
+                                    {/* Fix: 检查是否有值且不是 icon 类名 */}
                                     {field.type === 'image' && item[field.key] && !item[field.key].startsWith('icon-') && (
                                         <div className="size-9 shrink-0 border border-border rounded overflow-hidden">
-                                            <img src={item[field.key]} className="size-full object-cover" alt="preview"/>
+                                            <img src={item[field.key]} className="size-full object-cover" alt="preview" onError={(e) => e.currentTarget.style.display = 'none'} />
                                         </div>
                                     )}
                                 </div>
@@ -576,13 +605,19 @@ ${body}`;
                 {parsedJson.map((item, idx) => {
                     const iconValue = item.avatar || item.icon;
                     let iconEl;
+                    // Fix: 智能判断 CSS 类名 vs 图片 URL
                     if (typeof iconValue === 'string') {
-                        if (iconValue.startsWith('icon-')) iconEl = <span className={cn(iconValue, "text-xl")} />;
-                        else iconEl = <img src={iconValue} className="size-full object-cover" alt="icon" onError={(e) => (e.currentTarget.style.display = 'none')} />;
+                        if (iconValue.startsWith('icon-') || iconValue.includes('icon-[')) {
+                            iconEl = <span className={cn(iconValue, "text-xl")} />;
+                        } else if (iconValue) {
+                            iconEl = <img src={iconValue} className="size-full object-cover" alt="icon" onError={(e) => (e.currentTarget.style.display = 'none')} />;
+                        } else {
+                            iconEl = <span className="icon-[ph--cube] text-muted-foreground"/>;
+                        }
                     } else if (typeof iconValue === 'object') {
                         iconEl = <span className="text-lg">{iconValue.value}</span>;
                     } else {
-                        iconEl = <span className="text-[10px] font-mono">JSON</span>;
+                        iconEl = <span className="icon-[ph--cube] text-muted-foreground"/>;
                     }
 
                     return (
@@ -607,7 +642,7 @@ ${body}`;
     );
   };
 
-  // --- Render: Login ---
+  // --- Render: Login (保持原样) ---
   if (!isLoggedIn) {
      return (
         <div className="min-h-[80vh] flex items-center justify-center bg-background text-foreground font-mono p-4 relative overflow-hidden">
@@ -685,7 +720,7 @@ ${body}`;
     );
   }
 
-  // --- Render: Dashboard ---
+  // --- Render: Dashboard (头部还原) ---
   return (
     <div className="text-foreground font-sans p-4 lg:p-6 flex flex-col">
       <Toaster toastOptions={{ 
@@ -700,7 +735,7 @@ ${body}`;
       }} />
       <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
 
-      {/* Header */}
+      {/* Header (已还原第一版设计) */}
       <div className="mb-10 relative">
         <div className="flex items-center justify-between pb-2 mb-6">
           <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/70">
@@ -832,11 +867,11 @@ ${body}`;
                     <>
                         {showMetaConfig && (
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3 border-b border-dashed border-border/40 bg-muted/5 text-xs max-h-[200px] overflow-y-auto shrink-0">
-                                <div className="sm:col-span-2"><label className="text-[10px] text-muted-foreground/60 block">TITLE</label><input value={meta.title} onChange={e=>setMeta({...meta, title: e.target.value})} className="w-full bg-background border p-1" /></div>
-                                <div className="sm:col-span-2"><label className="text-[10px] text-muted-foreground/60 block">DESC</label><input value={meta.description} onChange={e=>setMeta({...meta, description: e.target.value})} className="w-full bg-background border p-1" /></div>
-                                <div><label className="text-[10px] text-muted-foreground/60 block">DATE</label><input type="date" value={meta.pubDate} onChange={e=>setMeta({...meta, pubDate: e.target.value})} className="w-full bg-background border p-1" /></div>
-                                <div><label className="text-[10px] text-muted-foreground/60 block">TAGS</label><input value={meta.tags} onChange={e=>setMeta({...meta, tags: e.target.value})} className="w-full bg-background border p-1 text-primary" /></div>
-                                <div className="sm:col-span-2"><label className="text-[10px] text-muted-foreground/60 flex justify-between"><span>HERO</span><span onClick={()=>triggerUpload('hero')} className="cursor-pointer hover:text-primary">[UP]</span></label><input value={meta.heroImage} onChange={e=>setMeta({...meta, heroImage: e.target.value})} className="w-full bg-background border p-1 text-muted-foreground" /></div>
+                                <div className="sm:col-span-2"><label className="text-[10px] text-muted-foreground/60 block">TITLE</label><input value={meta.title} onChange={e=>setMeta({...meta, title: e.target.value})} className="w-full h-10 bg-background border p-1" /></div>
+                                <div className="sm:col-span-2"><label className="text-[10px] text-muted-foreground/60 block">DESC</label><input value={meta.description} onChange={e=>setMeta({...meta, description: e.target.value})} className="w-full h-10 bg-background border p-1" /></div>
+                                <div><label className="text-[10px] text-muted-foreground/60 block">DATE</label><input type="date" value={meta.pubDate} onChange={e=>setMeta({...meta, pubDate: e.target.value})} className="w-full h-10 bg-background border p-1" /></div>
+                                <div><label className="text-[10px] text-muted-foreground/60 block">TAGS</label><input value={meta.tags} onChange={e=>setMeta({...meta, tags: e.target.value})} className="w-full h-10 bg-background border p-1 text-primary" /></div>
+                                <div className="sm:col-span-2"><label className="text-[10px] text-muted-foreground/60 flex justify-between"><span>HERO</span><span onClick={()=>triggerUpload('hero')} className="cursor-pointer hover:text-primary">[UP]</span></label><input value={meta.heroImage} onChange={e=>setMeta({...meta, heroImage: e.target.value})} className="w-full h-10 bg-background border p-1 text-muted-foreground" /></div>
                             </div>
                         )}
                         <textarea ref={textareaRef} value={body} onChange={e => setBody(e.target.value)} className="flex-1 p-4 bg-transparent text-sm font-mono resize-none focus:outline-none custom-scrollbar" placeholder="// Markdown Body..." spellCheck={false}/>
@@ -875,11 +910,19 @@ ${body}`;
                           <span className={cn("text-[10px] font-bold uppercase", item.type === 'delete' ? 'text-red-500' : 'text-primary')}>
                             {item.type} {item.isDataFile ? 'DATA' : 'POST'}
                           </span>
-                          {item.status === 'pending' && (
-                            <button onClick={()=>removeFromQueue(item.id)} className="hover:bg-muted/50 p-1 rounded">
-                              <span className="icon-[ph--x] size-3"></span>
-                            </button>
-                          )}
+                          <div className="flex gap-1">
+                            {/* 🔥 这里是回读按钮 🔥 */}
+                            {item.type === 'write' && (
+                                <button onClick={() => loadFromQueue(item)} className="hover:bg-muted/50 p-1 rounded text-primary" title="Edit">
+                                  <span className="icon-[ph--pencil-simple] size-3"></span>
+                                </button>
+                            )}
+                            {item.status === 'pending' && (
+                                <button onClick={(e)=>removeFromQueue(item.id, e)} className="hover:bg-muted/50 p-1 rounded" title="Remove">
+                                  <span className="icon-[ph--x] size-3"></span>
+                                </button>
+                            )}
+                          </div>
                         </div>
                         <div className="text-xs font-mono truncate" title={item.filename}>{item.filename.split('/').pop()}</div>
                         {item.type === 'write' && (
