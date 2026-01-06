@@ -866,12 +866,48 @@ ${body}`;
                 {currentMode === 'post' && (
                     <>
                         {showMetaConfig && (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3 border-b border-dashed border-border/40 bg-muted/5 text-xs max-h-[200px] overflow-y-auto shrink-0">
-                                <div className="sm:col-span-2"><label className="text-[10px] text-muted-foreground/60 block">TITLE</label><input value={meta.title} onChange={e=>setMeta({...meta, title: e.target.value})} className="w-full h-10 bg-background border p-1" /></div>
-                                <div className="sm:col-span-2"><label className="text-[10px] text-muted-foreground/60 block">DESC</label><input value={meta.description} onChange={e=>setMeta({...meta, description: e.target.value})} className="w-full h-10 bg-background border p-1" /></div>
-                                <div><label className="text-[10px] text-muted-foreground/60 block">DATE</label><input type="date" value={meta.pubDate} onChange={e=>setMeta({...meta, pubDate: e.target.value})} className="w-full h-10 bg-background border p-1" /></div>
-                                <div><label className="text-[10px] text-muted-foreground/60 block">TAGS</label><input value={meta.tags} onChange={e=>setMeta({...meta, tags: e.target.value})} className="w-full h-10 bg-background border p-1 text-primary" /></div>
-                                <div className="sm:col-span-2"><label className="text-[10px] text-muted-foreground/60 flex justify-between"><span>HERO</span><span onClick={()=>triggerUpload('hero')} className="cursor-pointer hover:text-primary">[UP]</span></label><input value={meta.heroImage} onChange={e=>setMeta({...meta, heroImage: e.target.value})} className="w-full h-10 bg-background border p-1 text-muted-foreground" /></div>
+                            <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 p-3 border-b border-dashed border-border/40 bg-muted/5 text-xs shrink-0 transition-all">
+                                <div className="sm:col-span-4">
+                                  <label className="text-[10px] text-muted-foreground/60 block mb-1">TITLE</label>
+                                  <input value={meta.title} onChange={e=>setMeta({...meta, title: e.target.value})} className="w-full h-9 bg-background border border-border/60 focus:border-primary/60 px-2 font-medium focus:outline-none transition-colors" placeholder="Post Title" />
+                                </div>
+                                
+                                <div className="sm:col-span-4">
+                                  <label className="text-[10px] text-muted-foreground/60 block mb-1">DESCRIPTION</label>
+                                  <input value={meta.description} onChange={e=>setMeta({...meta, description: e.target.value})} className="w-full h-9 bg-background border border-border/60 focus:border-primary/60 px-2 focus:outline-none transition-colors" placeholder="Short description..." />
+                                </div>
+                                
+                                <div className="sm:col-span-1">
+                                  <label className="text-[10px] text-muted-foreground/60 block mb-1">DATE</label>
+                                  <input type="date" value={meta.pubDate} onChange={e=>setMeta({...meta, pubDate: e.target.value})} className="w-full h-9 bg-background border border-border/60 focus:border-primary/60 px-2 focus:outline-none uppercase" />
+                                </div>
+                                
+                                <div className="sm:col-span-2">
+                                  <label className="text-[10px] text-muted-foreground/60 block mb-1">TAGS</label>
+                                  <input value={meta.tags} onChange={e=>setMeta({...meta, tags: e.target.value})} className="w-full h-9 bg-background border border-border/60 focus:border-primary/60 px-2 text-primary focus:outline-none" placeholder="React, Tech..." />
+                                </div>
+
+                                <div className="sm:col-span-1 flex flex-col justify-end">
+                                    <label className="flex items-center gap-2 cursor-pointer group h-9 border border-border/60 bg-background px-2 w-full hover:border-primary/50 transition-colors select-none">
+                                        <input 
+                                            type="checkbox" 
+                                            checked={meta.recommend} 
+                                            onChange={e => setMeta({...meta, recommend: e.target.checked})}
+                                            className="appearance-none size-3 border border-muted-foreground/50 rounded-sm checked:bg-primary checked:border-primary transition-all cursor-pointer"
+                                        />
+                                        <span className={cn("text-[10px] font-mono font-bold transition-colors", meta.recommend ? "text-primary" : "text-muted-foreground")}>
+                                            RECOMMEND
+                                        </span>
+                                    </label>
+                                </div>
+                                
+                                <div className="sm:col-span-4">
+                                  <label className="text-[10px] text-muted-foreground/60 flex justify-between mb-1">
+                                    <span>HERO IMAGE</span>
+                                    <span onClick={()=>triggerUpload('hero')} className="cursor-pointer hover:text-primary transition-colors">[UPLOAD]</span>
+                                  </label>
+                                  <input value={meta.heroImage} onChange={e=>setMeta({...meta, heroImage: e.target.value})} className="w-full h-9 bg-background border border-border/60 focus:border-primary/60 px-2 text-muted-foreground focus:outline-none" placeholder="https://..." />
+                                </div>
                             </div>
                         )}
                         <textarea ref={textareaRef} value={body} onChange={e => setBody(e.target.value)} className="flex-1 p-4 bg-transparent text-sm font-mono resize-none focus:outline-none custom-scrollbar" placeholder="// Markdown Body..." spellCheck={false}/>
