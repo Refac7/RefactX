@@ -4,8 +4,8 @@ import { WALINE_CONFIG } from "~/config";
 
 {WALINE_CONFIG.enableComment && (
   <>
-    <div class="waline-section-title">
-      <span class="prefix text-4xl">//COMMENTS_</span>
+    <div class="waline-section-title mx-2">
+      <span class="prefix text-4xl">// COMMENT_SYSTEM_</span>
     </div>
 
     <div id="waline-container" class="waline-lazy">
@@ -26,7 +26,6 @@ import { WALINE_CONFIG } from "~/config";
         margin-top: 3rem;       /* 与上方内容的间距 */
         margin-bottom: 1rem;    /* 与评论区的间距 */
         padding-bottom: 0.5rem; /* 文字与下划线的距离 */
-        display: flex;
 
         /* 字体与排版 */
         font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, monospace;

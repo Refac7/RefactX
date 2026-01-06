@@ -568,18 +568,18 @@ ${body}`;
                                         }
                                       }
                                     }}
-                                    className="w-full bg-muted/20 border border-border/50 p-2 text-sm rounded font-mono focus:border-primary/50 focus:outline-none min-h-[100px]"
+                                    className="w-full bg-muted/20 border border-border/50 p-2 text-sm font-mono focus:border-primary/50 focus:outline-none min-h-[100px]"
                                 />
                             ) : (
                                 <div className="flex gap-2">
                                     <input 
                                         value={item[field.key] || ''} 
                                         onChange={e => handleUpdateItem(editingItemIndex, field.key, e.target.value)}
-                                        className="w-full bg-muted/20 border border-border/50 p-2 text-sm rounded font-mono focus:border-primary/50 focus:outline-none"
+                                        className="w-full bg-muted/20 border border-border/50 p-2 text-sm font-mono focus:border-primary/50 focus:outline-none"
                                     />
                                     {/* Fix: 检查是否有值且不是 icon 类名 */}
                                     {field.type === 'image' && item[field.key] && !item[field.key].startsWith('icon-') && (
-                                        <div className="size-9 shrink-0 border border-border rounded overflow-hidden">
+                                        <div className="size-9 shrink-0 border border-border overflow-hidden">
                                             <img src={item[field.key]} className="size-full object-cover" alt="preview" onError={(e) => e.currentTarget.style.display = 'none'} />
                                         </div>
                                     )}
@@ -597,7 +597,7 @@ ${body}`;
         <div className="flex-1 overflow-y-auto p-4 custom-scrollbar bg-muted/5">
             <div className="flex justify-between items-center mb-4">
                 <span className="text-xs font-mono text-muted-foreground">{parsedJson.length} ITEMS</span>
-                <button onClick={handleAddItem} className="flex items-center gap-1 bg-primary/10 text-primary px-3 py-1.5 rounded text-xs font-mono hover:bg-primary/20">
+                <button onClick={handleAddItem} className="flex items-center gap-1 bg-primary/10 text-primary px-3 py-1.5 text-xs font-mono hover:bg-primary/20">
                     <span className="icon-[ph--plus] size-3"></span> ADD NEW
                 </button>
             </div>
@@ -621,7 +621,7 @@ ${body}`;
                     }
 
                     return (
-                        <div key={idx} onClick={() => setEditingItemIndex(idx)} className="group bg-background border border-border/60 p-3 rounded cursor-pointer hover:border-primary/50 hover:shadow-sm transition-all relative">
+                        <div key={idx} onClick={() => setEditingItemIndex(idx)} className="group bg-background border border-border/60 p-3 cursor-pointer hover:border-primary/50 hover:shadow-sm transition-all relative">
                             <div className="flex items-start gap-3">
                                 <div className="size-10 bg-muted/20 rounded-full overflow-hidden shrink-0 border border-border flex items-center justify-center">
                                     {iconEl}
@@ -645,7 +645,7 @@ ${body}`;
   // --- Render: Login (保持原样) ---
   if (!isLoggedIn) {
      return (
-        <div className="min-h-[80vh] flex items-center justify-center bg-background text-foreground font-mono p-4 relative overflow-hidden">
+        <div className="min-h-[80vh] flex items-center justify-center text-foreground font-mono p-4 relative overflow-hidden">
             <Toaster toastOptions={{ 
               style: { 
                 background: '#111', 
@@ -656,8 +656,6 @@ ${body}`;
                 borderRadius: '0'
               } 
             }} />
-            
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none opacity-50"></div>
             
             <div className="w-full max-w-md border border-border bg-background/50 backdrop-blur-md p-8 relative shadow-xl overflow-hidden group">
                 <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-primary"></div>
@@ -735,8 +733,8 @@ ${body}`;
       }} />
       <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
 
-      {/* Header (已还原第一版设计) */}
-      <div className="mb-10 relative">
+      {/* Header */}
+      <div className="mb-2 relative">
         <div className="flex items-center justify-between pb-2 mb-6">
           <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/70">
              // SYSTEM_CONTROLLER // V.3.2
@@ -784,6 +782,12 @@ ${body}`;
         </div>
       </div>
 
+      <div className="flex items-end gap-4 py-8 select-none opacity-60">
+         <span className="font-mono text-4xl font-bold text-muted-foreground/10 leading-none -mb-1">0X</span>
+         <span className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/50 mb-1">Control_Pannel</span>
+         <div className="h-px bg-gradient-to-r from-border to-transparent flex-1 mb-1.5"></div>
+      </div>
+
       {/* Mobile Tabs */}
       <div className="flex lg:hidden mb-4 border border-border/60 bg-muted/5 font-mono text-xs">
           {['files', 'editor', 'queue'].map(v => (
@@ -800,7 +804,7 @@ ${body}`;
           ))}
       </div>
 
-      <div className="flex-1 flex flex-col lg:grid lg:grid-cols-12 gap-6 min-h-0 relative">
+      <div className="flex-1 flex flex-col lg:grid lg:grid-cols-12 gap-6 min-h-[900px] relative">
          
          {/* 1. DATA BANK */}
          <div className={cn("lg:col-span-2 flex-col border border-border/60 bg-muted/5 min-h-[300px] lg:flex", mobileView === 'files' ? 'flex h-[60vh] lg:h-auto' : 'hidden')}>
@@ -846,11 +850,11 @@ ${body}`;
                         </>
                     ) : (
                         <>
-                           <button onClick={() => setEditorMode(editorMode === 'visual' ? 'raw' : 'visual')} className="flex items-center gap-1 p-1.5 hover:bg-muted rounded text-xs font-mono border border-border/50">
+                           <button onClick={() => setEditorMode(editorMode === 'visual' ? 'raw' : 'visual')} className="flex items-center gap-1 p-1.5 hover:bg-muted text-xs font-mono border border-border/50">
                               <span className={cn("icon-[ph--eye] size-4", editorMode === 'visual' && 'text-primary')}></span>
                               <span className="hidden sm:inline">{editorMode === 'visual' ? 'UI' : 'CODE'}</span>
                            </button>
-                           {editorMode === 'raw' && <button onClick={() => triggerUpload('json_raw')} className="p-1.5 hover:bg-muted rounded text-xs"><span className="icon-[ph--image] size-4"></span></button>}
+                           {editorMode === 'raw' && <button onClick={() => triggerUpload('json_raw')} className="p-1.5 hover:bg-muted text-xs"><span className="icon-[ph--image] size-4"></span></button>}
                         </>
                     )}
                     <div className="h-4 w-px bg-border/40 mx-1"></div>
@@ -893,7 +897,7 @@ ${body}`;
                                             type="checkbox" 
                                             checked={meta.recommend} 
                                             onChange={e => setMeta({...meta, recommend: e.target.checked})}
-                                            className="appearance-none size-3 border border-muted-foreground/50 rounded-sm checked:bg-primary checked:border-primary transition-all cursor-pointer"
+                                            className="appearance-none size-3 border border-muted-foreground/50 checked:bg-primary checked:border-primary transition-all cursor-pointer"
                                         />
                                         <span className={cn("text-[10px] font-mono font-bold transition-colors", meta.recommend ? "text-primary" : "text-muted-foreground")}>
                                             RECOMMEND
@@ -949,12 +953,12 @@ ${body}`;
                           <div className="flex gap-1">
                             {/* 🔥 这里是回读按钮 🔥 */}
                             {item.type === 'write' && (
-                                <button onClick={() => loadFromQueue(item)} className="hover:bg-muted/50 p-1 rounded text-primary" title="Edit">
+                                <button onClick={() => loadFromQueue(item)} className="hover:bg-muted/50 p-1 text-primary" title="Edit">
                                   <span className="icon-[ph--pencil-simple] size-3"></span>
                                 </button>
                             )}
                             {item.status === 'pending' && (
-                                <button onClick={(e)=>removeFromQueue(item.id, e)} className="hover:bg-muted/50 p-1 rounded" title="Remove">
+                                <button onClick={(e)=>removeFromQueue(item.id, e)} className="hover:bg-muted/50 p-1" title="Remove">
                                   <span className="icon-[ph--x] size-3"></span>
                                 </button>
                             )}
