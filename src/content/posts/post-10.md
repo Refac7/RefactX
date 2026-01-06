@@ -4,7 +4,7 @@ description: '本文主要描述了 JavaScript 和 Electron 的发展，关系�
 pubDate: 2026-01-02
 author: 'Refact'
 tags: ['笔记']
-recommend: false
+recommend: true
 heroImage: none
 ogImage: none
 heroImageAspectRatio: '16/9'
