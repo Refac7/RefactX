@@ -7,38 +7,59 @@
 
     container.innerHTML = '';
 
-    // 1. 数量
-    const snowflakeCount = 120; 
-    
+    // 数量适中，太多会影响性能，太少没有氛围
+    const snowflakeCount = 100; 
+
     for (let i = 0; i < snowflakeCount; i++) {
       const flake = document.createElement('div');
       flake.className = 'snowflake';
+
+      // --- 随机化参数生成 ---
       
-      // 2. 尺寸
-      const size = Math.random() * 15 + 1 + 'px';
-      const left = Math.random() * 100 + 'vw';
+      // 1. 随机位置 (0vw - 100vw)
+      const xStart = Math.random() * 100;
       
-      // 透明度：因为雪花大且快，透明度要低一点，否则会抢视觉重点
-      const opacity = Math.random() * 0.15 + 0.3; 
+      // 2. 模拟景深：通过随机层级决定大小、模糊度、速度
+      // depth 0 (远) -> 1 (近)
+      const depth = Math.random(); 
       
-      // 3. 速度：明显加快，3秒到8秒之间落地
-      const duration = Math.random() * 5 + 3 + 's'; 
+      // 大小：远处(2px-5px)，近处(6px-12px)
+      const size = (depth * 10) + 2 + 'px'; 
+      
+      // 模糊：远处模糊(2px)，近处清晰(0px)或微量动态模糊
+      const blur = (1 - depth) * 2 + 'px';
+      
+      // 速度：近处快(3s)，远处慢(8s-12s)
+      // 减去 depth * 5 让近的更快
+      const duration = (10 - depth * 5) + Math.random() * 2 + 's'; 
       const delay = Math.random() * -10 + 's';
 
-      Object.assign(flake.style, {
-        width: size,
-        height: size,
-        left: left,
-        opacity: opacity,
-        animationDuration: duration,
-        animationDelay: delay,
-      });
+      // 3. 风力/摇摆：每片雪花左右飘荡的幅度不同
+      // 负数向左飘，正数向右飘，模拟乱流
+      const sway = (Math.random() - 0.5) * 20 + 'vw'; 
+
+      // 4. 透明度：近处略透明(0.8)，远处很淡(0.3)
+      const opacity = depth * 0.5 + 0.3;
+
+      // 使用 CSS 变量将随机值传给 CSS
+      // 这样做比直接修改 style 性能更好，且能利用 CSS 动画的流畅性
+      flake.style.setProperty('--x-start', xStart + 'vw');
+      flake.style.setProperty('--x-end', (xStart + parseFloat(sway)) + 'vw');
+      flake.style.setProperty('--size', size);
+      flake.style.setProperty('--duration', duration);
+      flake.style.setProperty('--delay', delay);
+      flake.style.setProperty('--blur', blur);
+      flake.style.setProperty('--opacity', opacity.toString());
+      
+      // 随机旋转方向
+      flake.style.setProperty('--rotation', Math.random() * 360 + 'deg');
 
       container.appendChild(flake);
     }
   };
 
   document.addEventListener('astro:page-load', createSnow);
+  // 确保初次加载也能运行
   createSnow();
 </script>
 
@@ -50,50 +71,60 @@
     width: 100%;
     height: 100%;
     pointer-events: none;
-    /* 保持在底层，大雪花如果遮住文字会非常干扰阅读，必须置底 */
     z-index: -1; 
     overflow: hidden;
+    /* 硬件加速容器 */
+    transform: translate3d(0, 0, 0);
   }
 
   .snowflake {
     position: absolute;
-    top: -40px; /* 因为雪花变大了，起始位置要更靠上 */
+    top: -20px; /* 起始点在屏幕外 */
+    left: var(--x-start);
+    width: var(--size);
+    height: var(--size);
+    opacity: var(--opacity);
     border-radius: 50%;
-    animation: fall linear infinite;
-    will-change: transform;
+    
+    /* 关键：使用 filter blur 模拟景深 */
+    filter: blur(var(--blur));
+    
+    animation: fall var(--duration) linear infinite;
+    animation-delay: var(--delay);
+    will-change: transform, opacity;
   }
 
   /* 
-     4. 样式优化：大雪花使用径向渐变，模拟蓬松感 
-     中心亮，边缘透明，避免像贴了贴纸一样的生硬感
+     写实颜色调整：
+     不使用纯白，使用带有微弱冷色调的白，模拟雪的反光
   */
   
-  /* 深色模式 */
+  /* 深色模式：高亮核心，边缘柔和 */
   .dark .snowflake {
-    background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 70%);
+    background: radial-gradient(closest-side, rgba(255, 255, 255, 0.9) 20%, rgba(255, 255, 255, 0.2) 100%);
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.3); /* 发光感 */
   }
 
-  /* 浅色模式：使用极淡的蓝灰色渐变 */
+  /* 浅色模式：稍微加深一点蓝灰色，保证在白底上能看见 */
   :not(.dark) .snowflake {
-    background: radial-gradient(circle, rgba(203, 213, 225, 1) 0%, rgba(203, 213, 225, 0) 70%);
+    background: radial-gradient(closest-side, rgba(148, 163, 184, 0.8) 20%, rgba(148, 163, 184, 0.1) 100%);
   }
 
   @keyframes fall {
     0% {
-      transform: translate3d(0, -40px, 0);
+      transform: translate3d(0, 0, 0) rotate(0deg);
+      opacity: 0; /* 入场渐显 */
     }
-    25% {
-      /* 速度快了，左右摇摆幅度稍微加大一点点更有动感 */
-      transform: translate3d(20px, 20vh, 0); 
-    }
-    50% {
-      transform: translate3d(-20px, 50vh, 0);
-    }
-    75% {
-      transform: translate3d(20px, 80vh, 0);
+    10% {
+      opacity: var(--opacity);
     }
     100% {
-      transform: translate3d(0, 110vh, 0);
+      /* 
+         这里结合了 Y轴下落、X轴风吹偏移、以及 Z轴旋转
+         X轴偏移使用了 CSS 变量，使每片雪花落点不同
+      */
+      transform: translate3d(calc(var(--x-end) - var(--x-start)), 105vh, 0) rotate(var(--rotation));
+      opacity: var(--opacity);
     }
   }
 </style>

@@ -297,10 +297,24 @@ export default function AdminDashboard() {
     const schema = SCHEMAS[filename] || [];
     const newItem: any = {};
     schema.forEach(field => newItem[field.key] = '');
-    const newData = [newItem, ...parsedJson];
+
+    // 修改逻辑：判断文件名
+    let newData;
+    let newIndex;
+
+    if (filename === 'friends.json') {
+        // 友链：添加到末尾
+        newData = [...parsedJson, newItem];
+        newIndex = parsedJson.length; // 新项目的索引是原数组长度
+    } else {
+        // 其他文件：保持添加到头部
+        newData = [newItem, ...parsedJson];
+        newIndex = 0; // 新项目的索引是 0
+    }
+
     setParsedJson(newData);
     setJsonContent(JSON.stringify(newData, null, 2));
-    setEditingItemIndex(0);
+    setEditingItemIndex(newIndex); // 自动进入编辑模式，定位到新添加的项
   };
 
   const handleDeleteItem = (index: number) => {
@@ -568,14 +582,14 @@ ${body}`;
                                         }
                                       }
                                     }}
-                                    className="w-full bg-muted/20 border border-border/50 p-2 text-sm font-mono focus:border-primary/50 focus:outline-none min-h-[100px]"
+                                    className="w-full bg-muted/20 border border-border/40 p-2 text-sm font-mono focus:border-primary/50 focus:outline-none min-h-[100px]"
                                 />
                             ) : (
                                 <div className="flex gap-2">
                                     <input 
                                         value={item[field.key] || ''} 
                                         onChange={e => handleUpdateItem(editingItemIndex, field.key, e.target.value)}
-                                        className="w-full bg-muted/20 border border-border/50 p-2 text-sm font-mono focus:border-primary/50 focus:outline-none"
+                                        className="w-full bg-muted/20 border border-border/40 p-2 text-sm font-mono focus:border-primary/50 focus:outline-none"
                                     />
                                     {/* Fix: 检查是否有值且不是 icon 类名 */}
                                     {field.type === 'image' && item[field.key] && !item[field.key].startsWith('icon-') && (
@@ -621,7 +635,7 @@ ${body}`;
                     }
 
                     return (
-                        <div key={idx} onClick={() => setEditingItemIndex(idx)} className="group bg-background border border-border/60 p-3 cursor-pointer hover:border-primary/50 hover:shadow-sm transition-all relative">
+                        <div key={idx} onClick={() => setEditingItemIndex(idx)} className="group bg-background border border-border/40 p-3 cursor-pointer hover:border-primary/50 hover:shadow-sm transition-all relative">
                             <div className="flex items-start gap-3">
                                 <div className="size-10 bg-muted/20 rounded-full overflow-hidden shrink-0 border border-border flex items-center justify-center">
                                     {iconEl}
@@ -751,15 +765,15 @@ ${body}`;
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
           <div className="lg:col-span-7">
             <h1 className="text-6xl sm:text-7xl font-bold tracking-tighter text-foreground leading-[0.9] -ml-1">
-              Control<span className="text-primary/80">.</span>
+              Console<span className="text-primary/80">.</span>
             </h1>
           </div>
           <div className="lg:col-span-5 flex flex-col justify-end pb-2">
-            <div className="border-l-2 border-primary/40 pl-6 flex flex-col gap-6">
+            <div className="border-l border-primary/40 pl-6 flex flex-col gap-6">
                <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
                 Centralized management for Markdown posts and JSON data configurations.
                </p>
-               <div className="flex items-center gap-4 pt-4 border-t border-dashed border-border/60">
+               <div className="flex items-center gap-4 pt-4 border-t border-dashed border-border/40">
                   <div className="flex flex-col">
                       <span className="text-[10px] uppercase text-muted-foreground/60 font-mono tracking-wider">Total Modules</span>
                       <span className="text-3xl font-mono font-bold text-foreground tracking-tight">{remoteFiles.length}</span>
@@ -788,141 +802,183 @@ ${body}`;
          <div className="h-px bg-gradient-to-r from-border to-transparent flex-1 mb-1.5"></div>
       </div>
 
-      {/* Mobile Tabs */}
-      <div className="flex lg:hidden mb-4 border border-border/60 bg-muted/5 font-mono text-xs">
+{/* Mobile Tabs - Industrial Grid Layout */}
+      <div className="grid grid-cols-3 gap-px bg-border border border-border lg:hidden mb-6 shadow-sm">
           {['files', 'editor', 'queue'].map(v => (
              <button 
                key={v} 
                onClick={() => setMobileView(v as MobileView)} 
                className={cn(
-                 "flex-1 py-2 border-r border-border/40 text-center uppercase", 
-                 mobileView === v ? 'bg-primary/10 text-primary font-bold' : 'text-muted-foreground'
+                 "relative py-3 text-[10px] tracking-widest uppercase font-mono transition-all duration-200", 
+                 mobileView === v 
+                    ? 'bg-background text-primary font-bold' 
+                    : 'bg-muted/20 text-muted-foreground hover:bg-background/50 hover:text-foreground'
                )}
              >
+               {mobileView === v && <div className="absolute top-0 left-0 right-0 h-0.5 bg-primary"></div>}
                {v === 'files' ? 'DATA' : v === 'queue' ? `BUFFER [${queue.length}]` : v}
              </button>
           ))}
       </div>
 
-      <div className="flex-1 flex flex-col lg:grid lg:grid-cols-12 gap-6 min-h-[900px] relative">
+      <div className="flex-1 flex flex-col gap-2 lg:grid lg:grid-cols-12 min-h-[900px] relative">
          
          {/* 1. DATA BANK */}
-         <div className={cn("lg:col-span-2 flex-col border border-border/60 bg-muted/5 min-h-[300px] lg:flex", mobileView === 'files' ? 'flex h-[60vh] lg:h-auto' : 'hidden')}>
-            <div className="p-3 border-b border-border/40 flex justify-between items-center bg-muted/10">
-                <span className="text-xs font-mono font-bold">DATA_BANK</span>
-                <div className="flex gap-2">
-                    <button onClick={handleNewPost} className="text-muted-foreground hover:text-primary"><span className="icon-[ph--plus] size-4"></span></button>
-                    <button onClick={() => fetchRemoteFiles()} className="text-muted-foreground hover:text-primary"><span className="icon-[ph--arrows-clockwise] size-4"></span></button>
+         <div className={cn(
+             "lg:col-span-2 flex-col border border-border bg-background/50 lg:flex", 
+             mobileView === 'files' ? 'flex h-[65vh] lg:h-auto' : 'hidden'
+         )}>
+            {/* Panel Header */}
+            <div className="p-3 border-b border-border flex justify-between items-center bg-muted/10 backdrop-blur-sm">
+                <div className="flex items-center gap-2">
+                    <div className="w-1 h-3 bg-primary/50"></div>
+                    <span className="text-xs font-mono font-bold tracking-wider">DATA_BANK</span>
+                </div>
+                <div className="flex gap-1">
+                    <button onClick={handleNewPost} className="size-6 flex items-center justify-center border border-transparent hover:border-primary/30 hover:bg-primary/10 text-muted-foreground hover:text-primary transition-all"><span className="icon-[ph--plus] size-4"></span></button>
+                    <button onClick={() => fetchRemoteFiles()} className="size-6 flex items-center justify-center border border-transparent hover:border-primary/30 hover:bg-primary/10 text-muted-foreground hover:text-primary transition-all"><span className="icon-[ph--arrows-clockwise] size-4"></span></button>
                 </div>
             </div>
-            <div className="px-2 py-2 text-[10px] font-mono font-bold text-muted-foreground/60">CONFIG_FILES</div>
-            <div className="px-2 space-y-1">
-                {DATA_FILES.map(f => (
-                    <div key={f.name} onClick={() => loadFile(f.name, true, f.path)} className={cn("flex items-center text-xs p-2 border transition-all cursor-pointer", filename === f.name ? "bg-primary/10 border-primary/30 text-primary" : "border-transparent hover:bg-muted/10")}>
-                        <span className="icon-[ph--brackets-curly] size-3 mr-2 opacity-70"></span>
-                        <span className="font-mono truncate">{f.label}</span>
-                    </div>
-                ))}
-            </div>
-            <div className="px-2 py-2 mt-2 text-[10px] font-mono font-bold text-muted-foreground/60 border-t border-border/30">POSTS</div>
-            <div className="flex-1 overflow-y-auto px-2 space-y-1 custom-scrollbar">
-                {isLoadingFiles ? <div className="text-xs text-center pt-2">Loading...</div> : remoteFiles.map(f => (
-                    <div key={f.sha} className={cn("group flex justify-between items-center text-xs p-2 border transition-all cursor-pointer", filename === f.name ? "bg-primary/5 border-primary/20" : "border-transparent hover:bg-muted/10")}>
-                        <span onClick={() => loadFile(f.name)} className="font-mono truncate flex-1">{f.name.replace('.md', '')}</span>
-                        <button onClick={(e) => { e.stopPropagation(); stageForDelete(f); }} className="text-muted-foreground hover:text-red-500 opacity-0 group-hover:opacity-100"><span className="icon-[ph--trash] size-3"></span></button>
-                    </div>
-                ))}
+
+            <div className="flex-1 overflow-y-auto custom-scrollbar p-1">
+                {/* Config Section */}
+                <div className="px-2 py-2 mt-2 flex items-center gap-2">
+                    <span className="w-1 h-1 bg-muted-foreground/40"></span>
+                    <span className="text-[9px] font-mono font-bold text-muted-foreground/60 tracking-widest uppercase">SYSTEM_CONFIG</span>
+                    <div className="h-px bg-border/40 flex-1"></div>
+                </div>
+                <div className="space-y-1 mb-4">
+                    {DATA_FILES.map(f => (
+                        <div key={f.name} onClick={() => loadFile(f.name, true, f.path)} className={cn("group flex items-center text-xs p-2 border-l transition-all cursor-pointer select-none", filename === f.name ? "bg-primary/5 border-primary text-primary" : "border-transparent text-muted-foreground hover:bg-muted/10 hover:text-foreground hover:border-muted-foreground/30")}>
+                            <span className={cn("icon-[ph--brackets-curly] size-3 mr-2 transition-opacity", filename === f.name ? "opacity-100" : "opacity-50 group-hover:opacity-80")}></span>
+                            <span className="font-mono truncate">{f.label}</span>
+                            {filename === f.name && <span className="ml-auto text-[9px] font-bold animate-pulse">●</span>}
+                        </div>
+                    ))}
+                </div>
+
+                {/* Posts Section */}
+                <div className="px-2 py-2 mt-2 flex items-center gap-2">
+                    <span className="w-1 h-1 bg-muted-foreground/40"></span>
+                    <span className="text-[9px] font-mono font-bold text-muted-foreground/60 tracking-widest uppercase">POST_ARCHIVE</span>
+                    <div className="h-px bg-border/40 flex-1"></div>
+                </div>
+                <div className="space-y-px">
+                    {isLoadingFiles ? (
+                        <div className="p-4 text-center">
+                            <span className="icon-[ph--spinner] animate-spin text-primary size-5 opacity-50"></span>
+                        </div>
+                    ) : remoteFiles.map(f => (
+                        <div key={f.sha} className={cn("group flex justify-between items-center text-xs p-2 border-l transition-all cursor-pointer", filename === f.name ? "bg-primary/5 border-primary font-medium text-foreground" : "border-transparent text-muted-foreground hover:bg-muted/10 hover:border-muted-foreground/30 hover:text-foreground")}>
+                            <span onClick={() => loadFile(f.name)} className="font-mono truncate flex-1">{f.name.replace('.md', '')}</span>
+                            <button onClick={(e) => { e.stopPropagation(); stageForDelete(f); }} className="text-muted-foreground hover:text-red-500 hover:bg-red-500/10 size-5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all"><span className="icon-[ph--trash] size-3"></span></button>
+                        </div>
+                    ))}
+                </div>
             </div>
          </div>
 
          {/* 2. WORKSTATION */}
-         <div className={cn("lg:col-span-7 flex-col border border-border/60 shadow-sm bg-background min-h-[500px] lg:flex", mobileView === 'editor' ? 'flex h-[75vh] lg:h-auto' : 'hidden')}>
-            <div className="flex gap-2 justify-between items-center p-3 border-b border-border/40 bg-muted/5 overflow-x-auto no-scrollbar whitespace-nowrap">
-                <div className="flex items-center gap-2 flex-1 min-w-[200px]">
-                    <span className={cn("size-5 text-muted-foreground shrink-0", currentMode === 'data' ? "icon-[ph--brackets-curly]" : "icon-[ph--file-text]")}></span>
-                    <input value={filename} onChange={e => setFilename(e.target.value)} disabled={currentMode === 'data'} placeholder="Filename..." className="bg-transparent text-sm font-mono w-full focus:outline-none min-w-[120px]" />
+         <div className={cn(
+             "lg:col-span-7 flex-col border border-border bg-background lg:flex", 
+             mobileView === 'editor' ? 'flex h-[80vh] lg:h-auto' : 'hidden'
+         )}>
+            {/* Toolbar */}
+            <div className="flex gap-2 justify-between items-center p-2 border-b border-border bg-muted/5">
+                <div className="flex items-center gap-0 flex-1 min-w-[200px] border border-border/40 bg-background h-8 px-2 relative">
+                    <div className="absolute -left-px -top-px -bottom-px w-0.5 bg-primary/60"></div>
+                    <span className={cn("size-4 text-muted-foreground shrink-0 mr-2", currentMode === 'data' ? "icon-[ph--brackets-curly]" : "icon-[ph--file-text]")}></span>
+                    <input value={filename} onChange={e => setFilename(e.target.value)} disabled={currentMode === 'data'} placeholder="FILENAME.MD" className="bg-transparent text-xs font-mono w-full focus:outline-none uppercase tracking-wide placeholder:text-muted-foreground/40" />
                 </div>
-                <div className="flex items-center gap-2 shrink-0">
+
+                <div className="flex items-center gap-1 shrink-0">
                     {currentMode === 'post' ? (
                         <>
-                            <button onClick={() => triggerUpload('body')} className="p-1.5 hover:bg-muted rounded" title="Img"><span className="icon-[ph--image] size-4"></span></button>
-                            <button onClick={() => setShowMetaConfig(!showMetaConfig)} className={cn("p-1.5 hover:bg-muted rounded", showMetaConfig && "text-primary")}><span className="icon-[ph--sliders-horizontal] size-4"></span></button>
+                            <button onClick={() => triggerUpload('body')} className="size-8 flex items-center justify-center hover:bg-primary/10 hover:text-primary border border-transparent hover:border-primary/20 transition-all" title="Img"><span className="icon-[ph--image] size-4"></span></button>
+                            <button onClick={() => setShowMetaConfig(!showMetaConfig)} className={cn("size-8 flex items-center justify-center hover:bg-primary/10 hover:text-primary border border-transparent hover:border-primary/20 transition-all", showMetaConfig && "text-primary border-primary/20 bg-primary/5")}><span className="icon-[ph--sliders-horizontal] size-4"></span></button>
                         </>
                     ) : (
                         <>
-                           <button onClick={() => setEditorMode(editorMode === 'visual' ? 'raw' : 'visual')} className="flex items-center gap-1 p-1.5 hover:bg-muted text-xs font-mono border border-border/50">
-                              <span className={cn("icon-[ph--eye] size-4", editorMode === 'visual' && 'text-primary')}></span>
-                              <span className="hidden sm:inline">{editorMode === 'visual' ? 'UI' : 'CODE'}</span>
+                           <button onClick={() => setEditorMode(editorMode === 'visual' ? 'raw' : 'visual')} className="flex items-center gap-2 h-8 px-3 hover:bg-primary/10 text-[10px] font-mono border border-border/40 hover:border-primary/40 transition-all uppercase tracking-wider">
+                              <span className={cn("icon-[ph--eye] size-3", editorMode === 'visual' && 'text-primary')}></span>
+                              <span className="hidden sm:inline">{editorMode === 'visual' ? 'UI_VIEW' : 'CODE_VIEW'}</span>
                            </button>
-                           {editorMode === 'raw' && <button onClick={() => triggerUpload('json_raw')} className="p-1.5 hover:bg-muted text-xs"><span className="icon-[ph--image] size-4"></span></button>}
+                           {editorMode === 'raw' && <button onClick={() => triggerUpload('json_raw')} className="size-8 flex items-center justify-center hover:bg-muted text-xs border border-transparent"><span className="icon-[ph--image] size-4"></span></button>}
                         </>
                     )}
-                    <div className="h-4 w-px bg-border/40 mx-1"></div>
-                    <button onClick={stageForWrite} className="flex items-center gap-1.5 bg-primary text-primary-foreground px-3 py-1.5 text-xs font-mono font-bold hover:opacity-90">
+                    <div className="h-4 w-px bg-border/40 mx-2"></div>
+                    <button onClick={stageForWrite} className="flex items-center gap-2 bg-primary text-primary-foreground h-8 px-4 text-[10px] font-mono font-bold hover:brightness-110 tracking-widest uppercase transition-all relative overflow-hidden group">
+                        <span className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-300"></span>
                         <span className="icon-[ph--plus] size-3"></span>
-                        <span className="hidden sm:inline">BUFFER</span><span className="sm:hidden">ADD</span>
+                        <span className="hidden sm:inline">STAGING</span><span className="sm:hidden">ADD</span>
                     </button>
                 </div>
             </div>
 
-            <div className="flex-1 relative w-full h-full min-h-[300px] flex flex-col overflow-hidden">
-                {isFetchingContent && <div className="absolute inset-0 bg-background/50 z-10 flex items-center justify-center"><span className="icon-[ph--spinner] animate-spin size-8"></span></div>}
+            {/* Editor Area */}
+            <div className="flex-1 relative w-full h-full min-h-[300px] flex flex-col overflow-hidden bg-background">
+                {isFetchingContent && (
+                    <div className="absolute inset-0 bg-background/80 z-20 flex flex-col items-center justify-center gap-3 backdrop-blur-[2px]">
+                        <span className="icon-[ph--spinner] animate-spin size-6 text-primary"></span>
+                        <span className="text-[10px] font-mono uppercase tracking-[0.2em] animate-pulse">Retrieving Data...</span>
+                    </div>
+                )}
                 {currentMode === 'post' && (
                     <>
                         {showMetaConfig && (
-                            <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 p-3 border-b border-dashed border-border/40 bg-muted/5 text-xs shrink-0 transition-all">
-                                <div className="sm:col-span-4">
-                                  <label className="text-[10px] text-muted-foreground/60 block mb-1">TITLE</label>
-                                  <input value={meta.title} onChange={e=>setMeta({...meta, title: e.target.value})} className="w-full h-9 bg-background border border-border/60 focus:border-primary/60 px-2 font-medium focus:outline-none transition-colors" placeholder="Post Title" />
+                            <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 p-4 border-b border-border/40 bg-muted/5 text-xs shrink-0 shadow-inner">
+                                <div className="sm:col-span-4 space-y-1">
+                                  <label className="text-[9px] font-mono text-muted-foreground/70 uppercase tracking-widest">Post Title</label>
+                                  <input value={meta.title} onChange={e=>setMeta({...meta, title: e.target.value})} className="w-full h-9 bg-background border border-border focus:border-primary px-3 font-mono text-sm focus:outline-none transition-colors placeholder:text-muted-foreground/20" placeholder="ENTER TITLE..." />
                                 </div>
                                 
-                                <div className="sm:col-span-4">
-                                  <label className="text-[10px] text-muted-foreground/60 block mb-1">DESCRIPTION</label>
-                                  <input value={meta.description} onChange={e=>setMeta({...meta, description: e.target.value})} className="w-full h-9 bg-background border border-border/60 focus:border-primary/60 px-2 focus:outline-none transition-colors" placeholder="Short description..." />
+                                <div className="sm:col-span-4 space-y-1">
+                                  <label className="text-[9px] font-mono text-muted-foreground/70 uppercase tracking-widest">Description</label>
+                                  <input value={meta.description} onChange={e=>setMeta({...meta, description: e.target.value})} className="w-full h-9 bg-background border border-border focus:border-primary px-3 font-mono text-xs focus:outline-none transition-colors" placeholder="Brief summary..." />
                                 </div>
                                 
-                                <div className="sm:col-span-1">
-                                  <label className="text-[10px] text-muted-foreground/60 block mb-1">DATE</label>
-                                  <input type="date" value={meta.pubDate} onChange={e=>setMeta({...meta, pubDate: e.target.value})} className="w-full h-9 bg-background border border-border/60 focus:border-primary/60 px-2 focus:outline-none uppercase" />
+                                <div className="sm:col-span-1 space-y-1">
+                                  <label className="text-[9px] font-mono text-muted-foreground/70 uppercase tracking-widest">Pub Date</label>
+                                  <input type="date" value={meta.pubDate} onChange={e=>setMeta({...meta, pubDate: e.target.value})} className="w-full h-9 bg-background border border-border focus:border-primary px-2 font-mono text-xs focus:outline-none uppercase" />
                                 </div>
                                 
-                                <div className="sm:col-span-2">
-                                  <label className="text-[10px] text-muted-foreground/60 block mb-1">TAGS</label>
-                                  <input value={meta.tags} onChange={e=>setMeta({...meta, tags: e.target.value})} className="w-full h-9 bg-background border border-border/60 focus:border-primary/60 px-2 text-primary focus:outline-none" placeholder="React, Tech..." />
+                                <div className="sm:col-span-2 space-y-1">
+                                  <label className="text-[9px] font-mono text-muted-foreground/70 uppercase tracking-widest">Tags (Comma)</label>
+                                  <input value={meta.tags} onChange={e=>setMeta({...meta, tags: e.target.value})} className="w-full h-9 bg-background border border-border focus:border-primary px-3 font-mono text-xs text-primary focus:outline-none" placeholder="REACT, TECH..." />
                                 </div>
 
-                                <div className="sm:col-span-1 flex flex-col justify-end">
-                                    <label className="flex items-center gap-2 cursor-pointer group h-9 border border-border/60 bg-background px-2 w-full hover:border-primary/50 transition-colors select-none">
+                                <div className="sm:col-span-1 flex items-end">
+                                    <label className="flex items-center justify-center gap-2 cursor-pointer group h-9 border border-border bg-background hover:border-primary/50 w-full select-none transition-all">
                                         <input 
                                             type="checkbox" 
                                             checked={meta.recommend} 
                                             onChange={e => setMeta({...meta, recommend: e.target.checked})}
-                                            className="appearance-none size-3 border border-muted-foreground/50 checked:bg-primary checked:border-primary transition-all cursor-pointer"
+                                            className="appearance-none size-3 border border-muted-foreground/50 checked:bg-primary checked:border-primary rounded-none"
                                         />
-                                        <span className={cn("text-[10px] font-mono font-bold transition-colors", meta.recommend ? "text-primary" : "text-muted-foreground")}>
-                                            RECOMMEND
+                                        <span className={cn("text-[10px] font-mono font-bold tracking-wider", meta.recommend ? "text-primary" : "text-muted-foreground")}>
+                                            FEATURED
                                         </span>
                                     </label>
                                 </div>
                                 
-                                <div className="sm:col-span-4">
-                                  <label className="text-[10px] text-muted-foreground/60 flex justify-between mb-1">
-                                    <span>HERO IMAGE</span>
-                                    <span onClick={()=>triggerUpload('hero')} className="cursor-pointer hover:text-primary transition-colors">[UPLOAD]</span>
+                                <div className="sm:col-span-4 space-y-1">
+                                  <label className="text-[9px] font-mono text-muted-foreground/70 flex justify-between uppercase tracking-widest">
+                                    <span>Hero Image URL</span>
+                                    <span onClick={()=>triggerUpload('hero')} className="cursor-pointer hover:text-primary transition-colors underline decoration-dotted">[UPLOAD_FILE]</span>
                                   </label>
-                                  <input value={meta.heroImage} onChange={e=>setMeta({...meta, heroImage: e.target.value})} className="w-full h-9 bg-background border border-border/60 focus:border-primary/60 px-2 text-muted-foreground focus:outline-none" placeholder="https://..." />
+                                  <input value={meta.heroImage} onChange={e=>setMeta({...meta, heroImage: e.target.value})} className="w-full h-9 bg-background border border-border focus:border-primary px-3 font-mono text-xs text-muted-foreground focus:outline-none" placeholder="HTTPS://..." />
                                 </div>
                             </div>
                         )}
-                        <textarea ref={textareaRef} value={body} onChange={e => setBody(e.target.value)} className="flex-1 p-4 bg-transparent text-sm font-mono resize-none focus:outline-none custom-scrollbar" placeholder="// Markdown Body..." spellCheck={false}/>
+                        <textarea ref={textareaRef} value={body} onChange={e => setBody(e.target.value)} className="flex-1 p-6 bg-transparent text-sm font-mono leading-relaxed resize-none focus:outline-none custom-scrollbar placeholder:text-muted-foreground/20" placeholder="// INITIATE MARKDOWN SEQUENCE..." spellCheck={false}/>
                     </>
                 )}
                 {currentMode === 'data' && (
                     <>
                         {editorMode === 'visual' ? renderVisualEditor() : (
-                            <div className="flex-1 flex flex-col relative">
-                                <div className="absolute top-2 right-4 text-[10px] font-mono text-muted-foreground/40 pointer-events-none">RAW JSON MODE</div>
-                                <textarea ref={jsonTextareaRef} value={jsonContent} onChange={e => setJsonContent(e.target.value)} className="flex-1 p-4 bg-[#1e1e1e] text-[#d4d4d4] text-xs font-mono leading-relaxed resize-none focus:outline-none custom-scrollbar" spellCheck={false}/>
+                            <div className="flex-1 flex flex-col relative bg-[#1e1e1e]">
+                                <div className="absolute top-0 right-0 bg-primary/20 text-primary text-[9px] font-mono font-bold px-2 py-1 pointer-events-none z-10">RAW_JSON_EDIT</div>
+                                <textarea ref={jsonTextareaRef} value={jsonContent} onChange={e => setJsonContent(e.target.value)} className="flex-1 p-4 bg-transparent text-[#d4d4d4] text-xs font-mono leading-relaxed resize-none focus:outline-none custom-scrollbar" spellCheck={false}/>
                             </div>
                         )}
                     </>
@@ -931,74 +987,90 @@ ${body}`;
          </div>
 
          {/* 3. BUFFER */}
-         <div className={cn("lg:col-span-3 flex-col border border-border/60 bg-muted/5 min-h-[300px] lg:flex", mobileView === 'queue' ? 'flex h-[60vh] lg:h-auto' : 'hidden')}>
-            <div className="p-3 border-b border-border/40 flex justify-between items-center bg-muted/10">
-              <span className="text-xs font-mono font-bold">BUFFER</span>
-              <span className="text-[10px] font-mono text-muted-foreground">{queue.length} OPS</span>
+         <div className={cn(
+             "lg:col-span-3 flex-col border border-border bg-background lg:flex", 
+             mobileView === 'queue' ? 'flex h-[60vh] lg:h-auto' : 'hidden'
+         )}>
+            <div className="p-3 border-b border-border flex justify-between items-center bg-muted/10 backdrop-blur-sm">
+              <div className="flex items-center gap-2">
+                 <div className="w-1 h-3 bg-yellow-500/50"></div>
+                 <span className="text-xs font-mono font-bold tracking-wider">BUFFER_ZONE</span>
+              </div>
+              <span className="text-[10px] font-mono text-muted-foreground bg-border/50 px-1.5 py-0.5">{queue.length} OPS</span>
             </div>
-            <div className="flex-1 overflow-y-auto p-2 space-y-2 custom-scrollbar">
+            
+            <div className="flex-1 overflow-y-auto p-3 space-y-3 custom-scrollbar bg-muted/5">
                 {queue.length === 0 ? (
-                  <div className="text-center p-8 text-muted-foreground/50 text-xs">
-                    <span className="icon-[ph--queue] size-8 block mx-auto mb-2 opacity-30"></span>
-                    Buffer is empty
+                  <div className="flex flex-col items-center justify-center h-full text-muted-foreground/30">
+                    <div className="border border-current p-3 mb-2 rounded-none">
+                        <span className="icon-[ph--queue] size-6 block"></span>
+                    </div>
+                    <span className="text-[10px] font-mono uppercase tracking-widest">No pending tasks</span>
                   </div>
                 ) : (
                   queue.map(item => (
-                    <div key={item.id} className="relative bg-background border border-border/50 p-3 flex flex-col gap-1 group">
-                        <div className={cn("absolute left-0 top-0 bottom-0 w-1", item.status === 'done' ? 'bg-green-500' : item.status === 'processing' ? 'bg-yellow-500 animate-pulse' : item.type === 'delete' ? 'bg-red-500' : 'bg-primary')}></div>
-                        <div className="flex justify-between">
-                          <span className={cn("text-[10px] font-bold uppercase", item.type === 'delete' ? 'text-red-500' : 'text-primary')}>
-                            {item.type} {item.isDataFile ? 'DATA' : 'POST'}
+                    <div key={item.id} className="relative bg-background border border-border p-3 flex flex-col gap-1.5 group shadow-sm hover:border-primary/40 transition-colors">
+                        {/* Status Indicator Bar */}
+                        <div className={cn("absolute left-0 top-0 bottom-0 w-1 transition-all", item.status === 'done' ? 'bg-emerald-500' : item.status === 'processing' ? 'bg-yellow-500 animate-pulse' : item.type === 'delete' ? 'bg-red-500' : 'bg-primary')}></div>
+                        
+                        <div className="flex justify-between items-start pl-2">
+                          <span className={cn("text-[9px] font-bold uppercase tracking-wider border px-1", item.type === 'delete' ? 'border-red-500/30 text-red-500 bg-red-500/5' : 'border-primary/30 text-primary bg-primary/5')}>
+                            {item.type === 'delete' ? 'DEL' : 'WRI'} : {item.isDataFile ? 'DATA' : 'POST'}
                           </span>
-                          <div className="flex gap-1">
-                            {/* 🔥 这里是回读按钮 🔥 */}
+                          <div className="flex gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                             {item.type === 'write' && (
-                                <button onClick={() => loadFromQueue(item)} className="hover:bg-muted/50 p-1 text-primary" title="Edit">
+                                <button onClick={() => loadFromQueue(item)} className="hover:bg-primary/10 border border-transparent hover:border-primary/30 p-1 text-primary transition-all" title="Recall">
                                   <span className="icon-[ph--pencil-simple] size-3"></span>
                                 </button>
                             )}
                             {item.status === 'pending' && (
-                                <button onClick={(e)=>removeFromQueue(item.id, e)} className="hover:bg-muted/50 p-1" title="Remove">
+                                <button onClick={(e)=>removeFromQueue(item.id, e)} className="hover:bg-red-500/10 border border-transparent hover:border-red-500/30 p-1 text-muted-foreground hover:text-red-500 transition-all" title="Discard">
                                   <span className="icon-[ph--x] size-3"></span>
                                 </button>
                             )}
                           </div>
                         </div>
-                        <div className="text-xs font-mono truncate" title={item.filename}>{item.filename.split('/').pop()}</div>
-                        {item.type === 'write' && (
-                          <div className="text-[10px] text-muted-foreground mt-1">
-                            {item.content && item.content.length > 100 ? 
-                              `${item.content.substring(0, 100)}...` : 
-                              item.content || 'Empty content'}
-                          </div>
-                        )}
+                        
+                        <div className="pl-2">
+                             <div className="text-xs font-mono font-bold truncate text-foreground" title={item.filename}>{item.filename.split('/').pop()}</div>
+                             {item.type === 'write' && (
+                                <div className="text-[10px] text-muted-foreground mt-1 border-l border-border/40 pl-2 line-clamp-2 font-mono opacity-70">
+                                    {item.content || '...'}
+                                </div>
+                             )}
+                        </div>
                     </div>
                   ))
                 )}
             </div>
-            <div className="p-3 border-t">
+            
+            <div className="p-3 border-t border-border bg-background">
               <button 
                 onClick={processQueue} 
                 disabled={isProcessingQueue || queue.length === 0} 
                 className={cn(
-                  "w-full py-2 text-xs font-bold font-mono hover:opacity-90 transition-all",
+                  "w-full py-3 text-xs font-bold font-mono uppercase tracking-[0.15em] transition-all relative overflow-hidden group border",
                   isProcessingQueue || queue.length === 0 
-                    ? "bg-gray-500/20 text-gray-500 cursor-not-allowed" 
-                    : "bg-primary text-primary-foreground hover:bg-primary/90"
+                    ? "bg-muted text-muted-foreground border-border cursor-not-allowed opacity-50" 
+                    : "bg-primary text-primary-foreground border-primary hover:bg-primary/90 shadow-[0_0_10px_rgba(var(--primary),0.3)]"
                 )}
               >
+                 {/* Scanline effect */}
+                 {!isProcessingQueue && queue.length > 0 && <div className="absolute inset-0 bg-white/10 translate-y-[-100%] group-hover:translate-y-[100%] transition-transform duration-700 ease-in-out"></div>}
+                 
                 {isProcessingQueue ? (
                   <span className="flex items-center justify-center gap-2">
                     <span className="icon-[ph--spinner] animate-spin size-3"></span>
-                    PROCESSING...
+                    PROCESSING_BATCH...
                   </span>
                 ) : (
-                  `EXECUTE (${queue.length})`
+                  `EXECUTE_SEQUENCE [${queue.length}]`
                 )}
               </button>
               {queue.length > 0 && (
-                <div className="text-[10px] text-muted-foreground/60 text-center mt-2">
-                  All files in one commit • Only triggers 1 build
+                <div className="flex justify-between items-center mt-2 text-[9px] font-mono text-muted-foreground/50 uppercase">
+                  <span>Single Commit Mode</span>
+                  <span>{queue.length > 0 ? 'READY' : 'IDLE'}</span>
                 </div>
               )}
             </div>

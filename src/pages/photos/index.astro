@@ -45,13 +45,13 @@ const totalCollections = PhotosList.length.toString().padStart(2, '0');
         </div>
 
         <div class="lg:col-span-5 flex flex-col gap-6">
-          <div class="border-l-2 border-primary/40 pl-5">
+          <div class="border-l border-primary/40 pl-5">
              <p class="text-base sm:text-lg text-muted-foreground leading-relaxed">
               {introduce}
              </p>
           </div>
 
-          <div class="grid grid-cols-2 gap-px bg-border/50 border border-border/50">
+          <div class="grid grid-cols-2 gap-px bg-border/50 border border-border">
             <div class="bg-background/50 p-3 flex flex-col gap-1">
               <span class="text-[9px] uppercase tracking-widest text-muted-foreground/70 font-mono">Total_Frames</span>
               <span class="text-2xl font-mono font-bold text-foreground">{totalCollections}</span>
@@ -85,7 +85,7 @@ const totalCollections = PhotosList.length.toString().padStart(2, '0');
              <PhotoTimeline photoData={PhotosList} />
           </div>
         ) : (
-          <div class="flex flex-col items-center justify-center py-20 border border-dashed border-border/60 bg-muted/5">
+          <div class="flex flex-col items-center justify-center py-20 border border-dashed border-border/40 bg-muted/5">
              <span class="icon-[ph--camera-slash] text-4xl text-muted-foreground/30 mb-4"></span>
              <p class="font-mono text-sm text-muted-foreground/60 uppercase tracking-widest">Signal Lost // No Data</p>
           </div>

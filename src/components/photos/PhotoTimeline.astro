@@ -14,7 +14,7 @@ const { photoData, class: className } = Astro.props
 
 <div class={cn("relative space-y-2", className)}>
   <!-- 全局左侧装饰轨道背景 -->
-  <div class="absolute left-[27px] top-0 bottom-0 w-px border-l border-dashed border-border/60 z-0 hidden sm:block"></div>
+  <div class="absolute left-[27px] top-0 bottom-0 w-px border-l border-dashed border-border/40 z-0 hidden sm:block"></div>
 
   {
     photoData.map((timeline, index) => {
@@ -31,14 +31,14 @@ const { photoData, class: className } = Astro.props
             {/* 1. 左侧：工业风时间轴节点 */}
             <div class="relative z-10 flex flex-col items-center">
               <!-- 图标容器：方正、边框 -->
-              <div class="size-14 flex justify-center items-center bg-background border border-border group-hover:border-primary/60 group-hover:bg-muted/10 transition-colors duration-300 relative">
+              <div class="size-14 flex justify-center items-center bg-background border border-border/40 group-hover:border-primary/60 group-hover:bg-muted/10 transition-colors duration-300 relative">
                  <!-- 只有被激活或Hover时才显示的微小角标 -->
                  <div class="absolute top-0 right-0 size-1 bg-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
                  <TimelineIcon icon={timeline.icon} index={index} />
               </div>
               
               <!-- 移动端的连接线 (仅在两项之间显示) -->
-              <div class="grow w-px border-r border-dashed border-border/60 sm:hidden my-2"></div>
+              <div class="grow w-px border-r border-dashed border-border/40 sm:hidden my-2"></div>
               
               <!-- 序号标识 (桌面端显示在图标下) -->
               <div class="hidden sm:block mt-2 font-mono text-[10px] text-muted-foreground/40 writing-vertical-lr tracking-widest">
@@ -51,7 +51,7 @@ const { photoData, class: className } = Astro.props
               <!-- 装饰：连接线横杠 -->
               <div class="absolute top-7 -left-6 w-6 h-px bg-border/60 hidden sm:block"></div>
 
-              <div class="border border-border/60 bg-background p-1 group-hover:border-border transition-colors duration-300">
+              <div class="border border-border/40 bg-background p-1 group-hover:border-border transition-colors duration-300">
                 <div class="relative p-5 sm:p-6 bg-muted/5 group-hover:bg-muted/10 transition-colors duration-300">
                   
                   <!-- 角落L型装饰 -->

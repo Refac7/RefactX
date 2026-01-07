@@ -51,14 +51,14 @@ const lastUpdate = new Date().toLocaleDateString('en-US', { month: 'short', day:
 
         <!-- 右侧：简介与数据面板 -->
         <div class="lg:col-span-5 flex flex-col gap-6">
-          <div class="border-l-2 border-primary/40 pl-5">
+          <div class="border-l border-primary/40 pl-5">
              <p class="text-base sm:text-lg text-muted-foreground leading-relaxed">
               {introduce}
              </p>
           </div>
 
           <!-- 数据网格：索引统计 -->
-          <div class="grid grid-cols-2 gap-px bg-border/50 border border-border/50">
+          <div class="grid grid-cols-2 gap-px bg-border/50 border border-border">
             <!-- Total Tags -->
             <div class="bg-background/50 p-3 flex flex-col gap-1">
               <span class="text-[9px] uppercase tracking-widest text-muted-foreground/70 font-mono">Index_Count</span>
@@ -72,7 +72,7 @@ const lastUpdate = new Date().toLocaleDateString('en-US', { month: 'short', day:
             </div>
             
             <!-- Update Info (跨两列) -->
-            <div class="col-span-2 bg-background/50 p-2 flex items-center justify-between border-t border-border/50">
+            <div class="col-span-2 bg-background/50 p-2 flex items-center justify-between border-t border-border/40">
                <span class="text-[9px] uppercase tracking-widest text-muted-foreground/70 font-mono">Last_Rebuild</span>
                <span class="text-xs font-mono font-bold text-primary">{lastUpdate}</span>
             </div>
@@ -102,7 +102,7 @@ const lastUpdate = new Date().toLocaleDateString('en-US', { month: 'short', day:
             <a
               href={`/tags/${tag.name}`}
               class="group relative flex flex-col justify-between p-5 h-32
-                     bg-background border border-border/60 hover:border-primary/50
+                     bg-background border border-border/40 hover:border-primary/50
                      transition-all duration-300 rounded-none overflow-hidden"
             >
               <!-- 装饰：四角定位标 -->
@@ -146,7 +146,7 @@ const lastUpdate = new Date().toLocaleDateString('en-US', { month: 'short', day:
     <!-- Empty State -->
     {
       tags.length === 0 && (
-        <div class="flex flex-col items-center justify-center py-24 border border-dashed border-border mt-8 bg-muted/5">
+        <div class="flex flex-col items-center justify-center py-24 border border-dashed border-border/40 mt-8 bg-muted/5">
           <span class="icon-[ph--warning-octagon] size-10 text-muted-foreground/30 mb-4" />
           <p class="font-mono text-sm text-muted-foreground/50 uppercase tracking-widest">Database Empty // No Keywords</p>
         </div>

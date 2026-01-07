@@ -24,7 +24,7 @@ const serialNo = post.slug.slice(0, 4).toUpperCase();
 const sideWidthClass = "md:w-[280px] lg:w-[320px]" 
 ---
 
-<article class="group relative flex flex-col md:flex-row bg-background border border-border/60 hover:border-primary/60 transition-colors duration-300 rounded-none overflow-hidden mb-6 h-full min-h-[16rem]">
+<article class="group relative flex flex-col md:flex-row bg-background border border-border/40 hover:border-primary/60 transition-colors duration-300 rounded-none overflow-hidden mb-6 h-full min-h-[16rem]">
   
   <!-- 全局装饰：Hover角落高亮 -->
   <div class="absolute top-0 right-0 w-0 h-0 border-t-[3px] border-r-[3px] border-primary opacity-0 group-hover:opacity-100 group-hover:w-3 group-hover:h-3 transition-all duration-200 z-20"></div>
@@ -69,7 +69,7 @@ const sideWidthClass = "md:w-[280px] lg:w-[320px]"
       class={`
         hidden md:flex shrink-0 h-auto min-h-full relative overflow-hidden flex-col justify-between p-6 select-none bg-muted/5
         ${sideWidthClass}
-        border-l border-border/50 md:order-2
+        border-l border-border/40 md:order-2
         group/placeholder hover:bg-muted/10 transition-colors duration-300 cursor-pointer
       `}
     >
@@ -122,7 +122,7 @@ const sideWidthClass = "md:w-[280px] lg:w-[320px]"
     `}
   >
     <!-- 头部元数据 -->
-    <div class="flex items-center justify-between border-b border-dashed border-border/50 pb-3 mb-4">
+    <div class="flex items-center justify-between border-b border-dashed border-border/40 pb-3 mb-4">
       <div class="flex items-center gap-3 text-xs font-mono text-muted-foreground uppercase tracking-tight">
         <time class="flex items-center gap-1.5">
           {formatDate(post.data.pubDate)}

@@ -5,7 +5,7 @@ import { WALINE_CONFIG } from "~/config";
 {WALINE_CONFIG.enableComment && (
   <>
     <div class="waline-section-title mx-2">
-      <span class="prefix text-4xl">// COMMENT_SYSTEM_</span>
+      <span class="prefix text-4xl">// COMMENT_</span>
     </div>
 
     <div id="waline-container" class="waline-lazy">
@@ -17,7 +17,7 @@ import { WALINE_CONFIG } from "~/config";
       href="/css/waline.css"
     />
 
-    <style is:global>
+<style is:global>
       /* =========================================
          新增：标题样式
          ========================================= */
@@ -34,17 +34,16 @@ import { WALINE_CONFIG } from "~/config";
         letter-spacing: 0.1em;
         text-transform: uppercase;
         
-        /* 默认浅色模式颜色 (与下方 #waline 变量对应) */
+        /* 默认浅色模式颜色 */
         color: #333333; 
         border-bottom: 1px solid #e0e0e0;
       }
       
       .waline-section-title .prefix {
-        color: #888888; /* 符号颜色稍淡 */
+        color: #888888;
         margin-right: 0.5em;
       }
 
-      /* 深色模式标题适配 */
       html.dark .waline-section-title {
         color: #d4d4d8;
         border-bottom: 1px solid #2e2e2e;
@@ -59,7 +58,6 @@ import { WALINE_CONFIG } from "~/config";
       #waline-container {
         width: 100%;
         position: relative;
-        /* 核心变量：极细实线 */
         --industrial-line: 1px solid var(--waline-border-color);
       }
 
@@ -89,19 +87,19 @@ import { WALINE_CONFIG } from "~/config";
       #waline {
         /* 基础排版 */
         --waline-font-size: 15px !important;
-        --waline-line-height: 1.6 !important; /* 行高稍微收紧 */
+        --waline-line-height: 1.6 !important;
         
         /* 字体 */
         --waline-font-family: 'ShangguSansSC Variable', system-ui, -apple-system, sans-serif !important;
         --waline-mono-font: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, monospace !important;
 
-        /* 浅色模式 - 纸张感 */
+        /* 浅色模式 */
         --waline-theme-color: #000000 !important;
         --waline-active-color: #000000 !important;
         --waline-bgcolor: #ffffff !important;
         --waline-bgcolor-light: #fafafa !important;
         --waline-bgcolor-hover: #f0f0f0 !important;
-        --waline-border-color: #e0e0e0 !important; /* 稍微加深一点点灰，保证细线可见 */
+        --waline-border-color: #e0e0e0 !important;
         --waline-disable-bg-color: #fafafa !important;
         --waline-disable-color: #ccc !important;
         --waline-code-bg-color: #f9f9f9 !important;
@@ -110,13 +108,13 @@ import { WALINE_CONFIG } from "~/config";
         --waline-color: #333333 !important;
         --waline-info-color: #888888 !important;
 
-        /* 结构重置 - 移除圆角和阴影 */
+        /* 结构重置 */
         --waline-box-shadow: none !important;
         --waline-avatar-radius: 0 !important; 
         --waline-border: var(--industrial-line) !important;
       }
 
-      /* 深色模式 - CAD 界面感 */
+      /* 深色模式 */
       html.dark #waline {
         --waline-theme-color: #ffffff !important;
         --waline-active-color: #ffffff !important;
@@ -149,7 +147,7 @@ import { WALINE_CONFIG } from "~/config";
         border-radius: 0 !important;
       }
 
-      /* 2. 输入面板 (.wl-panel) - 紧凑型 */
+      /* 2. 输入面板 */
       #waline .wl-panel {
         border: var(--industrial-line) !important;
         background: var(--waline-bgcolor) !important;
@@ -182,12 +180,12 @@ import { WALINE_CONFIG } from "~/config";
       #waline .wl-input {
         font-family: var(--waline-mono-font) !important;
         font-size: 0.85rem !important;
-        padding: 0.5rem 0.75rem !important; /* 稍微紧凑的内边距 */
+        padding: 0.5rem 0.75rem !important;
       }
 
       /* 编辑器 */
       #waline .wl-editor {
-        min-height: 8rem; /* 高度适中 */
+        min-height: 8rem;
         padding: 0.75rem !important;
         background: var(--waline-bgcolor) !important;
         font-family: var(--waline-font-family) !important;
@@ -217,11 +215,10 @@ import { WALINE_CONFIG } from "~/config";
         background: var(--waline-bgcolor) !important;
         font-family: var(--waline-mono-font) !important;
         font-size: 0.75rem !important;
-        padding: 0.25em 1em !important; /* 按钮变薄一点 */
+        padding: 0.25em 1em !important;
         margin-left: 0.5em;
       }
 
-      /* 按钮交互 */
       #waline .wl-btn:not(:disabled):hover {
         background: var(--waline-theme-color) !important;
         color: var(--waline-bgcolor) !important;
@@ -233,6 +230,8 @@ import { WALINE_CONFIG } from "~/config";
         width: 22px;
         height: 22px;
         color: var(--waline-info-color) !important;
+        /* 确保图标不挤压 */
+        flex-shrink: 0; 
       }
       #waline .wl-action:hover {
         color: var(--waline-theme-color) !important;
@@ -243,41 +242,28 @@ import { WALINE_CONFIG } from "~/config";
          评论列表布局修正 (重点修改区域)
          ========================================= */
       
-      /* 列表项 */
-      #waline .wl-card {
-        border-bottom: var(--industrial-line) !important;
-        padding: 1.25rem 0 !important; /* 减小垂直间距 */
-        margin: 0 !important;
-      }
       #waline .wl-card:last-child {
         border-bottom: none !important;
       }
 
-      /* 1. 头像区域 (.wl-user) - 缩减右侧外边距 */
+      /* 左侧头像 */
       #waline .wl-cards .wl-user {
-        margin-inline-end: 0.6rem !important; /* 核心修正：大幅减小头像与内容的距离 */
-        width: auto !important; /* 防止容器过大 */
-        flex-shrink: 0; /* 防止头像被压缩 */
+        margin-inline-end: 0.6rem !important;
+        width: auto !important;
+        flex-shrink: 0;
       }
 
-      /* 2. 头像图片本身 */
       #waline .wl-user-avatar {
-        width: 2.25rem !important; /* 稍微调小头像，更精致 */
+        width: 2.25rem !important;
         height: 2.25rem !important;
         background: var(--waline-bgcolor-light);
         border: var(--industrial-line);
-        margin: 0 !important; /* 移除头像本身的边距 */
+        margin: 0 !important;
       }
       
       #waline .wl-user-avatar img {
         border: none !important;
-        transform: scale(0.92); /* 边框留白 */
-      }
-
-      /* 3. 右侧内容区域 */
-      #waline .wl-card-item .wl-card {
-        padding-bottom: 0 !important; /* 移除内部多余padding */
-        border: none !important; /* 内部不需要边框 */
+        transform: scale(0.92);
       }
 
       /* 昵称 */
@@ -286,15 +272,6 @@ import { WALINE_CONFIG } from "~/config";
         color: var(--waline-theme-color) !important;
         font-size: 0.9rem !important;
         margin-right: 0.5rem !important;
-      }
-
-      /* 标签与元数据 - 紧凑排列 */
-      #waline .wl-head {
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        line-height: 1.2;
-        margin-bottom: 0.25rem;
       }
 
       #waline .wl-badge {
@@ -317,14 +294,6 @@ import { WALINE_CONFIG } from "~/config";
         text-transform: uppercase;
       }
 
-      /* 时间 */
-      #waline .wl-time {
-        font-family: var(--waline-mono-font) !important;
-        color: var(--waline-info-color) !important;
-        font-size: 0.75rem !important;
-        margin-left: auto !important; /* 靠右对齐 */
-      }
-
       /* 引用块 */
       #waline .wl-quote {
         border-left: 1px solid var(--waline-theme-color) !important;
@@ -341,6 +310,18 @@ import { WALINE_CONFIG } from "~/config";
         color: var(--waline-color) !important;
         line-height: 1.75 !important;
         margin-top: 0.25rem;
+        
+        /* 修正：字间距稍微收紧 */
+        letter-spacing: -0.015em !important;
+        
+        /* 修正：防止长链接撑破容器 */
+        overflow-wrap: break-word !important;
+        word-wrap: break-word !important;
+      }
+      
+      /* 修正：强制长链接换行 */
+      #waline .wl-content a {
+        word-break: break-all !important;
       }
 
       /* 代码块 */
@@ -361,13 +342,8 @@ import { WALINE_CONFIG } from "~/config";
           border-right: none !important;
           border-bottom: var(--industrial-line) !important;
         }
-        /* 移动端头像更近 */
         #waline .wl-cards .wl-user {
           margin-inline-end: 0.5rem !important;
-        }
-        #waline .wl-time {
-          width: 100%;
-          margin-top: 0.25rem;
         }
       }
     </style>

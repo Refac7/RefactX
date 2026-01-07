@@ -68,7 +68,7 @@ const progressPercent = Math.round((page.currentPage / page.lastPage) * 100);
         <div class="lg:col-span-5 flex flex-col gap-6">
           
           <!-- 命令行路径导航 -->
-          <div class="border-l-2 border-primary/40 pl-5 flex flex-col gap-2">
+          <div class="border-l border-primary/40 pl-5 flex flex-col gap-2">
              <span class="text-[10px] uppercase text-muted-foreground/60 font-mono tracking-widest">Current Path</span>
              <div class="font-mono text-sm sm:text-base text-muted-foreground flex items-center gap-2 flex-wrap">
                 <a href="/" class="hover:text-primary transition-colors">root</a>
@@ -80,7 +80,7 @@ const progressPercent = Math.round((page.currentPage / page.lastPage) * 100);
           </div>
 
           <!-- 数据统计网格 -->
-          <div class="grid grid-cols-2 gap-px bg-border/50 border border-border/50">
+          <div class="grid grid-cols-2 gap-px bg-border/50 border border-border">
             <!-- Matches -->
             <div class="bg-background/50 p-3 flex flex-col gap-1">
               <span class="text-[9px] uppercase tracking-widest text-muted-foreground/70 font-mono">Hits_Found</span>
@@ -147,7 +147,7 @@ const progressPercent = Math.round((page.currentPage / page.lastPage) * 100);
       </div>
       
       <!-- 底部结束标记 -->
-      <div class="flex justify-center border-t border-dashed border-border/60 pt-6">
+      <div class="flex justify-center border-t border-dashed border-border/40 pt-6">
         <span class="font-mono text-[10px] text-muted-foreground/30 uppercase tracking-[0.3em]">
           End of Search Results
         </span>

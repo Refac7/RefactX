@@ -55,11 +55,11 @@ const totalCount = ProjectList.length.toString().padStart(2, '0');
         </div>
 
         <div class="lg:col-span-5 flex flex-col justify-end pb-2">
-          <div class="border-l-2 border-primary/40 pl-6 flex flex-col gap-6">
+          <div class="border-l border-primary/40 pl-6 flex flex-col gap-6">
              <p class="text-base sm:text-lg text-muted-foreground leading-relaxed">
               {introduce}
              </p>
-             <div class="flex items-center gap-4 pt-4 border-t border-dashed border-border/60">
+             <div class="flex items-center gap-4 pt-4 border-t border-dashed border-border/40">
                 <div class="flex flex-col">
                     <span class="text-[10px] uppercase text-muted-foreground/60 font-mono tracking-wider">Total Modules</span>
                     <span class="text-3xl font-mono font-bold text-foreground tracking-tight">
@@ -95,14 +95,14 @@ const totalCount = ProjectList.length.toString().padStart(2, '0');
           const serialId = `0${index + 1}`.slice(-2);
           
           return (
-            <div class="group relative flex flex-col bg-background border border-border/60 hover:border-primary/50 transition-all duration-300 p-6 overflow-hidden hover:shadow-lg hover:shadow-primary/5">
+            <div class="group relative flex flex-col bg-background border border-border/40 hover:border-primary/50 transition-all duration-300 p-6 overflow-hidden hover:shadow-lg hover:shadow-primary/5">
               
               <span class="absolute -right-4 -top-6 text-[120px] font-black text-muted-foreground/[0.03] group-hover:text-primary/[0.05] transition-colors pointer-events-none select-none font-mono">
                 {serialId}
               </span>
               
               <div class="flex justify-between items-start mb-6 relative z-10">
-                <div class="size-12 flex items-center justify-center bg-muted/10 border border-border/50 group-hover:border-primary/30 transition-colors">
+                <div class="size-12 flex items-center justify-center bg-muted/10 border border-border/40 group-hover:border-primary/30 transition-colors">
                    {project.type === 'icon' && <span class={cn('size-6 text-foreground/80 group-hover:text-primary transition-colors', project.icon)} />}
                    {project.type === 'image' && <img src={project.icon} alt={project.name} class={cn('size-full object-cover opacity-80 group-hover:opacity-100 transition-opacity', project.imageClass)} />}
                 </div>
