@@ -802,8 +802,8 @@ ${body}`;
          <div className="h-px bg-gradient-to-r from-border to-transparent flex-1 mb-1.5"></div>
       </div>
 
-{/* Mobile Tabs - Industrial Grid Layout */}
-      <div className="grid grid-cols-3 gap-px bg-border border border-border lg:hidden mb-6 shadow-sm">
+      {/* Mobile Tabs - Industrial Grid Layout */}
+      <div className="grid grid-cols-3 gap-px border border-border lg:hidden mb-6">
           {['files', 'editor', 'queue'].map(v => (
              <button 
                key={v} 
@@ -821,7 +821,7 @@ ${body}`;
           ))}
       </div>
 
-      <div className="flex-1 flex flex-col gap-2 lg:grid lg:grid-cols-12 min-h-[900px] relative">
+      <div className="flex-1 flex flex-col gap-2 lg:grid lg:grid-cols-12 relative">
          
          {/* 1. DATA BANK */}
          <div className={cn(
@@ -885,7 +885,7 @@ ${body}`;
          )}>
             {/* Toolbar */}
             <div className="flex gap-2 justify-between items-center p-2 border-b border-border bg-muted/5">
-                <div className="flex items-center gap-0 flex-1 min-w-[200px] border border-border/40 bg-background h-8 px-2 relative">
+                <div className="flex items-center gap-0 flex-1 border border-border/40 bg-background h-8 px-2 relative">
                     <div className="absolute -left-px -top-px -bottom-px w-0.5 bg-primary/60"></div>
                     <span className={cn("size-4 text-muted-foreground shrink-0 mr-2", currentMode === 'data' ? "icon-[ph--brackets-curly]" : "icon-[ph--file-text]")}></span>
                     <input value={filename} onChange={e => setFilename(e.target.value)} disabled={currentMode === 'data'} placeholder="FILENAME.MD" className="bg-transparent text-xs font-mono w-full focus:outline-none uppercase tracking-wide placeholder:text-muted-foreground/40" />
@@ -906,11 +906,11 @@ ${body}`;
                            {editorMode === 'raw' && <button onClick={() => triggerUpload('json_raw')} className="size-8 flex items-center justify-center hover:bg-muted text-xs border border-transparent"><span className="icon-[ph--image] size-4"></span></button>}
                         </>
                     )}
-                    <div className="h-4 w-px bg-border/40 mx-2"></div>
-                    <button onClick={stageForWrite} className="flex items-center gap-2 bg-primary text-primary-foreground h-8 px-4 text-[10px] font-mono font-bold hover:brightness-110 tracking-widest uppercase transition-all relative overflow-hidden group">
+                    <div className="hidden md:block h-4 w-px bg-border/40 mx-2"></div>
+                    <button onClick={stageForWrite} className="flex items-center gap-2 bg-primary text-primary-foreground h-8 px-2.5 text-[10px] font-mono font-bold hover:brightness-110 tracking-widest uppercase transition-all relative overflow-hidden group">
                         <span className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-300"></span>
                         <span className="icon-[ph--plus] size-3"></span>
-                        <span className="hidden sm:inline">STAGING</span><span className="sm:hidden">ADD</span>
+                        <span className="hidden sm:inline">STAGING</span>
                     </button>
                 </div>
             </div>
