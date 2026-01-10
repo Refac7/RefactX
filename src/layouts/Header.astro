@@ -17,7 +17,20 @@ import favicon from '../../public/favicon.webp'
       <a href="/" class="pointer-events-auto select-none" transition:persist>
         <Image src={favicon} width={56} height={56} alt="Logo" class="w-8 h-8 border-2 border-transparent" loading="eager"/>
       </a>
-      <div class="flex gap-1">
+      
+      {/* 1. 移动端视图 (md:hidden)：只渲染数组的前 2 个元素 (.slice(0, 2)) */}
+      <div class="flex gap-1 md:hidden">
+        {
+          HEADER_LINKS.slice(0, 2).map((link) => (
+            <HeaderLink href={link.url} background>
+              {link.name}
+            </HeaderLink>
+          ))
+        }
+      </div>
+
+      {/* 2. 桌面端视图 (hidden md:flex)：渲染所有元素 */}
+      <div class="hidden gap-1 md:flex">
         {
           HEADER_LINKS.map((link) => (
             <HeaderLink href={link.url} background>
@@ -26,6 +39,7 @@ import favicon from '../../public/favicon.webp'
           ))
         }
       </div>
+
     </div>
     <div class="flex gap-2 items-center" transition:persist="header-theme-toggle">
       <SearchSwitch />

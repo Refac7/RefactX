@@ -1,108 +1,101 @@
-<div id="snow-container" aria-hidden="true"></div>
+<div id="snow-container" aria-hidden="true" class="pointer-events-none fixed inset-0 z-[-1] overflow-hidden"></div>
 
 <script>
-  const createSnow = () => {
+  // 封装逻辑以避免全局污染
+  const initSnow = () => {
     const container = document.getElementById('snow-container');
     if (!container) return;
 
+    // 1. 可访问性检查：如果用户在系统中开启了"减弱动态效果"，则不生成雪花
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
+    // 清空现有内容（防止热更新或页面切换叠加）
     container.innerHTML = '';
 
-    // 数量适中，太多会影响性能，太少没有氛围
-    const snowflakeCount = 100; 
+    // 2. 响应式数量：根据屏幕宽度动态决定数量
+    // 桌面端 100 个，移动端减少到 40 个以节省电量和 GPU
+    const width = window.innerWidth;
+    const snowflakeCount = width < 768 ? 40 : 100;
+
+    // 3. 性能优化：使用 DocumentFragment 批量插入 DOM
+    const fragment = document.createDocumentFragment();
 
     for (let i = 0; i < snowflakeCount; i++) {
       const flake = document.createElement('div');
       flake.className = 'snowflake';
 
-      // --- 随机化参数生成 ---
+      // --- 随机参数 ---
+      const xStart = Math.random() * 100; // 0-100vw
+      const depth = Math.random(); // 0 (远) - 1 (近)
       
-      // 1. 随机位置 (0vw - 100vw)
-      const xStart = Math.random() * 100;
-      
-      // 2. 模拟景深：通过随机层级决定大小、模糊度、速度
-      // depth 0 (远) -> 1 (近)
-      const depth = Math.random(); 
-      
-      // 大小：远处(2px-5px)，近处(6px-12px)
-      const size = (depth * 10) + 2 + 'px'; 
-      
-      // 模糊：远处模糊(2px)，近处清晰(0px)或微量动态模糊
-      const blur = (1 - depth) * 2 + 'px';
-      
-      // 速度：近处快(3s)，远处慢(8s-12s)
-      // 减去 depth * 5 让近的更快
-      const duration = (10 - depth * 5) + Math.random() * 2 + 's'; 
-      const delay = Math.random() * -10 + 's';
+      // 大小：使用 scale 变换比直接改变 width/height 性能更好
+      // 远处的雪花小 (0.5)，近处的大 (1.2)
+      const scale = 0.5 + depth * 0.7; 
 
-      // 3. 风力/摇摆：每片雪花左右飘荡的幅度不同
-      // 负数向左飘，正数向右飘，模拟乱流
-      const sway = (Math.random() - 0.5) * 20 + 'vw'; 
+      // 速度：近处快 (5s)，远处慢 (10s-15s)
+      const duration = 10 + Math.random() * 5 - depth * 5; 
+      const delay = Math.random() * -15; // 负延迟确保开始时屏幕上就有雪花
 
-      // 4. 透明度：近处略透明(0.8)，远处很淡(0.3)
-      const opacity = depth * 0.5 + 0.3;
+      // 风力：水平偏移量
+      const xEnd = xStart + (Math.random() - 0.5) * 20; 
 
-      // 使用 CSS 变量将随机值传给 CSS
-      // 这样做比直接修改 style 性能更好，且能利用 CSS 动画的流畅性
-      flake.style.setProperty('--x-start', xStart + 'vw');
-      flake.style.setProperty('--x-end', (xStart + parseFloat(sway)) + 'vw');
-      flake.style.setProperty('--size', size);
-      flake.style.setProperty('--duration', duration);
-      flake.style.setProperty('--delay', delay);
-      flake.style.setProperty('--blur', blur);
+      // 透明度：模拟景深，远的更淡
+      const opacity = 0.3 + depth * 0.6;
+
+      // 使用 CSS 变量传递
+      flake.style.setProperty('--x-start', `${xStart}vw`);
+      flake.style.setProperty('--x-end', `${xEnd}vw`);
+      flake.style.setProperty('--scale', scale.toString());
+      flake.style.setProperty('--duration', `${duration}s`);
+      flake.style.setProperty('--delay', `${delay}s`);
       flake.style.setProperty('--opacity', opacity.toString());
-      
-      // 随机旋转方向
-      flake.style.setProperty('--rotation', Math.random() * 360 + 'deg');
 
-      container.appendChild(flake);
+      fragment.appendChild(flake);
     }
+
+    container.appendChild(fragment);
   };
 
-  document.addEventListener('astro:page-load', createSnow);
-  // 确保初次加载也能运行
-  createSnow();
+  // 4. 事件监听优化
+  document.addEventListener('astro:page-load', initSnow);
+  
+  // 5. 窗口大小改变时防抖重置 (可选，视需求而定，简单的实现通常不需要)
+  // window.addEventListener('resize', debounce(initSnow, 200));
 </script>
 
 <style is:global>
-  #snow-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: -1; 
-    overflow: hidden;
-    /* 硬件加速容器 */
-    transform: translate3d(0, 0, 0);
-  }
+  /* 
+     性能关键：
+     1. 使用 transform 代替 top/left
+     2. 使用 opacity 代替 rgba
+     3. 避免 box-shadow 和 filter: blur (GPU杀手)
+  */
 
   .snowflake {
     position: absolute;
-    top: -20px; /* 起始点在屏幕外 */
-    left: var(--x-start);
-    width: var(--size);
-    height: var(--size);
-    opacity: var(--opacity);
+    top: -2vh; /* 从视口略上方开始 */
+    left: 0;   /* 基准点，实际位置由 translate 控制 */
+    width: 5px; /* 基础尺寸 */
+    height: 5px;
+    background-color: white; /* 基础颜色，依靠 opacity 变化 */
     border-radius: 50%;
     
-    /* 关键：使用 filter blur 模拟景深 */
-    filter: blur(var(--blur));
+    /* 硬件加速属性 */
+    will-change: transform;
+    
+    /* 组合变量 */
+    opacity: var(--opacity);
+    transform: translate3d(var(--x-start), 0, 0) scale(var(--scale));
     
     animation: fall var(--duration) linear infinite;
     animation-delay: var(--delay);
-    will-change: transform, opacity;
   }
 
-  /* 
-     写实颜色调整：
-     不使用纯白，使用带有微弱冷色调的白，模拟雪的反光
-  */
-  
-  /* 深色模式：高亮核心，边缘柔和 */
-  .dark .snowflake {
-    background: radial-gradient(closest-side, rgba(255, 255, 255, 0.9) 20%, rgba(255, 255, 255, 0.2) 100%);
-    box-shadow: 0 0 5px rgba(255, 255, 255, 0.3); /* 发光感 */
+  /* 深色模式优化：纯白雪花 */
+  :global(.dark) .snowflake {
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,1), rgba(255,255,255,0.4));
   }
 
   /* 浅色模式：稍微加深一点蓝灰色，保证在白底上能看见 */
@@ -112,19 +105,22 @@
 
   @keyframes fall {
     0% {
-      transform: translate3d(0, 0, 0) rotate(0deg);
-      opacity: 0; /* 入场渐显 */
-    }
-    10% {
-      opacity: var(--opacity);
+      /* 起始状态 */
+      transform: translate3d(var(--x-start), -10vh, 0) scale(var(--scale));
     }
     100% {
-      /* 
-         这里结合了 Y轴下落、X轴风吹偏移、以及 Z轴旋转
-         X轴偏移使用了 CSS 变量，使每片雪花落点不同
-      */
-      transform: translate3d(calc(var(--x-end) - var(--x-start)), 105vh, 0) rotate(var(--rotation));
-      opacity: var(--opacity);
+      /* 结束状态：Y轴落到底部，X轴应用风力偏移，Z轴保持不变 */
+      transform: translate3d(var(--x-end), 110vh, 0) scale(var(--scale));
+    }
+  }
+
+  /* 
+    媒体查询：如果用户偏好减少动作，直接隐藏容器
+    这是最彻底的性能和体验保护
+  */
+  @media (prefers-reduced-motion: reduce) {
+    #snow-container {
+      display: none !important;
     }
   }
 </style>
