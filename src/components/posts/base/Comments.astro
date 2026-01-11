@@ -34,22 +34,22 @@ import { WALINE_CONFIG } from "~/config";
         letter-spacing: 0.1em;
         text-transform: uppercase;
         
-        /* 默认浅色模式颜色 */
-        color: #333333; 
-        border-bottom: 1px solid #e0e0e0;
+        /* 使用全局主题变量 */
+        color: hsl(var(--foreground)); 
+        border-bottom: 1px solid hsl(var(--border));
       }
       
       .waline-section-title .prefix {
-        color: #888888;
+        color: hsl(var(--muted-foreground));
         margin-right: 0.5em;
       }
 
       html.dark .waline-section-title {
-        color: #d4d4d8;
-        border-bottom: 1px solid #2e2e2e;
+        color: hsl(var(--foreground));
+        border-bottom: 1px solid hsl(var(--border));
       }
       html.dark .waline-section-title .prefix {
-        color: #71717a;
+        color: hsl(var(--muted-foreground));
       }
 
       /* =========================================
@@ -93,20 +93,20 @@ import { WALINE_CONFIG } from "~/config";
         --waline-font-family: 'ShangguSansSC Variable', system-ui, -apple-system, sans-serif !important;
         --waline-mono-font: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, monospace !important;
 
-        /* 浅色模式 */
-        --waline-theme-color: #000000 !important;
-        --waline-active-color: #000000 !important;
-        --waline-bgcolor: #ffffff !important;
-        --waline-bgcolor-light: #fafafa !important;
-        --waline-bgcolor-hover: #f0f0f0 !important;
-        --waline-border-color: #e0e0e0 !important;
-        --waline-disable-bg-color: #fafafa !important;
-        --waline-disable-color: #ccc !important;
-        --waline-code-bg-color: #f9f9f9 !important;
+        /* 使用全局主题变量 - 浅色模式 */
+        --waline-theme-color: hsl(var(--primary)) !important;
+        --waline-active-color: hsl(var(--primary)) !important;
+        --waline-bgcolor: hsl(var(--background)) !important;
+        --waline-bgcolor-light: hsl(var(--accent)) !important;
+        --waline-bgcolor-hover: hsl(var(--muted)) !important;
+        --waline-border-color: hsl(var(--border)) !important;
+        --waline-disable-bg-color: hsl(var(--accent)) !important;
+        --waline-disable-color: hsl(var(--muted-foreground) / 0.5) !important;
+        --waline-code-bg-color: hsl(var(--accent)) !important;
         
         /* 文本颜色 */
-        --waline-color: #333333 !important;
-        --waline-info-color: #888888 !important;
+        --waline-color: hsl(var(--foreground)) !important;
+        --waline-info-color: hsl(var(--muted-foreground)) !important;
 
         /* 结构重置 */
         --waline-box-shadow: none !important;
@@ -116,15 +116,15 @@ import { WALINE_CONFIG } from "~/config";
 
       /* 深色模式 */
       html.dark #waline {
-        --waline-theme-color: #ffffff !important;
-        --waline-active-color: #ffffff !important;
-        --waline-bgcolor: #09090b !important;
-        --waline-bgcolor-light: #121212 !important;
-        --waline-bgcolor-hover: #27272a !important;
-        --waline-border-color: #2e2e2e !important;
-        --waline-color: #d4d4d8 !important;
-        --waline-info-color: #71717a !important;
-        --waline-code-bg-color: #121212 !important;
+        --waline-theme-color: hsl(var(--primary)) !important;
+        --waline-active-color: hsl(var(--primary)) !important;
+        --waline-bgcolor: hsl(var(--background)) !important;
+        --waline-bgcolor-light: hsl(var(--accent)) !important;
+        --waline-bgcolor-hover: hsl(var(--muted)) !important;
+        --waline-border-color: hsl(var(--border)) !important;
+        --waline-color: hsl(var(--foreground)) !important;
+        --waline-info-color: hsl(var(--muted-foreground)) !important;
+        --waline-code-bg-color: hsl(var(--accent)) !important;
       }
 
       /* =========================================

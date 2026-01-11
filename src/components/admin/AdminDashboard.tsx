@@ -821,7 +821,7 @@ ${body}`;
           ))}
       </div>
 
-      <div className="flex-1 flex flex-col gap-2 lg:grid lg:grid-cols-12 relative">
+      <div className="flex-1 flex flex-col lg:grid lg:grid-cols-12 relative">
          
          {/* 1. DATA BANK */}
          <div className={cn(
@@ -880,7 +880,7 @@ ${body}`;
 
          {/* 2. WORKSTATION */}
          <div className={cn(
-             "lg:col-span-7 flex-col border border-border bg-background lg:flex", 
+             "lg:col-span-7 flex-col border md:border-x-0 border-border bg-background lg:flex", 
              mobileView === 'editor' ? 'flex h-[80vh] lg:h-auto' : 'hidden'
          )}>
             {/* Toolbar */}
@@ -991,7 +991,7 @@ ${body}`;
              "lg:col-span-3 flex-col border border-border bg-background lg:flex", 
              mobileView === 'queue' ? 'flex h-[60vh] lg:h-auto' : 'hidden'
          )}>
-            <div className="p-3 border-b border-border flex justify-between items-center bg-muted/10 backdrop-blur-sm">
+            <div className="px-3 py-[14.5px] border-b border-border flex justify-between items-center bg-muted/10 backdrop-blur-sm">
               <div className="flex items-center gap-2">
                  <div className="w-1 h-3 bg-yellow-500/50"></div>
                  <span className="text-xs font-mono font-bold tracking-wider">BUFFER_ZONE</span>
