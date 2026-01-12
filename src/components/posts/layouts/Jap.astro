@@ -51,11 +51,11 @@ const serialCode = `FIG-${new Date(frontmatter.pubDate).getFullYear()}-${Math.fl
 
       <!-- 3. 数据仪表盘 (Industrial Grid): 替代原本的 Info Bar -->
       <!-- 使用 grid 和 divide 创造表格感 -->
-      <div class="border-1 border-border bg-card/30 backdrop-blur-sm">
+      <div class="bg-card/30 backdrop-blur-sm">
         <div class="grid grid-cols-2 md:grid-cols-4 divide-x-1 divide-y-1 md:divide-y-0 divide-border">
           
           <!-- Cell 1: Date -->
-          <div class="p-4 flex flex-col justify-between h-24 hover:bg-muted/50 transition-colors">
+          <div class="border-l border-t md:border-b-1 p-4 flex flex-col justify-between h-24 hover:bg-muted/50 transition-colors">
             <span class="font-mono text-[10px] uppercase text-muted-foreground tracking-widest">Date_Log</span>
             <div class="flex items-end gap-2">
               <span class="icon-[mdi--calendar-blank] size-5 text-primary"></span>
@@ -64,7 +64,7 @@ const serialCode = `FIG-${new Date(frontmatter.pubDate).getFullYear()}-${Math.fl
           </div>
 
           <!-- Cell 2: Words -->
-          <div class="p-4 flex flex-col justify-between h-24 hover:bg-muted/50 transition-colors">
+          <div class="border-t md:border-b p-4 flex flex-col justify-between h-24 hover:bg-muted/50 transition-colors">
             <span class="font-mono text-[10px] uppercase text-muted-foreground tracking-widest">Data_Size</span>
             <div class="flex items-end gap-2">
               <span class="icon-[mdi--database-outline] size-5 text-primary"></span>
@@ -75,7 +75,7 @@ const serialCode = `FIG-${new Date(frontmatter.pubDate).getFullYear()}-${Math.fl
           </div>
 
           <!-- Cell 3: Time -->
-          <div class="p-4 flex flex-col justify-between h-24 hover:bg-muted/50 transition-colors">
+          <div class="border-l md:border-y md:border-l-0 p-4 flex flex-col justify-between h-24 hover:bg-muted/50 transition-colors">
             <span class="font-mono text-[10px] uppercase text-muted-foreground tracking-widest">Est_Time</span>
             <div class="flex items-end gap-2">
                <span class="icon-[mdi--timer-sand] size-5 text-primary"></span>
@@ -84,7 +84,7 @@ const serialCode = `FIG-${new Date(frontmatter.pubDate).getFullYear()}-${Math.fl
           </div>
 
           <!-- Cell 4: Tags (Interactive) -->
-          <div class="p-4 flex flex-col justify-between h-24 overflow-hidden relative group">
+          <div class="border-r border-b md:border-t p-4 flex flex-col justify-between h-24 overflow-hidden relative group">
              <span class="font-mono text-[10px] uppercase text-muted-foreground tracking-widest z-10">Categories</span>
              <div class="flex flex-wrap gap-1 z-10">
                 {frontmatter.tags && frontmatter.tags.slice(0, 2).map((tag: string) => (

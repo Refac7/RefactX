@@ -13,7 +13,7 @@ const { photoData, class: className } = Astro.props
 ---
 
 <div class={cn("relative space-y-2", className)}>
-  <!-- 全局左侧装饰轨道背景 -->
+  <!-- 全局左侧装饰轨道背景 (仅桌面端显示) -->
   <div class="absolute left-[27px] top-0 bottom-0 w-px border-l border-dashed border-border/40 z-0 hidden sm:block"></div>
 
   {
@@ -26,21 +26,23 @@ const { photoData, class: className } = Astro.props
           class="timeline-item relative group opacity-0 animate-slide-down" 
           style={`animation-delay: ${index * 0.15}s`}
         >
-          <div class="flex gap-x-6">
+          {/* 修改点 1: 移动端 flex-col (上下结构)，桌面端 flex-row (左右结构) */}
+          <div class="flex flex-col sm:flex-row sm:gap-x-6">
             
-            {/* 1. 左侧：工业风时间轴节点 */}
-            <div class="relative z-10 flex flex-col items-center">
+            {/* 1. 图标区域 */}
+            {/* 修改点 2: 移动端 items-start (靠左)，桌面端 items-center (居中) */}
+            <div class="relative z-10 flex flex-col items-start sm:items-center shrink-0">
               <!-- 图标容器：方正、边框 -->
-              <div class="size-14 flex justify-center items-center bg-background border border-border/40 group-hover:border-primary/60 group-hover:bg-muted/10 transition-colors duration-300 relative">
+              <div class="size-14 flex justify-center items-center bg-background border border-border/40 group-hover:border-primary/60 group-hover:bg-muted/10 transition-colors duration-300 relative z-20">
                  <!-- 只有被激活或Hover时才显示的微小角标 -->
                  <div class="absolute top-0 right-0 size-1 bg-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
                  <TimelineIcon icon={timeline.icon} index={index} />
               </div>
               
-              <!-- 移动端的连接线 (仅在两项之间显示) -->
-              <div class="grow w-px border-r border-dashed border-border/40 sm:hidden my-2"></div>
+              <!-- 修改点 3: 新增移动端垂直连接线 (连接图标和下方卡片) -->
+              <div class="h-4 ml-7 w-px border-l border-dashed border-border/40 sm:hidden"></div>
               
-              <!-- 序号标识 (桌面端显示在图标下) -->
+              <!-- 序号标识 (仅桌面端显示) -->
               <div class="hidden sm:block mt-2 font-mono text-[10px] text-muted-foreground/40 writing-vertical-lr tracking-widest">
                 LOG_{indexId}
               </div>
@@ -48,7 +50,7 @@ const { photoData, class: className } = Astro.props
 
             {/* 2. 右侧：档案内容卡片 */}
             <div class="grow pb-12 relative min-w-0">
-              <!-- 装饰：连接线横杠 -->
+              <!-- 装饰：连接线横杠 (仅桌面端显示) -->
               <div class="absolute top-7 -left-6 w-6 h-px bg-border/60 hidden sm:block"></div>
 
               <div class="border border-border/40 bg-background p-1 group-hover:border-border transition-colors duration-300">
