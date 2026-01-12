@@ -100,6 +100,10 @@ export default function AdminDashboard() {
   const [isProcessingQueue, setIsProcessingQueue] = useState(false);
   const [mobileView, setMobileView] = useState<MobileView>('editor');
 
+  // Layout State (New)
+  const [showLeftPanel, setShowLeftPanel] = useState(true);
+  const [showRightPanel, setShowRightPanel] = useState(true);
+
   // Refs
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const jsonTextareaRef = useRef<HTMLTextAreaElement>(null);
@@ -802,76 +806,74 @@ ${body}`;
          <div className="h-px bg-gradient-to-r from-border to-transparent flex-1 mb-1.5"></div>
       </div>
 
-      {/* Mobile Tabs - Industrial Grid Layout */}
-      <div className="grid grid-cols-3 gap-px border border-border lg:hidden mb-6">
+{/* Mobile Tabs - Industrial Grid Layout */}
+      <div className="grid grid-cols-3 border-x border-t border-border lg:hidden mb-6 bg-background">
           {['files', 'editor', 'queue'].map(v => (
              <button 
                key={v} 
                onClick={() => setMobileView(v as MobileView)} 
                className={cn(
-                 "relative py-3 text-[10px] tracking-widest uppercase font-mono transition-all duration-200", 
+                 "relative py-3 text-[10px] tracking-widest uppercase font-mono transition-all duration-200 border-b border-border hover:bg-muted/10", 
                  mobileView === v 
-                    ? 'bg-background text-primary font-bold' 
-                    : 'bg-muted/20 text-muted-foreground hover:bg-background/50 hover:text-foreground'
+                    ? 'text-primary font-bold bg-primary/5 border-b-primary' 
+                    : 'text-muted-foreground hover:text-foreground'
                )}
              >
-               {mobileView === v && <div className="absolute top-0 left-0 right-0 h-0.5 bg-primary"></div>}
                {v === 'files' ? 'DATA' : v === 'queue' ? `BUFFER [${queue.length}]` : v}
              </button>
           ))}
       </div>
 
-      <div className="flex-1 flex flex-col lg:grid lg:grid-cols-12 relative">
+      <div className="flex-1 flex flex-col lg:grid lg:grid-cols-12 relative border-t border-border lg:border-t-0">
          
          {/* 1. DATA BANK */}
          <div className={cn(
-             "lg:col-span-2 flex-col border border-border bg-background/50 lg:flex", 
-             mobileView === 'files' ? 'flex h-[65vh] lg:h-auto' : 'hidden'
+             "flex-col border-x border-b lg:border-y border-border bg-background/50 lg:col-span-2 transition-all duration-300", 
+             mobileView === 'files' ? 'flex h-[65vh] lg:h-auto' : 'hidden',
+             // Wide screen visibility toggle
+             showLeftPanel ? 'lg:flex' : 'lg:hidden'
          )}>
             {/* Panel Header */}
-            <div className="p-3 border-b border-border flex justify-between items-center bg-muted/10 backdrop-blur-sm">
+            <div className="h-10 px-3 border-b border-border flex justify-between items-center bg-muted/10 backdrop-blur-sm">
                 <div className="flex items-center gap-2">
-                    <div className="w-1 h-3 bg-primary/50"></div>
-                    <span className="text-xs font-mono font-bold tracking-wider">DATA_BANK</span>
+                    <div className="size-1.5 bg-primary/50 rounded-sm"></div>
+                    <span className="text-[10px] font-mono font-bold tracking-wider opacity-80">DATA_BANK</span>
                 </div>
-                <div className="flex gap-1">
-                    <button onClick={handleNewPost} className="size-6 flex items-center justify-center border border-transparent hover:border-primary/30 hover:bg-primary/10 text-muted-foreground hover:text-primary transition-all"><span className="icon-[ph--plus] size-4"></span></button>
-                    <button onClick={() => fetchRemoteFiles()} className="size-6 flex items-center justify-center border border-transparent hover:border-primary/30 hover:bg-primary/10 text-muted-foreground hover:text-primary transition-all"><span className="icon-[ph--arrows-clockwise] size-4"></span></button>
+                <div className="flex gap-px">
+                    <button onClick={handleNewPost} className="size-6 flex items-center justify-center hover:bg-primary/10 text-muted-foreground hover:text-primary transition-all rounded-sm" title="New Post"><span className="icon-[ph--plus] size-3.5"></span></button>
+                    <button onClick={() => fetchRemoteFiles()} className="size-6 flex items-center justify-center hover:bg-primary/10 text-muted-foreground hover:text-primary transition-all rounded-sm" title="Refresh"><span className="icon-[ph--arrows-clockwise] size-3.5"></span></button>
                 </div>
             </div>
 
-            <div className="flex-1 overflow-y-auto custom-scrollbar p-1">
+            <div className="flex-1 overflow-y-auto custom-scrollbar p-1 bg-gradient-to-b from-background to-muted/5">
                 {/* Config Section */}
-                <div className="px-2 py-2 mt-2 flex items-center gap-2">
-                    <span className="w-1 h-1 bg-muted-foreground/40"></span>
-                    <span className="text-[9px] font-mono font-bold text-muted-foreground/60 tracking-widest uppercase">SYSTEM_CONFIG</span>
+                <div className="px-2 py-2 mt-1 flex items-center gap-2 select-none">
+                    <span className="text-[9px] font-mono font-bold text-muted-foreground/40 tracking-widest uppercase">CONFIG</span>
                     <div className="h-px bg-border/40 flex-1"></div>
                 </div>
-                <div className="space-y-1 mb-4">
+                <div className="space-y-0.5 mb-4">
                     {DATA_FILES.map(f => (
-                        <div key={f.name} onClick={() => loadFile(f.name, true, f.path)} className={cn("group flex items-center text-xs p-2 border-l transition-all cursor-pointer select-none", filename === f.name ? "bg-primary/5 border-primary text-primary" : "border-transparent text-muted-foreground hover:bg-muted/10 hover:text-foreground hover:border-muted-foreground/30")}>
+                        <div key={f.name} onClick={() => loadFile(f.name, true, f.path)} className={cn("group flex items-center text-xs px-2 py-1.5 border-l-2 transition-all cursor-pointer select-none", filename === f.name ? "bg-primary/10 border-primary text-primary" : "border-transparent text-muted-foreground hover:bg-muted/20 hover:text-foreground hover:border-muted-foreground/30")}>
                             <span className={cn("icon-[ph--brackets-curly] size-3 mr-2 transition-opacity", filename === f.name ? "opacity-100" : "opacity-50 group-hover:opacity-80")}></span>
-                            <span className="font-mono truncate">{f.label}</span>
-                            {filename === f.name && <span className="ml-auto text-[9px] font-bold animate-pulse">●</span>}
+                            <span className="font-mono truncate text-[11px]">{f.label}</span>
                         </div>
                     ))}
                 </div>
 
                 {/* Posts Section */}
-                <div className="px-2 py-2 mt-2 flex items-center gap-2">
-                    <span className="w-1 h-1 bg-muted-foreground/40"></span>
-                    <span className="text-[9px] font-mono font-bold text-muted-foreground/60 tracking-widest uppercase">POST_ARCHIVE</span>
+                <div className="px-2 py-2 mt-2 flex items-center gap-2 select-none">
+                    <span className="text-[9px] font-mono font-bold text-muted-foreground/40 tracking-widest uppercase">ARCHIVE</span>
                     <div className="h-px bg-border/40 flex-1"></div>
                 </div>
                 <div className="space-y-px">
                     {isLoadingFiles ? (
-                        <div className="p-4 text-center">
-                            <span className="icon-[ph--spinner] animate-spin text-primary size-5 opacity-50"></span>
+                        <div className="p-8 text-center opacity-50">
+                            <span className="icon-[ph--spinner] animate-spin text-primary size-4"></span>
                         </div>
                     ) : remoteFiles.map(f => (
-                        <div key={f.sha} className={cn("group flex justify-between items-center text-xs p-2 border-l transition-all cursor-pointer", filename === f.name ? "bg-primary/5 border-primary font-medium text-foreground" : "border-transparent text-muted-foreground hover:bg-muted/10 hover:border-muted-foreground/30 hover:text-foreground")}>
-                            <span onClick={() => loadFile(f.name)} className="font-mono truncate flex-1">{f.name.replace('.md', '')}</span>
-                            <button onClick={(e) => { e.stopPropagation(); stageForDelete(f); }} className="text-muted-foreground hover:text-red-500 hover:bg-red-500/10 size-5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all"><span className="icon-[ph--trash] size-3"></span></button>
+                        <div key={f.sha} className={cn("group flex justify-between items-center text-xs px-2 py-1.5 border-l-2 transition-all cursor-pointer", filename === f.name ? "bg-primary/10 border-primary font-medium text-foreground" : "border-transparent text-muted-foreground hover:bg-muted/20 hover:border-muted-foreground/30 hover:text-foreground")}>
+                            <span onClick={() => loadFile(f.name)} className="font-mono truncate flex-1 text-[11px]">{f.name.replace('.md', '')}</span>
+                            <button onClick={(e) => { e.stopPropagation(); stageForDelete(f); }} className="text-muted-foreground hover:text-red-500 hover:bg-red-500/10 size-5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all rounded-sm"><span className="icon-[ph--trash] size-3"></span></button>
                         </div>
                     ))}
                 </div>
@@ -880,38 +882,77 @@ ${body}`;
 
          {/* 2. WORKSTATION */}
          <div className={cn(
-             "lg:col-span-7 flex-col border md:border-x-0 border-border bg-background lg:flex", 
-             mobileView === 'editor' ? 'flex h-[80vh] lg:h-auto' : 'hidden'
+             "flex-col border-x border-b lg:border-y lg:border-x-0 border-border bg-background lg:flex transition-all duration-300", 
+             mobileView === 'editor' ? 'flex h-[80vh] lg:h-auto' : 'hidden',
+             // Dynamic spanning logic
+             showLeftPanel && showRightPanel ? "lg:col-span-7" :
+             !showLeftPanel && showRightPanel ? "lg:col-span-9" :
+             showLeftPanel && !showRightPanel ? "lg:col-span-10" :
+             "lg:col-span-12"
          )}>
-            {/* Toolbar */}
-            <div className="flex gap-2 justify-between items-center p-2 border-b border-border bg-muted/5">
-                <div className="flex items-center gap-0 flex-1 border border-border/40 bg-background h-8 px-2 relative">
-                    <div className="absolute -left-px -top-px -bottom-px w-0.5 bg-primary/60"></div>
-                    <span className={cn("size-4 text-muted-foreground shrink-0 mr-2", currentMode === 'data' ? "icon-[ph--brackets-curly]" : "icon-[ph--file-text]")}></span>
-                    <input value={filename} onChange={e => setFilename(e.target.value)} disabled={currentMode === 'data'} placeholder="FILENAME.MD" className="bg-transparent text-xs font-mono w-full focus:outline-none uppercase tracking-wide placeholder:text-muted-foreground/40" />
+            {/* Toolbar Optimized - Height fixed to h-10 to match headers */}
+            <div className="h-10 flex justify-between items-center border-b border-border bg-background relative z-10">
+                
+                {/* Left Side: Collapse Btn + Input */}
+                <div className="flex items-center h-full flex-1 min-w-0">
+                   {/* Left Panel Toggle */}
+                   <button 
+                     onClick={() => setShowLeftPanel(!showLeftPanel)} 
+                     className="hidden lg:flex h-full w-8 items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/5 border-r border-border transition-colors focus:outline-none"
+                     title={showLeftPanel ? "Collapse Sidebar" : "Expand Sidebar"}
+                   >
+                      <span className={cn("size-3.5 transition-transform", showLeftPanel ? "" : "rotate-180", "icon-[ph--caret-left]")}></span>
+                   </button>
+
+                   {/* Filename Input Area */}
+                   <div className="flex items-center gap-2 flex-1 px-3 h-full max-w-sm">
+                       <span className={cn("size-4 text-muted-foreground/50 shrink-0", currentMode === 'data' ? "icon-[ph--brackets-curly]" : "icon-[ph--file-text]")}></span>
+                       <div className="h-4 w-px bg-border/60 mx-1"></div>
+                       <div className="flex-1 flex items-center overflow-hidden">
+                           <span className="text-[9px] text-muted-foreground/30 font-mono mr-2 select-none hidden sm:block">FILE ::</span>
+                           <input 
+                                value={filename} 
+                                onChange={e => setFilename(e.target.value)} 
+                                disabled={currentMode === 'data'} 
+                                placeholder="UNTITLED_FILE" 
+                                className="bg-transparent text-xs font-mono font-medium w-full focus:outline-none uppercase tracking-wider placeholder:text-muted-foreground/20 text-foreground" 
+                           />
+                       </div>
+                   </div>
                 </div>
 
-                <div className="flex items-center gap-1 shrink-0">
-                    {currentMode === 'post' ? (
-                        <>
-                            <button onClick={() => triggerUpload('body')} className="size-8 flex items-center justify-center hover:bg-primary/10 hover:text-primary border border-transparent hover:border-primary/20 transition-all" title="Img"><span className="icon-[ph--image] size-4"></span></button>
-                            <button onClick={() => setShowMetaConfig(!showMetaConfig)} className={cn("size-8 flex items-center justify-center hover:bg-primary/10 hover:text-primary border border-transparent hover:border-primary/20 transition-all", showMetaConfig && "text-primary border-primary/20 bg-primary/5")}><span className="icon-[ph--sliders-horizontal] size-4"></span></button>
-                        </>
-                    ) : (
-                        <>
-                           <button onClick={() => setEditorMode(editorMode === 'visual' ? 'raw' : 'visual')} className="flex items-center gap-2 h-8 px-3 hover:bg-primary/10 text-[10px] font-mono border border-border/40 hover:border-primary/40 transition-all uppercase tracking-wider">
-                              <span className={cn("icon-[ph--eye] size-3", editorMode === 'visual' && 'text-primary')}></span>
-                              <span className="hidden sm:inline">{editorMode === 'visual' ? 'UI_VIEW' : 'CODE_VIEW'}</span>
-                           </button>
-                           {editorMode === 'raw' && <button onClick={() => triggerUpload('json_raw')} className="size-8 flex items-center justify-center hover:bg-muted text-xs border border-transparent"><span className="icon-[ph--image] size-4"></span></button>}
-                        </>
-                    )}
-                    <div className="hidden md:block h-4 w-px bg-border/40 mx-2"></div>
-                    <button onClick={stageForWrite} className="flex items-center gap-2 bg-primary text-primary-foreground h-8 px-2.5 text-[10px] font-mono font-bold hover:brightness-110 tracking-widest uppercase transition-all relative overflow-hidden group">
-                        <span className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-300"></span>
+                {/* Right Side: Tools + Right Toggle */}
+                <div className="flex items-center h-full">
+                    <div className="flex items-center gap-px px-2 h-1/2 border-l border-border/40">
+                        {currentMode === 'post' ? (
+                            <>
+                                <button onClick={() => triggerUpload('body')} className="size-7 flex items-center justify-center hover:bg-primary/10 hover:text-primary text-muted-foreground rounded-sm transition-all" title="Insert Image"><span className="icon-[ph--image] size-4"></span></button>
+                                <button onClick={() => setShowMetaConfig(!showMetaConfig)} className={cn("size-7 flex items-center justify-center hover:bg-primary/10 hover:text-primary text-muted-foreground rounded-sm transition-all", showMetaConfig && "text-primary bg-primary/5")} title="Metadata"><span className="icon-[ph--sliders-horizontal] size-4"></span></button>
+                            </>
+                        ) : (
+                            <>
+                               <button onClick={() => setEditorMode(editorMode === 'visual' ? 'raw' : 'visual')} className="flex items-center gap-1.5 h-6 px-2 hover:bg-primary/10 text-[9px] font-mono text-muted-foreground hover:text-primary border border-transparent hover:border-primary/20 rounded-sm transition-all uppercase tracking-wider">
+                                  <span className={cn("icon-[ph--eye] size-3", editorMode === 'visual' && 'text-primary')}></span>
+                                  <span className="hidden sm:inline">{editorMode === 'visual' ? 'UI' : 'CODE'}</span>
+                               </button>
+                               {editorMode === 'raw' && <button onClick={() => triggerUpload('json_raw')} className="size-6 flex items-center justify-center hover:bg-muted text-xs"><span className="icon-[ph--image] size-3.5"></span></button>}
+                            </>
+                        )}
+                    </div>
+                    
+                    <button onClick={stageForWrite} className="flex items-center gap-2 bg-primary text-primary-foreground h-10 px-4 text-[10px] font-mono font-bold hover:bg-primary/90 tracking-widest uppercase transition-all border-l border-primary/50">
                         <span className="icon-[ph--plus] size-3"></span>
-                        <span className="hidden sm:inline">STAGING</span>
+                        <span className="hidden sm:inline">STAGE</span>
                     </button>
+
+                    {/* Right Panel Toggle */}
+                    <button 
+                        onClick={() => setShowRightPanel(!showRightPanel)} 
+                        className="hidden lg:flex h-full w-8 items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/5 border-l border-border transition-colors focus:outline-none"
+                        title={showRightPanel ? "Collapse Buffer" : "Expand Buffer"}
+                    >
+                      <span className={cn("size-3.5 transition-transform", showRightPanel ? "" : "rotate-180", "icon-[ph--caret-right]")}></span>
+                   </button>
                 </div>
             </div>
 
@@ -926,7 +967,7 @@ ${body}`;
                 {currentMode === 'post' && (
                     <>
                         {showMetaConfig && (
-                            <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 p-4 border-b border-border/40 bg-muted/5 text-xs shrink-0 shadow-inner">
+                            <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 p-4 border-b border-border/40 bg-muted/5 text-xs shrink-0 shadow-[inset_0_-10px_20px_rgba(0,0,0,0.02)]">
                                 <div className="sm:col-span-4 space-y-1">
                                   <label className="text-[9px] font-mono text-muted-foreground/70 uppercase tracking-widest">Post Title</label>
                                   <input value={meta.title} onChange={e=>setMeta({...meta, title: e.target.value})} className="w-full h-9 bg-background border border-border focus:border-primary px-3 font-mono text-sm focus:outline-none transition-colors placeholder:text-muted-foreground/20" placeholder="ENTER TITLE..." />
@@ -970,7 +1011,7 @@ ${body}`;
                                 </div>
                             </div>
                         )}
-                        <textarea ref={textareaRef} value={body} onChange={e => setBody(e.target.value)} className="flex-1 p-6 bg-transparent text-sm font-mono leading-relaxed resize-none focus:outline-none custom-scrollbar placeholder:text-muted-foreground/20" placeholder="// INITIATE MARKDOWN SEQUENCE..." spellCheck={false}/>
+                        <textarea ref={textareaRef} value={body} onChange={e => setBody(e.target.value)} className="flex-1 p-6 bg-transparent text-sm font-mono leading-relaxed resize-none focus:outline-none custom-scrollbar placeholder:text-muted-foreground/20 selection:bg-primary/20" placeholder="// INITIATE MARKDOWN SEQUENCE..." spellCheck={false}/>
                     </>
                 )}
                 {currentMode === 'data' && (
@@ -988,24 +1029,26 @@ ${body}`;
 
          {/* 3. BUFFER */}
          <div className={cn(
-             "lg:col-span-3 flex-col border border-border bg-background lg:flex", 
-             mobileView === 'queue' ? 'flex h-[60vh] lg:h-auto' : 'hidden'
+             "flex-col border-x border-b lg:border-y border-border bg-background lg:col-span-3 transition-all duration-300", 
+             mobileView === 'queue' ? 'flex h-[60vh] lg:h-auto' : 'hidden',
+             // Wide screen visibility toggle
+             showRightPanel ? 'lg:flex' : 'lg:hidden'
          )}>
-            <div className="px-3 py-[14.5px] border-b border-border flex justify-between items-center bg-muted/10 backdrop-blur-sm">
+            <div className="h-10 px-3 border-b border-border flex justify-between items-center bg-muted/10 backdrop-blur-sm">
               <div className="flex items-center gap-2">
-                 <div className="w-1 h-3 bg-yellow-500/50"></div>
-                 <span className="text-xs font-mono font-bold tracking-wider">BUFFER_ZONE</span>
+                 <div className="size-1.5 bg-yellow-500/50 rounded-full"></div>
+                 <span className="text-[10px] font-mono font-bold tracking-wider opacity-80">BUFFER_ZONE</span>
               </div>
-              <span className="text-[10px] font-mono text-muted-foreground bg-border/50 px-1.5 py-0.5">{queue.length} OPS</span>
+              <span className="text-[9px] font-mono text-muted-foreground bg-border/50 px-1.5 py-0.5 rounded-sm">{queue.length} OPS</span>
             </div>
             
             <div className="flex-1 overflow-y-auto p-3 space-y-3 custom-scrollbar bg-muted/5">
                 {queue.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center h-full text-muted-foreground/30">
-                    <div className="border border-current p-3 mb-2 rounded-none">
+                  <div className="flex flex-col items-center justify-center h-full text-muted-foreground/30 select-none">
+                    <div className="border-2 border-dashed border-current p-3 mb-2 rounded-lg opacity-50">
                         <span className="icon-[ph--queue] size-6 block"></span>
                     </div>
-                    <span className="text-[10px] font-mono uppercase tracking-widest">No pending tasks</span>
+                    <span className="text-[10px] font-mono uppercase tracking-widest">Buffer Empty</span>
                   </div>
                 ) : (
                   queue.map(item => (
@@ -1014,18 +1057,18 @@ ${body}`;
                         <div className={cn("absolute left-0 top-0 bottom-0 w-1 transition-all", item.status === 'done' ? 'bg-emerald-500' : item.status === 'processing' ? 'bg-yellow-500 animate-pulse' : item.type === 'delete' ? 'bg-red-500' : 'bg-primary')}></div>
                         
                         <div className="flex justify-between items-start pl-2">
-                          <span className={cn("text-[9px] font-bold uppercase tracking-wider border px-1", item.type === 'delete' ? 'border-red-500/30 text-red-500 bg-red-500/5' : 'border-primary/30 text-primary bg-primary/5')}>
+                          <span className={cn("text-[9px] font-bold uppercase tracking-wider border px-1 rounded-sm", item.type === 'delete' ? 'border-red-500/30 text-red-500 bg-red-500/5' : 'border-primary/30 text-primary bg-primary/5')}>
                             {item.type === 'delete' ? 'DEL' : 'WRI'} : {item.isDataFile ? 'DATA' : 'POST'}
                           </span>
                           <div className="flex gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                             {item.type === 'write' && (
-                                <button onClick={() => loadFromQueue(item)} className="hover:bg-primary/10 border border-transparent hover:border-primary/30 p-1 text-primary transition-all" title="Recall">
-                                  <span className="icon-[ph--pencil-simple] size-3"></span>
+                                <button onClick={() => loadFromQueue(item)} className="hover:bg-primary/10 border border-transparent hover:border-primary/30 p-0.5 rounded-sm text-primary transition-all" title="Recall">
+                                  <span className="icon-[ph--pencil-simple] size-3.5"></span>
                                 </button>
                             )}
                             {item.status === 'pending' && (
-                                <button onClick={(e)=>removeFromQueue(item.id, e)} className="hover:bg-red-500/10 border border-transparent hover:border-red-500/30 p-1 text-muted-foreground hover:text-red-500 transition-all" title="Discard">
-                                  <span className="icon-[ph--x] size-3"></span>
+                                <button onClick={(e)=>removeFromQueue(item.id, e)} className="hover:bg-red-500/10 border border-transparent hover:border-red-500/30 p-0.5 rounded-sm text-muted-foreground hover:text-red-500 transition-all" title="Discard">
+                                  <span className="icon-[ph--x] size-3.5"></span>
                                 </button>
                             )}
                           </div>
@@ -1034,7 +1077,7 @@ ${body}`;
                         <div className="pl-2">
                              <div className="text-xs font-mono font-bold truncate text-foreground" title={item.filename}>{item.filename.split('/').pop()}</div>
                              {item.type === 'write' && (
-                                <div className="text-[10px] text-muted-foreground mt-1 border-l border-border/40 pl-2 line-clamp-2 font-mono opacity-70">
+                                <div className="text-[10px] text-muted-foreground mt-1 border-l-2 border-border/40 pl-2 line-clamp-2 font-mono opacity-70 italic">
                                     {item.content || '...'}
                                 </div>
                              )}
