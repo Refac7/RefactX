@@ -828,7 +828,7 @@ ${body}`;
          
          {/* 1. DATA BANK (Left Panel) */}
          <div className={cn(
-             "flex-col border-x border-b lg:border-y border-border bg-background/50 transition-all duration-300 ease-linear overflow-hidden relative", 
+             "flex-col border-l border-b lg:border-y border-border bg-background/50 transition-all duration-300 ease-linear overflow-hidden relative", 
              mobileView === 'files' ? 'flex h-[65vh] lg:h-auto' : 'hidden',
              // Visibility Logic
              showLeftPanel ? 'lg:flex lg:col-span-2 opacity-100' : 'lg:hidden lg:col-span-0 opacity-0 w-0'
@@ -1031,7 +1031,7 @@ ${body}`;
 
          {/* 3. BUFFER (Right Panel) */}
          <div className={cn(
-             "flex-col border-x border-b lg:border-y border-border bg-background transition-all duration-300 ease-linear overflow-hidden", 
+             "flex-col border-r border-b lg:border-y border-border bg-background transition-all duration-300 ease-linear overflow-hidden", 
              mobileView === 'queue' ? 'flex h-[60vh] lg:h-auto' : 'hidden',
              // Visibility Logic
              showRightPanel ? 'lg:flex lg:col-span-3 opacity-100' : 'lg:hidden lg:col-span-0 opacity-0 w-0'

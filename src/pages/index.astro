@@ -56,18 +56,11 @@ const LAYOUT_CONTAINER = "mx-auto px-6 sm:px-8"
       </div>
 
       <!-- 顶部状态栏 -->
-      <!-- 修改 1: 外层改为 flex-row justify-between items-start，确保左右两部分始终在同一行，且顶部对齐 -->
       <div class="flex flex-row justify-between items-start text-[10px] mb-16 sm:mb-24 lg:mb-72 font-mono uppercase tracking-widest text-muted-foreground/60 select-none">
         
         <!-- 左侧版本信息 -->
         <span>// IDENTITY_CORE // V.1.6</span>
-        
-        <!-- 右侧状态组 -->
-        <!-- 修改 2: 
-             - flex-col-reverse: 保持移动端上下堆叠，且 Online(DOM中在后) 显示在上方
-             - items-end: 移动端靠右对齐
-             - sm:items-center: 大屏恢复垂直居中
-        -->
+
         <div class="flex flex-col-reverse items-end gap-2 sm:flex-row sm:items-center sm:gap-6">
             <!-- 特效开关按钮 (在 flex-col-reverse 下显示在底部) -->
             <button id="snow-toggle" class="group flex items-center gap-1.5 hover:text-primary transition-colors cursor-pointer focus:outline-none" aria-label="Toggle Effects">
@@ -92,12 +85,12 @@ const LAYOUT_CONTAINER = "mx-auto px-6 sm:px-8"
         <!-- 左侧：核心标题 -->
         <div class="lg:col-span-7">
           <div class="mb-3 sm:mb-4">
-            <span class="font-mono text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-primary/80">
+            <span class="font-mono text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-primary/90">
               :: Identify User
             </span>
           </div>
-          
-          <h1 class="relative inline-block text-7xl md:text-8xl font-bold tracking-tighter text-foreground leading-[0.9] -ml-1">
+
+          <h1 class="relative inline-block text-7xl md:text-8xl font-bold tracking-tighter text-primary/80 leading-[0.9] -ml-1">
             <span class="relative z-10">Refac<span class="text-primary">7</span>.</span>
             <span class="absolute bottom-2 left-0 w-full h-4 bg-red-600/80 -z-0 opacity-80 -skew-x-6"></span>
           </h1>
@@ -124,7 +117,7 @@ const LAYOUT_CONTAINER = "mx-auto px-6 sm:px-8"
         <div class="lg:col-span-5 flex flex-col gap-6">
           <!-- 简介 -->
           <div class="border-l border-primary/40 pl-5">
-            <p class="text-base text-muted-foreground leading-relaxed">
+            <p class="text-base sm:text-lg text-muted-foreground leading-relaxed">
               你好，我是 Refac7。一名试图在代码的混沌中寻找秩序的时空修剪者。
               <span class="block mt-2 text-xs font-mono text-muted-foreground/60">
                 > TARGET: Transparency, Clarity, Reality.
