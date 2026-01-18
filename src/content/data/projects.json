@@ -1,5 +1,15 @@
 [
   {
+    "name": "Cover_Forge",
+    "description": "基于 Astro 的文章封面生成器",
+    "website": "https://cover.refact.cc",
+    "githubUrl": "https://github.com/refac7/cover-forge",
+    "type": "icon",
+    "icon": "icon-[ri--pages-line]",
+    "star": "0",
+    "fork": "0"
+  },
+  {
     "name": "RefactZ",
     "description": "基于 Astro 开发的 Material Design 3 风格轻量简洁个人主页。",
     "githubUrl": "https://github.com/Refac7/RefactZ_Template",
