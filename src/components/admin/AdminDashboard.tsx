@@ -825,14 +825,15 @@ ${body}`;
       </div>
 
       <div className="flex-1 flex flex-col lg:grid lg:grid-cols-12 relative border-t border-border lg:border-t-0 bg-background overflow-hidden">
-         
-         {/* 1. DATA BANK (Left Panel) */}
-         <div className={cn(
-             "flex-col border-l border-b lg:border-y border-border bg-background/50 transition-all duration-300 ease-linear overflow-hidden relative", 
-             mobileView === 'files' ? 'flex h-[65vh] lg:h-auto' : 'hidden',
-             // Visibility Logic
-             showLeftPanel ? 'lg:flex lg:col-span-2 opacity-100' : 'lg:hidden lg:col-span-0 opacity-0 w-0'
-         )}>
+          
+          {/* 1. DATA BANK (Left Panel) */}
+          {/* 修复：移动端使用 border-x 补全两侧，PC端重置 x 轴并仅应用 border-l，防止与中面板边框重叠 */}
+          <div className={cn(
+              "flex-col border-b border-x lg:border-x-0 lg:border-l lg:border-y border-border bg-background/50 transition-all duration-300 ease-linear overflow-hidden relative", 
+              mobileView === 'files' ? 'flex h-[65vh] lg:h-auto' : 'hidden',
+              // Visibility Logic
+              showLeftPanel ? 'lg:flex lg:col-span-2 opacity-100' : 'lg:hidden lg:col-span-0 opacity-0 w-0'
+          )}>
             {/* Panel Header */}
             <div className="h-10 px-3 border-b border-border flex justify-between items-center bg-muted/10 backdrop-blur-md sticky top-0 z-10">
                 <div className="flex items-center gap-2">
@@ -879,49 +880,50 @@ ${body}`;
                     ))}
                 </div>
             </div>
-         </div>
+          </div>
 
-         {/* 2. WORKSTATION (Middle Panel) */}
-         <div className={cn(
-             "flex-col border-x border-b lg:border-y border-border bg-background lg:flex transition-[grid-column] duration-300 ease-linear relative z-0", 
-             mobileView === 'editor' ? 'flex h-[80vh] lg:h-auto' : 'hidden',
-             // Dynamic Spanning Logic:
-             // All Open (2 | 7 | 3)
-             showLeftPanel && showRightPanel ? "lg:col-span-7" :
-             // Left Closed, Right Open (0 | 9 | 3)
-             !showLeftPanel && showRightPanel ? "lg:col-span-9" :
-             // Left Open, Right Closed (2 | 10 | 0)
-             showLeftPanel && !showRightPanel ? "lg:col-span-10" :
-             // All Closed (12)
-             "lg:col-span-12"
-         )}>
+          {/* 2. WORKSTATION (Middle Panel) */}
+          {/* 修复：移动端确保 border-x 和 border-b 完整；PC端保持 border-x (提供左右分割线) 和 border-y */}
+          <div className={cn(
+              "flex-col border-b border-x lg:border-y border-border bg-background lg:flex transition-[grid-column] duration-300 ease-linear relative z-0", 
+              mobileView === 'editor' ? 'flex h-[80vh] lg:h-auto' : 'hidden',
+              // Dynamic Spanning Logic:
+              // All Open (2 | 7 | 3)
+              showLeftPanel && showRightPanel ? "lg:col-span-7" :
+              // Left Closed, Right Open (0 | 9 | 3)
+              !showLeftPanel && showRightPanel ? "lg:col-span-9" :
+              // Left Open, Right Closed (2 | 10 | 0)
+              showLeftPanel && !showRightPanel ? "lg:col-span-10" :
+              // All Closed (12)
+              "lg:col-span-12"
+          )}>
             {/* Toolbar */}
             <div className="h-10 flex justify-between items-center border-b border-border bg-background relative z-10">
                 
                 {/* Left Side */}
                 <div className="flex items-center h-full flex-1 min-w-0">
-                   <button 
-                     onClick={() => setShowLeftPanel(!showLeftPanel)} 
-                     className="hidden lg:flex h-full w-8 items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/5 border-r border-border transition-colors focus:outline-none"
-                     title={showLeftPanel ? "Collapse Sidebar" : "Expand Sidebar"}
-                   >
+                    <button 
+                      onClick={() => setShowLeftPanel(!showLeftPanel)} 
+                      className="hidden lg:flex h-full w-8 items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/5 border-r border-border transition-colors focus:outline-none"
+                      title={showLeftPanel ? "Collapse Sidebar" : "Expand Sidebar"}
+                    >
                       <span className={cn("size-3.5 transition-transform duration-300", showLeftPanel ? "" : "rotate-180", "icon-[ph--caret-left]")}></span>
-                   </button>
+                    </button>
 
-                   <div className="flex items-center gap-2 flex-1 px-3 h-full max-w-md">
-                       <span className={cn("size-4 text-muted-foreground/50 shrink-0", currentMode === 'data' ? "icon-[ph--brackets-curly]" : "icon-[ph--file-text]")}></span>
-                       <div className="h-4 w-px bg-border/60 mx-1"></div>
-                       <div className="flex-1 flex items-center overflow-hidden">
-                           <span className="text-[9px] text-muted-foreground/30 font-mono mr-2 select-none hidden sm:block">FILE ::</span>
-                           <input 
+                    <div className="flex items-center gap-2 flex-1 px-3 h-full max-w-md">
+                        <span className={cn("size-4 text-muted-foreground/50 shrink-0", currentMode === 'data' ? "icon-[ph--brackets-curly]" : "icon-[ph--file-text]")}></span>
+                        <div className="h-4 w-px bg-border/60 mx-1"></div>
+                        <div className="flex-1 flex items-center overflow-hidden">
+                            <span className="text-[9px] text-muted-foreground/30 font-mono mr-2 select-none hidden sm:block">FILE ::</span>
+                            <input 
                                 value={filename} 
                                 onChange={e => setFilename(e.target.value)} 
                                 disabled={currentMode === 'data'} 
                                 placeholder="UNTITLED_FILE" 
                                 className="bg-transparent text-xs font-mono font-medium w-full focus:outline-none uppercase tracking-wider placeholder:text-muted-foreground/20 text-foreground" 
-                           />
-                       </div>
-                   </div>
+                            />
+                        </div>
+                    </div>
                 </div>
 
                 {/* Right Side */}
@@ -934,11 +936,11 @@ ${body}`;
                             </>
                         ) : (
                             <>
-                               <button onClick={() => setEditorMode(editorMode === 'visual' ? 'raw' : 'visual')} className="flex items-center gap-1.5 h-6 px-2 hover:bg-primary/10 text-[9px] font-mono text-muted-foreground hover:text-primary border border-transparent hover:border-primary/20 transition-all uppercase tracking-wider">
+                                <button onClick={() => setEditorMode(editorMode === 'visual' ? 'raw' : 'visual')} className="flex items-center gap-1.5 h-6 px-2 hover:bg-primary/10 text-[9px] font-mono text-muted-foreground hover:text-primary border border-transparent hover:border-primary/20 transition-all uppercase tracking-wider">
                                   <span className={cn("icon-[ph--eye] size-3", editorMode === 'visual' && 'text-primary')}></span>
                                   <span className="hidden sm:inline">{editorMode === 'visual' ? 'UI' : 'CODE'}</span>
-                               </button>
-                               {editorMode === 'raw' && <button onClick={() => triggerUpload('json_raw')} className="size-6 flex items-center justify-center hover:bg-muted text-xs"><span className="icon-[ph--image] size-3.5"></span></button>}
+                                </button>
+                                {editorMode === 'raw' && <button onClick={() => triggerUpload('json_raw')} className="size-6 flex items-center justify-center hover:bg-muted text-xs"><span className="icon-[ph--image] size-3.5"></span></button>}
                             </>
                         )}
                     </div>
@@ -954,7 +956,7 @@ ${body}`;
                         title={showRightPanel ? "Collapse Buffer" : "Expand Buffer"}
                     >
                       <span className={cn("size-3.5 transition-transform duration-300", showRightPanel ? "" : "rotate-180", "icon-[ph--caret-right]")}></span>
-                   </button>
+                    </button>
                 </div>
             </div>
 
@@ -1027,20 +1029,21 @@ ${body}`;
                     </>
                 )}
             </div>
-         </div>
+          </div>
 
-         {/* 3. BUFFER (Right Panel) */}
-         <div className={cn(
-             "flex-col border-r border-b lg:border-y border-border bg-background transition-all duration-300 ease-linear overflow-hidden", 
-             mobileView === 'queue' ? 'flex h-[60vh] lg:h-auto' : 'hidden',
-             // Visibility Logic
-             showRightPanel ? 'lg:flex lg:col-span-3 opacity-100' : 'lg:hidden lg:col-span-0 opacity-0 w-0'
-         )}>
+          {/* 3. BUFFER (Right Panel) */}
+          {/* 修复：移动端使用 border-x 补全两侧，PC端重置 x 轴并仅应用 border-r，防止与中面板边框重叠 */}
+          <div className={cn(
+              "flex-col border-b border-x lg:border-x-0 lg:border-r lg:border-y border-border bg-background transition-all duration-300 ease-linear overflow-hidden", 
+              mobileView === 'queue' ? 'flex h-[60vh] lg:h-auto' : 'hidden',
+              // Visibility Logic
+              showRightPanel ? 'lg:flex lg:col-span-3 opacity-100' : 'lg:hidden lg:col-span-0 opacity-0 w-0'
+          )}>
             <div className="h-10 px-3 border-b border-border flex justify-between items-center bg-muted/10 backdrop-blur-md sticky top-0 z-10">
               <div className="flex items-center gap-2">
-                 {/* Square Status Dot */}
-                 <div className="size-1.5 bg-yellow-500/50"></div>
-                 <span className="text-[10px] font-mono font-bold tracking-wider opacity-80">BUFFER_ZONE</span>
+                  {/* Square Status Dot */}
+                  <div className="size-1.5 bg-yellow-500/50"></div>
+                  <span className="text-[10px] font-mono font-bold tracking-wider opacity-80">BUFFER_ZONE</span>
               </div>
               <span className="text-[9px] font-mono text-muted-foreground bg-border/50 px-1.5 py-0.5">{queue.length} OPS</span>
             </div>
@@ -1078,12 +1081,12 @@ ${body}`;
                         </div>
                         
                         <div className="pl-2">
-                             <div className="text-xs font-mono font-bold truncate text-foreground" title={item.filename}>{item.filename.split('/').pop()}</div>
-                             {item.type === 'write' && (
+                              <div className="text-xs font-mono font-bold truncate text-foreground" title={item.filename}>{item.filename.split('/').pop()}</div>
+                              {item.type === 'write' && (
                                 <div className="text-[10px] text-muted-foreground mt-1 border-l-2 border-border/40 pl-2 line-clamp-2 font-mono opacity-70 italic">
                                     {item.content || '...'}
                                 </div>
-                             )}
+                              )}
                         </div>
                     </div>
                   ))
@@ -1101,9 +1104,9 @@ ${body}`;
                     : "bg-primary text-primary-foreground border-primary hover:bg-primary/90 shadow-[0_0_10px_rgba(var(--primary),0.3)]"
                 )}
               >
-                 {/* Scanline effect */}
-                 {!isProcessingQueue && queue.length > 0 && <div className="absolute inset-0 bg-white/10 translate-y-[-100%] group-hover:translate-y-[100%] transition-transform duration-700 ease-in-out"></div>}
-                 
+                  {/* Scanline effect */}
+                  {!isProcessingQueue && queue.length > 0 && <div className="absolute inset-0 bg-white/10 translate-y-[-100%] group-hover:translate-y-[100%] transition-transform duration-700 ease-in-out"></div>}
+                  
                 {isProcessingQueue ? (
                   <span className="flex items-center justify-center gap-2">
                     <span className="icon-[ph--spinner] animate-spin size-3"></span>
@@ -1120,7 +1123,7 @@ ${body}`;
                 </div>
               )}
             </div>
-         </div>
+          </div>
       </div>
     </div>
   );

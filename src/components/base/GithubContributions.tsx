@@ -169,7 +169,7 @@ export default function GithubContributions({ username, tooltipEnabled }: Props)
                     <Tooltip key={dayIndex} content={tooltipText} disabled={!tooltipEnabled || error}>
                       <div
                         className={cn(
-                          'size-3.5 transition-all duration-300',
+                          'size-4 transition-all duration-300',
                           getLevelClass(count)
                         )}
                       />

@@ -1,593 +1,475 @@
 ---
+// ~/components/posts/base/Comments.astro
 import { WALINE_CONFIG } from "~/config";
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
 ---
 
-{WALINE_CONFIG.enableComment && (
-  <>
-    <div class="waline-section-title mx-2">
-      <span class="prefix text-4xl">//COMMENTS_</span>
+<div class={`waline-wrapper ${className || ''} relative z-10`}>
+  <!-- 头部装饰保持不变 -->
+  <div class="flex items-center justify-between mb-8 text-[10px] font-mono uppercase tracking-widest text-muted-foreground/60 select-none">
+    <span>// USER_FEEDBACK // DATA_STREAM</span>
+    <div class="flex items-center gap-2 text-primary">
+       <span class="relative flex h-1.5 w-1.5">
+         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
+         <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-600"></span>
+       </span>
+       <span class="font-bold text-foreground">LIVE_LINK</span>
     </div>
+  </div>
 
-    <div id="waline-container" class="waline-lazy">
-      <div class="waline-loading font-mono">Loading...</div>
+  <div class="mb-10 group select-none">
+    <h2 class="text-3xl sm:text-4xl font-bold tracking-tighter text-foreground leading-none flex items-end">
+      Comments<span class="text-primary animate-pulse">_</span>
+    </h2>
+    <div class="h-px w-full bg-gradient-to-r from-border via-border/50 to-transparent mt-4"></div>
+  </div>
+
+  <!-- Waline 容器 -->
+  <div id="waline-container" class="waline-lazy relative min-h-[200px]">
+    <div class="waline-loading absolute inset-0 flex flex-col items-center justify-center border border-dashed border-border bg-muted/5">
+        <div class="mb-4 size-10 flex items-center justify-center border border-dashed border-border/60 rounded-none animate-[spin_3s_linear_infinite]">
+            <span class="icon-[ph--spinner] size-5 text-muted-foreground"></span>
+        </div>
+        <div class="flex flex-col items-center gap-1">
+          <span class="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground/80">
+              Initializing_Protocol
+          </span>
+        </div>
     </div>
+  </div>
+</div>
 
-    <link
-      rel="stylesheet"
-      href="/css/waline.css"
-    />
+<link rel="stylesheet" href="/css/waline.css" />
 
 <style is:global>
-      /* =========================================
-         新增：标题样式
-         ========================================= */
-      .waline-section-title {
-        width: 100%;
-        margin-top: 3rem;       /* 与上方内容的间距 */
-        margin-bottom: 1rem;    /* 与评论区的间距 */
-        padding-bottom: 0.5rem; /* 文字与下划线的距离 */
+  /* =========================================
+     核心样式 (保持你的工业风设置)
+     ========================================= */
+  #waline {
+    --waline-font-size: 0.95rem !important;
+    --waline-line-height: 1.8 !important;
+    --waline-font-family: theme('fontFamily.sans') !important;
+    --waline-mono-font: theme('fontFamily.mono') !important;
+    --waline-theme-color: hsl(var(--primary)) !important;
+    --waline-active-color: hsl(var(--primary)) !important;
+    --waline-bgcolor: hsl(var(--background)) !important;
+    --waline-bgcolor-light: hsl(var(--muted) / 0.3) !important;
+    --waline-bgcolor-hover: hsl(var(--muted) / 0.5) !important;
+    --waline-border-color: hsl(var(--border)) !important;
+    --waline-disable-bg-color: hsl(var(--muted)) !important;
+    --waline-disable-color: hsl(var(--muted-foreground)) !important;
+    --waline-color: hsl(var(--foreground)) !important;
+    --waline-info-color: hsl(var(--muted-foreground)) !important;
+    --waline-code-bg-color: hsl(var(--muted) / 0.3) !important;
+    --waline-box-shadow: none !important;
+    --waline-avatar-radius: 0 !important; 
+    --waline-border: 1px solid var(--waline-border-color) !important;
+  }
 
-        /* 字体与排版 */
-        font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, monospace;
-        font-size: 0.875rem;
-        font-weight: 600;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        
-        /* 使用全局主题变量 */
-        color: hsl(var(--foreground)); 
-        border-bottom: 1px solid hsl(var(--border));
+  /* 通用重置 */
+  #waline * { border-radius: 0 !important; }
+
+  /* 输入框 */
+  #waline .wl-panel {
+    border: 1px solid hsl(var(--border)) !important;
+    background: hsl(var(--card) / 0.5) !important;
+    margin: 0 !important;
+    position: relative;
+    transition: border-color 0.3s ease;
+  }
+  #waline .wl-panel:focus-within {
+    border-color: hsl(var(--primary) / 0.5) !important;
+    background: hsl(var(--background)) !important;
+  }
+  
+  /* 输入框四角装饰 */
+  #waline .wl-panel::before, #waline .wl-panel::after {
+    content: ''; position: absolute; width: 8px; height: 8px;
+    border-color: hsl(var(--primary)); border-style: solid;
+    opacity: 0; transition: 0.3s; pointer-events: none; z-index: 20;
+  }
+  #waline .wl-panel::before { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+  #waline .wl-panel::after { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+  #waline .wl-panel:focus-within::before, #waline .wl-panel:focus-within::after { opacity: 1; }
+
+  /* 头部输入 */
+  #waline .wl-header { display: flex; border-bottom: 1px dashed hsl(var(--border)) !important; background: hsl(var(--muted) / 0.1) !important; }
+  #waline .wl-header-item { flex: 1; border-right: 1px dashed hsl(var(--border)) !important; padding: 0.75rem 1rem !important; }
+  #waline .wl-header-item:last-child { border-right: none !important; }
+  #waline .wl-header label { font-family: var(--waline-mono-font) !important; font-size: 0.65rem !important; font-weight: 700; color: hsl(var(--muted-foreground) / 0.7) !important; }
+  #waline .wl-input { font-family: var(--waline-mono-font) !important; background: transparent !important; color: hsl(var(--foreground)) !important; }
+
+  /* 编辑器 */
+  #waline .wl-editor { padding: 1rem 1.25rem !important; min-height: 10rem; color: hsl(var(--foreground)) !important; background: transparent !important; }
+
+  /* 底部操作栏 */
+  #waline .wl-footer { border-top: 1px dashed hsl(var(--border)) !important; background: hsl(var(--muted) / 0.05) !important; padding: 0.75rem 1rem !important; }
+
+  /* 提交按钮 */
+  #waline .wl-btn {
+    background: hsl(var(--primary)) !important; color: hsl(var(--primary-foreground)) !important;
+    border: 1px solid hsl(var(--primary)) !important; font-family: var(--waline-mono-font) !important;
+    font-size: 0.7rem !important; font-weight: 800 !important; letter-spacing: 0.15em;
+    padding: 0.6rem 1.5rem !important; text-transform: uppercase; margin-left: 1rem;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 10% 100%, 0 80%);
+  }
+  #waline .wl-btn:hover { background: hsl(var(--primary) / 0.9) !important; transform: translate(-1px, -1px); }
+
+  /* 评论列表 */
+  #waline .wl-cards { margin-top: 3rem !important; }
+  #waline .wl-card { border: none !important; border-left: 1px solid hsl(var(--border) / 0.5) !important; padding: 0 0 1.5rem 1.5rem !important; margin: 0 !important; position: relative; }
+  #waline .wl-card::before { content: ''; position: absolute; left: -3px; top: 1.7rem; width: 5px; height: 5px; background: hsl(var(--border)); transition: 0.3s; }
+  #waline .wl-card:hover::before { background: hsl(var(--primary)); }
+  #waline .wl-card:hover { border-left-color: hsl(var(--primary) / 0.3) !important; }
+
+  /* 头像与徽章 */
+  #waline .wl-head { display: flex !important; align-items: center !important; gap: 0.75rem !important; margin-bottom: 0.5rem; flex-wrap: wrap !important; }
+  #waline .wl-user-avatar { width: 2.25rem !important; height: 2.25rem !important; padding: 2px !important; border: 1px solid hsl(var(--border)) !important; background: hsl(var(--muted) / 0.1) !important; position: relative !important; overflow: visible !important; margin: 0 !important; }
+  #waline .wl-user-avatar > img:first-child { width: 100% !important; height: 100% !important; object-fit: cover !important; }
+  #waline .wl-user-avatar > img:not(:first-child), #waline .wl-user-avatar .wl-icon { width: 14px !important; height: 14px !important; position: absolute !important; bottom: -4px !important; right: -4px !important; background: hsl(var(--background)) !important; border: 1px solid hsl(var(--primary)) !important; padding: 1px !important; z-index: 10 !important; }
+  #waline .wl-nick { font-size: 0.9rem !important; font-weight: 700 !important; color: hsl(var(--foreground)) !important; margin: 0 !important; }
+  #waline .wl-badge { border: 1px solid hsl(var(--primary)) !important; color: hsl(var(--primary)) !important; background: transparent !important; font-size: 0.6rem !important; padding: 1px 5px !important; margin: 0 !important; display: inline-flex !important; align-items: center; }
+
+  /* 内容与引用 */
+  #waline .wl-content { font-size: 0.95rem !important; color: hsl(var(--foreground) / 0.9) !important; line-height: 1.75 !important; word-break: break-all; }
+  #waline .wl-quote { border-left: 2px solid hsl(var(--primary) / 0.5) !important; background: hsl(var(--muted) / 0.1) !important; color: hsl(var(--muted-foreground)) !important; font-family: var(--waline-mono-font) !important; padding: 0.5rem 1rem !important; }
+
+  /* Meta 与 按钮 */
+  #waline .wl-meta { display: flex !important; align-items: center !important; border-top: 1px dashed hsl(var(--border) / 0.4) !important; padding-top: 0.75rem !important; margin-top: 0.5rem !important; flex-wrap: wrap !important; gap: 0.25rem !important; }
+  #waline .wl-meta > span:not(.wl-actions) { font-family: var(--waline-mono-font) !important; font-size: 0.65rem !important; color: hsl(var(--muted-foreground) / 0.8) !important; background: hsl(var(--muted) / 0.3) !important; padding: 2px 6px !important; margin-right: 4px !important; border: none !important; }
+  
+  /* 操作区 */
+  #waline .wl-actions { display: flex !important; align-items: center !important; gap: 1rem !important; margin-left: auto !important; position: relative; } /* position relative 为面板定位做准备 */
+  
+  /* 通用 Action 按钮样式 (原生和被我们劫持的) */
+  #waline .wl-action, 
+  #waline .wl-reply, 
+  #waline .wl-like, 
+  #waline .wl-edit {
+    display: inline-flex !important; /* 强制显示 */
+    align-items: center !important;
+    gap: 0.4rem !important;
+    font-family: var(--waline-mono-font) !important;
+    font-size: 0.8rem !important; 
+    color: hsl(var(--muted-foreground)) !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: all 0.2s;
+    float: none !important;
+    line-height: 1 !important;
+    visibility: visible !important; /* 防止被隐藏 */
+  }
+
+  /* 劫持的按钮也要确保图标大小一致 */
+  #waline .wl-action svg,
+  #waline .wl-reply svg, 
+  #waline .wl-like svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  #waline .wl-action:hover, 
+  #waline .wl-reply:hover, 
+  #waline .wl-like:hover {
+    color: hsl(var(--primary)) !important;
+    transform: translateY(-1px);
+  }
+
+  #waline .wl-like.active { color: hsl(var(--primary)) !important; }
+  
+  /* 隐藏不需要的 GIF/Power */
+  .wl-gif-tab, .wl-power { display: none !important; }
+
+  /* =========================================
+     颜文字面板样式
+     ========================================= */
+  #kaomoji-popup {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    right: 0; /* 对齐右侧 */
+    z-index: 100;
+    width: 320px;
+    max-width: 80vw;
+    background: hsl(var(--background));
+    border: 1px solid hsl(var(--primary));
+    box-shadow: 4px 4px 0 0 hsl(var(--muted-foreground) / 0.1);
+    margin-bottom: 10px;
+    user-select: none;
+    animation: slide-up 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  #kaomoji-popup.active { display: flex; flex-direction: column; }
+  
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .kaomoji-header {
+    background: hsl(var(--muted) / 0.2);
+    border-bottom: 1px dashed hsl(var(--border));
+    padding: 6px 10px;
+    font-family: var(--waline-mono-font);
+    font-size: 10px;
+    color: hsl(var(--muted-foreground));
+    letter-spacing: 1px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .kaomoji-grid {
+    padding: 8px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    gap: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--primary) / 0.3) transparent;
+  }
+  
+  .kaomoji-item {
+    font-family: sans-serif;
+    font-size: 12px;
+    color: hsl(var(--foreground));
+    padding: 6px 2px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .kaomoji-item:hover {
+    background: hsl(var(--muted) / 0.3);
+    border-color: hsl(var(--primary) / 0.4);
+    color: hsl(var(--primary));
+  }
+
+  @media (max-width: 640px) {
+    #waline .wl-header { flex-direction: column; }
+    #waline .wl-header-item { border-right: none !important; border-bottom: 1px dashed hsl(var(--border)) !important; }
+    #waline .wl-card { padding-left: 1rem !important; }
+    #kaomoji-popup { width: 260px; }
+  }
+</style>
+
+<script is:inline src="/js/waline.umd.js" defer></script>
+<script is:inline define:vars={{ serverURL: WALINE_CONFIG.serverURL, uploadToken: WALINE_CONFIG.uploadToken }}>
+  const KAOMOJI_LIST = [
+    "(¬_¬)", "(='X'=)", "( ಠ_ಠ)", "(>_<)", 
+    "(*^▽^*)", "(￣▽￣)\"", "(o_o)", "(O_O)", 
+    "(ToT)", "(>_>)", "(<_<)", "( ° ▽、° )",
+    "╮(╯_╰)╭", "_(:з」∠)_", "(°ー°〃)", "( ఠ ͟ʖ ఠ)",
+    "(｡•ˇ‸ˇ•｡)", "( •̀ ω •́ )y", "(ง •_•)ง", "(*/ω＼*)",
+    "w(ﾟДﾟ)w", "∑( 口 ||", "(´･ω･`)", "Wait..."
+  ];
+
+  // === 核心逻辑：劫持原生按钮 ===
+  function hijackEmojiButton() {
+    const actionsContainer = document.querySelector('#waline .wl-actions');
+    if (!actionsContainer) return;
+    
+    // 1. 寻找原生表情按钮 (通过 title 属性查找)
+    // Waline 默认中文 title 为 "表情"
+    const originalBtn = actionsContainer.querySelector('button[title="表情"]');
+    
+    // 如果找不到，或者已经被劫持过(包含我们自定义的 class)，则退出
+    if (!originalBtn || originalBtn.classList.contains('hijacked-emoji')) return;
+
+    // 2. 克隆按钮
+    // cloneNode(true) 会复制节点但【不会】复制原生绑定的 EventListeners
+    // 这就是我们去除 Waline 原生表情面板事件的关键
+    const clonedBtn = originalBtn.cloneNode(true);
+    
+    // 3. 标记并确保显示
+    clonedBtn.classList.add('hijacked-emoji');
+    clonedBtn.style.display = 'inline-flex'; // 强制去除 style="display:none"
+    
+    // 4. 创建颜文字面板
+    const popup = document.createElement('div');
+    popup.id = 'kaomoji-popup';
+    popup.innerHTML = `
+      <div class="kaomoji-header">
+        <span>// TEXT_EMOTION_PACK</span>
+        <span style="opacity:0.5">V1.0</span>
+      </div>
+      <div class="kaomoji-grid">
+        ${KAOMOJI_LIST.map(k => `<div class="kaomoji-item">${k}</div>`).join('')}
+      </div>
+    `;
+
+    // 5. 替换 DOM
+    originalBtn.parentNode.replaceChild(clonedBtn, originalBtn);
+    // 将面板插入到 actions 容器中
+    actionsContainer.appendChild(popup);
+
+    // 6. 绑定新事件
+    clonedBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      popup.classList.toggle('active');
+    });
+
+    popup.addEventListener('click', (e) => {
+      if (e.target.classList.contains('kaomoji-item')) {
+        insertText(e.target.innerText);
+        popup.classList.remove('active');
       }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!popup.contains(e.target) && !clonedBtn.contains(e.target)) {
+        popup.classList.remove('active');
+      }
+    });
+  }
+
+  function insertText(text) {
+    const textarea = document.querySelector('#waline textarea');
+    if (!textarea) return;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const value = textarea.value;
+    textarea.value = value.substring(0, start) + text + value.substring(end);
+    textarea.selectionStart = textarea.selectionEnd = start + text.length;
+    textarea.focus();
+    textarea.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+
+ // === 4. 图片上传处理 ===
+  async function handleImageUpload(file) {
+    try {
+      const MAX_SIZE = 1024 * 1024; // 1MB
+      let fileToUpload = file;
+      if (file.size > MAX_SIZE) {
+        fileToUpload = await compressImage(file, MAX_SIZE);
+      }
+      const formData = new FormData();
+      formData.append('file', fileToUpload);
       
-      .waline-section-title .prefix {
-        color: hsl(var(--muted-foreground));
-        margin-right: 0.5em;
-      }
-
-      html.dark .waline-section-title {
-        color: hsl(var(--foreground));
-        border-bottom: 1px solid hsl(var(--border));
-      }
-      html.dark .waline-section-title .prefix {
-        color: hsl(var(--muted-foreground));
-      }
-
-      /* =========================================
-         全局容器设置
-         ========================================= */
-      #waline-container {
-        width: 100%;
-        position: relative;
-        --industrial-line: 1px solid var(--waline-border-color);
-      }
-
-      /* 懒加载占位 */
-      .waline-lazy {
-        min-height: 200px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--waline-color);
-        font-family: ui-monospace, SFMono-Regular, monospace;
-        font-size: 0.875rem;
-        letter-spacing: 1px;
-        background: transparent;
-        border: 1px dashed var(--waline-border-color);
-      }
-
-      .waline-lazy:has(#waline) {
-        display: block;
-        min-height: unset;
-        border: none;
-      }
-
-      /* =========================================
-         核心变量定义
-         ========================================= */
-      #waline {
-        /* 基础排版 */
-        --waline-font-size: 15px !important;
-        --waline-line-height: 1.6 !important;
-        
-        /* 字体 */
-        --waline-font-family: 'ShangguSansSC Variable', system-ui, -apple-system, sans-serif !important;
-        --waline-mono-font: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, monospace !important;
-
-        /* 使用全局主题变量 - 浅色模式 */
-        --waline-theme-color: hsl(var(--primary)) !important;
-        --waline-active-color: hsl(var(--primary)) !important;
-        --waline-bgcolor: hsl(var(--background)) !important;
-        --waline-bgcolor-light: hsl(var(--accent)) !important;
-        --waline-bgcolor-hover: hsl(var(--muted)) !important;
-        --waline-border-color: hsl(var(--border)) !important;
-        --waline-disable-bg-color: hsl(var(--accent)) !important;
-        --waline-disable-color: hsl(var(--muted-foreground) / 0.5) !important;
-        --waline-code-bg-color: hsl(var(--accent)) !important;
-        
-        /* 文本颜色 */
-        --waline-color: hsl(var(--foreground)) !important;
-        --waline-info-color: hsl(var(--muted-foreground)) !important;
-
-        /* 结构重置 */
-        --waline-box-shadow: none !important;
-        --waline-avatar-radius: 0 !important; 
-        --waline-border: var(--industrial-line) !important;
-      }
-
-      /* 深色模式 */
-      html.dark #waline {
-        --waline-theme-color: hsl(var(--primary)) !important;
-        --waline-active-color: hsl(var(--primary)) !important;
-        --waline-bgcolor: hsl(var(--background)) !important;
-        --waline-bgcolor-light: hsl(var(--accent)) !important;
-        --waline-bgcolor-hover: hsl(var(--muted)) !important;
-        --waline-border-color: hsl(var(--border)) !important;
-        --waline-color: hsl(var(--foreground)) !important;
-        --waline-info-color: hsl(var(--muted-foreground)) !important;
-        --waline-code-bg-color: hsl(var(--accent)) !important;
-      }
-
-      /* =========================================
-         组件样式重写
-         ========================================= */
-
-      /* 1. 全局直角化 */
-      #waline .wl-panel,
-      #waline .wl-user-avatar,
-      #waline .wl-login-nick,
-      #waline .wl-input,
-      #waline .wl-btn,
-      #waline .wl-card,
-      #waline .wl-header,
-      #waline .wl-editor,
-      #waline .wl-gif-popup,
-      #waline .wl-emoji-popup,
-      #waline .wl-content pre,
-      #waline .wl-meta span {
-        border-radius: 0 !important;
-      }
-
-      /* 2. 输入面板 */
-      #waline .wl-panel {
-        border: var(--industrial-line) !important;
-        background: var(--waline-bgcolor) !important;
-      }
-
-      /* 头部信息栏 */
-      #waline .wl-header {
-        border-bottom: var(--industrial-line) !important;
-        background: var(--waline-bgcolor-light) !important;
-        display: flex;
-      }
-
-      #waline .wl-header-item {
-        border-right: var(--industrial-line) !important;
-        flex: 1;
-      }
+      const response = await fetch('https://img.refact.cc/upload', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${uploadToken}` },
+        body: formData,
+      });
       
-      #waline .wl-header-item:last-child {
-        border-right: none !important;
-        border-bottom: none !important;
-      }
+      if (!response.ok) throw new Error(`Upload failed: ${response.status}`);
+      const data = await response.json();
+      return data.url;
+    } catch (error) {
+      console.error('[Waline] Upload error:', error);
+      alert('UPLOAD_FAILED: Check console.');
+      throw error;
+    }
+  }
 
-      #waline .wl-header label {
-        color: var(--waline-info-color) !important;
-        font-weight: 500;
-        font-family: var(--waline-mono-font) !important;
-        font-size: 0.75rem !important;
-        text-transform: uppercase;
-      }
-
-      #waline .wl-input {
-        font-family: var(--waline-mono-font) !important;
-        font-size: 0.85rem !important;
-        padding: 0.5rem 0.75rem !important;
-      }
-
-      /* 编辑器 */
-      #waline .wl-editor {
-        min-height: 8rem;
-        padding: 0.75rem !important;
-        background: var(--waline-bgcolor) !important;
-        font-family: var(--waline-font-family) !important;
-        font-size: 0.95rem !important;
-        line-height: 1.75;
-        resize: vertical;
-        color: var(--waline-color) !important;
-      }
-      
-      #waline .wl-editor:focus,
-      #waline .wl-input:focus {
-        background: transparent !important;
-        box-shadow: none !important;
-      }
-
-      /* 底部操作栏 */
-      #waline .wl-footer {
-        margin: 0 !important;
-        padding: 0.5rem !important;
-        border-top: var(--industrial-line) !important;
-        background: var(--waline-bgcolor-light) !important;
-      }
-
-      #waline .wl-btn {
-        border: var(--industrial-line) !important;
-        color: var(--waline-color) !important;
-        background: var(--waline-bgcolor) !important;
-        font-family: var(--waline-mono-font) !important;
-        font-size: 0.75rem !important;
-        padding: 0.25em 1em !important;
-        margin-left: 0.5em;
-      }
-
-      #waline .wl-btn:not(:disabled):hover {
-        background: var(--waline-theme-color) !important;
-        color: var(--waline-bgcolor) !important;
-        border-color: var(--waline-theme-color) !important;
-      }
-
-      /* 图标 */
-      #waline .wl-action {
-        width: 22px;
-        height: 22px;
-        color: var(--waline-info-color) !important;
-        /* 确保图标不挤压 */
-        flex-shrink: 0; 
-      }
-      #waline .wl-action:hover {
-        color: var(--waline-theme-color) !important;
-      }
-      .wl-gif-tab { display: none !important; }
-
-      /* =========================================
-         评论列表布局修正 (重点修改区域)
-         ========================================= */
-      
-      #waline .wl-card:last-child {
-        border-bottom: none !important;
-      }
-
-      /* 左侧头像 */
-      #waline .wl-cards .wl-user {
-        margin-inline-end: 0.6rem !important;
-        width: auto !important;
-        flex-shrink: 0;
-      }
-
-      #waline .wl-user-avatar {
-        width: 2.25rem !important;
-        height: 2.25rem !important;
-        background: var(--waline-bgcolor-light);
-        border: var(--industrial-line);
-        margin: 0 !important;
-      }
-      
-      #waline .wl-user-avatar img {
-        border: none !important;
-        transform: scale(0.92);
-      }
-
-      /* 昵称 */
-      #waline .wl-nick {
-        font-weight: 600;
-        color: var(--waline-theme-color) !important;
-        font-size: 0.9rem !important;
-        margin-right: 0.5rem !important;
-      }
-
-      #waline .wl-badge {
-        border: none !important;
-        background: var(--waline-theme-color) !important;
-        color: var(--waline-bgcolor) !important;
-        font-size: 0.65rem !important;
-        padding: 1px 3px !important;
-        margin-right: 0.5rem !important;
-      }
-
-      #waline .wl-meta > span {
-        background: transparent !important;
-        border: var(--industrial-line) !important;
-        color: var(--waline-info-color) !important;
-        font-family: var(--waline-mono-font) !important;
-        font-size: 0.65rem !important;
-        padding: 0px 4px !important;
-        margin-right: 0.4rem !important;
-        text-transform: uppercase;
-      }
-
-      /* 引用块 */
-      #waline .wl-quote {
-        border-left: 1px solid var(--waline-theme-color) !important;
-        background: transparent !important;
-        padding-left: 0.75rem !important;
-        margin: 0.5rem 0 !important;
-        color: var(--waline-info-color) !important;
-        font-size: 0.9em;
-      }
-
-      /* 评论正文 */
-      #waline .wl-content {
-        font-size: 0.95rem !important;
-        color: var(--waline-color) !important;
-        line-height: 1.75 !important;
-        margin-top: 0.25rem;
-        
-        /* 修正：字间距稍微收紧 */
-        letter-spacing: -0.015em !important;
-        
-        /* 修正：防止长链接撑破容器 */
-        overflow-wrap: break-word !important;
-        word-wrap: break-word !important;
-      }
-      
-      /* 修正：强制长链接换行 */
-      #waline .wl-content a {
-        word-break: break-all !important;
-      }
-
-      /* 代码块 */
-      #waline .wl-content pre {
-        background: var(--waline-code-bg-color) !important;
-        border: var(--industrial-line);
-        padding: 0.75rem;
-        margin: 0.75rem 0;
-        font-size: 0.85em;
-      }
-
-      /* 移动端适配 */
-      @media (max-width: 580px) {
-        #waline .wl-header {
-          display: block;
-        }
-        #waline .wl-header-item {
-          border-right: none !important;
-          border-bottom: var(--industrial-line) !important;
-        }
-        #waline .wl-cards .wl-user {
-          margin-inline-end: 0.5rem !important;
-        }
-      }
-    </style>
-
-    <script is:inline src="/js/waline.umd.js" defer></script>
-    <script is:inline define:vars={{ serverURL: WALINE_CONFIG.serverURL, uploadToken: WALINE_CONFIG.uploadToken }}>
-      // 使用 Intersection Observer 实现延迟加载
-      function initWalineLazyLoad() {
-        const container = document.querySelector('#waline-container');
-        if (!container) return;
-
-        // 检查是否已经初始化过这个容器
-        if (container.hasAttribute('data-waline-init')) {
-          return;
-        }
-        container.setAttribute('data-waline-init', 'true');
-
-        // 重置页面切换时的加载状态
-        window.__walineLoaded = false;
-        
-        let observer = null;
-        
-        // 设置交叉观察器，当评论区滚入视口时加载
-        const setupObserver = () => {
-          observer = new IntersectionObserver(
-            (entries) => {
-              for (const entry of entries) {
-                if (entry.isIntersecting && !window.__walineLoaded) {
-                  window.__walineLoaded = true;
-                  observer.disconnect();
-                  
-                  // 直接加载 Waline，不延迟
-                  loadWaline();
-                }
-              }
-            },
-            { rootMargin: '300px' } // 提前加载，提高响应速度
-          );
+  function compressImage(file, maxSize) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (e) => {
+        const img = new Image();
+        img.src = e.target.result;
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let { width, height } = img;
+          const maxDim = 1920;
+          if (width > maxDim || height > maxDim) {
+             const ratio = Math.min(maxDim / width, maxDim / height);
+             width = Math.round(width * ratio);
+             height = Math.round(height * ratio);
+          }
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
           
-          observer.observe(container);
+          let quality = 0.8;
+          const attempt = () => {
+            canvas.toBlob(blob => {
+              if(!blob) return reject(new Error('Canvas error'));
+              if(blob.size <= maxSize || quality < 0.2) {
+                resolve(new File([blob], file.name, { type: 'image/jpeg' }));
+              } else {
+                quality -= 0.1;
+                attempt();
+              }
+            }, 'image/jpeg', quality);
+          };
+          attempt();
         };
+        img.onerror = () => reject(new Error('Image load failed'));
+      };
+      reader.onerror = () => reject(new Error('File read failed'));
+    });
+  }
 
-        // 如果 Waline 还没加载，等待它加载
-        if (!window.Waline) {
-          const checkWaline = setInterval(() => {
-            if (window.Waline) {
-              clearInterval(checkWaline);
-              setupObserver();
-            }
-          }, 50);
-          
-          // 设置超时，防止无限等待
-          setTimeout(() => {
-            clearInterval(checkWaline);
-            if (window.Waline) {
-              setupObserver();
-            }
-          }, 5000);
-        } else {
-          setupObserver();
+  function initWaline() {
+    const container = document.querySelector('#waline-container');
+    if (!container || window.__walineInstance) return;
+
+    container.innerHTML = '';
+    const walineEl = document.createElement('div');
+    walineEl.id = 'waline';
+    container.appendChild(walineEl);
+
+    try {
+      window.__walineInstance = window.Waline.init({
+        el: walineEl,
+        serverURL: serverURL,
+        lang: 'zh-CN',
+        dark: 'html.dark',
+        // 【关键】必须设为空数组，不能是 false。
+        // false 会直接把 DOM 移除，空数组会保留 DOM 但内容为空，方便我们劫持
+        emoji: [], 
+        search: false,
+        imageUploader: handleImageUpload,
+        locale: { placeholder: 'INPUT_STREAM_READY...' }
+      });
+
+      // 轮询等待 DOM 生成，然后执行劫持
+      const waitTimer = setInterval(() => {
+        if (document.querySelector('#waline .wl-actions button[title="表情"]')) {
+          clearInterval(waitTimer);
+          hijackEmojiButton();
         }
-      }
+      }, 100);
+      setTimeout(() => clearInterval(waitTimer), 5000);
 
-      // 压缩图片的辅助函数
-      async function compressImage(file, maxSize = 1024 * 1024) {
-        return new Promise((resolve, reject) => {
-          // 检查文件大小是否超过限制
-          if (file.size <= maxSize) {
-            resolve(file);
-            return;
-          }
+    } catch (e) { console.error(e); }
+  }
 
-          const reader = new FileReader();
-          reader.readAsDataURL(file);
-          
-          reader.onload = (event) => {
-            const img = new Image();
-            img.src = event.target.result;
-            
-            img.onload = () => {
-              const canvas = document.createElement('canvas');
-              let width = img.width;
-              let height = img.height;
-              
-              // 计算最大尺寸（如果图片太大）
-              const maxDimension = 1920;
-              if (width > maxDimension || height > maxDimension) {
-                const ratio = Math.min(maxDimension / width, maxDimension / height);
-                width = Math.round(width * ratio);
-                height = Math.round(height * ratio);
-              }
-              
-              canvas.width = width;
-              canvas.height = height;
-              
-              const ctx = canvas.getContext('2d');
-              ctx.fillStyle = '#fff';
-              ctx.fillRect(0, 0, width, height);
-              ctx.drawImage(img, 0, 0, width, height);
-              
-              // 按质量压缩
-              let quality = 0.8;
-              const tryCompress = () => {
-                canvas.toBlob(
-                  (blob) => {
-                    if (blob.size <= maxSize || quality <= 0.1) {
-                      // 生成新的 File 对象
-                      const compressedFile = new File([blob], file.name, {
-                        type: 'image/jpeg',
-                        lastModified: Date.now(),
-                      });
-                      resolve(compressedFile);
-                    } else {
-                      quality -= 0.1;
-                      tryCompress();
-                    }
-                  },
-                  'image/jpeg',
-                  quality
-                );
-              };
-              
-              tryCompress();
-            };
-            
-            img.onerror = () => {
-              reject(new Error('图片加载失败'));
-            };
-          };
-          
-          reader.onerror = () => {
-            reject(new Error('文件读取失败'));
-          };
-        });
-      }
-
-      function loadWaline() {
-        const container = document.querySelector('#waline-container');
-        if (!container || !window.Waline) return;
-
-        // 销毁旧实例
-        destroyWaline();
-
-        // 完全清空旧实例
-        container.innerHTML = '';
-        
-        // 创建新的 Waline 容器
-        const walineDiv = document.createElement('div');
-        walineDiv.id = 'waline';
-        container.appendChild(walineDiv);
-
-        // 初始化新实例
-        try {
-          window.__walineInstance = window.Waline.init({
-            el: walineDiv,
-            serverURL: serverURL,
-            path: location.pathname.replace(/\/$/, ''),
-            lang: 'zh-CN',
-            pageview: true,
-            dark: 'html.dark',
-            requiredMeta: ['nick', 'mail'],
-            locale: { placeholder: 'Successfully established a secure connection and ready to send...' },
-            emoji: [],
-            imageUploader: async (file) => {
-              try {
-                // 压缩图片到 1MB 以内
-                const compressedFile = await compressImage(file, 1024 * 1024);
-                console.log(`原始大小: ${(file.size / 1024).toFixed(2)}KB, 压缩后: ${(compressedFile.size / 1024).toFixed(2)}KB`);
-                
-                const formData = new FormData();
-                formData.append('file', compressedFile);
-                
-                const response = await fetch('https://img.refact.cc/upload', {
-                  method: 'POST',
-                  headers: {
-                    // 关键：带上和 Worker 对应的 Token
-                    Authorization: `Bearer ${uploadToken}`,
-                  },
-                  body: formData,
-                });
-                
-                if (!response.ok) throw new Error('上传失败');
-                
-                const data = await response.json();
-                return data.url;
-              } catch (error) {
-                console.error('图片上传失败:', error);
-                throw error;
-              }
-            },
-            search: false,
-            upload: false,
-          });
-        } catch (error) {
-          console.error('Waline 初始化失败:', error);
-        }
-      }
-
-      // 销毁 Waline 实例的辅助函数
-      function destroyWaline() {
-        const walineEl = document.querySelector('#waline');
-        if (walineEl && window.__walineInstance) {
-          try {
-            // 尝试调用销毁方法（如果存在）
-            if (typeof window.__walineInstance.destroy === 'function') {
-              window.__walineInstance.destroy();
+  function setupObserver() {
+    const container = document.querySelector('#waline-container');
+    if (!container) return;
+    if (window.__walineObserver) window.__walineObserver.disconnect();
+    window.__walineObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            if(window.Waline) initWaline();
+            else {
+                const check = setInterval(() => { if(window.Waline) { clearInterval(check); initWaline(); } }, 100);
             }
-          } catch (e) {
-            console.warn('Waline destroy 方法出错:', e);
-          }
-        }
-        window.__walineInstance = null;
-      }
-
-      // 页面加载完成后初始化
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initWalineLazyLoad);
-      } else {
-        initWalineLazyLoad();
-      }
-      
-      // 支持 astro 页面切换 - 重置状态以允许重新初始化
-      document.addEventListener('astro:page-load', () => {
-        const container = document.querySelector('#waline-container');
-        if (container) {
-          // 先销毁旧实例
-          destroyWaline();
-          
-          // 等待一帧后再重置，确保 DOM 清理完毕
-          requestAnimationFrame(() => {
-            container.removeAttribute('data-waline-init');
-            window.__walineLoaded = false;
-            container.innerHTML = '<div class="waline-loading">加载评论中...</div>';
-            initWalineLazyLoad();
-          });
+            window.__walineObserver.disconnect();
         }
       });
-      
-      // 页面卸载时清理实例，防止内存泄漏
-      document.addEventListener('astro:before-swap', () => {
-        destroyWaline();
-      });
-    </script>
-  </>
-)}
+    }, { rootMargin: '200px' });
+    window.__walineObserver.observe(container);
+  }
 
+  setupObserver();
+  document.addEventListener('astro:page-load', () => setTimeout(setupObserver, 0));
+  document.addEventListener('astro:before-swap', () => {
+    if (window.__walineInstance) { try { window.__walineInstance.destroy(); } catch(e){} window.__walineInstance = null; }
+  });
+</script>

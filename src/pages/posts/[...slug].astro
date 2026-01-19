@@ -81,7 +81,7 @@ const PostLayout = layoutMap[layoutKey]
       <Content />
     </PostLayout>
 
-    <div class="px-6 sm:px-8 pb-6 sm:pb-8 max-w-5xl mx-auto w-full">
+    <div class="px-6 sm:px-8 pb-6 sm:pb-8 max-w-6xl mx-auto w-full">
       {posts.length > 1 && <PostNavigation {prev} {next} />}
     </div>
 
@@ -92,7 +92,7 @@ const PostLayout = layoutMap[layoutKey]
       <SectionDivider/>
     </div>
 
-    <div class="mt-8 px-4 sm:px-6 pb-12 mx-auto w-full">
+    <div class="mt-8 p-6 sm:p-8 pb-12 mx-auto w-full">
       <Comments />
     </div>
   </div>
