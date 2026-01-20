@@ -561,7 +561,7 @@ ${body}`;
                     </button>
                     <span className="text-xs font-mono font-bold">ITEM #{editingItemIndex}</span>
                 </div>
-                <div className="grid grid-cols-1 gap-6 max-w-2xl mx-auto">
+                <div className="grid grid-cols-1 gap-6 mx-auto">
                     {schema.map(field => (
                         <div key={field.key} className="space-y-1.5">
                             <label className="text-[10px] font-mono uppercase text-muted-foreground/70 flex justify-between">
