@@ -30,6 +30,11 @@ export default defineConfig({
     envDir: '.',
     build: {
       chunkSizeWarningLimit: 1200,
+      terserOptions: {
+        format: {
+          comments: false,
+        },
+      },
       rollupOptions: {
         output: {
           manualChunks: {

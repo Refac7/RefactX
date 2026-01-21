@@ -242,5 +242,5 @@ export const FRIENDS_CONTACT = {
 export const WALINE_CONFIG = {
   enableComment: true, // 设置为 false 可禁用评论组件
   serverURL: "https://waline.refact.cc", // Waline 服务器地址
-  uploadToken: 'd4f1c8e7a9b24f0c8d3e1a6f9b7c42e1f3a9d8c4b2e7f1a6c9d3b8e4f7a1c2d', // Waline 上传 Token
+  uploadToken: import.meta.env.PUBLIC_UPLOAD_TOKEN, // Waline 上传 Token
 };
