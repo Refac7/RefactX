@@ -6,15 +6,57 @@ import mdx from '@astrojs/mdx'
 import sitemap from '@astrojs/sitemap'
 import robotsTxt from 'astro-robots-txt'
 import expressiveCode from 'astro-expressive-code'
-import vercel from '@astrojs/vercel/serverless'
+import vercel from '@astrojs/vercel'
 import { remarkPlugins, rehypePlugins } from './plugins'
 import { SITE } from './src/config'
+import fs from 'node:fs/promises'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+/**
+ * 自定义集成：构建完成后彻底移除 HTML 注释
+ * @returns {import('astro').AstroIntegration}
+ */
+function removeHtmlComments() {
+  return {
+    name: 'remove-html-comments',
+    hooks: {
+      /** @param {{ dir: URL }} options */
+      'astro:build:done': async ({ dir }) => {
+        const distDir = fileURLToPath(dir);
+        
+        /** @param {string} directory */
+        async function processDir(directory) {
+          const entries = await fs.readdir(directory, { withFileTypes: true });
+          for (const entry of entries) {
+            const fullPath = path.join(directory, entry.name);
+            if (entry.isDirectory()) {
+              await processDir(fullPath);
+            } else if (entry.name.endsWith('.html')) {
+              let content = await fs.readFile(fullPath, 'utf-8');
+              // 正则移除 HTML 注释 <!-- ... -->
+              content = content.replace(/<!--[\s\S]*?-->/g, '');
+              await fs.writeFile(fullPath, content);
+            }
+          }
+        }
+
+        try {
+          await processDir(distDir);
+          // eslint-disable-next-line no-console
+          console.log('✅ 已成功从 HTML 文件中移除所有注释');
+        } catch (e) {
+          console.error('❌ 移除 HTML 注释失败:', e);
+        }
+      }
+    }
+  };
+}
 
 export default defineConfig({
   site: SITE.website,
   base: SITE.base,
   
-  // [!code warning] 修改这里：Astro 5 中使用 static 配合 adapter 即可支持 SSR
   output: 'static', 
   
   adapter: vercel({
@@ -25,16 +67,25 @@ export default defineConfig({
     prefetchAll: true,
     defaultStrategy: 'viewport',
   },
+  
   vite: {
     plugins: [tailwindcss()],
     envDir: '.',
     build: {
       chunkSizeWarningLimit: 1200,
+      
+      // 使用 terser 移除 JS/CSS 注释
+      minify: 'terser',
       terserOptions: {
+        compress: {
+          drop_console: true,
+          drop_debugger: true,
+        },
         format: {
-          comments: false,
+          comments: false, 
         },
       },
+      
       rollupOptions: {
         output: {
           manualChunks: {
@@ -46,6 +97,7 @@ export default defineConfig({
       },
     },
   },
+  
   image: process.env.NODE_ENV === 'development'
     ? {} 
     : {
@@ -64,5 +116,12 @@ export default defineConfig({
     remarkPlugins,
     rehypePlugins,
   },
-  integrations: [sitemap(), robotsTxt(), react(), expressiveCode(), mdx()],
+  integrations: [
+    sitemap(), 
+    robotsTxt(), 
+    react(), 
+    expressiveCode(), 
+    mdx(),
+    removeHtmlComments() 
+  ],
 })
