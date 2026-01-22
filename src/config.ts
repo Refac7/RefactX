@@ -243,4 +243,6 @@ export const WALINE_CONFIG = {
   enableComment: true, // 设置为 false 可禁用评论组件
   serverURL: "https://waline.refact.cc", // Waline 服务器地址
   uploadToken: import.meta.env.PUBLIC_UPLOAD_TOKEN, // Waline 上传 Token
+  imgbedURL: "https://img.refact.cc/upload", // Waline 图片上传地址（需要包含接口地址）
+  enableImgUpload: true, // Waline 是否启用S3图片上传,默认关闭,false状态下图片上传到数据库（限制128KiB）
 };
