@@ -27,7 +27,7 @@ const duplicateSkills = (skills: Skill[]) => [...skills, ...skills, ...skills, .
             style="transform: translateZ(0); -webkit-transform: translateZ(0);"
           >
             {duplicatedSkills.map((skill) => (
-              <div class="safari-item group flex items-center gap-2 px-5 py-2 mx-2 border border-border bg-accent text-foreground whitespace-nowrap hover:bg-tag-bg-hover dark:shadow-md">
+              <div class="safari-item group flex items-center gap-2 px-5 py-3 mx-2 border border-border bg-accent text-foreground whitespace-nowrap hover:bg-tag-bg-hover dark:shadow-md">
                 <span class={cn('flex items-center justify-center w-5 h-5', skill.icon)} />
                 <span class="font-sans text-sm font-medium">{skill.name}</span>
               </div>

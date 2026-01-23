@@ -7,7 +7,8 @@ import Head from '~/components/base/Head.astro'
 import Header from './Header.astro'
 import Footer from './Footer.astro'
 import Loading from '~/components/base/Loading.astro'
-
+// 1. 引入新组件
+import PageDecorations from '~/components/base/PageDecorations.astro'
 
 type Props = {
   title: string
@@ -22,16 +23,18 @@ const { title, description, image }: Props = Astro.props
 <html lang="en">
   <head>
     <Head title={`${title} | ${SITE.title}`} {description} {image} />
-    <script is:inline defer src="https://umami.refact.cc/script.js" data-website-id="780ee4f1-7a88-4df2-bfcd-3a344285930b"></script>
   </head>
-  <body>
-
+  <body class="border-l-0 xl:border-l-16 border-red-600/50">
     <Loading />
 
+    <PageDecorations />
+
     <Header />
-    <main class="relative fullPage flex-auto border-x border-border/40 max-w-6xl mx-auto">
+    
+    <main class="relative fullPage flex-auto border-x border-border/40 max-w-6xl mx-auto 2xl:ml-[15rem]">
       <slot />
     </main>
+    
     <Footer />
     
     <!-- 底部渐变遮罩 -->

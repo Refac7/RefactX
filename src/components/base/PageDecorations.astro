@@ -1,0 +1,94 @@
+---
+// src/components/base/PageDecorations.astro
+---
+
+<div class="pointer-events-none fixed inset-0 z-40 hidden 2xl:block mx-auto max-w-[110rem]">
+
+  <div class="absolute left-4 top-0 bottom-0 w-12">
+    <!-- 轨道线 -->
+    <div class="absolute left-0 top-10 bottom-10 w-px bg-border/40"></div>
+    
+    <!-- 滚动滑块容器 -->
+    <div class="relative h-full w-full py-20">
+      <!-- 动态滑块 -->
+      <div id="scroll-indicator" class="absolute right-[-4px] top-20 flex items-center gap-2 transition-transform duration-75 will-change-transform">
+        <!-- 百分比文字 -->
+        <span id="scroll-percent" class="font-mono text-xs text-muted-foreground tabular-nums">00%</span>
+        <!-- 滑块方块 -->
+        <div class="h-2 w-2 bg-primary/60"></div>
+      </div>
+      
+      <!-- 装饰性刻度背景 -->
+      <div class="absolute right-0 top-20 bottom-20 w-px ruler-dots"></div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* 竖向排版文字 */
+  .writing-vertical {
+    writing-mode: vertical-lr;
+    letter-spacing: 0.1em;
+  }
+
+  /* 模拟虚线 */
+  .dashed-line {
+    background-image: linear-gradient(to bottom, currentColor 50%, transparent 50%);
+    background-size: 1px 8px;
+    background-repeat: repeat-y;
+  }
+
+  /* 左侧刻度尺背景图案 */
+  .ruler-marks {
+    background-image: linear-gradient(to bottom, currentColor 1px, transparent 1px);
+    background-size: 100% 40px; /* 每40px一个刻度 */
+    opacity: 0.2;
+  }
+
+  /* 右侧点状背景 */
+  .ruler-dots {
+    background-image: radial-gradient(circle, currentColor 1px, transparent 1px);
+    background-size: 1px 20px;
+    opacity: 0.3;
+  }
+</style>
+
+<script>
+  // 处理滚动逻辑
+  function initScrollProgress() {
+    const indicator = document.getElementById('scroll-indicator');
+    const percentText = document.getElementById('scroll-percent');
+    
+    if (!indicator || !percentText) return;
+
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.body.scrollHeight - window.innerHeight;
+      const scrollPercent = docHeight > 0 ? scrollTop / docHeight : 0;
+      
+      // 限制在 0-1 之间
+      const safePercent = Math.min(Math.max(scrollPercent, 0), 1);
+      
+      // 计算滑块位置 (top: 20px to bottom: 20px range in CSS, we need to map percentage to height)
+      // 这里的计算需要稍微精细一点，基于视口高度减去上下的padding
+      const trackHeight = window.innerHeight - 160; // 假设上下padding共160px
+      const translateY = safePercent * trackHeight;
+
+      // 更新位置
+      indicator.style.transform = `translateY(${translateY}px)`;
+      
+      // 更新文字 (补零格式化)
+      const displayPercent = Math.round(safePercent * 100);
+      percentText.textContent = displayPercent < 10 ? `0${displayPercent}%` : `${displayPercent}%`;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    // 初始化一次
+    handleScroll();
+  }
+
+  // 确保在 Astro 页面切换或加载时运行
+  document.addEventListener('astro:page-load', initScrollProgress);
+  // 如果没有使用 ViewTransitions，保留下面这行作为回退
+  window.addEventListener('DOMContentLoaded', initScrollProgress);
+</script>
