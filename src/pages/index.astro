@@ -38,7 +38,7 @@ const LAYOUT_CONTAINER = "mx-auto px-6 sm:px-8"
       
       <div class="absolute -right-4 top-0 -z-10 hidden lg:flex flex-col items-end select-none pointer-events-none opacity-20 dark:opacity-25">
         <span class="font-mono text-xs font-bold tracking-[1em] text-foreground/80 mb-2 mr-2">SYS.01</span>
-        <span class="mt-16 text-[13rem] xl:text-[17rem] font-black text-foreground leading-[0.75] tracking-tighter"
+        <span class="mt-16 md:mt-32 text-[13rem] xl:text-[17rem] font-black text-foreground leading-[0.75] tracking-tighter"
               style="-webkit-text-fill-color: transparent; -webkit-text-stroke: 2px currentColor;">
           RX
         </span>
@@ -76,20 +76,36 @@ const LAYOUT_CONTAINER = "mx-auto px-6 sm:px-8"
             </span>
           </div>
 
-          <h1 class="relative inline-block text-7xl md:text-8xl font-bold tracking-tighter text-primary/80 leading-[0.9] -ml-1">
-            <span class="relative z-10">Refac<span class="text-primary">7</span>.</span>
-            <span class="absolute bottom-2 left-0 w-full h-4 bg-red-600/80 -z-0 opacity-80 -skew-x-6"></span>
-          </h1>
+          <div class="relative">
+            <h1 class="text-7xl sm:text-8xl md:text-9xl font-black tracking-tighter text-foreground leading-[0.85] mb-6">
+              RE<span class="text-transparent bg-clip-text bg-gradient-to-br from-primary to-primary/40">FAC</span><br/>
+              <span class="text-primary/10 select-none">00000</span><span class="text-primary">7</span>.
+            </h1>
 
-          <h2 class="py-4 text-lg sm:text-2xl font-light tracking-tight text-muted-foreground">
-            Architect of the Digital Void.
-          </h2>
+            <div class="flex items-center gap-4 ml-1">
+                <div class="h-px w-12 bg-primary"></div>
+                <h2 class="font-mono text-sm sm:text-base text-muted-foreground tracking-widest uppercase">
+                  Architect of the Digital Void
+                </h2>
+            </div>
+          </div>
 
-          <div class="flex items-center justify-between border-t border-border/40 pt-4">
-            <span class="text-[10px] font-mono text-muted-foreground/40 uppercase tracking-widest">
+
+        </div>
+
+
+        <div class="lg:col-span-5 flex flex-col gap-4">
+          <div class="border-l border-primary/40 pl-5">
+            <p class="text-base sm:text-lg text-muted-foreground leading-relaxed">
+              你好，我是 Refac7。一名试图在代码的混沌中寻找秩序的时空修剪者。
+            </p>
+          </div>
+
+          <div class="flex items-center justify-between bg-background/50 border border-border p-4 backdrop-blur-sm">
+            <span class="text-[10px] font-mono ttext-muted-foreground/70 group-hover:text-primary uppercase tracking-widest">
               Connect_Protocol
             </span>
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-3 mt-0.5">
                 {SOCIAL_LINKS.map((item) => (
                   <a href={item.url} target="_blank" class="text-muted-foreground hover:text-primary transition-colors" aria-label={item.name}>
                     <span class={`${item.icon} size-5`}></span>
@@ -97,20 +113,8 @@ const LAYOUT_CONTAINER = "mx-auto px-6 sm:px-8"
                 ))}
             </div>
           </div>
-        </div>
 
-
-        <div class="lg:col-span-5 flex flex-col gap-6">
-          <div class="border-l border-primary/40 pl-5">
-            <p class="text-base sm:text-lg text-muted-foreground leading-relaxed">
-              你好，我是 Refac7。一名试图在代码的混沌中寻找秩序的时空修剪者。
-              <span class="block mt-2 text-xs font-mono text-muted-foreground/60">
-                > TARGET: Transparency, Clarity, Reality.
-              </span>
-            </p>
-          </div>
-
-          <div class="grid grid-cols-2 gap-px bg-border/50 border border-border mt-2 backdrop-blur-sm">
+          <div class="grid grid-cols-2 gap-px bg-border/50 border border-border backdrop-blur-sm">
             {[
               { label: 'Function_01', title: 'READ_LOGS', href: '/posts', icon: 'icon-[ph--read-cv-logo]' },
               { label: 'Function_02', title: 'THE_LINKS', href: '/friends', icon: 'icon-[ph--planet]' }
@@ -130,7 +134,7 @@ const LAYOUT_CONTAINER = "mx-auto px-6 sm:px-8"
         </div>
       </div>
 
-      <div class="flex items-end gap-4 mt-12 select-none opacity-60">
+      <div class="flex items-end gap-4 my-16 select-none opacity-60">
          <span class="font-mono text-4xl font-bold text-muted-foreground/10 leading-none -mb-1">00</span>
          <span class="font-mono text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/50 mb-1">Start_Sequence</span>
          <div class="h-px bg-gradient-to-r from-border to-transparent flex-1 mb-1.5"></div>
