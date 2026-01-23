@@ -97,6 +97,14 @@ const { class: className } = Astro.props;
         /* 基础重置 */
         #waline * { border-radius: 0 !important; }
 
+        /* 修复1: 移动端输入框强制 16px 以禁止 iOS 自动放大 */
+        @media (max-width: 640px) {
+          #waline input, 
+          #waline textarea {
+            font-size: 16px !important;
+          }
+        }
+
         /* 输入框面板 */
         #waline .wl-panel {
           border: 1px solid hsl(var(--border)) !important;
@@ -120,12 +128,18 @@ const { class: className } = Astro.props;
         #waline .wl-panel::after { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
         #waline .wl-panel:focus-within::before, #waline .wl-panel:focus-within::after { opacity: 1; }
 
-        /* 头部输入区 */
+        /* 头部输入区 - 修复5: 增加 flex 垂直居中对齐文字 */
         #waline .wl-header { display: flex; border-bottom: 1px dashed hsl(var(--border)) !important; background: hsl(var(--muted) / 0.1) !important; }
-        #waline .wl-header-item { flex: 1; border-right: 1px dashed hsl(var(--border)) !important; padding: 0.75rem 1rem !important; }
+        #waline .wl-header-item { 
+          flex: 1; 
+          border-right: 1px dashed hsl(var(--border)) !important; 
+          padding: 0.75rem 1rem !important; 
+          display: flex !important; /* 新增 */
+          align-items: center !important; /* 新增 */
+        }
         #waline .wl-header-item:last-child { border-right: none !important; }
-        #waline .wl-header label { font-family: var(--waline-mono-font) !important; font-size: 0.65rem !important; font-weight: 700; color: hsl(var(--muted-foreground) / 0.7) !important; }
-        #waline .wl-input { font-family: var(--waline-mono-font) !important; background: transparent !important; color: hsl(var(--foreground)) !important; }
+        #waline .wl-header label { font-family: var(--waline-mono-font) !important; font-size: 0.65rem !important; font-weight: 700; color: hsl(var(--muted-foreground) / 0.7) !important; margin-right: 0.5rem !important; }
+        #waline .wl-input { font-family: var(--waline-mono-font) !important; background: transparent !important; color: hsl(var(--foreground)) !important; height: auto !important; }
 
         /* 编辑器主体 */
         #waline .wl-editor { padding: 1rem 1.25rem !important; min-height: 8rem; color: hsl(var(--foreground)) !important; background: transparent !important; resize: vertical; }
@@ -144,28 +158,45 @@ const { class: className } = Astro.props;
 
         /* 评论卡片列表 */
         #waline .wl-cards { margin-top: 3rem !important; margin-left: -0.5rem !important; margin-right: -0.5rem !important; }
-        #waline .wl-card { border: none !important; border-left: 1px solid hsl(var(--border) / 0.5) !important; padding: 0 0 1.5rem 1.5rem !important; margin: 0 !important; position: relative; overflow: visible !important; /* 防止抽屉被裁剪 */ }
+        #waline .wl-card { border: none !important; border-left: 1px solid hsl(var(--border) / 0.5) !important; padding: 0 0 1.5rem 1.5rem !important; margin: 0 !important; position: relative; overflow: visible !important; }
         #waline .wl-card::before { content: ''; position: absolute; left: -3px; top: 1.7rem; width: 5px; height: 5px; background: hsl(var(--border)); transition: 0.3s; }
         #waline .wl-card:hover::before { background: hsl(var(--primary)); }
         #waline .wl-card:hover { border-left-color: hsl(var(--primary) / 0.3) !important; }
 
-        /* 头像与用户信息 */
+        /* 头像与用户信息 - 修复4: 强制 Flex 居中对齐 */
         #waline .wl-head { display: flex !important; align-items: center !important; gap: 0.75rem !important; margin-bottom: 0.5rem; flex-wrap: wrap !important; }
-        #waline .wl-user-avatar { width: 2.25rem !important; height: 2.25rem !important; padding: 2px !important; border: 1px solid hsl(var(--border)) !important; background: hsl(var(--muted) / 0.1) !important; position: relative !important; overflow: visible !important; margin: 0 !important; }
-        #waline .wl-user-avatar > img:first-child { width: 100% !important; height: 100% !important; object-fit: cover !important; }
+        #waline .wl-user-avatar { 
+          width: 2.25rem !important; 
+          height: 2.25rem !important; 
+          padding: 2px !important; 
+          border: 1px solid hsl(var(--border)) !important; 
+          background: hsl(var(--muted) / 0.1) !important; 
+          position: relative !important; 
+          overflow: visible !important; 
+          margin: 0 !important;
+          display: flex !important; /* 新增 */
+          align-items: center !important; /* 新增 */
+          justify-content: center !important; /* 新增 */
+        }
+        #waline .wl-user-avatar > img:first-child { 
+          width: 100% !important; 
+          height: 100% !important; 
+          object-fit: cover !important; 
+          display: block !important; /* 新增 */
+        }
         #waline .wl-user-avatar > img:not(:first-child), #waline .wl-user-avatar .wl-icon { width: 14px !important; height: 14px !important; position: absolute !important; bottom: -4px !important; right: -4px !important; background: hsl(var(--background)) !important; border: 1px solid hsl(var(--primary)) !important; padding: 1px !important; z-index: 10 !important; }
         #waline .wl-nick { font-size: 0.9rem !important; font-weight: 700 !important; color: hsl(var(--foreground)) !important; margin: 0 !important; }
         #waline .wl-badge { border: 1px solid hsl(var(--primary)) !important; color: hsl(var(--primary)) !important; background: transparent !important; font-size: 0.6rem !important; padding: 1px 5px !important; margin: 0 !important; display: inline-flex !important; align-items: center; }
 
-        /* 内容与引用 */
+        /* 内容与引用 - 修复3: 隐藏空的引用块，防止显示多余的装饰条 */
         #waline .wl-content { font-size: 0.95rem !important; color: hsl(var(--foreground) / 0.9) !important; line-height: 1.75 !important; word-break: break-all; }
-        #waline .wl-quote { border-left: 2px solid hsl(var(--primary) / 0.5) !important; background: hsl(var(--muted) / 0.1) !important; color: hsl(var(--muted-foreground)) !important; font-family: var(--waline-mono-font) !important; padding: 0.5rem 1rem !important; }
+        #waline .wl-quote { border-left: 2px solid hsl(var(--primary) / 0.5) !important; background: hsl(var(--muted) / 0.1) !important; color: hsl(var(--muted-foreground)) !important; font-family: var(--waline-mono-font) !important; padding: 0.5rem 1rem !important; margin-bottom: 0.5rem !important; }
+        #waline .wl-quote:empty { display: none !important; border: none !important; padding: 0 !important; margin: 0 !important; }
 
         /* 按钮栏 */
         #waline .wl-meta { display: flex !important; align-items: center !important; border-top: 1px dashed hsl(var(--border) / 0.4) !important; padding-top: 0.75rem !important; margin-top: 0.5rem !important; flex-wrap: wrap !important; gap: 0.25rem !important; }
-        #waline .wl-actions { display: flex !important; align-items: center !important; gap: 0.5rem !important; margin-left: auto !important; position: static !important; /* 移动端定位需要解除 relative */ }
+        #waline .wl-actions { display: flex !important; align-items: center !important; gap: 0.5rem !important; margin-left: auto !important; position: static !important; }
         
-        /* 强制父级 relative 以便桌面端定位，移动端则无视 */
         @media (min-width: 641px) {
           #waline .wl-actions { position: relative !important; }
         }
@@ -191,7 +222,7 @@ const { class: className } = Astro.props;
           display: none;
           background: hsl(var(--background));
           border: 1px solid hsl(var(--primary));
-          z-index: 9999; /* 确保最高层级 */
+          z-index: 9999;
           user-select: none;
           box-shadow: 4px 4px 0 0 hsl(var(--muted-foreground) / 0.1);
         }
@@ -211,7 +242,6 @@ const { class: className } = Astro.props;
           align-items: center;
         }
 
-        /* 通用 Grid */
         .kaomoji-grid {
           padding: 8px;
           display: grid;
@@ -265,13 +295,12 @@ const { class: className } = Astro.props;
           }
         }
 
-        /* === 移动端样式 (小于等于 640px) - 底部抽屉模式 === */
+        /* === 移动端样式 (小于等于 640px) === */
         @media (max-width: 640px) {
           #waline .wl-header { flex-direction: column; }
           #waline .wl-header-item { border-right: none !important; border-bottom: 1px dashed hsl(var(--border)) !important; padding: 0.5rem 0.75rem !important; }
           #waline .wl-card { padding-left: 0.75rem !important; border-left-width: 2px !important; }
           
-          /* 强力修复：改为 Fixed 底部定位，脱离文档流 */
           #kaomoji-popup {
             position: fixed;
             left: 0;
@@ -279,36 +308,34 @@ const { class: className } = Astro.props;
             bottom: 0;
             width: 100vw;
             height: auto;
-            max-height: 40vh; /* 占据屏幕下方 40% */
+            max-height: 40vh;
             margin: 0;
             border-left: none; 
             border-right: none;
             border-bottom: none;
             box-shadow: 0 -4px 20px hsl(0 0% 0% / 0.1);
-            transform: translateY(100%); /* 默认藏在屏幕下 */
+            transform: translateY(100%);
             transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
           }
           
           #kaomoji-popup.active {
-            transform: translateY(0); /* 滑上来 */
+            transform: translateY(0);
           }
 
           .kaomoji-grid {
-            /* 3列布局，保证宽度足够 */
             grid-template-columns: repeat(3, 1fr); 
             gap: 8px;
             padding: 12px;
-            padding-bottom: env(safe-area-inset-bottom, 20px); /* 避开 iPhone 底部横条 */
+            padding-bottom: env(safe-area-inset-bottom, 20px);
             max-height: 35vh;
           }
 
           .kaomoji-item {
-            font-size: 14px; /* 字体加大 */
-            padding: 12px 0; /* 增加点击高度，解决行高不足 */
-            border: 1px dashed hsl(var(--border) / 0.5); /* 增加虚线框增加辨识度 */
+            font-size: 14px;
+            padding: 12px 0;
+            border: 1px dashed hsl(var(--border) / 0.5);
           }
 
-          /* 提交按钮 */
           #waline .wl-btn {
             padding: 0.2rem 0.5rem !important; text-transform: uppercase; margin-left: 1.5rem; margin-right: -0.8rem
           }
@@ -354,8 +381,6 @@ const { class: className } = Astro.props;
             clonedBtn.classList.add('hijacked-emoji');
             clonedBtn.style.display = 'inline-flex';
             
-            // 注意：这里我们将 popup 插入到 actionsContainer 中
-            // 但在 CSS 中，移动端我们使用了 position: fixed，所以它会脱离这个父容器定位，相对于窗口定位
             const popup = createPopup();
             
             originalBtn.parentNode.replaceChild(clonedBtn, originalBtn);
@@ -364,8 +389,8 @@ const { class: className } = Astro.props;
             // 切换显示逻辑
             clonedBtn.addEventListener('click', (e) => {
               e.stopPropagation();
+              e.preventDefault(); // 防止焦点丢失
               const isActive = popup.classList.contains('active');
-              // 关闭其他
               document.querySelectorAll('#kaomoji-popup.active').forEach(p => p.classList.remove('active'));
               if(!isActive) popup.classList.add('active');
             });
@@ -373,15 +398,29 @@ const { class: className } = Astro.props;
             // 移动端专用关闭按钮
             popup.querySelector('#close-kaomoji').addEventListener('click', (e) => {
               e.stopPropagation();
+              e.preventDefault();
               popup.classList.remove('active');
             });
 
-            // 颜文字输入
+            // 颜文字输入 - 修复2: 增强移动端输入兼容性
             popup.addEventListener('click', (e) => {
+              // 使用 preventDefault 防止移动端点击时导致虚拟键盘闪烁或焦点错乱
+              if(e.target.classList.contains('kaomoji-item')) {
+                 e.preventDefault();
+                 e.stopPropagation();
+              }
+
               if (e.target.classList.contains('kaomoji-item')) {
-                // 向上寻找最近的 panel 里的 textarea
-                const panel = actionsContainer.closest('.wl-panel');
-                const textarea = panel ? panel.querySelector('textarea') : null;
+                // 优先查找当前面板下的 textarea
+                let panel = actionsContainer.closest('.wl-panel');
+                // 如果找不到（移动端 fixed 可能导致层级判断失效），则回退查找最近的 editor
+                let textarea = panel ? panel.querySelector('textarea') : null;
+                
+                // 终极回退：查找整个 Waline 内的主输入框（通常用于移动端回复时的异常情况）
+                if (!textarea) {
+                    const walineRoot = document.getElementById('waline');
+                    if (walineRoot) textarea = walineRoot.querySelector('textarea.wl-editor');
+                }
                 
                 if(textarea) {
                   insertText(textarea, e.target.innerText);
@@ -400,13 +439,18 @@ const { class: className } = Astro.props;
         }
 
         function insertText(textarea, text) {
-          const start = textarea.selectionStart;
-          const end = textarea.selectionEnd;
+          const start = textarea.selectionStart || 0;
+          const end = textarea.selectionEnd || 0;
           const value = textarea.value;
+          
           textarea.value = value.substring(0, start) + text + value.substring(end);
           textarea.selectionStart = textarea.selectionEnd = start + text.length;
-          textarea.focus();
+          
+          // 触发 input 事件以通知 Vue/React/Waline 内部状态更新
           textarea.dispatchEvent(new Event('input', { bubbles: true }));
+          
+          // 重新聚焦
+          textarea.focus();
         }
 
         // === 图片上传 ===
