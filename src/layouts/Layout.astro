@@ -25,6 +25,8 @@ const { title, description, image }: Props = Astro.props
     <Head title={`${title} | ${SITE.title}`} {description} {image} />
   </head>
   <body>
+    <!-- 文字选择颜色为黑白色 -->
+    <div class="select-text selection:bg-foreground/20 selection:text-foreground"></div>
     <Loading />
 
     <PageDecorations />

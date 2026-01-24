@@ -44,7 +44,7 @@ const CONTAINER_CLASS = "max-w-[1400px] mx-auto px-6 sm:px-8"
     
     <div class="mb-8 relative z-10">
       <!-- Top Bar -->
-      <div class="flex flex-row justify-between items-start text-[10px] mb-16 font-mono uppercase tracking-widest text-muted-foreground/60 select-none">
+      <div class="flex flex-row justify-between items-start text-[10px] mb-8 md:mb-16 font-mono uppercase tracking-widest text-muted-foreground/60 select-none">
         <span>// IDENTITY_CORE // V.1.6.1 SP</span>
         
         <div class="flex flex-col-reverse items-end gap-2 sm:flex-row sm:items-center sm:gap-6">
@@ -66,7 +66,7 @@ const CONTAINER_CLASS = "max-w-[1400px] mx-auto px-6 sm:px-8"
       <!-- Hero Grid -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 pt-6 items-end">
         <div class="lg:col-span-7">
-          <h1 class="text-6xl sm:text-7xl font-bold tracking-tighter text-foreground">
+          <h1 class="text-7xl sm:text-8xl font-bold tracking-tighter text-foreground">
             Refac<span class="text-primary">7</span><span class="text-foreground/20">.</span>
           </h1>
           <h2 class="font-normal text-2xl md:text-3xl text-primary/40 mt-3">
@@ -117,7 +117,7 @@ const CONTAINER_CLASS = "max-w-[1400px] mx-auto px-6 sm:px-8"
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {NAV_CARDS.map((card) => (
-                <a href={card.href} class="group relative flex flex-col bg-background border border-border/40 hover:border-primary/50 transition-all duration-300 p-5 overflow-hidden hover:shadow-lg hover:shadow-primary/5 min-h-[180px]">
+                <a href={card.href} class="group relative flex flex-col bg-background border border-border/40 hover:border-primary/50 transition-all duration-300 p-5 overflow-hidden hover:shadow-lg hover:shadow-primary/5 min-h-[180px] xl:min-h-[340px]">
                     <div class="absolute top-0 right-0 size-2 border-t border-r border-primary/20 group-hover:border-primary transition-colors"></div>
                     <div class="absolute bottom-0 left-0 size-2 border-b border-l border-primary/20 group-hover:border-primary transition-colors"></div>
                     <!-- 背景大数字 -->
@@ -133,7 +133,7 @@ const CONTAINER_CLASS = "max-w-[1400px] mx-auto px-6 sm:px-8"
                     </div>
 
                     <div class="flex-1 relative z-10">
-                        <h3 class="text-lg font-bold text-foreground tracking-tight mb-1 group-hover:text-primary transition-colors font-mono">
+                        <h3 class="text-lg font-bold text-foreground tracking-tight mb-1 group-hover:text-primary transition-all font-monoblock group-hover:translate-x-1 duration-300">
                             {card.title}
                         </h3>
                         <p class="text-xs text-muted-foreground leading-relaxed">

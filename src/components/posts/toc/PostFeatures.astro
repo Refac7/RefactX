@@ -1,7 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content'
 import type { MarkdownHeading } from 'astro'
-import TableOfContents from './TableOfContents.astro'
 import BackButton from './BackButton.astro'
 import BackToTop from './BackToTop.astro'
 
@@ -12,10 +11,7 @@ interface Props {
 }
 
 const { post, posts, headings } = Astro.props
-const hasHeadings = headings.length > 0
 ---
-
-{hasHeadings && <TableOfContents headings={headings} class="hidden 2xl:block fade-up animation-delay-150" />}
 
 <BackToTop id="backToTopMobile" class="2xl:hidden fixed bottom-14 sm:right-8 right-6 z-50 flex flex-col gap-3" />
 

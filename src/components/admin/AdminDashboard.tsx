@@ -768,7 +768,7 @@ ${body}`;
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
           <div className="lg:col-span-7">
-            <h1 className="text-6xl sm:text-7xl font-bold tracking-tighter text-foreground leading-[0.9] -ml-1">
+            <h1 className="text-7xl md:text-8xl font-bold tracking-tighter text-foreground leading-[0.9] -ml-1">
               Console<span className="text-primary/80">.</span>
             </h1>
           </div>

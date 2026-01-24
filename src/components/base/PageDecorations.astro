@@ -2,7 +2,7 @@
 // src/components/base/PageDecorations.astro
 ---
 
-<div class="pointer-events-none fixed inset-0 z-40 hidden 2xl:block mx-auto max-w-[110rem]">
+<div class="pointer-events-none fixed inset-0 z-40 hidden 2xl:block mx-auto">
 
   <div class="absolute left-4 top-0 bottom-0 w-12">
     <!-- 轨道线 -->
@@ -31,24 +31,16 @@
       Crafted with &#10084; by Refact7
     </div>
   </div>
-</div>
 
-<div>
   <!-- 右侧竖向文字 -->
   <div class="pointer-events-none fixed right-0 top-0 bottom-0 z-40 hidden 2xl:flex items-center">
     <div class="writing-vertical text-sm text-muted-foreground px-4 py-20">
-      &#169; {new Date().getFullYear()} RefactX. All rights reserved.
+      &#169; {new Date().getFullYear()} RefactX. All rights reserved in China and other countries.
     </div>
+    <div class="block h-full w-16 bg-gradient-to-b from-0% to-red-600/20 blur-xl"></div>
   </div>
+
 </div>
-
-<!-- 右下角红色方块装饰(与回到顶部按钮整合) -->
-<div class="fixed hidden 2xl:flex bottom-20 right-20 w-10 h-10 bg-red-600">
-  <!-- 可以在这里添加回到顶部按钮的功能 -->
-   
-</div>
-
-
 
 <style>
   /* 竖向排版文字 */
@@ -57,21 +49,7 @@
     letter-spacing: 0.1em;
   }
 
-  /* 模拟虚线 */
-  .dashed-line {
-    background-image: linear-gradient(to bottom, currentColor 50%, transparent 50%);
-    background-size: 1px 8px;
-    background-repeat: repeat-y;
-  }
-
-  /* 左侧刻度尺背景图案 */
-  .ruler-marks {
-    background-image: linear-gradient(to bottom, currentColor 1px, transparent 1px);
-    background-size: 100% 40px; /* 每40px一个刻度 */
-    opacity: 0.2;
-  }
-
-  /* 右侧点状背景 */
+  /* 点状背景 */
   .ruler-dots {
     background-image: radial-gradient(circle, currentColor 1px, transparent 1px);
     background-size: 1px 20px;
