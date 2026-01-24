@@ -44,26 +44,21 @@ const CONTAINER_CLASS = "max-w-[1400px] mx-auto px-6 sm:px-8"
     
     <div class="mb-8 relative z-10">
       <!-- Top Bar -->
-      <div class="flex items-center justify-between pb-2 mb-8 border-b border-dashed border-border/40">
-        <span class="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/70">
-           // SYSTEM_ENTRY // v1.7
-        </span>
+      <div class="flex flex-row justify-between items-start text-[10px] mb-16 font-mono uppercase tracking-widest text-muted-foreground/60 select-none">
+        <span>// IDENTITY_CORE // V.1.6.1 SP</span>
         
-        <div class="flex items-center gap-6">
-            <!-- 雪花特效开关 (样式适配) -->
-            <button id="snow-toggle" class="group flex items-center gap-2 cursor-pointer focus:outline-none" aria-label="Toggle Effects">
+        <div class="flex flex-col-reverse items-end gap-2 sm:flex-row sm:items-center sm:gap-6">
+            <button id="snow-toggle" class="group flex items-center gap-1.5 hover:text-primary transition-colors cursor-pointer focus:outline-none" aria-label="Toggle Effects">
                 <span class="icon-[ph--snowflake] w-3 h-3 group-hover:text-primary transition-colors"></span>
-                <span class="font-mono text-[10px] uppercase text-muted-foreground group-hover:text-primary transition-colors">
-                    FX: <span id="snow-status">OFF</span>
-                </span>
+                <span>FX: <span id="snow-status">ON</span></span>
             </button>
 
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 text-primary">
                 <span class="relative flex h-2 w-2">
                   <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
                   <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-600"></span>
                 </span>
-                <span class="font-mono text-[10px] uppercase text-primary font-bold">Online</span>
+                <span>SYS: ONLINE</span>
             </div>
         </div>
       </div>
@@ -74,8 +69,8 @@ const CONTAINER_CLASS = "max-w-[1400px] mx-auto px-6 sm:px-8"
           <h1 class="text-6xl sm:text-7xl font-bold tracking-tighter text-foreground">
             Refac<span class="text-primary">7</span><span class="text-foreground/20">.</span>
           </h1>
-          <h2 class="font-normal text-3xl md:4xl text-primary/40 mt-3">
-            > Architect of the Digital Void 
+          <h2 class="font-normal text-2xl md:text-3xl text-primary/40 mt-3">
+            Architect of the Digital Void 
           </h2>
         </div>
 
@@ -123,6 +118,8 @@ const CONTAINER_CLASS = "max-w-[1400px] mx-auto px-6 sm:px-8"
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {NAV_CARDS.map((card) => (
                 <a href={card.href} class="group relative flex flex-col bg-background border border-border/40 hover:border-primary/50 transition-all duration-300 p-5 overflow-hidden hover:shadow-lg hover:shadow-primary/5 min-h-[180px]">
+                    <div class="absolute top-0 right-0 size-2 border-t border-r border-primary/20 group-hover:border-primary transition-colors"></div>
+                    <div class="absolute bottom-0 left-0 size-2 border-b border-l border-primary/20 group-hover:border-primary transition-colors"></div>
                     <!-- 背景大数字 -->
                     <span class="absolute -right-2 -top-4 text-[80px] font-black text-muted-foreground/[0.03] group-hover:text-primary/[0.05] transition-colors pointer-events-none select-none font-mono">
                         {card.id}
@@ -152,26 +149,11 @@ const CONTAINER_CLASS = "max-w-[1400px] mx-auto px-6 sm:px-8"
         </div>
     </div>
 
-    <!-- 4. 技能栈 -->
-    {SKILLS_ENABLED && SKILLS_DATA.length > 0 && (
-      <div class="mb-10">
-         <div class="flex items-end gap-4 mb-8 select-none">
-           <span class="font-mono text-4xl font-black text-muted-foreground/10 leading-none -mb-1">02</span>
-           <span class="font-mono text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/50 mb-1">
-              Arsenal_Matrix
-           </span>
-           <div class="h-px bg-gradient-to-r from-border to-transparent flex-1 mb-1.5"></div>
-        </div>
-        <SkillsShowcase skillsData={SKILLS_DATA} />
-      </div>
-    )}
-
-
     <!-- 3. 活动日志 (GitHub) -->
     {ENABLED && (
       <div class="mb-10">
          <div class="flex items-end gap-4 mb-8 select-none">
-           <span class="font-mono text-4xl font-black text-muted-foreground/10 leading-none -mb-1">03</span>
+           <span class="font-mono text-4xl font-black text-muted-foreground/10 leading-none -mb-1">02</span>
            <span class="font-mono text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/50 mb-1">
               Activity_Stream
            </span>
@@ -186,6 +168,20 @@ const CONTAINER_CLASS = "max-w-[1400px] mx-auto px-6 sm:px-8"
         />
         
         <div class="mt-4 flex justify-between text-[10px] font-mono text-muted-foreground/40 pt-2 border-t border-dashed border-primary/20"></div>
+      </div>
+    )}
+
+    <!-- 4. 技能栈 -->
+    {SKILLS_ENABLED && SKILLS_DATA.length > 0 && (
+      <div class="mb-10">
+         <div class="flex items-end gap-4 mb-8 select-none">
+           <span class="font-mono text-4xl font-black text-muted-foreground/10 leading-none -mb-1">03</span>
+           <span class="font-mono text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/50 mb-1">
+              Arsenal_Matrix
+           </span>
+           <div class="h-px bg-gradient-to-r from-border to-transparent flex-1 mb-1.5"></div>
+        </div>
+        <SkillsShowcase skillsData={SKILLS_DATA} />
       </div>
     )}
 
