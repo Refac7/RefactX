@@ -26,18 +26,19 @@ const { title, description, image }: Props = Astro.props
   </head>
   <body>
     <!-- 文字选择颜色为黑白色 -->
-    <div class="select-text selection:bg-foreground/20 selection:text-foreground"></div>
-    <Loading />
+    <div class="select-text selection:bg-foreground/20 selection:text-foreground">
+      <Loading />
 
-    <PageDecorations />
+      <PageDecorations />
 
-    <Header />
-    
-    <main class="relative fullPage flex-auto border-x border-border/40 max-w-6xl mx-auto 2xl:ml-[15rem]">
-      <slot />
-    </main>
-    
-    <Footer />
+      <Header />
+      
+      <main class="relative fullPage flex-auto border-x border-border/40 max-w-6xl mx-auto 2xl:ml-[15rem]">
+        <slot />
+      </main>
+      
+      <Footer />
+    </div>
     
     <!-- 底部渐变遮罩 -->
     <div
