@@ -32,6 +32,10 @@ export const HEADER_LINKS: Link[] = [
     name: '图库',
     url: '/photos',
   },
+  {
+    name: '关于',
+    url: '/about',
+  },
 ]
 
 export const FOOTER_LINKS: Link[] = [
@@ -58,6 +62,10 @@ export const FOOTER_LINKS: Link[] = [
   {
     name: '友链',
     url: '/friends',
+  },
+  {
+    name: '关于',
+    url: '/about',
   }
 ]
 

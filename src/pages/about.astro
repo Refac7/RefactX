@@ -5,43 +5,29 @@ import { SITE, SOCIAL_LINKS } from '~/config'
 // 个人数据配置 (可以在这里直接修改，或者抽离到 config.ts)
 const PROFILE = {
   name: "REFAC7", // 你的名字/ID
-  role: "Full Stack Developer",
+  role: "Rubbish Developer",
   location: "Digital Void / Earth",
-  status: "Available for hire",
-  bio: `你好，我是 Refac7。
+  status: "Available for hire to eat sth.",
+  bio: `你好，我是 Refac7（也可能不是）。
 
-我是一名热衷于构建数字产品的开发者。对他而言，代码不仅仅是工具，更是一种在混沌信息流中建立秩序的手段。
-
-我喜欢探索 React、Astro 等现代前端技术，同时也对服务端架构和交互设计保持着浓厚的兴趣。在这里，我记录技术笔记，分享开发心得，偶尔也发发牢骚。`
+我喜欢探索 React、Astro 等现代前端技术，同时也对服务端架构和交互设计保持着浓厚的兴趣。在这里，我记录技术笔记，分享开发心得，偶尔也发发牢骚。（这部分是AI生成的，跟我没关系）`
 }
 
 // 经历数据
 const EXPERIENCE = [
   {
-    time: "2023 - PRESENT",
-    title: "Senior Developer",
-    company: "Tech Corp .Inc",
-    desc: "负责核心业务系统的架构重构与性能优化，推动团队采用现代化前端技术栈。"
+    time: "PAST - PRESENT",
+    title: "废物 (Rubbish) Engineer",
+    company: "Home .Inc",
+    desc: "负责核心作息业务系统的架构重构与性能优化，推动自己采用现代化前端技术栈。"
   },
-  {
-    time: "2021 - 2023",
-    title: "Frontend Engineer",
-    company: "Creative Studio",
-    desc: "主导多个 Web3 项目的交互开发，专注于动画效果与用户体验的极致打磨。"
-  },
-  {
-    time: "2019 - 2021",
-    title: "Junior Developer",
-    company: "Start-up",
-    desc: "从零开始构建企业官网，并负责后台管理系统的维护。"
-  }
 ]
 
 // 更多信息 (Q&A 风格)
 const QNA = [
-  { q: "Tech Stack preference?", a: "React, TypeScript, TailwindCSS, Astro, Node.js." },
-  { q: "Current focus?", a: "Performance optimization & Generative UI." },
-  { q: "Hobbies?", a: "Photography, Sci-Fi Movies, Coffee." }
+  { q: "Tech Stack preference? (Spell)", a: "React, TypeScript, TailwindCSS, Astro, Node.js." },
+  { q: "Current focus? (Spell)", a: "Performance optimization & Generative UI." },
+  { q: "Hobbies?", a: "Photography, Sleep, Coffee." }
 ]
 
 const CONTAINER_CLASS = "max-w-[1400px] mx-auto px-6 sm:px-8"
@@ -67,7 +53,7 @@ const CONTAINER_CLASS = "max-w-[1400px] mx-auto px-6 sm:px-8"
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
         
         {/* 左侧：个人档案卡片 */}
-        <div class="lg:col-span-5">
+        <div class="lg:col-span-4">
             <div class="sticky top-24">
                 <div class="relative group">
                     {/* 装饰框 */}
@@ -129,7 +115,7 @@ const CONTAINER_CLASS = "max-w-[1400px] mx-auto px-6 sm:px-8"
         </div>
 
         {/* 右侧：详细内容 */}
-        <div class="lg:col-span-7 flex flex-col gap-16 md:pt-4">
+        <div class="lg:col-span-8 flex flex-col gap-16 md:pt-4">
             
             {/* 01. Bio */}
             <section>
@@ -184,7 +170,7 @@ const CONTAINER_CLASS = "max-w-[1400px] mx-auto px-6 sm:px-8"
                 </div>
                 
                 <div class="bg-muted/10 border border-border/40 p-6 rounded-sm font-mono text-sm">
-                    {QNA.map((item, index) => (
+                    {QNA.map((item) => (
                         <div class="mb-4 last:mb-0">
                             <div class="flex text-muted-foreground/70 mb-1">
                                 <span class="mr-2 opacity-50">&gt;</span>
