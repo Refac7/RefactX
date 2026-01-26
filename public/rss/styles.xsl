@@ -4,350 +4,302 @@
   <xsl:template match="/">
     <html>
       <head>
-        <title><xsl:value-of select="/rss/channel/title"/></title>
+        <title><xsl:value-of select="/rss/channel/title"/> :: RSS_FEED</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <style type="text/css">
           :root {
-            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            --color-bg-light: #ffffff;
-            --color-text-light: #000000;
-            --color-heading-light: #ff3b30;
-            --color-link-light: #000000;
-            --color-link-hover-light: #ff3b30;
-            --color-border-light: #e0e0e0;
-            --color-accent: #ff3b30;
-            --color-muted: #666666;
-
-            --color-bg-dark: #000000;
-            --color-text-dark: #ffffff;
-            --color-heading-dark: #ff3b30;
-            --color-link-dark: #ffffff;
-            --color-link-hover-dark: #ff3b30;
-            --color-border-dark: #333333;
+            /* 基础字重与字体 */
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            
+            /* 亮色模式变量 */
+            --bg: #ffffff;
+            --fg: #09090b;
+            --muted: #71717a;
+            --muted-light: #e4e4e7;
+            --border: #e4e4e7;
+            --primary: #000000; /* 或跟随你网站的主色 */
+            --accent: #ff3b30;
+            
+            /* 网格背景颜色 */
+            --grid-color: rgba(0, 0, 0, 0.04);
           }
 
-          * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+          @media (prefers-color-scheme: dark) {
+            :root {
+              /* 深色模式变量 */
+              --bg: #09090b;
+              --fg: #fafafa;
+              --muted: #a1a1aa;
+              --muted-light: #27272a;
+              --border: #27272a;
+              --primary: #ffffff;
+              --grid-color: rgba(255, 255, 255, 0.05);
+            }
           }
+
+          /* 全局重置 */
+          * { margin: 0; padding: 0; box-sizing: border-box; }
 
           body {
             font-family: var(--font-sans);
+            background-color: var(--bg);
+            color: var(--fg);
             line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            background-color: var(--color-bg-light);
-            color: var(--color-text-light);
             font-size: 16px;
-            font-weight: 400;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            /* 背景网格 */
+            background-image: 
+              linear-gradient(to right, var(--grid-color) 1px, transparent 1px), 
+              linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+            background-size: 40px 40px;
+            min-height: 100vh;
           }
 
-          .container {
-            max-width: 100%;
-            margin: 0;
-            padding: 2rem 1.5rem;
-          }
+          /* 链接样式 */
+          a { text-decoration: none; color: inherit; transition: all 0.2s; }
+          a:hover { color: var(--accent); }
 
-          .header {
-            margin-bottom: 3rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 2px solid var(--color-border-light);
+          /* 容器 */
+          .layout {
+            max-width: 1200px;
+            margin: 0 auto;
+            border-left: 1px solid var(--border);
+            border-right: 1px solid var(--border);
+            min-height: 100vh;
+            background-color: var(--bg);
             position: relative;
+          }
+
+          /* 顶部状态栏 HUD */
+          .hud {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-          }
-
-          .header-content {
-            flex: 1;
-          }
-
-          h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: var(--color-heading-light);
-            letter-spacing: -0.02em;
-          }
-          
-          h1 a {
-            color: inherit;
-            text-decoration: none;
-            transition: color 0.2s ease;
-          }
-          
-          h1 a:hover {
-            color: var(--color-accent);
-            text-decoration: none;
-          }
-
-          .channel-description {
-            font-size: 1.125rem;
-            color: var(--color-muted);
-            margin-bottom: 10rem;
-            font-weight: 400;
-            line-height: 1.5;
-          }
-
-          .back-button {
-            background-color: var(--color-text-light);
-            color: var(--color-bg-light);
-            border: none;
-            border-radius: 50%;
-            width: 48px;
-            height: 48px;
-            display: flex;
             align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            margin-left: 1.5rem;
-            flex-shrink: 0;
-            text-decoration: none;
-            font-size: 1.25rem;
-            font-weight: 500;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--border);
+            font-family: var(--font-mono);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--muted);
+            user-select: none;
+          }
+          .hud-status::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background-color: #10b981; /* Green status */
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
           }
 
-          .back-button:hover {
-            background-color: var(--color-accent);
-            transform: scale(1.05);
+          /* 头部 Header */
+          .header {
+            padding: 4rem 2rem 2rem;
+            border-bottom: 4px solid var(--fg);
+          }
+          
+          h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            letter-spacing: -0.05em;
+            line-height: 0.9;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+          }
+          
+          .channel-desc {
+            font-family: var(--font-mono);
+            color: var(--muted);
+            font-size: 0.875rem;
+            max-width: 600px;
+            border-left: 2px solid var(--border);
+            padding-left: 1rem;
           }
 
-          .back-button:active {
-            transform: scale(0.95);
+          /* 返回按钮 (模拟功能块) */
+          .btn-back {
+            display: inline-flex;
+            align-items: center;
+            margin-top: 2rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            font-family: var(--font-mono);
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            background: var(--muted-light);
+          }
+          .btn-back:hover {
+            background: var(--fg);
+            color: var(--bg);
+            border-color: var(--fg);
           }
 
-          .items-list {
+          /* 列表区域 */
+          .feed-list {
             list-style: none;
-            padding: 0;
           }
 
           .item {
-            margin-bottom: 3rem;
-            padding-bottom: 2rem;
-            border-bottom: 1px solid var(--color-border-light);
+            position: relative;
+            padding: 3rem 2rem;
+            border-bottom: 1px solid var(--border);
+            transition: background-color 0.2s;
           }
           
-          .item:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
+          .item:hover {
+            background-color: rgba(125, 125, 125, 0.03);
           }
 
-          .item-header {
+          /* 序列号 */
+          .item-index {
+            position: absolute;
+            top: 3.2rem;
+            left: 0.5rem;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--muted);
+            opacity: 0.5;
+            writing-mode: vertical-lr;
+            transform: rotate(180deg);
+          }
+
+          /* 文章元数据 */
+          .item-meta {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+          }
+          .item-meta span::before { content: '['; margin-right: 4px; opacity: 0.5; }
+          .item-meta span::after { content: ']'; margin-left: 4px; opacity: 0.5; }
+
+          /* 文章标题 */
+          .item-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.03em;
             margin-bottom: 1rem;
           }
-
-          .item-title {
-            font-size: 1.375rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            line-height: 1.3;
-          }
-          
           .item-title a {
-            color: var(--color-link-light);
-            text-decoration: none;
-            transition: color 0.2s ease;
+            background-image: linear-gradient(to right, var(--fg), var(--fg));
+            background-size: 0% 2px;
+            background-repeat: no-repeat;
+            background-position: left bottom;
+            transition: background-size 0.3s ease;
           }
-          
           .item-title a:hover {
-            color: var(--color-link-hover-light);
-            text-decoration: none;
+            background-size: 100% 2px;
+            color: var(--fg);
           }
 
-          .pubDate {
-            color: var(--color-muted);
-            font-size: 0.875rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.02em;
-          }
-
-          .description {
-            color: var(--color-text-light);
+          /* 文章描述 */
+          .item-desc {
             font-size: 1rem;
-            line-height: 1.6;
+            color: var(--muted);
+            max-width: 65ch;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
           }
 
-          .description a {
-            color: var(--color-link-light);
-            text-decoration: underline;
-            text-decoration-color: var(--color-accent);
-            text-underline-offset: 2px;
-            transition: color 0.2s ease;
-          }
-          
-          .description a:hover {
-            color: var(--color-accent);
-            text-decoration-color: currentColor;
-          }
-
-          footer {
-            margin-top: 4rem;
-            padding-top: 2rem;
-            border-top: 2px solid var(--color-border-light);
-            font-size: 0.875rem;
-            color: var(--color-muted);
-            text-align: left;
-            line-height: 1.5;
+          /* 底部 */
+          .footer {
+            padding: 3rem 2rem;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--muted);
+            border-top: 4px solid var(--fg);
+            background-color: var(--muted-light);
           }
 
-          footer a {
-            color: var(--color-accent);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.2s ease;
-          }
-          
-          footer a:hover {
-            color: var(--color-link-hover-light);
-            text-decoration: underline;
+          /* 动画 */
+          @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.4; }
+            100% { opacity: 1; }
           }
 
-          /* 深色模式 */
-          @media (prefers-color-scheme: dark) {
-            body {
-              background-color: var(--color-bg-dark);
-              color: var(--color-text-dark);
-            }
-            
-            .header {
-              border-bottom: 2px solid var(--color-border-dark);
-            }
-            
-            h1 {
-              color: var(--color-heading-dark);
-            }
-            
-            .channel-description {
-              color: #aaaaaa;
-            }
-            
-            .back-button {
-              background-color: var(--color-text-dark);
-              color: var(--color-bg-dark);
-            }
-            
-            .back-button:hover {
-              background-color: var(--color-accent);
-            }
-            
-            .item {
-              border-bottom: 1px solid var(--color-border-dark);
-            }
-            
-            .item-title a {
-              color: var(--color-link-dark);
-            }
-            
-            .item-title a:hover {
-              color: var(--color-link-hover-dark);
-            }
-            
-            .pubDate {
-              color: #888888;
-            }
-            
-            .description {
-              color: var(--color-text-dark);
-            }
-            
-            .description a {
-              color: var(--color-link-dark);
-            }
-            
-            .description a:hover {
-              color: var(--color-link-hover-dark);
-            }
-            
-            footer {
-              border-top: 2px solid var(--color-border-dark);
-              color: #888888;
-            }
-          }
-
-          /* 响应式设计 */
-          @media (min-width: 768px) {
-            .container {
-              padding: 3rem 2rem;
-            }
-            
-            h1 {
-              font-size: 3rem;
-            }
-            
-            .item-title {
-              font-size: 1.5rem;
-            }
-            
-            .back-button {
-              width: 56px;
-              height: 56px;
-              font-size: 1.5rem;
-            }
-          }
-
-          @media (min-width: 1024px) {
-            .container {
-              padding: 4rem 3rem;
-              max-width: 800px;
-              margin: 0 auto;
-            }
-          }
-          
-          @media (max-width: 480px) {
-            .header {
-              flex-direction: column;
-            }
-            
-            .back-button {
-              margin-left: 0;
-              margin-top: 1rem;
-              align-self: flex-start;
-            }
+          /* 响应式 */
+          @media (max-width: 600px) {
+            .layout { border: none; }
+            h1 { font-size: 2.5rem; }
+            .item-title { font-size: 1.4rem; }
+            .item-index { display: none; }
+            .header { padding-top: 2rem; }
           }
         </style>
       </head>
       <body>
-        <div class="container">
+        <div class="layout">
+          <!-- 顶部状态栏 -->
+          <div class="hud">
+            <span class="hud-status">SYS.RSS.FEED // ONLINE</span>
+            <span>V.1.0</span>
+          </div>
+
+          <!-- 头部 -->
           <div class="header">
-            <div class="header-content">
-              <h1><a href="{/rss/channel/link}" target="_blank"><xsl:value-of select="/rss/channel/title"/></a></h1>
-              <p class="channel-description"><xsl:value-of select="/rss/channel/description"/></p>
+            <h1><a href="{/rss/channel/link}"><xsl:value-of select="/rss/channel/title"/></a></h1>
+            <div class="channel-desc">
+              <xsl:value-of select="/rss/channel/description"/>
+              <br/>
+              <span style="opacity:0.5; margin-top:0.5rem; display:block;">>> PROTOCOL: XML/RSS_2.0</span>
             </div>
-            <a href="{/rss/channel/link}" class="back-button" title="返回网站">
-              ←
+            
+            <a href="{/rss/channel/link}" class="btn-back">
+               &lt; RETURN_TO_BASE
             </a>
           </div>
 
-          <ul class="items-list">
+          <!-- 文章列表 -->
+          <ul class="feed-list">
             <xsl:for-each select="/rss/channel/item">
               <li class="item">
-                <div class="item-header">
-                  <h2 class="item-title">
-                    <a href="{link}" target="_blank">
-                      <xsl:value-of select="title"/>
-                    </a>
-                  </h2>
-                  <div class="pubDate">
-                    <xsl:value-of select="pubDate"/>
-                  </div>
+                <!-- 生成序列号 01, 02... -->
+                <div class="item-index">
+                  LOG_
+                  <xsl:if test="position() &lt; 10">0</xsl:if>
+                  <xsl:value-of select="position()" />
                 </div>
-                <div class="description">
+
+                <div class="item-meta">
+                  <span><xsl:value-of select="substring(pubDate, 0, 17)"/></span>
+                  <span>NODE</span>
+                </div>
+
+                <h2 class="item-title">
+                  <a href="{link}" target="_blank">
+                    <xsl:value-of select="title"/>
+                  </a>
+                </h2>
+
+                <div class="item-desc">
                   <xsl:value-of select="description" disable-output-escaping="yes"/>
                 </div>
               </li>
             </xsl:for-each>
           </ul>
           
-          <footer>
-            Generated by Astro using @astrojs/rss <br /> 
-            Powered by <a href="https://github.com/Refac7/RefactX_Template" target="_blank">RefactX Theme</a>
-          </footer>
+          <!-- 底部 -->
+          <div class="footer">
+            <p>GENERATED_BY: ASTRO_RSS_MODULE</p>
+            <p style="margin-top: 0.5rem; opacity: 0.6;">/// END_OF_STREAM</p>
+          </div>
         </div>
       </body>
     </html>
