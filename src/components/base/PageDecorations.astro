@@ -2,44 +2,47 @@
 // src/components/base/PageDecorations.astro
 ---
 
-<div class="pointer-events-none fixed inset-0 z-40 hidden 2xl:block mx-auto">
-
-  <div class="absolute left-4 top-0 bottom-0 w-12">
-    <!-- 轨道线 -->
-    <div class="absolute left-0 top-10 bottom-10 w-px bg-border/40"></div>
+<div class="pointer-events-none fixed inset-0 z-40 hidden 2xl:block mx-auto max-w-[1920px]">
+  <div class="absolute left-8 top-0 bottom-0 w-16">
     
-    <!-- 滚动滑块容器 -->
+    <!-- 轨道容器 -->
     <div class="relative h-full w-full py-20">
-      <!-- 动态滑块 -->
-      <div id="scroll-indicator" class="absolute right-[-4px] top-20 flex items-center gap-2 transition-transform duration-75 will-change-transform">
-        <!-- 百分比文字 -->
-        <span id="scroll-percent" class="font-mono text-xs text-muted-foreground tabular-nums">00%</span>
-        <!-- 滑块方块 -->
-        <div class="h-2 w-2 bg-primary/60"></div>
-      </div>
       
-      <!-- 装饰性刻度背景 -->
-      <div class="absolute right-0 top-20 bottom-20 w-px ruler-dots"></div>
+      <!-- 静态轨道线 -->
+      <div class="absolute left-[27px] top-30 bottom-20 w-px bg-gradient-to-b from-transparent via-border/60 to-transparent"></div>
+      
+      <!-- 动态滑块组件 -->
+      <div 
+        id="scroll-indicator" 
+        class="absolute left-0 top-30 flex items-center gap-3 transition-transform duration-100 will-change-transform"
+      >
+        <!-- 百分比 -->
+        <div class="flex h-6 items-center justify-center rounded-full border border-border/60 bg-background/80 px-2 backdrop-blur-sm shadow-sm">
+          <span id="scroll-percent" class="font-mono text-[10px] font-medium text-foreground tabular-nums tracking-widest">00%</span>
+        </div>
+
+        <!-- 连接线 -->
+        <div class="h-px w-2 bg-primary/50"></div>
+
+        <!-- 轨道锚点 -->
+        <div class="relative flex h-3 w-3 items-center justify-center">
+          <div class="absolute h-full w-full animate-pulse rounded-full bg-primary/20"></div>
+          <div class="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_8px_rgba(var(--primary),0.6)]"></div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
 
+<!-- 右侧 -->
 <div>
-  <!-- 左侧竖向文字 -->
-  <div class="pointer-events-none fixed left-0 top-0 bottom-0 z-40 hidden 2xl:flex items-center">
-    <div class="writing-vertical text-sm text-muted-foreground px-4 py-20">
-      Crafted with &#10084; by Refac7
-    </div>
-  </div>
-
-  <!-- 右侧竖向文字 -->
   <div class="pointer-events-none fixed right-0 top-0 bottom-0 z-40 hidden 2xl:flex items-center">
     <div class="writing-vertical text-sm text-muted-foreground px-4 py-20">
       &#169; {new Date().getFullYear()} RefactX. All rights reserved in China and other countries.
     </div>
-    <div class="block h-full w-8 bg-gradient-to-b from-0% to-red-600/80 blur-lg">
+    <div class="block h-full w-8 bg-gradient-to-b from-0% to-red-600/80 blur-lg"></div>
   </div>
-
 </div>
 
 <style>
@@ -47,13 +50,6 @@
   .writing-vertical {
     writing-mode: vertical-lr;
     letter-spacing: 0.1em;
-  }
-
-  /* 点状背景 */
-  .ruler-dots {
-    background-image: radial-gradient(circle, currentColor 1px, transparent 1px);
-    background-size: 1px 20px;
-    opacity: 0.3;
   }
 </style>
 
@@ -73,9 +69,10 @@
       // 限制在 0-1 之间
       const safePercent = Math.min(Math.max(scrollPercent, 0), 1);
       
-      // 计算滑块位置 (top: 20px to bottom: 20px range in CSS, we need to map percentage to height)
-      // 这里的计算需要稍微精细一点，基于视口高度减去上下的padding
-      const trackHeight = window.innerHeight - 160; // 假设上下padding共160px
+      // 计算滑块位置
+      // CSS中设置了 py-20 (即上下各 5rem = 80px)，总 padding 为 160px
+      const trackHeight = window.innerHeight - 160;
+      
       const translateY = safePercent * trackHeight;
 
       // 更新位置
@@ -91,8 +88,7 @@
     handleScroll();
   }
 
-  // 确保在 Astro 页面切换或加载时运行
+  // 支持 Astro 的 View Transitions 和普通加载
   document.addEventListener('astro:page-load', initScrollProgress);
-  // 如果没有使用 ViewTransitions，保留下面这行作为回退
-  window.addEventListener('DOMContentLoaded', initScrollProgress);
+  document.addEventListener('DOMContentLoaded', initScrollProgress);
 </script>
