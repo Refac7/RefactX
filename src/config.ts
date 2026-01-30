@@ -241,8 +241,20 @@ export const FRIENDS_CONTACT = {
 // waline 配置
 export const WALINE_CONFIG = {
   enableComment: true, // 设置为 false 可禁用评论组件
-  serverURL: "https://waline.refact.cc", // Waline 服务器地址
+  serverURL: import.meta.env.PUBLIC_WALINE_SERVER_URL || "https://waline.refact.cc", // Waline 服务器地址
   uploadToken: import.meta.env.PUBLIC_UPLOAD_TOKEN, // Waline 上传 Token
-  imgbedURL: "https://img.refact.cc/upload", // Waline 图片上传地址（需要包含接口地址）
+  imgbedURL: import.meta.env.PUBLIC_IMG_BED_URL || "https://img.refact.cc/upload", // Waline 图片上传地址（需要包含接口地址）
   enableImgUpload: true, // Waline 是否启用S3图片上传,默认关闭,false状态下图片上传到数据库（限制128KiB）
+};
+
+// 内容管理系统（CMS）配置，需要在vercel或其他部署平台设置环境变量 PUBLIC_UPLOAD_TOKEN, (GITHUB_TOKEN, ADMIN_PASSWORD).括号内的内容不会暴露在前端
+
+// 如果你需要从低版本（^1.6.1）迁移而来，无论是否启用CMS，都需要把config.ts中的友链信息，项目信息，照片列表改为json文件存储在content目录下，否则会导致友链，项目，照片页面报错，当然你也可以自行修改代码以适配新的配置方式。
+
+export const CMS_CONFIG = {
+  enableCMS: true, // 设置为 false 可禁用内容管理系统
+  owner: 'Refac7', // GitHub 仓库所有者
+  repo: 'RefactX', // GitHub 仓库名称
+  branch: 'main', // 分支名称
+  pathPrefix: 'src/content/posts/' // 内容在仓库中的路径前缀
 };

@@ -2,19 +2,20 @@
 // src/components/base/PageDecorations.astro
 ---
 
-<div class="pointer-events-none fixed inset-0 z-40 hidden 2xl:block mx-auto max-w-[1920px]">
-  <div class="absolute left-8 top-0 bottom-0 w-16">
+<div class="pointer-events-none fixed inset-y-0 left-0 z-40 hidden 2xl:flex items-center mx-auto max-w-[1920px]">
+
+  <div class="relative ml-8 h-[80vh] w-16">
     
     <!-- 轨道容器 -->
-    <div class="relative h-full w-full py-20">
+    <div class="relative h-full w-full">
       
       <!-- 静态轨道线 -->
-      <div class="absolute left-[27px] top-30 bottom-20 w-px bg-gradient-to-b from-transparent via-border/60 to-transparent"></div>
+      <div class="absolute left-[27px] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-border/60 to-transparent"></div>
       
       <!-- 动态滑块组件 -->
       <div 
         id="scroll-indicator" 
-        class="absolute left-0 top-30 flex items-center gap-3 transition-transform duration-100 will-change-transform"
+        class="absolute left-0 top-0 flex items-center gap-3 transition-transform duration-100 will-change-transform"
       >
         <!-- 百分比 -->
         <div class="flex h-6 items-center justify-center rounded-full border border-border/60 bg-background/80 px-2 backdrop-blur-sm shadow-sm">

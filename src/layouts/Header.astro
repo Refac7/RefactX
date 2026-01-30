@@ -7,6 +7,7 @@ import HeaderLink from '~/components/base/HeaderLink.astro'
 import SearchSwitch from '~/components/base/SearchSwitch.astro'
 import { Image } from 'astro:assets'
 import favicon from '../../public/favicon.webp'
+import { CMS_CONFIG } from '~/config'
 ---
 
 <header>
@@ -52,16 +53,20 @@ import favicon from '../../public/favicon.webp'
       >
         <span class="icon-[material-symbols--rss-feed] size-5"></span>
       </a>
-      
-      {/* 新增：管理员入口 */}
-      <a
-        href="/admin"
-        class="inline-flex items-center justify-center rounded-md hover:scale-105 duration-200"
-        aria-label="Admin Dashboard"
-        title="Admin Panel"
-      >
-        <span class="icon-[material-symbols--admin-panel-settings-outline] size-5"></span>
-      </a>
+
+      {
+        CMS_CONFIG.enableCMS && (
+          <a
+            href="/admin"
+            class="inline-flex items-center justify-center rounded-md hover:scale-105 duration-200"
+            aria-label="Admin Dashboard"
+            title="Admin Panel"
+          >
+            <span class="icon-[material-symbols--admin-panel-settings-outline] size-5"></span>
+          </a>
+        )
+      }
+
 
       <ThemeToggle client:load />
     </div>

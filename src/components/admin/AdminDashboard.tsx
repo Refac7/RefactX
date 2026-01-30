@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { cn } from '~/lib/utils';
+import { CMS_CONFIG } from '~/config';
 
 // --- 配置区域 ---
 const REPO_CONFIG = {
-  owner: 'Refac7',
-  repo: 'RefactX',
-  branch: 'main',
-  pathPrefix: 'src/content/posts/' 
+  owner: CMS_CONFIG.owner,
+  repo: CMS_CONFIG.repo,
+  branch: CMS_CONFIG.branch,
+  pathPrefix: CMS_CONFIG.pathPrefix 
 };
 
 // 数据文件定义
@@ -47,7 +48,7 @@ const SCHEMAS: Record<string, { key: string; label: string; type: 'text' | 'imag
 
 const UPLOAD_CONFIG = {
   url: 'https://img.refact.cc/upload?path=root',
-  token: import.meta.env.PUBLIC_UPLOAD_TOKEN || 'YOUR_UPLOAD_TOKEN'
+  token: import.meta.env.PUBLIC_UPLOAD_TOKEN
 };
 
 const DEFAULT_META = {
@@ -70,6 +71,13 @@ type QueueItem = {
 type RemoteFile = { name: string; sha: string; path: string; };
 
 export default function AdminDashboard() {
+  // Check if CMS is enabled
+  if (!CMS_CONFIG.enableCMS) {
+    return <div className="min-h-screen flex items-center justify-center text-center text-muted-foreground font-mono text-sm">
+      <p>CMS is currently disabled</p>
+    </div>;
+  }
+
   // Auth
   const [password, setPassword] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
