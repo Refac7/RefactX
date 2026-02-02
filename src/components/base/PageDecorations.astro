@@ -10,29 +10,52 @@ const { class: className } = Astro.props;
   className
 ]}>
 
+  <!-- ==========================================
+       LEFT: 精密卡尺风格 (Precision Caliper)
+       设计：虚线轨道 + 反色数据标签 + 红色指针
+       ========================================== -->
   <div class="absolute left-0 top-0 bottom-0 w-32 flex flex-col">
+    
+    <!-- 1. 背景参考线 (极细虚线) -->
+    <div class="absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2 border-l border-dashed border-border/40"></div>
+    
+    <!-- 顶部装饰点 -->
+    <div class="absolute top-12 left-1/2 -translate-x-1/2 w-2 h-2 border border-foreground/40 rounded-full bg-background z-10"></div>
 
-    <!-- 动态滑块组 -->
+    <!-- 2. 动态滑块组 -->
     <div 
       id="scroll-indicator" 
-      class="absolute left-[60%] top-0 flex items-center -translate-x-1/2 transition-transform duration-75 will-change-transform z-10"
+      class="absolute left-1/2 top-0 flex items-center -translate-x-1/2 transition-transform duration-75 will-change-transform z-20"
     >
-      <!-- 数据盒子 -->
-      <div class="flex flex-col justify-center bg-background border border-foreground/10 px-1.5 h-8 ml-2 shadow-sm">
-         <span id="scroll-percent" class="font-mono text-xs font-bold tabular-nums tracking-tighter">00</span>
-      </div>
+      <!-- 组合结构：左侧红线 + 右侧黑底标签 -->
+      <div class="relative flex items-center gap-2">
+        
+        <!-- 左侧：红色游标指针 -->
+        <div class="w-1.5 h-6 bg-red-600 shadow-[0_0_10px_rgba(220,38,38,0.5)]"></div>
+        
+        <!-- 右侧：高对比度数据块 -->
+        <div class="flex items-baseline gap-1 bg-foreground text-background px-2 py-1 min-w-[3rem] justify-end shadow-xl">
+           <span id="scroll-percent" class="font-mono text-sm font-bold tabular-nums leading-none tracking-tight">00</span>
+           <span class="text-[8px] opacity-60 font-mono leading-none">%</span>
+        </div>
 
-      <!-- 箭头 -->
-      <div class="w-0 h-0 border-y-[4px] border-l-[6px] border-l-foreground border-y-transparent ml-1 opacity-80"></div>
+        <!-- 装饰：连接线 (穿过标签的效果) -->
+        <div class="absolute top-1/2 left-0 w-full h-px bg-background/20 -z-10 mix-blend-overlay"></div>
+      </div>
     </div>
 
-    <!-- 底部装饰：垂直文字 -->
-    <div class="absolute bottom-12 left-1/2 -translate-x-1/2 writing-vertical text-[10px] font-mono tracking-[0.3em] text-muted-foreground/40">
-      SCROLL_INTERACTION
+    <!-- 底部装饰：垂直文字 (保持位置，增加样式) -->
+    <div class="absolute bottom-12 left-1/2 -translate-x-1/2 bg-background py-2 z-10">
+      <div class="writing-vertical text-[9px] font-mono tracking-[0.3em] text-muted-foreground/60 uppercase">
+        System_Status: OK
+      </div>
     </div>
   </div>
 
 
+  <!-- ==========================================
+       RIGHT: 保持原有设计 (Editorial Style)
+       ========================================== -->
   <div class="absolute right-0 top-0 bottom-0 w-48 flex flex-col items-end pr-8">
     
     <!-- 1. 顶部：巨大的日期 -->
@@ -41,7 +64,6 @@ const { class: className } = Astro.props;
     </div>
 
     <!-- 2. 中部：摩尔纹装饰条 (条形码风格) -->
-    <!-- 这是一个纯 CSS 绘制的图案，非常有艺术感 -->
     <div class="absolute top-1/2 -translate-y-1/2 right-12 flex flex-col gap-1 opacity-60">
       <div class="w-1 h-12 bg-foreground"></div>
       <div class="w-1 h-2 bg-red-600"></div> <!-- 红色点缀 -->
@@ -103,13 +125,14 @@ const { class: className } = Astro.props;
       
       const trackHeight = trackElement.offsetHeight;
       
-      // Buffer 设置
+      // Buffer 设置: 上下各留 100px 缓冲，避免撞到装饰元素
       const buffer = 100;
       const availableHeight = trackHeight - (buffer * 2); 
       
       const translateY = buffer + (safePercent * availableHeight);
 
-      // 应用位置
+      // 应用位置 (注意 CSS 中已经是 left-1/2 -translate-x-1/2，这里只控制 Y 轴)
+      // 我们需要保持 X 轴的 centering (-50%)
       indicator.style.transform = `translate(-50%, ${translateY}px)`;
       
       // 更新文字
