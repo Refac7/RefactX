@@ -24,13 +24,11 @@ const { title, description, image }: Props = Astro.props
     <Head title={`${title} | ${SITE.title}`} {description} {image} />
   </head>
   <body>
-    <!-- 
-      Loading 组件通常需要在最顶层 
-    -->
+
     <Loading />
 
     <!-- 文字选择颜色为黑白色 -->
-    <div class="select-text selection:bg-foreground/20 selection:text-foreground flex flex-col min-h-screen">
+    <div class="select-text selection:bg-foreground/20 selection:text-foreground">
       
       <div class="relative z-50 bg-background">
         <Header />
