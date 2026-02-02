@@ -789,7 +789,7 @@ ${body}`;
                             try {
                               turnstileWidgetId = window.turnstile.render('#turnstile-container', {
                                 sitekey: TURNSTILE_SITE_KEY,
-                                theme: 'dark',
+                                theme: 'auto',
                                 size: 'normal'
                               });
                             } catch (e) {

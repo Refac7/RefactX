@@ -29,6 +29,9 @@ importers:
       astro:
         specifier: ^5.16.4
         version: 5.16.4(@types/node@22.18.6)(@vercel/functions@2.2.13)(jiti@2.6.0)(lightningcss@1.30.1)(rollup@4.52.3)(terser@5.46.0)(tsx@4.20.6)(typescript@5.9.3)(yaml@2.8.1)
+      bcryptjs:
+        specifier: ^3.0.3
+        version: 3.0.3
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -1481,6 +1484,10 @@ packages:
 
   bcp-47-match@2.0.3:
     resolution: {integrity: sha512-JtTezzbAibu8G0R9op9zb3vcWZd9JF6M0xOYGPn0fNCd7wOpRB1mU2mH9T8gaBGbAAyIIVgB2G7xG0GP98zMAQ==}
+
+  bcryptjs@3.0.3:
+    resolution: {integrity: sha512-GlF5wPWnSa/X5LKM1o0wz0suXIINz1iHRLvTS+sLyi7XPbe5ycmYI3DlZqVGZZtDgl4DmasFg7gOB3JYbphV5g==}
+    hasBin: true
 
   before-after-hook@4.0.0:
     resolution: {integrity: sha512-q6tR3RPqIB1pMiTRMFcZwuG5T8vwp+vUvEG0vuI6B+Rikh5BfPp2fQ82c925FOs+b0lcFQ8CFrL+KbilfZFhOQ==}
@@ -4926,6 +4933,8 @@ snapshots:
   baseline-browser-mapping@2.8.7: {}
 
   bcp-47-match@2.0.3: {}
+
+  bcryptjs@3.0.3: {}
 
   before-after-hook@4.0.0: {}
 
