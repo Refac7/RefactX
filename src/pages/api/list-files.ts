@@ -2,16 +2,40 @@ export const prerender = false;
 
 import type { APIRoute } from 'astro';
 import { Octokit } from '@octokit/rest';
+import bcrypt from 'bcryptjs';
+import {
+  cleanupExpiredRecords,
+  getClientIP,
+  checkRateLimit,
+  recordFailedAttempt,
+  clearRecord
+} from '~/lib/rateLimit';
 
 export const POST: APIRoute = async ({ request }) => {
   try {
+    cleanupExpiredRecords();
+    const clientIP = getClientIP(request);
+    const limitCheck = checkRateLimit(clientIP);
+    if (!limitCheck.allowed) {
+      return new Response(
+        JSON.stringify({ error: limitCheck.message || 'Rate limit exceeded' }),
+        { status: 429 }
+      );
+    }
+
     const body = await request.json();
     const { password, config } = body;
 
-    const CORRECT_PASSWORD = import.meta.env.ADMIN_PASSWORD;
-    if (password !== CORRECT_PASSWORD) {
+    const HASHED_PASSWORD = import.meta.env.ADMIN_PASSWORD;
+    if (!HASHED_PASSWORD) {
+      return new Response(JSON.stringify({ error: 'Server misconfiguration' }), { status: 500 });
+    }
+    const isMatch = await bcrypt.compare(password, HASHED_PASSWORD);
+    if (!isMatch) {
+      recordFailedAttempt(clientIP);
       return new Response(JSON.stringify({ error: 'Access Denied' }), { status: 401 });
     }
+    clearRecord(clientIP);
 
     const GITHUB_TOKEN = import.meta.env.GITHUB_TOKEN;
     const octokit = new Octokit({ auth: GITHUB_TOKEN });

@@ -3,6 +3,30 @@ import toast, { Toaster } from 'react-hot-toast';
 import { cn } from '~/lib/utils';
 import { CMS_CONFIG } from '~/config';
 
+// 声明 Cloudflare Turnstile 全局对象
+declare global {
+  interface Window {
+    turnstile?: {
+      render: (element: string | HTMLElement, options: any) => string;
+      reset: (widgetId?: string) => void;
+      remove: (widgetId?: string) => void;
+      getResponse: (widgetId?: string) => string;
+    };
+  }
+}
+
+// Turnstile 配置
+const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
+let turnstileWidgetId: string | null = null;
+
+// 加载 Cloudflare Turnstile 脚本
+if (typeof window !== 'undefined' && TURNSTILE_SITE_KEY && !window.turnstile) {
+  const script = document.createElement('script');
+  script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+  script.async = true;
+  document.head.appendChild(script);
+}
+
 // --- 配置区域 ---
 const REPO_CONFIG = {
   owner: CMS_CONFIG.owner,
@@ -161,10 +185,24 @@ export default function AdminDashboard() {
     setLoginError(false);
     
     try {
+      // 获取 Turnstile token（如果已启用）
+      let turnstileToken = '';
+      if (TURNSTILE_SITE_KEY && window.turnstile && turnstileWidgetId !== null) {
+        try {
+          turnstileToken = window.turnstile.getResponse(turnstileWidgetId) || '';
+        } catch (error) {
+          console.warn('Turnstile token retrieval failed:', error);
+          // Turnstile 失败时继续尝试（不阻止登录）
+        }
+      }
+
       const res = await fetch('/api/auth', { 
         method: 'POST', 
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password: pass }) 
+        body: JSON.stringify({ 
+          password: pass,
+          turnstileToken: turnstileToken
+        }) 
       });
       
       if (res.ok) {
@@ -173,14 +211,39 @@ export default function AdminDashboard() {
         setPassword(pass);
         toast.success('IDENTITY CONFIRMED // SYSTEM ONLINE');
         fetchRemoteFiles(pass);
-      } else { 
+      } else {
         setLoginError(true);
-        localStorage.removeItem('admin_simple_pass'); 
-        toast.error('ACCESS DENIED // INVALID CREDENTIALS');
+        localStorage.removeItem('admin_simple_pass');
+        
+        // 重置 Turnstile
+        if (window.turnstile && turnstileWidgetId) {
+          window.turnstile.reset(turnstileWidgetId);
+        }
+        
+        // 细分错误提示
+        const errorData = await res.json().catch(() => ({}));
+        
+        if (res.status === 429) {
+          // 频率限制：暴力尝试锁定
+          const message = errorData.error || 'Too many attempts. Please try again later.';
+          toast.error(`RATE_LIMITED // ${message}`, { duration: 5000 });
+        } else if (res.status === 403) {
+          // Turnstile 验证失败
+          toast.error('🤖 TURNSTILE_FAILED // Please verify you are human', { duration: 4000 });
+        } else if (res.status === 401) {
+          // 认证失败：密码错误
+          toast.error('ACCESS DENIED // INVALID CREDENTIALS');
+        } else if (res.status === 500) {
+          // 服务器错误
+          toast.error('SERVER_ERROR // Configuration issue', { duration: 4000 });
+        } else {
+          // 其他错误
+          toast.error(`ERROR_${res.status} // ${errorData.error || 'Unknown error'}`);
+        }
       }
-    } catch { 
+    } catch (error) { 
       setLoginError(true);
-      toast.error('CONNECTION FAILURE'); 
+      toast.error('CONNECTION_FAILURE // Network error'); 
     } finally { 
       setIsValidating(false); 
     }
@@ -716,6 +779,26 @@ ${body}`;
                         />
                         {loginError && <div className="text-[10px] text-red-500 mt-2 text-center font-bold tracking-wider">ERROR: INVALID CREDENTIALS</div>}
                     </div>
+
+                    {/* Cloudflare Turnstile */}
+                    {TURNSTILE_SITE_KEY && (
+                      <div 
+                        id="turnstile-container"
+                        ref={(el) => {
+                          if (el && window.turnstile && !turnstileWidgetId) {
+                            try {
+                              turnstileWidgetId = window.turnstile.render('#turnstile-container', {
+                                sitekey: TURNSTILE_SITE_KEY,
+                                theme: 'dark',
+                                size: 'normal'
+                              });
+                            } catch (e) {
+                              console.error('Failed to render Turnstile:', e);
+                            }
+                          }
+                        }}
+                      ></div>
+                    )}
 
                     <button 
                         onClick={() => performLogin(password)} 
