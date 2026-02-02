@@ -1,34 +1,41 @@
 ---
 // src/components/base/PageDecorations.astro
+const currentYear = new Date().getFullYear();
 ---
 
-<div class="pointer-events-none fixed inset-y-0 left-0 z-40 hidden 2xl:flex items-center mx-auto max-w-[1920px]">
-
-  <div class="relative ml-8 h-[80vh] w-16">
-    
+<!-- 左侧：滚动进度标尺 -->
+<div class="pointer-events-none fixed inset-y-0 left-0 z-40 hidden 2xl:flex flex-col justify-center pl-8 w-24 select-none">
+  
+  <div class="relative h-[70vh] w-full">
     <!-- 轨道容器 -->
-    <div class="relative h-full w-full">
+    <div class="relative h-full w-full border-l border-border/20">
       
-      <!-- 静态轨道线 -->
-      <div class="absolute left-[27px] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-border/60 to-transparent"></div>
-      
+      <!-- 刻度线装饰 (Top/Middle/Bottom) -->
+      <div class="absolute -left-px top-0 h-px w-3 bg-border/60"></div>
+      <div class="absolute -left-px top-1/2 h-px w-2 bg-border/40"></div>
+      <div class="absolute -left-px bottom-0 h-px w-3 bg-border/60"></div>
+
       <!-- 动态滑块组件 -->
       <div 
         id="scroll-indicator" 
-        class="absolute left-0 top-0 flex items-center gap-3 transition-transform duration-100 will-change-transform"
+        class="absolute -left-[1px] top-0 flex items-center transition-transform duration-75 will-change-transform"
       >
-        <!-- 百分比 -->
-        <div class="flex h-6 items-center justify-center rounded-full border border-border/60 bg-background/80 px-2 backdrop-blur-sm shadow-sm">
-          <span id="scroll-percent" class="font-mono text-[10px] font-medium text-foreground tabular-nums tracking-widest">00%</span>
-        </div>
-
+        <!-- 激活指示条 -->
+        <div class="h-4 w-0.5 bg-primary shadow-[0_0_10px_rgba(var(--primary),0.5)]"></div>
+        
         <!-- 连接线 -->
-        <div class="h-px w-2 bg-primary/50"></div>
+        <div class="h-px w-4 bg-primary/40"></div>
 
-        <!-- 轨道锚点 -->
-        <div class="relative flex h-3 w-3 items-center justify-center">
-          <div class="absolute h-full w-full animate-pulse rounded-full bg-primary/20"></div>
-          <div class="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_8px_rgba(var(--primary),0.6)]"></div>
+        <!-- 数据框 -->
+        <div class="flex flex-col gap-0.5">
+          <div class="flex items-center gap-2 border border-border/60 bg-background/90 px-2 py-0.5 backdrop-blur-sm shadow-sm">
+             <!-- 装饰性的小方块 -->
+            <div class="h-1.5 w-1.5 animate-pulse bg-primary"></div>
+            <span id="scroll-percent" class="font-mono text-xs font-bold text-foreground tabular-nums">000</span>
+            <span class="font-mono text-[10px] text-muted-foreground">%</span>
+          </div>
+          <!-- 装饰性辅助字 -->
+          <span class="text-[9px] font-mono text-muted-foreground/50 text-right uppercase tracking-wider">Scroll_Y</span>
         </div>
       </div>
 
@@ -36,60 +43,90 @@
   </div>
 </div>
 
-<!-- 右侧 -->
-<div>
-  <div class="pointer-events-none fixed right-0 top-0 bottom-0 z-40 hidden 2xl:flex items-center">
-    <div class="writing-vertical text-sm text-muted-foreground px-4 py-20">
-      &#169; {new Date().getFullYear()} RefactX. All rights reserved in China and other countries.
+<!-- 右侧：版权与系统状态 -->
+<div class="pointer-events-none fixed inset-y-0 right-0 z-40 hidden 2xl:flex flex-col items-end pr-6 select-none">
+  
+  <!-- 顶部装饰线 -->
+  <div class="h-32 w-px border-r border-dashed border-border/30"></div>
+
+  <!-- 中间主体 -->
+  <div class="flex flex-1 flex-col items-center justify-center gap-8 py-12">
+    
+    <!-- 版权信息 (竖排) -->
+    <div class="writing-vertical flex items-center gap-4 font-mono text-xs text-muted-foreground tracking-widest opacity-60 mix-blend-difference">
+      <span>&#169; {currentYear} REFACTX.SYS</span>
+      <span class="h-8 w-px bg-border"></span>
+      <span>ALL RIGHTS RESERVED</span>
     </div>
-    <div class="block h-full w-8 bg-gradient-to-b from-0% to-red-600/80 blur-lg"></div>
+
+    <!-- 装饰性条形码/方块组 -->
+    <div class="flex flex-col gap-1 opacity-30">
+      <div class="h-1 w-1 bg-red-600"></div>
+      <div class="h-4 w-1 bg-red-600"></div>
+      <div class="h-2 w-1 bg-red-600"></div>
+      <div class="h-1 w-1 bg-transparent"></div>
+      <div class="h-8 w-1 bg-red-600"></div>
+    </div>
+
   </div>
+
+  <!-- 底部装饰线 -->
+  <div class="h-32 w-px border-r border-dashed border-border/30"></div>
 </div>
 
 <style>
-  /* 竖向排版文字 */
+  /* 竖向排版文字工具类 */
   .writing-vertical {
     writing-mode: vertical-lr;
-    letter-spacing: 0.1em;
+    text-orientation: mixed;
   }
 </style>
 
 <script>
-  // 处理滚动逻辑
   function initScrollProgress() {
     const indicator = document.getElementById('scroll-indicator');
     const percentText = document.getElementById('scroll-percent');
     
     if (!indicator || !percentText) return;
 
+    // 获取轨道的高度（父容器高度）
+    // 注意：这里需要根据 CSS 中的布局动态获取
+    const trackElement = indicator.parentElement;
+    
     const handleScroll = () => {
+      if (!trackElement) return;
+
       const scrollTop = window.scrollY;
       const docHeight = document.body.scrollHeight - window.innerHeight;
       const scrollPercent = docHeight > 0 ? scrollTop / docHeight : 0;
       
-      // 限制在 0-1 之间
       const safePercent = Math.min(Math.max(scrollPercent, 0), 1);
       
-      // 计算滑块位置
-      // CSS中设置了 py-20 (即上下各 5rem = 80px)，总 padding 为 160px
-      const trackHeight = window.innerHeight - 160;
+      // 轨道总高度 - 滑块自身的一半高度(为了视觉居中)
+      // 但由于设计是顶部对齐，直接用 offsetHeight 减去滑块高度的一半可能更好，
+      // 这里简化为轨道高度，因为滑块是用 transform 移动的
+      const trackHeight = trackElement.offsetHeight;
       
-      const translateY = safePercent * trackHeight;
+      // 减去滑块自身高度的一点点buffer，防止超出底部
+      // 假设滑块大概 40px 高
+      const availableHeight = trackHeight - 40; 
+      const translateY = safePercent * availableHeight;
 
       // 更新位置
       indicator.style.transform = `translateY(${translateY}px)`;
       
-      // 更新文字 (补零格式化)
+      // 更新文字 (补零格式化 000-100)
       const displayPercent = Math.round(safePercent * 100);
-      percentText.textContent = displayPercent < 10 ? `0${displayPercent}%` : `${displayPercent}%`;
+      percentText.textContent = displayPercent.toString().padStart(3, '0');
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    // 初始化一次
+    // 监听 resize 以适应窗口变化
+    window.addEventListener('resize', handleScroll, { passive: true });
+    
     handleScroll();
   }
 
-  // 支持 Astro 的 View Transitions 和普通加载
   document.addEventListener('astro:page-load', initScrollProgress);
   document.addEventListener('DOMContentLoaded', initScrollProgress);
 </script>

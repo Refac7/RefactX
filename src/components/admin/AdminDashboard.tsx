@@ -3,29 +3,9 @@ import toast, { Toaster } from 'react-hot-toast';
 import { cn } from '~/lib/utils';
 import { CMS_CONFIG } from '~/config';
 
-// 声明 Cloudflare Turnstile 全局对象
-declare global {
-  interface Window {
-    turnstile?: {
-      render: (element: string | HTMLElement, options: any) => string;
-      reset: (widgetId?: string) => void;
-      remove: (widgetId?: string) => void;
-      getResponse: (widgetId?: string) => string;
-    };
-  }
-}
+// Turnstile removed — CAPTCHA not required for this deployment
 
-// Turnstile 配置
-const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
-let turnstileWidgetId: string | null = null;
 
-// 加载 Cloudflare Turnstile 脚本
-if (typeof window !== 'undefined' && TURNSTILE_SITE_KEY && !window.turnstile) {
-  const script = document.createElement('script');
-  script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
-  script.async = true;
-  document.head.appendChild(script);
-}
 
 // --- 配置区域 ---
 const REPO_CONFIG = {
@@ -179,30 +159,20 @@ export default function AdminDashboard() {
     }
   }, []);
 
+
+
   const performLogin = async (pass: string) => {
     if (!pass) return;
     setIsValidating(true);
     setLoginError(false);
     
     try {
-      // 获取 Turnstile token（如果已启用）
-      let turnstileToken = '';
-      if (TURNSTILE_SITE_KEY && window.turnstile && turnstileWidgetId !== null) {
-        try {
-          turnstileToken = window.turnstile.getResponse(turnstileWidgetId) || '';
-        } catch (error) {
-          console.warn('Turnstile token retrieval failed:', error);
-          // Turnstile 失败时继续尝试（不阻止登录）
-        }
-      }
+
 
       const res = await fetch('/api/auth', { 
         method: 'POST', 
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          password: pass,
-          turnstileToken: turnstileToken
-        }) 
+        body: JSON.stringify({ password: pass })
       });
       
       if (res.ok) {
@@ -215,11 +185,6 @@ export default function AdminDashboard() {
         setLoginError(true);
         localStorage.removeItem('admin_simple_pass');
         
-        // 重置 Turnstile
-        if (window.turnstile && turnstileWidgetId) {
-          window.turnstile.reset(turnstileWidgetId);
-        }
-        
         // 细分错误提示
         const errorData = await res.json().catch(() => ({}));
         
@@ -228,8 +193,7 @@ export default function AdminDashboard() {
           const message = errorData.error || 'Too many attempts. Please try again later.';
           toast.error(`RATE_LIMITED // ${message}`, { duration: 5000 });
         } else if (res.status === 403) {
-          // Turnstile 验证失败
-          toast.error('🤖 TURNSTILE_FAILED // Please verify you are human', { duration: 4000 });
+          toast.error('ACCESS FORBIDDEN', { duration: 4000 });
         } else if (res.status === 401) {
           // 认证失败：密码错误
           toast.error('ACCESS DENIED // INVALID CREDENTIALS');
@@ -780,25 +744,7 @@ ${body}`;
                         {loginError && <div className="text-[10px] text-red-500 mt-2 text-center font-bold tracking-wider">ERROR: INVALID CREDENTIALS</div>}
                     </div>
 
-                    {/* Cloudflare Turnstile */}
-                    {TURNSTILE_SITE_KEY && (
-                      <div 
-                        id="turnstile-container"
-                        ref={(el) => {
-                          if (el && window.turnstile && !turnstileWidgetId) {
-                            try {
-                              turnstileWidgetId = window.turnstile.render('#turnstile-container', {
-                                sitekey: TURNSTILE_SITE_KEY,
-                                theme: 'auto',
-                                size: 'normal'
-                              });
-                            } catch (e) {
-                              console.error('Failed to render Turnstile:', e);
-                            }
-                          }
-                        }}
-                      ></div>
-                    )}
+
 
                     <button 
                         onClick={() => performLogin(password)} 
