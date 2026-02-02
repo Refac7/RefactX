@@ -1,83 +1,85 @@
 ---
 // src/components/base/PageDecorations.astro
 const currentYear = new Date().getFullYear();
+const currentDay = String(new Date().getDate()).padStart(2, '0');
+const { class: className } = Astro.props;
 ---
 
-<!-- 左侧：滚动进度标尺 -->
-<div class="pointer-events-none fixed inset-y-0 left-0 z-40 hidden 2xl:flex flex-col justify-center pl-8 w-24 select-none">
-  
-  <div class="relative h-[70vh] w-full">
-    <!-- 轨道容器 -->
-    <div class="relative h-full w-full border-l border-border/20">
-      
-      <!-- 刻度线装饰 (Top/Middle/Bottom) -->
-      <div class="absolute -left-px top-0 h-px w-3 bg-border/60"></div>
-      <div class="absolute -left-px top-1/2 h-px w-2 bg-border/40"></div>
-      <div class="absolute -left-px bottom-0 h-px w-3 bg-border/60"></div>
+<div class:list={[
+  "pointer-events-none fixed inset-0 hidden 2xl:block select-none overflow-hidden z-0",
+  className
+]}>
 
-      <!-- 动态滑块组件 -->
-      <div 
-        id="scroll-indicator" 
-        class="absolute -left-[1px] top-0 flex items-center transition-transform duration-75 will-change-transform"
-      >
-        <!-- 激活指示条 -->
-        <div class="h-4 w-0.5 bg-primary shadow-[0_0_10px_rgba(var(--primary),0.5)]"></div>
-        
-        <!-- 连接线 -->
-        <div class="h-px w-4 bg-primary/40"></div>
+  <div class="absolute left-0 top-0 bottom-0 w-32 flex flex-col">
 
-        <!-- 数据框 -->
-        <div class="flex flex-col gap-0.5">
-          <div class="flex items-center gap-2 border border-border/60 bg-background/90 px-2 py-0.5 backdrop-blur-sm shadow-sm">
-             <!-- 装饰性的小方块 -->
-            <div class="h-1.5 w-1.5 animate-pulse bg-primary"></div>
-            <span id="scroll-percent" class="font-mono text-xs font-bold text-foreground tabular-nums">000</span>
-            <span class="font-mono text-[10px] text-muted-foreground">%</span>
-          </div>
-          <!-- 装饰性辅助字 -->
-          <span class="text-[9px] font-mono text-muted-foreground/50 text-right uppercase tracking-wider">Scroll_Y</span>
-        </div>
+    <!-- 动态滑块组 -->
+    <div 
+      id="scroll-indicator" 
+      class="absolute left-[60%] top-0 flex items-center -translate-x-1/2 transition-transform duration-75 will-change-transform z-10"
+    >
+      <!-- 数据盒子 -->
+      <div class="flex flex-col justify-center bg-background border border-foreground/10 px-1.5 h-8 ml-2 shadow-sm">
+         <span id="scroll-percent" class="font-mono text-xs font-bold tabular-nums tracking-tighter">00</span>
       </div>
 
+      <!-- 箭头 -->
+      <div class="w-0 h-0 border-y-[4px] border-l-[6px] border-l-foreground border-y-transparent ml-1 opacity-80"></div>
+    </div>
+
+    <!-- 底部装饰：垂直文字 -->
+    <div class="absolute bottom-12 left-1/2 -translate-x-1/2 writing-vertical text-[10px] font-mono tracking-[0.3em] text-muted-foreground/40">
+      SCROLL_INTERACTION
     </div>
   </div>
-</div>
 
-<!-- 右侧：版权与系统状态 -->
-<div class="pointer-events-none fixed inset-y-0 right-0 z-40 hidden 2xl:flex flex-col items-end pr-6 select-none">
-  
-  <!-- 顶部装饰线 -->
-  <div class="h-32 w-px border-r border-dashed border-border/30"></div>
 
-  <!-- 中间主体 -->
-  <div class="flex flex-1 flex-col items-center justify-center gap-8 py-12">
+  <div class="absolute right-0 top-0 bottom-0 w-48 flex flex-col items-end pr-8">
     
-    <!-- 版权信息 (竖排) -->
-    <div class="writing-vertical flex items-center gap-4 font-mono text-xs text-muted-foreground tracking-widest opacity-60 mix-blend-difference">
-      <span>&#169; {currentYear} REFACTX.SYS</span>
-      <span class="h-8 w-px bg-border"></span>
-      <span>ALL RIGHTS RESERVED</span>
+    <!-- 1. 顶部：巨大的日期 -->
+    <div class="absolute top-8 right-8 mix-blend-overlay opacity-20 dark:opacity-10 pointer-events-none">
+      <span class="text-[140px] font-mono leading-none tracking-tighter text-foreground">{currentDay}</span>
     </div>
 
-    <!-- 装饰性条形码/方块组 -->
-    <div class="flex flex-col gap-1 opacity-30">
-      <div class="h-1 w-1 bg-red-600"></div>
-      <div class="h-4 w-1 bg-red-600"></div>
-      <div class="h-2 w-1 bg-red-600"></div>
-      <div class="h-1 w-1 bg-transparent"></div>
-      <div class="h-8 w-1 bg-red-600"></div>
+    <!-- 2. 中部：摩尔纹装饰条 (条形码风格) -->
+    <!-- 这是一个纯 CSS 绘制的图案，非常有艺术感 -->
+    <div class="absolute top-1/2 -translate-y-1/2 right-12 flex flex-col gap-1 opacity-60">
+      <div class="w-1 h-12 bg-foreground"></div>
+      <div class="w-1 h-2 bg-red-600"></div> <!-- 红色点缀 -->
+      <div class="w-1 h-4 bg-foreground"></div>
+      <div class="w-1 h-1 bg-transparent"></div>
+      <div class="w-1 h-8 bg-foreground"></div>
+      <div class="w-1 h-2 bg-foreground"></div>
+      <div class="w-1 h-16 bg-red-600"></div> <!-- 红色长条 -->
+      <div class="w-1 h-4 bg-foreground"></div>
+    </div>
+    
+    <!-- 伴随摩尔纹的文字 -->
+    <div class="absolute top-1/2 -translate-y-1/2 right-20 writing-vertical text-xs font-bold tracking-widest text-foreground/20">
+      INDEX /// {currentYear}
+    </div>
+
+    <!-- 3. 底部：几何构成 (圆形 + 方块) -->
+    <div class="absolute bottom-12 right-8 flex flex-col items-end gap-6">
+       <!-- 空心圆 -->
+       <div class="w-16 h-16 rounded-full border border-foreground/20 flex items-center justify-center animate-[spin_10s_linear_infinite]">
+          <div class="w-full h-px bg-foreground/10"></div>
+          <div class="h-full w-px bg-foreground/10 absolute"></div>
+       </div>
+
+       <!-- 实心红块 (视觉重心) -->
+       <div class="flex items-end gap-2">
+         <span class="font-mono text-[9px] text-muted-foreground mb-1">END_OF_PAGE</span>
+         <div class="w-8 h-8 bg-red-600"></div>
+       </div>
     </div>
 
   </div>
 
-  <!-- 底部装饰线 -->
-  <div class="h-32 w-px border-r border-dashed border-border/30"></div>
 </div>
 
 <style>
-  /* 竖向排版文字工具类 */
   .writing-vertical {
-    writing-mode: vertical-lr;
+    writing-mode: vertical-rl;
     text-orientation: mixed;
   }
 </style>
@@ -89,8 +91,6 @@ const currentYear = new Date().getFullYear();
     
     if (!indicator || !percentText) return;
 
-    // 获取轨道的高度（父容器高度）
-    // 注意：这里需要根据 CSS 中的布局动态获取
     const trackElement = indicator.parentElement;
     
     const handleScroll = () => {
@@ -99,32 +99,27 @@ const currentYear = new Date().getFullYear();
       const scrollTop = window.scrollY;
       const docHeight = document.body.scrollHeight - window.innerHeight;
       const scrollPercent = docHeight > 0 ? scrollTop / docHeight : 0;
-      
       const safePercent = Math.min(Math.max(scrollPercent, 0), 1);
       
-      // 轨道总高度 - 滑块自身的一半高度(为了视觉居中)
-      // 但由于设计是顶部对齐，直接用 offsetHeight 减去滑块高度的一半可能更好，
-      // 这里简化为轨道高度，因为滑块是用 transform 移动的
       const trackHeight = trackElement.offsetHeight;
       
-      // 减去滑块自身高度的一点点buffer，防止超出底部
-      // 假设滑块大概 40px 高
-      const availableHeight = trackHeight - 40; 
-      const translateY = safePercent * availableHeight;
-
-      // 更新位置
-      indicator.style.transform = `translateY(${translateY}px)`;
+      // Buffer 设置
+      const buffer = 100;
+      const availableHeight = trackHeight - (buffer * 2); 
       
-      // 更新文字 (补零格式化 000-100)
+      const translateY = buffer + (safePercent * availableHeight);
+
+      // 应用位置
+      indicator.style.transform = `translate(-50%, ${translateY}px)`;
+      
+      // 更新文字
       const displayPercent = Math.round(safePercent * 100);
-      percentText.textContent = displayPercent.toString().padStart(3, '0');
+      percentText.textContent = displayPercent < 10 ? `0${displayPercent}` : `${displayPercent}`;
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    // 监听 resize 以适应窗口变化
     window.addEventListener('resize', handleScroll, { passive: true });
-    
-    handleScroll();
+    requestAnimationFrame(handleScroll);
   }
 
   document.addEventListener('astro:page-load', initScrollProgress);
