@@ -10,10 +10,6 @@ const { class: className } = Astro.props;
   className
 ]}>
 
-  <!-- ==========================================
-       LEFT: 精密卡尺风格 (Precision Caliper)
-       设计：虚线轨道 + 反色数据标签 + 红色指针
-       ========================================== -->
   <div class="absolute left-0 top-0 bottom-0 w-32 flex flex-col">
     
     <!-- 1. 背景参考线 (极细虚线) -->
@@ -52,10 +48,6 @@ const { class: className } = Astro.props;
     </div>
   </div>
 
-
-  <!-- ==========================================
-       RIGHT: 保持原有设计 (Editorial Style)
-       ========================================== -->
   <div class="absolute right-0 top-0 bottom-0 w-48 flex flex-col items-end pr-8">
     
     <!-- 1. 顶部：巨大的日期 -->
@@ -64,15 +56,15 @@ const { class: className } = Astro.props;
     </div>
 
     <!-- 2. 中部：摩尔纹装饰条 (条形码风格) -->
-    <div class="absolute top-1/2 -translate-y-1/2 right-12 flex flex-col gap-1 opacity-60">
-      <div class="w-1 h-12 bg-foreground"></div>
-      <div class="w-1 h-2 bg-red-600"></div> <!-- 红色点缀 -->
-      <div class="w-1 h-4 bg-foreground"></div>
-      <div class="w-1 h-1 bg-transparent"></div>
-      <div class="w-1 h-8 bg-foreground"></div>
-      <div class="w-1 h-2 bg-foreground"></div>
-      <div class="w-1 h-16 bg-red-600"></div> <!-- 红色长条 -->
-      <div class="w-1 h-4 bg-foreground"></div>
+    <div class="absolute top-1/2 -translate-y-1/2 right-12 flex flex-col gap-1">
+      <div class="w-px h-12 bg-primary/40"></div>
+      <div class="w-px h-2 bg-red-600"></div> <!-- 红色点缀 -->
+      <div class="w-px h-4 bg-primary/40"></div>
+      <div class="w-px h-1 bg-transparent"></div>
+      <div class="w-px h-8 bg-primary/40"></div>
+      <div class="w-px h-2 bg-primary/40"></div>
+      <div class="w-px h-16 bg-red-600"></div> <!-- 红色长条 -->
+      <div class="w-px h-4 bg-primary/40"></div>
     </div>
     
     <!-- 伴随摩尔纹的文字 -->
