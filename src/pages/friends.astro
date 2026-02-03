@@ -93,69 +93,98 @@ const isEven = FRIENDS_LIST.length % 2 === 0;
     <!-- 3. 友链列表 -->
     <div class="max-w-full mx-auto">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 ">
-        {FRIENDS_LIST.map((friend) => (
-          <a 
-            href={friend.url} 
-            target="_blank" 
-            rel="noopener noreferrer"
-            class="group relative flex flex-col p-5 h-full
-                   bg-background border border-border
-                   hover:border-primary/60 transition-all duration-300 rounded-none overflow-hidden hover:shadow-sm"
-          >
-            <!-- 装饰：Hover时出现的四角标记 -->
-            <div class="absolute top-0 right-0 w-2 h-2 border-t border-r border-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
-            <div class="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
-            
-            <div class="flex items-start gap-5">
+        {FRIENDS_LIST.map((friend, index) => {
+          const paddedIndex = (index + 1).toString().padStart(2, '0');
+          return (
+            <a 
+              href={friend.url} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="group relative flex flex-col p-5
+                    bg-background border border-border
+                    hover:border-primary/60 transition-all duration-300 rounded-none overflow-hidden hover:shadow-sm
+                    min-h-[180px] md:min-h-[220px] lg:min-h-[200px]"
+            >
+              <!-- 左下角编号 -->
+              <div class="absolute bottom-4 right-4 z-10">
+                <span class="text-6xl font-bold text-muted-foreground/10 tracking-tight">
+                  {paddedIndex}
+                </span>
+              </div>
+              
+              <!-- 装饰：Hover时出现的四角标记 -->
+              <div class="absolute top-0 right-0 w-2 h-2 border-t border-r border-primary opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
+              <div class="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-primary opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
+              
+              <!-- 垂直布局：头像在上方 -->
+              <div class="flex flex-col h-full">
                 <!-- 头像区域 -->
-                <div class="relative shrink-0 mt-1">
-                    <div class="size-14 p-0.5 border border-border/40 group-hover:border-primary/50 transition-colors bg-muted/20">
-                        <img
-                            src={friend.avatar}
-                            alt={friend.name}
-                            class="size-full object-cover"
-                            loading="lazy"
-                        />
+                <div class="flex justify-start mb-4 lg:mb-6">
+                  <div class="relative">
+                    <div class="size-16 lg:size-20 p-0.5 border border-border/40 group-hover:border-primary/50 transition-colors bg-muted/20">
+                      <img
+                        src={friend.avatar}
+                        alt={friend.name}
+                        class="size-full object-cover"
+                        loading="lazy"
+                      />
                     </div>
+                    <!-- 头像装饰角 -->
+                    <div class="absolute -top-1 -left-1 w-2 h-2 border-t border-l border-primary/50 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="absolute -top-1 -right-1 w-2 h-2 border-t border-r border-primary/50 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  </div>
                 </div>
                 
-                <div class="flex flex-col min-w-0 flex-1">
-                    <div class="flex items-center justify-between mb-1">
-                        <span class="font-bold text-lg text-foreground group-hover:text-primary transition-colors truncate tracking-tight">
-                            {friend.name}
-                        </span>
-                        <span class="icon-[ph--arrow-up-right] size-4 text-muted-foreground/30 group-hover:text-primary transition-colors shrink-0"></span>
-                    </div>
-                    
-                    <div class="flex items-center gap-2 mb-3">
-                         <span class="text-[10px] font-mono uppercase bg-muted px-1.5 py-0.5 text-muted-foreground/70 rounded-none">Auth</span>
-                         <span class="text-xs text-muted-foreground/80 font-mono truncate">{friend.author}</span>
-                    </div>
+                <!-- 内容区域 -->
+                <div class="flex flex-col flex-1">
+                  <!-- 名字和箭头 -->
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="font-bold text-lg lg:text-xl text-foreground group-hover:text-primary transition-colors truncate tracking-tight">
+                      {friend.name}
+                    </span>
+                    <span class="icon-[ph--arrow-up-right] size-4 text-muted-foreground/30 group-hover:text-primary transition-colors shrink-0"></span>
+                  </div>
+                  
+                  <!-- 作者信息 -->
+                  <div class="flex items-center gap-2 mb-4">
+                    <span class="text-[10px] font-mono uppercase bg-muted px-1.5 py-0.5 text-muted-foreground/70 rounded-none">Auth</span>
+                    <span class="text-xs text-muted-foreground/80 font-mono truncate">{friend.author}</span>
+                  </div>
 
-                    <p class="text-sm text-muted-foreground leading-relaxed line-clamp-2">
-                       {friend.description || "No signal detected."}
-                    </p>
+                  <!-- 描述 -->
+                  <p class="text-sm text-muted-foreground leading-relaxed line-clamp-3 lg:line-clamp-4 flex-1">
+                    {friend.description || "No signal detected."}
+                  </p>
                 </div>
-            </div>
-          </a>
-        ))}
+              </div>
+            </a>
+          )
+        })}
 
         <!-- 占位卡片 -->
         <a 
           href="#exchange-section"
-          class={`group relative flex-col p-5 h-full cursor-pointer
-                 bg-muted/5 border border-dashed border-border
-                 hover:border-primary/50 hover:bg-muted/10 transition-all duration-300 rounded-none
-                 ${isEven ? "block md:hidden lg:block" : "block"}`}
+          class={`group relative flex-col p-5 cursor-pointer
+                bg-muted/5 border border-dashed border-border
+                hover:border-primary/50 hover:bg-muted/10 transition-all duration-300 rounded-none
+                min-h-[180px] md:min-h-[220px] lg:min-h-[260px]
+                ${isEven ? "block md:hidden lg:block" : "block"}`}
         >
-            <div class="flex flex-col h-full justify-center items-center text-center py-8 opacity-60 group-hover:opacity-100 transition-opacity">
-                <div class="mb-3 size-10 flex items-center justify-center border border-dashed border-border/40 rounded-full group-hover:scale-110 transition-transform">
-                    <span class="icon-[ph--plus] size-5"></span>
-                </div>
-                <span class="font-mono text-xs uppercase tracking-[0.2em] text-foreground">
-                    Insert_Module
-                </span>
+          <!-- 占位卡片的编号 -->
+          <div class="absolute bottom-4 right-4 z-10">
+            <span class="text-6xl font-bold text-muted-foreground/5 tracking-tight">
+              {totalLinks}+1
+            </span>
+          </div>
+          
+          <div class="flex flex-col h-full justify-center items-center text-center opacity-60 group-hover:opacity-100 transition-opacity">
+            <div class="mb-3 size-10 flex items-center justify-center border border-dashed border-border/40 rounded-full group-hover:scale-110 transition-transform">
+              <span class="icon-[ph--plus] size-5"></span>
             </div>
+            <span class="font-mono text-xs uppercase tracking-[0.2em] text-foreground">
+              Insert_Module
+            </span>
+          </div>
         </a>
       </div>
     </div>

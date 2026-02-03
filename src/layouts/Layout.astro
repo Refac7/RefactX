@@ -7,7 +7,6 @@ import Head from '~/components/base/Head.astro'
 import Header from './Header.astro'
 import Footer from './Footer.astro'
 import Loading from '~/components/base/Loading.astro'
-import PageDecorations from '~/components/base/PageDecorations.astro'
 
 type Props = {
   title: string
@@ -31,8 +30,6 @@ const { title, description, image }: Props = Astro.props
     <div class="select-text selection:bg-foreground/20 selection:text-foreground">
       
       <Header />
-
-      <PageDecorations class="top-16 z-0" />
 
       <!-- Main Content -->
       <main class="relative z-10 fullPage flex-auto border-x border-border/40 max-w-6xl mx-auto 2xl:ml-[15rem]">
