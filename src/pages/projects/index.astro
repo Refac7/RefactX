@@ -32,7 +32,7 @@ const totalCount = ProjectList.length.toString().padStart(2, '0');
 <Layout {title} {description}>
   <div class="min-h-[70vh] relative py-12 px-6 sm:px-8 font-sans overflow-hidden max-w-[1400px] mx-auto">
 
-    <!-- 头部区域 (保持不变) -->
+    
     <div class="mb-10 relative">
       <div class="flex items-center justify-between pb-2 mb-6">
         <span class="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/70">
@@ -79,7 +79,7 @@ const totalCount = ProjectList.length.toString().padStart(2, '0');
       </div>
     </div>
 
-    <!-- 内容区域标记 -->
+    
     <div class="flex items-end gap-4 mb-10 select-none">
        <span class="font-mono text-4xl font-black text-muted-foreground/10 leading-none -mb-1">01</span>
        <span class="font-mono text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/50 mb-1">
@@ -88,7 +88,7 @@ const totalCount = ProjectList.length.toString().padStart(2, '0');
        <div class="h-px bg-gradient-to-r from-border to-transparent flex-1 mb-1.5"></div>
     </div>
 
-    <!-- 项目列表：直接使用 ProjectList 渲染 -->
+    
     <div class="flex flex-col gap-4 fade-up">
       {
         ProjectList.map((project, index) => {
@@ -132,7 +132,7 @@ const totalCount = ProjectList.length.toString().padStart(2, '0');
                 </p>
               </div>
 
-              <!-- 底部：数据元信息 -->
+              
               <div class="mt-6 pt-4 border-t border-dashed border-border/40 flex items-center justify-between text-[10px] font-mono text-muted-foreground/60 uppercase tracking-wider relative z-10">
                  <span>System_Status: Stable</span>
                  

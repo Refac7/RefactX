@@ -10,7 +10,7 @@ const { class: className } = Astro.props;
 ---
 
 <div class={`waline-wrapper ${className || ''} relative z-10`}>
-  <!-- 头部装饰 -->
+  
   <div class="flex items-center justify-between mb-8 text-[10px] font-mono uppercase tracking-widest text-muted-foreground/60 select-none">
     <span>// USER_FEEDBACK // DATA_STREAM</span>
     <div class="flex items-center gap-2 text-primary">
@@ -31,9 +31,9 @@ const { class: className } = Astro.props;
 
   {
     WALINE_CONFIG.enableComment ? (
-      <!-- Waline 容器 -->
+      
       <div id="waline-container" class="waline-lazy relative min-h-[200px]">
-        <!-- Loading State -->
+        
         <div class="waline-loading absolute inset-0 flex flex-col items-center justify-center border border-dashed border-border bg-muted/5 z-0">
             <div class="mb-4 size-10 flex items-center justify-center border border-dashed border-border/60 rounded-none animate-[spin_3s_linear_infinite]">
                 <span class="icon-[ph--spinner] size-5 text-muted-foreground"></span>
@@ -46,7 +46,7 @@ const { class: className } = Astro.props;
         </div>
       </div>
     ) : (
-      <!-- 评论系统禁用提示 -->
+      
       <div class="border border-dashed border-border bg-muted/10 p-8 text-center">
         <div class="mb-4 size-16 mx-auto flex items-center justify-center border border-dashed border-border/60 rounded-none">
           <span class="icon-[ph--chat] size-8 text-muted-foreground"></span>

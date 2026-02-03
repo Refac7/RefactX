@@ -246,13 +246,13 @@
       </head>
       <body>
         <div class="layout">
-          <!-- 顶部状态栏 -->
+          
           <div class="hud">
             <span class="hud-status">SYS.RSS.FEED // ONLINE</span>
             <span>V.1.0</span>
           </div>
 
-          <!-- 头部 -->
+          
           <div class="header">
             <h1><a href="{/rss/channel/link}"><xsl:value-of select="/rss/channel/title"/></a></h1>
             <div class="channel-desc">
@@ -266,11 +266,11 @@
             </a>
           </div>
 
-          <!-- 文章列表 -->
+          
           <ul class="feed-list">
             <xsl:for-each select="/rss/channel/item">
               <li class="item">
-                <!-- 生成序列号 01, 02... -->
+                
                 <div class="item-index">
                   LOG_
                   <xsl:if test="position() &lt; 10">0</xsl:if>
@@ -295,7 +295,7 @@
             </xsl:for-each>
           </ul>
           
-          <!-- 底部 -->
+          
           <div class="footer">
             <p>GENERATED_BY: ASTRO_RSS_MODULE</p>
             <p style="margin-top: 0.5rem; opacity: 0.6;">/// END_OF_STREAM</p>

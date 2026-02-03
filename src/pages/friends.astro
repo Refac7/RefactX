@@ -32,10 +32,10 @@ const isEven = FRIENDS_LIST.length % 2 === 0;
 <Layout title={title} description={description}>
   <div class="relative py-12 px-6 sm:px-8 font-sans min-h-[60vh]">
     
-    <!-- 1. 头部区域：Grid 布局重构 (保持统一) -->
+    
     <div class="pb-10">
       
-      <!-- 顶栏状态条 -->
+      
       <div class="flex items-center justify-between mb-8 text-[10px] font-mono uppercase tracking-widest text-muted-foreground/60">
         <span>// SYSTEM_LINKS // NETWORK</span>
         <div class="flex items-center gap-2 text-primary">
@@ -48,14 +48,14 @@ const isEven = FRIENDS_LIST.length % 2 === 0;
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
-        <!-- 左侧：标题 -->
+        
         <div class="lg:col-span-7">
           <h1 class="text-7xl md:text-8xl font-bold tracking-tighter text-foreground leading-[0.9] -ml-1">
             {title}<span class="text-primary">.</span>
           </h1>
         </div>
 
-        <!-- 右侧：简介与数据面板 -->
+        
         <div class="lg:col-span-5 flex flex-col gap-6">
           <div class="border-l border-primary/40 pl-5">
              <p class="text-base sm:text-lg text-muted-foreground leading-relaxed">
@@ -63,15 +63,15 @@ const isEven = FRIENDS_LIST.length % 2 === 0;
              </p>
           </div>
 
-          <!-- 数据网格 -->
+          
           <div class="grid grid-cols-2 gap-px bg-border/50 border border-border">
-            <!-- Total Links -->
+            
             <div class="bg-background/50 p-3 flex flex-col gap-1">
               <span class="text-[9px] uppercase tracking-widest text-muted-foreground/70 font-mono">Active_Nodes</span>
               <span class="text-2xl font-mono font-bold text-foreground">{totalLinks}</span>
             </div>
             
-            <!-- Protocol -->
+            
             <div class="bg-background/50 p-3 flex flex-col gap-1">
               <span class="text-[9px] uppercase tracking-widest text-muted-foreground/70 font-mono">Protocol_Ver</span>
               <span class="text-sm font-mono font-bold text-muted-foreground mt-1">HTTPS / 2.0</span>
@@ -81,7 +81,7 @@ const isEven = FRIENDS_LIST.length % 2 === 0;
       </div>
     </div>
 
-    <!-- 2. 内容区域标记 -->
+    
     <div class="flex items-end gap-4 mb-10 select-none">
        <span class="font-mono text-4xl font-bold text-muted-foreground/10 leading-none -mb-1">03</span>
        <span class="font-mono text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/50 mb-1">
@@ -90,7 +90,7 @@ const isEven = FRIENDS_LIST.length % 2 === 0;
        <div class="h-px bg-gradient-to-r from-border to-transparent flex-1 mb-1.5"></div>
     </div>
 
-    <!-- 3. 友链列表 -->
+    
     <div class="max-w-full mx-auto">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 ">
         {FRIENDS_LIST.map((friend, index) => {
@@ -105,20 +105,20 @@ const isEven = FRIENDS_LIST.length % 2 === 0;
                     hover:border-primary/60 transition-all duration-300 rounded-none overflow-hidden hover:shadow-sm
                     min-h-[180px] md:min-h-[220px] lg:min-h-[200px]"
             >
-              <!-- 左下角编号 -->
+              
               <div class="absolute bottom-4 right-4 z-10">
                 <span class="text-6xl font-bold text-muted-foreground/10 tracking-tight">
                   {paddedIndex}
                 </span>
               </div>
               
-              <!-- 装饰：Hover时出现的四角标记 -->
+              
               <div class="absolute top-0 right-0 w-2 h-2 border-t border-r border-primary opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
               <div class="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-primary opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
               
-              <!-- 垂直布局：头像在上方 -->
+              
               <div class="flex flex-col h-full">
-                <!-- 头像区域 -->
+                
                 <div class="flex justify-start mb-4 lg:mb-6">
                   <div class="relative">
                     <div class="size-16 lg:size-20 p-0.5 border border-border/40 group-hover:border-primary/50 transition-colors bg-muted/20">
@@ -129,15 +129,15 @@ const isEven = FRIENDS_LIST.length % 2 === 0;
                         loading="lazy"
                       />
                     </div>
-                    <!-- 头像装饰角 -->
+                    
                     <div class="absolute -top-1 -left-1 w-2 h-2 border-t border-l border-primary/50 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     <div class="absolute -top-1 -right-1 w-2 h-2 border-t border-r border-primary/50 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                   </div>
                 </div>
                 
-                <!-- 内容区域 -->
+                
                 <div class="flex flex-col flex-1">
-                  <!-- 名字和箭头 -->
+                  
                   <div class="flex items-center justify-between mb-2">
                     <span class="font-bold text-lg lg:text-xl text-foreground group-hover:text-primary transition-colors truncate tracking-tight">
                       {friend.name}
@@ -145,13 +145,13 @@ const isEven = FRIENDS_LIST.length % 2 === 0;
                     <span class="icon-[ph--arrow-up-right] size-4 text-muted-foreground/30 group-hover:text-primary transition-colors shrink-0"></span>
                   </div>
                   
-                  <!-- 作者信息 -->
+                  
                   <div class="flex items-center gap-2 mb-4">
                     <span class="text-[10px] font-mono uppercase bg-muted px-1.5 py-0.5 text-muted-foreground/70 rounded-none">Auth</span>
                     <span class="text-xs text-muted-foreground/80 font-mono truncate">{friend.author}</span>
                   </div>
 
-                  <!-- 描述 -->
+                  
                   <p class="text-sm text-muted-foreground leading-relaxed line-clamp-3 lg:line-clamp-4 flex-1">
                     {friend.description || "No signal detected."}
                   </p>
@@ -161,7 +161,7 @@ const isEven = FRIENDS_LIST.length % 2 === 0;
           )
         })}
 
-        <!-- 占位卡片 -->
+        
         <a 
           href="#exchange-section"
           class={`group relative flex-col p-5 cursor-pointer
@@ -170,7 +170,7 @@ const isEven = FRIENDS_LIST.length % 2 === 0;
                 min-h-[180px] md:min-h-[220px] lg:min-h-[260px]
                 ${isEven ? "block md:hidden lg:block" : "block"}`}
         >
-          <!-- 占位卡片的编号 -->
+          
           <div class="absolute bottom-4 right-4 z-10">
             <span class="text-6xl font-bold text-muted-foreground/5 tracking-tight">
               {totalLinks}+1
@@ -189,7 +189,7 @@ const isEven = FRIENDS_LIST.length % 2 === 0;
       </div>
     </div>
 
-    <!-- 4. 交换友链区域 -->
+    
     <div id="exchange-section" class="mt-24 max-w-6xl mx-auto scroll-mt-24 border-t border-dashed border-border/40 pt-16">
         <div class="grid md:grid-cols-2 gap-6">
             {/* 左侧说明 */}
