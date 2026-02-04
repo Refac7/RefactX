@@ -10,8 +10,6 @@ import {
   clearRecord
 } from '~/lib/rateLimit';
 
-// Turnstile removed — CAPTCHA not required
-
 export const POST: APIRoute = async ({ request }) => {
   try {
     // 清理过期记录

@@ -29,11 +29,7 @@ const sideWidthClass = "md:w-[280px] lg:w-[320px]"
   
   <div class="absolute top-0 right-0 w-0 h-0 border-t-[3px] border-r-[3px] border-primary opacity-0 group-hover:opacity-100 group-hover:w-3 group-hover:h-3 transition-all duration-200 z-20"></div>
 
-  <!-- 
-    A. 图片区域 (Has Image) 
-    已经是 <a> 标签，保持不变
-  -->
-  {hasImage && (
+    {hasImage && (
     <div 
       class={`
         hidden md:flex flex-col relative shrink-0 h-auto min-h-full
@@ -58,12 +54,7 @@ const sideWidthClass = "md:w-[280px] lg:w-[320px]"
     </div>
   )}
 
-  <!-- 
-    B. 无图占位区域 (No Image Placeholder)
-    修改为 <a> 标签，使其可点击
-    添加 group/placeholder 用于内部元素的 hover 控制
-  -->
-  {!hasImage && (
+    {!hasImage && (
     <a 
       href={`/posts/${post.slug}`}
       class={`
@@ -88,11 +79,7 @@ const sideWidthClass = "md:w-[280px] lg:w-[320px]"
            </span>
         </div>
 
-        <!-- 
-          中间巨大的装饰字
-          添加了 group-hover/placeholder 动画：放大 + 变色
-        -->
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center pointer-events-none overflow-hidden">
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center pointer-events-none overflow-hidden">
            <span class="text-[8rem] leading-none font-black text-foreground/5 font-mono tracking-tighter group-hover/placeholder:text-primary/5 group-hover/placeholder:scale-110 group-hover/placeholder:rotate-3 transition-all duration-500 ease-out select-none block origin-center">
              {serialNo}
            </span>
@@ -111,11 +98,7 @@ const sideWidthClass = "md:w-[280px] lg:w-[320px]"
     </a>
   )}
 
-  <!-- 
-    C. 内容区域 
-    flex-1 自动填充剩余空间
-  -->
-  <div 
+    <div 
     class={`
       flex flex-col w-full p-4 sm:p-6 flex-1
       ${hasImage && isReverse ? 'md:order-1' : 'md:order-1'} 

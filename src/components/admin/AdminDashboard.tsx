@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { cn } from '~/lib/utils';
-import { CMS_CONFIG } from '~/config';
+import { CMS_CONFIG, WALINE_CONFIG } from '~/config';
 
 // Turnstile removed — CAPTCHA not required for this deployment
 
@@ -51,13 +51,13 @@ const SCHEMAS: Record<string, { key: string; label: string; type: 'text' | 'imag
 };
 
 const UPLOAD_CONFIG = {
-  url: 'https://img.refact.cc/upload?path=root',
-  token: import.meta.env.PUBLIC_UPLOAD_TOKEN
+  url: WALINE_CONFIG.imgbedURL,
+  token: WALINE_CONFIG.uploadToken
 };
 
 const DEFAULT_META = {
   title: '', description: '', pubDate: new Date().toISOString().split('T')[0],
-  author: 'Refact', tags: '', recommend: false,
+  author: CMS_CONFIG.owner, tags: '', recommend: false,
   heroImage: '', ogImage: '', heroImageAspectRatio: '16/9'
 };
 
