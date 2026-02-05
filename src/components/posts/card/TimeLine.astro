@@ -1,86 +1,88 @@
 ---
+// 保留原所有导入、类型定义，无任何业务逻辑修改
 import { formatDate } from '~/lib/utils'
 import PostTag from '~/components/posts/base/PostTag.astro'
 import type { CardProps } from './List.astro'
 
+// 保留原Props继承，完全兼容父组件传参
 interface Props extends CardProps {}
 
 const { post }: Props = Astro.props
 ---
 
-<article class="group relative pl-8 sm:pl-12 py-2">
-  
-  <div class="absolute left-0 top-0 h-full flex flex-col items-center w-8 sm:w-12">
-    
-    <div class="h-3 w-3 border-2 border-muted-foreground/40 bg-background group-hover:border-primary group-hover:bg-primary transition-all duration-300 z-10 mt-6 relative">
-        
-        <div class="absolute inset-0 m-auto w-1 h-1 bg-background opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<article class="group relative pl-8 sm:pl-12 py-4 w-full">
+  {/* ================= 左侧时间线 保留原核心布局，样式贴合模板科技风 ================= */}
+  <div class="absolute left-0 top-0 h-full flex flex-col items-center w-8 sm:w-12 z-10">
+    {/* 时间线圆点 - 贴合模板无圆角风格，hover动效和整站统一 */}
+    <div class="h-3 w-3 border-2 border-muted-foreground/40 bg-background group-hover:border-primary group-hover:bg-primary transition-all duration-300 z-20 mt-6 relative rounded-none">
+      <div class="absolute inset-0 m-auto w-1 h-1 bg-background opacity-0 group-hover:opacity-100 transition-opacity rounded-none"></div>
     </div>
-    
-    <div class="flex-1 w-px border-l-2 border-dashed border-muted-foreground/20 group-hover:border-primary/30 transition-colors h-full"></div>
+    {/* 时间线虚线 - 颜色/hover动效贴合模板规范 */}
+    <div class="flex-1 w-px border-l-2 border-dashed border-border/40 group-hover:border-primary/40 transition-colors h-full"></div>
   </div>
 
-  
-  <div class="relative border border-border/40 hover:border-primary/50 transition-all duration-300 p-5 sm:p-6">
-    
-    
-    <div class="absolute top-0 right-0 w-3 h-3 border-t border-r border-primary/40 opacity-50"></div>
-    <div class="absolute bottom-0 left-0 w-3 h-3 border-b border-l border-primary/40 opacity-50"></div>
+  {/* ================= 右侧文章卡片 保留原功能布局，样式/动效完全对齐模板 ================= */}
+  <div class="relative border border-border/60 hover:border-primary/50 hover:bg-muted/5 transition-all duration-300 p-6 w-full">
+    {/* 模板经典角落装饰 - 和友链/标签卡片动效完全统一（hover显隐） */}
+    <div class="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary/0 group-hover:border-primary/50 transition-colors"></div>
+    <div class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-primary/0 group-hover:border-primary/50 transition-colors"></div>
 
-    
-    <div class="flex flex-wrap items-center justify-between gap-y-2 mb-3 border-b border-dashed border-border/40 pb-3">
+    {/* 发布/更新时间栏 - 保留原逻辑，样式贴合模板字体/颜色规范 */}
+    <div class="flex flex-wrap items-center justify-between gap-y-2 mb-4 border-b border-dashed border-border/60 pb-4">
       <div class="flex items-center gap-3">
-        
-        <div class="flex items-center gap-1.5 font-mono text-xs text-muted-foreground">
-          <span class="text-primary/60">[</span>
+        {/* 发布时间 - font-mono贴合模板功能文字规范，颜色层级优化 */}
+        <div class="flex items-center gap-1.5 font-mono text-xs text-muted-foreground/60">
+          <span class="text-primary">[</span>
           <time datetime={post.data.pubDate.toISOString()}>
             {formatDate(post.data.pubDate)}
           </time>
-          <span class="text-primary/60">]</span>
+          <span class="text-primary">]</span>
         </div>
-        
+        {/* 更新时间 - 保留原展示逻辑，样式和发布时间统一 */}
         {post.data.updatedDate && (
-          <div class="flex items-center gap-1.5 font-mono text-xs text-muted-foreground/70 sm:flex">
+          <div class="flex items-center gap-1.5 font-mono text-xs text-muted-foreground/50 sm:flex">
              <span class="text-primary/40">::</span>
              <span>UPD</span>
              <time>{formatDate(post.data.updatedDate)}</time>
           </div>
         )}
       </div>
-
-      
+      {/* 移动端更新时间 - 保留原适配逻辑，样式统一 */}
       {post.data.updatedDate && (
-        <div class="sm:hidden font-mono text-xs text-muted-foreground/60">
+        <div class="sm:hidden font-mono text-xs text-muted-foreground/50">
            UPD: {formatDate(post.data.updatedDate)}
         </div>
       )}
     </div>
 
-    
-    <div class="flex flex-col">
-      <a href={`/posts/${post.slug}`} class="block group/title outline-none">
-        <h2 class="text-lg sm:text-xl font-bold text-foreground/90 group-hover:text-primary transition-colors tracking-tight leading-tight">
+    {/* 标题+描述 - 保留原跳转/截取逻辑，字体/边距贴合模板 */}
+    <div class="flex flex-col gap-3">
+      <a href={`/posts/${post.slug}`} class="block group/title outline-none" target="_self">
+        <h2 class="text-lg sm:text-2xl font-bold text-foreground group-hover:text-primary transition-colors tracking-tight leading-tight font-sans">
           {post.data.title}
         </h2>
-        
+        {/* 文章描述 - 保留原截取逻辑，边框/内边距优化 */}
         {post.data.description && (
-          <p class="mt-3 text-sm sm:text-base text-muted-foreground/80 line-clamp-2 leading-relaxed font-light border-l-2 border-primary/10 pl-3">
+          <p class="mt-2 text-sm sm:text-base text-muted-foreground/70 line-clamp-2 leading-relaxed border-l-2 border-primary/20 pl-4">
             {post.data.description}
           </p>
         )}
       </a>
 
-      
+      {/* 文章标签 - 保留原截取3个+数字逻辑，样式/图标贴合模板 */}
       {post.data.tags?.length > 0 && (
-        <div class="mt-4 flex flex-wrap gap-2 items-center">
-          <span class="icon-[ph--hash] w-3 h-3 text-muted-foreground/40"></span>
+        <div class="mt-4 flex flex-wrap gap-2 items-center pt-2 border-t border-border/40 border-dashed">
+          <span class="icon-[ph--hash-bold] w-3 h-3 text-muted-foreground/50"></span>
           {post.data.tags.slice(0, 3).map((tag) => (
-            <div class="transform scale-90 origin-left">
-                <PostTag tag={tag} size="sm" class="rounded-none border-primary/20 bg-secondary/30 text-xs font-mono" />
-            </div>
+            <PostTag 
+              tag={tag} 
+              size="sm" 
+              class="rounded-none border-primary/30 bg-muted/5 text-xs font-mono px-2 py-1" 
+            />
           ))}
+          {/* 更多标签数字提示 - 样式贴合模板科技风 */}
           {post.data.tags.length > 3 && (
-            <span class="text-[10px] font-mono border border-border px-1 py-0.5 text-muted-foreground/60 bg-muted/30">
+            <span class="text-[10px] font-mono border border-border/60 px-2 py-1 text-muted-foreground/60 bg-background">
               +{post.data.tags.length - 3}
             </span>
           )}

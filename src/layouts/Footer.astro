@@ -1,37 +1,100 @@
 ---
-import { FOOTER_LINKS } from '~/config'
-import SectionDivider from '~/components/base/SectionDivider.astro'
+import { FOOTER_LINKS, SITE } from '~/config'
 import ThemeToggle from '~/components/theme/ThemeToggle'
 import FooterLink from '~/components/base/FooterLink.astro'
+
+const currentYear = new Date().getFullYear()
+const CONTAINER_CLASS = " mx-auto px-6 sm:px-8 border-x border-border"
 ---
 
-<SectionDivider position="bottom" />
-<footer class="flex-none border-x border-border/40 mx-auto">
-  <div class="py-4">
-    <div class="pb-8">
-      <div class="flex flex-wrap gap-x-6 gap-y-1 text-sm font-medium text-muted-foreground pb-4 px-6 sm:px-8 border-b border-border/40">
-        {FOOTER_LINKS.map((link) => <FooterLink href={link.url}>{link.name}</FooterLink>)}
-      </div>
-      <div class="text-sm text-muted-foreground px-6 sm:px-8 py-4">
-        <div class="items-center flex flex-wrap gap-4">
-          <a href="https://astro.build" target="_blank" rel="nofollow" class="items-center flex gap-1 dark:hover:text-white">
-            Built with <span class="icon-[lineicons--astro] size-4 inline"></span>
-          </a>
-          <a href="https://www.vercel.com" target="_blank" rel="nofollow" class="items-center flex gap-1 dark:hover:text-white">
-            Deployed on <span class="icon-[ri--vercel-line] size-4 inline mb-[1px]"></span>
-          </a>
-          <a href="https://github.com/Refac7/RefactX_Template" target="_blank" rel="nofollow" class="items-center flex gap-1 dark:hover:text-white">
-            Source on <span class="icon-[mingcute--github-fill] size-4 inline mb-[1px]"></span>
-          </a>
-          <a href="https://icp.gov.moe/?keyword=20252280" target="_blank" rel="nofollow" class="items-center flex gap-1 dark:hover:text-white">
-            Registered on 萌ICP备 20252280号
-          </a>
-          <div class="grow"></div>
-          <div transition:persist="footer-theme-toggle">
-            <ThemeToggle client:load />
-          </div>
+<footer class="relative border-t border-border bg-background z-10">
+  
+  {/* 顶部装饰条：模拟撕纸或机械分割线 */}
+  <div class="absolute -top-px left-0 w-full h-px bg-border flex justify-between px-[10%]">
+      <div class="w-20 h-px bg-primary"></div>
+      <div class="w-20 h-px bg-primary"></div>
+  </div>
+
+  <div class={CONTAINER_CLASS}>
+    
+    {/* 第一行：主要导航链接 */}
+    <div class="py-12 grid grid-cols-2 md:grid-cols-4 gap-8 border-b border-dashed border-border/60">
+      <div class="col-span-2 md:col-span-1">
+        <span class="block text-[10px] text-muted-foreground/40 font-mono uppercase tracking-widest mb-4">
+          // Navigation
+        </span>
+        <div class="flex flex-col gap-2">
+          {FOOTER_LINKS.map((link) => <FooterLink href={link.url}>{link.name}</FooterLink>)}
         </div>
       </div>
+
+      <div class="col-span-2 md:col-span-3">
+         <span class="block text-[10px] text-muted-foreground/40 font-mono uppercase tracking-widest mb-4">
+          // System_Message
+        </span>
+         <p class="text-sm md:text-base text-muted-foreground font-sans leading-relaxed max-w-2xl">
+            Designed and engineered for the digital void. <br/>
+            Strict adherence to the grid protocol. Data persistence guaranteed.
+         </p>
+      </div>
+    </div>
+
+    {/* 第二行：技术栈展示 - 像表格一样排列 */}
+    <div class="flex flex-wrap items-center gap-px bg-background border-b border-border/60 text-[10px] sm:text-xs font-mono uppercase tracking-wide text-muted-foreground">
+        
+        {/* Tech Item */}
+        <a href="https://astro.build" target="_blank" class="flex items-center gap-2 px-4 py-3 bg-background hover:text-primary hover:bg-muted/5 transition-colors flex-grow md:flex-grow-0">
+           <span>Engine:</span>
+           <span class="font-bold text-foreground">Astro</span>
+           <span class="icon-[lineicons--astro] size-3.5"></span>
+        </a>
+
+        {/* Tech Item */}
+        <a href="https://www.vercel.com" target="_blank" class="flex items-center gap-2 px-4 py-3 bg-background hover:text-primary hover:bg-muted/5 transition-colors flex-grow md:flex-grow-0">
+           <span>Host:</span>
+           <span class="font-bold text-foreground">Vercel</span>
+           <span class="icon-[simple-icons--vercel] size-3"></span>
+        </a>
+
+        {/* Tech Item */}
+        <a href="https://github.com/Refac7/RefactX_Template" target="_blank" class="flex items-center gap-2 px-4 py-3 bg-background hover:text-primary hover:bg-muted/5 transition-colors flex-grow md:flex-grow-0">
+           <span>Source:</span>
+           <span class="font-bold text-foreground">Github</span>
+           <span class="icon-[mingcute--github-fill] size-3.5"></span>
+        </a>
+
+        {/* Filler to push right side */}
+        <div class="hidden md:block flex-grow bg-background h-full min-h-[40px]"></div>
+
+        {/* Theme Toggle in Footer (Compact) */}
+        <div class="px-4 py-2.5 bg-background hidden sm:flex" transition:persist="footer-theme-toggle">
+            <ThemeToggle client:load />
+        </div>
+    </div>
+
+    {/* 第三行：版权与备案 - 极简风格 */}
+    <div class="py-6 pb-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-[10px] font-mono text-muted-foreground/60 uppercase">
+        <div class="flex flex-col sm:flex-row gap-2 sm:gap-6">
+            <span>© {currentYear} {SITE.author || "Refac7"}. All Rights Reserved.</span>
+            <span class="hidden sm:inline text-border">|</span>
+            <a href="https://icp.gov.moe/?keyword=20252280" target="_blank" class="hover:text-foreground transition-colors">
+               萌ICP备 20252280号
+            </a>
+        </div>
+        
+        <div class="flex w-full sm:w-auto gap-4">
+          <div class="flex items-center gap-2">
+              <span class="relative flex h-1.5 w-1.5">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-none bg-green-400 opacity-75"></span>
+                <span class="relative inline-flex h-1.5 w-1.5 bg-green-500 rounded-none"></span>
+              </span>
+              <span>All Systems Normal</span>
+          </div>
+          {/* Theme Toggle in Footer (Compact) */}
+          <div class="flex ml-auto bg-background sm:hidden" transition:persist="footer-theme-toggle">
+              <ThemeToggle client:load />
+          </div>
+        </div>
     </div>
   </div>
 </footer>

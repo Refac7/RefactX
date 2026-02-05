@@ -86,7 +86,7 @@ export const SOCIAL_LINKS: SocialLink[] = [
  * get icon https://icon-sets.iconify.design/
  */
 export const SKILLSSHOWCASE_CONFIG: SkillsShowcaseConfig = {
-  SKILLS_ENABLED: true,
+  SKILLS_ENABLED: false,
   SKILLS_DATA: [
     {
       direction: 'left',

@@ -3,10 +3,6 @@ import toast, { Toaster } from 'react-hot-toast';
 import { cn } from '~/lib/utils';
 import { CMS_CONFIG, WALINE_CONFIG } from '~/config';
 
-// Turnstile removed — CAPTCHA not required for this deployment
-
-
-
 // --- 配置区域 ---
 const REPO_CONFIG = {
   owner: CMS_CONFIG.owner,
@@ -701,6 +697,7 @@ ${body}`;
         <div className="min-h-[80vh] flex items-center justify-center text-foreground font-mono p-4 relative overflow-hidden">
             <Toaster toastOptions={{ 
               style: { 
+                marginTop: '100px',
                 background: '#111', 
                 color: '#fff', 
                 border: '1px solid #333', 
@@ -773,11 +770,88 @@ ${body}`;
     );
   }
 
-  // --- Render: Dashboard (头部还原) ---
+  // --- Render: Login (保留初始核心设计) ---
+  if (!isLoggedIn) {
+    return (
+      <div className="min-h-[80vh] flex items-center justify-center text-foreground font-mono p-4 relative overflow-hidden">
+        <Toaster toastOptions={{ 
+          style: { 
+            background: '#111', 
+            color: '#fff', 
+            border: '1px solid #333', 
+            fontFamily: 'monospace',
+            fontSize: '12px',
+            borderRadius: '0'
+          } 
+        }} />
+        
+        <div className="w-full max-w-md border border-border bg-background/50 backdrop-blur-md p-8 relative shadow-xl overflow-hidden group">
+          <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-primary"></div>
+          <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-primary"></div>
+          <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-primary"></div>
+          <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-primary"></div>
+
+          <div className="mb-8">
+            <h1 className="text-2xl font-bold tracking-tighter mb-2">IDENTITY_CORE</h1>
+            <p className="text-xs text-muted-foreground">Restricted Access // Authorization Required</p>
+          </div>
+
+          <div className="space-y-4 relative z-10">
+            <div>
+              <input 
+                type="password" 
+                value={password}
+                onChange={e => {
+                  setPassword(e.target.value);
+                  setLoginError(false);
+                }}
+                onKeyDown={e => e.key === 'Enter' && performLogin(password)}
+                className={cn(
+                  "w-full bg-muted/30 border p-3 text-center tracking-[0.5em] text-sm focus:outline-none transition-all duration-300 placeholder:tracking-normal",
+                  loginError 
+                    ? "border-red-500 text-red-500 placeholder:text-red-500/50 animate-pulse" 
+                    : "border-border focus:border-primary text-foreground"
+                )}
+                placeholder="PASSKEY"
+                disabled={isValidating}
+                autoFocus
+              />
+              {loginError && <div className="text-[10px] text-red-500 mt-2 text-center font-bold tracking-wider">ERROR: INVALID CREDENTIALS</div>}
+            </div>
+
+            <button 
+              onClick={() => performLogin(password)} 
+              disabled={isValidating}
+              className={cn(
+                "w-full py-3 text-xs font-bold tracking-widest uppercase transition-all duration-300 relative overflow-hidden group/btn",
+                loginError ? "bg-red-500/10 text-red-500 border border-red-500/50 hover:bg-red-500/20" : "bg-primary text-primary-foreground hover:opacity-90"
+              )}
+            >
+              {isValidating ? (
+                <span className="flex items-center justify-center gap-2">
+                  <span className="icon-[ph--spinner] animate-spin size-4"></span>
+                  VERIFYING...
+                </span>
+              ) : (
+                <span className="group-hover/btn:tracking-[0.2em] transition-all">ESTABLISH LINK</span>
+              )}
+            </button>
+          </div>
+
+          <div className="mt-8 text-[9px] text-center text-muted-foreground/40 font-mono">
+            SECURE CONNECTION :: V.3.2
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // --- Render: Dashboard (回归初始工业风核心设计，保留所有功能) ---
   return (
-    <div className="text-foreground font-sans p-4 lg:p-6 flex flex-col">
+    <div className="text-foreground font-sans p-4 lg:p-6 flex flex-col min-h-screen">
       <Toaster toastOptions={{ 
         style: { 
+          marginTop: '100px',
           background: '#111', 
           color: '#fff', 
           border: '1px solid #333', 
@@ -785,383 +859,447 @@ ${body}`;
           fontSize: '12px',
           borderRadius: '0'
         } 
-      }} />
+      }} 
+    />
       <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
 
-      {/* Header */}
-      <div className="mb-2 relative">
-        <div className="flex items-center justify-between pb-2 mb-6">
+      {/* 初始版核心头部：精简装饰，保留状态和核心信息 */}
+      <div className="mb-6 relative">
+        <div className="flex items-center justify-between pb-4 border-b border-border">
           <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/70">
-             // SYSTEM_CONTROLLER // V.3.2
+            // SYSTEM_CONTROLLER // V.3.2
           </span>
-          <div className="flex items-center gap-2 cursor-pointer hover:text-red-500 transition-colors" onClick={handleLogout}>
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              <span className="font-mono text-[10px] uppercase text-emerald-500 font-bold">Admin_Active</span>
-          </div>
+          <button onClick={handleLogout} className="flex items-center gap-2 cursor-pointer hover:text-red-500 transition-colors">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span className="font-mono text-[10px] uppercase text-emerald-500 font-bold">ADMIN_ACTIVE</span>
+          </button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
-          <div className="lg:col-span-7">
-            <h1 className="text-7xl md:text-8xl font-bold tracking-tighter text-foreground leading-[0.9] -ml-1">
-              Console<span className="text-primary/80">.</span>
-            </h1>
-          </div>
-          <div className="lg:col-span-5 flex flex-col justify-end pb-2">
-            <div className="border-l border-primary/40 pl-6 flex flex-col gap-6">
-               <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
-                Centralized management for Markdown posts and JSON data configurations.
-               </p>
-               <div className="flex items-center gap-4 pt-4 border-t border-dashed border-border/40">
-                  <div className="flex flex-col">
-                      <span className="text-[10px] uppercase text-muted-foreground/60 font-mono tracking-wider">Total Modules</span>
-                      <span className="text-3xl font-mono font-bold text-foreground tracking-tight">{remoteFiles.length}</span>
-                  </div>
-                  <div className="h-8 w-px bg-border/60"></div>
-                  <div className="flex flex-col">
-                      <span className="text-[10px] uppercase text-muted-foreground/60 font-mono tracking-wider">Buffer Tasks</span>
-                      <span className="text-3xl font-mono font-bold text-foreground tracking-tight">{queue.length}</span>
-                  </div>
-                  <div className="h-8 w-px bg-border/60"></div>
-                  <div className="flex flex-col">
-                      <span className="text-[10px] uppercase text-muted-foreground/60 font-mono tracking-wider">Target Repo</span>
-                      <span className="text-sm font-mono text-foreground mt-1 truncate max-w-[150px]" title={REPO_CONFIG.repo}>{REPO_CONFIG.repo}</span>
-                  </div>
-                  <div className="h-8 w-px bg-border/60"></div>
-                  <button onClick={handleLogout} className="text-xs text-red-500 hover:text-red-400 font-mono underline decoration-dotted underline-offset-4">LOGOUT</button>
-               </div>
+        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mt-6 gap-4">
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tighter text-foreground">
+            CONSOLE<span className="text-primary">.</span>
+          </h1>
+          <div className="flex items-center gap-6 pt-2 border-t border-dashed border-border/40 w-full lg:w-auto lg:border-t-0">
+            <div className="flex flex-col">
+              <span className="text-[10px] uppercase text-muted-foreground/60 font-mono tracking-wider">TOTAL FILES</span>
+              <span className="text-2xl font-mono font-bold text-foreground tracking-tight">{remoteFiles.length}</span>
+            </div>
+            <div className="h-8 w-px bg-border/60"></div>
+            <div className="flex flex-col">
+              <span className="text-[10px] uppercase text-muted-foreground/60 font-mono tracking-wider">BUFFER TASKS</span>
+              <span className="text-2xl font-mono font-bold text-foreground tracking-tight">{queue.length}</span>
+            </div>
+            <div className="h-8 w-px bg-border/60"></div>
+            <div className="flex flex-col">
+              <span className="text-[10px] uppercase text-muted-foreground/60 font-mono tracking-wider">TARGET REPO</span>
+              <span className="text-sm font-mono text-foreground mt-1 truncate max-w-[150px]" title={REPO_CONFIG.repo}>{REPO_CONFIG.repo}</span>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="flex items-end gap-4 py-8 select-none opacity-60">
-         <span className="font-mono text-4xl font-bold text-muted-foreground/10 leading-none -mb-1">0X</span>
-         <span className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/50 mb-1">Control_Pannel</span>
-         <div className="h-px bg-gradient-to-r from-border to-transparent flex-1 mb-1.5"></div>
+      {/* 移动端标签栏：初始工业风格式，保留功能 */}
+      <div className="grid grid-cols-3 border border-border lg:hidden mb-6 bg-background">
+        {['files', 'editor', 'queue'].map(v => (
+          <button 
+            key={v} 
+            onClick={() => setMobileView(v as MobileView)} 
+            className={cn(
+              "py-3 text-[10px] tracking-widest uppercase font-mono transition-all duration-200", 
+              mobileView === v 
+                ? 'text-primary font-bold bg-primary/5 border-b-2 border-primary' 
+                : 'text-muted-foreground hover:text-foreground'
+            )}
+          >
+            {v === 'files' ? 'DATA' : v === 'queue' ? `BUFFER [${queue.length}]` : v.toUpperCase()}
+          </button>
+        ))}
       </div>
 
-      {/* Mobile Tabs - Industrial Grid Layout (Sharp Edges) */}
-      <div className="grid grid-cols-3 border-x border-t border-border lg:hidden mb-6 bg-background">
-          {['files', 'editor', 'queue'].map(v => (
-             <button 
-               key={v} 
-               onClick={() => setMobileView(v as MobileView)} 
-               className={cn(
-                 "relative py-3 text-[10px] tracking-widest uppercase font-mono transition-all duration-200 border-b border-border hover:bg-muted/10 focus:outline-none", 
-                 mobileView === v 
-                    ? 'text-primary font-bold bg-primary/5 border-b-primary' 
-                    : 'text-muted-foreground hover:text-foreground'
-               )}
-             >
-               {v === 'files' ? 'DATA' : v === 'queue' ? `BUFFER [${queue.length}]` : v}
-             </button>
-          ))}
-      </div>
-
-      <div className="flex-1 flex flex-col lg:grid lg:grid-cols-12 relative border-t border-border lg:border-t-0 bg-background overflow-hidden">
-          
-          {/* 1. DATA BANK (Left Panel) */}
-          {/* 修复：移动端使用 border-x 补全两侧，PC端重置 x 轴并仅应用 border-l，防止与中面板边框重叠 */}
-          <div className={cn(
-              "flex-col border-b border-x lg:border-x-0 lg:border-l lg:border-y border-border bg-background/50 transition-all duration-300 ease-linear overflow-hidden relative", 
-              mobileView === 'files' ? 'flex h-[65vh] lg:h-auto' : 'hidden',
-              // Visibility Logic
-              showLeftPanel ? 'lg:flex lg:col-span-2 opacity-100' : 'lg:hidden lg:col-span-0 opacity-0 w-0'
-          )}>
-            {/* Panel Header */}
-            <div className="h-10 px-3 border-b border-border flex justify-between items-center bg-muted/10 backdrop-blur-md sticky top-0 z-10">
-                <div className="flex items-center gap-2">
-                    {/* Square Status Dot */}
-                    <div className="size-1.5 bg-primary/50"></div>
-                    <span className="text-[10px] font-mono font-bold tracking-wider opacity-80">DATA_BANK</span>
-                </div>
-                <div className="flex gap-px">
-                    <button onClick={handleNewPost} className="size-6 flex items-center justify-center hover:bg-primary/10 text-muted-foreground hover:text-primary transition-all" title="New Post"><span className="icon-[ph--plus] size-3.5"></span></button>
-                    <button onClick={() => fetchRemoteFiles()} className="size-6 flex items-center justify-center hover:bg-primary/10 text-muted-foreground hover:text-primary transition-all" title="Refresh"><span className="icon-[ph--arrows-clockwise] size-3.5"></span></button>
-                </div>
+      {/* 核心三栏布局：保留折叠/响应式/所有功能，回归初始简洁样式 */}
+      <div className="flex-1 flex flex-col lg:grid lg:grid-cols-12 gap-0 lg:gap-px bg-border h-[calc(100vh-320px)] lg:h-[calc(100vh-280px)] overflow-hidden">
+        {/* 1. 左侧 DATA BANK 面板：保留所有功能，初始样式 */}
+        <div className={cn(
+          "flex-col bg-background transition-all duration-300 overflow-hidden", 
+          mobileView === 'files' ? 'flex h-full' : 'hidden',
+          showLeftPanel ? 'lg:flex lg:col-span-2' : 'lg:hidden lg:col-span-0 w-0'
+        )}>
+          {/* 面板头部 */}
+          <div className="h-10 px-3 border-b border-border flex justify-between items-center bg-muted/10 sticky top-0 z-10">
+            <div className="flex items-center gap-2">
+              <div className="size-1.5 bg-primary"></div>
+              <span className="text-[10px] font-mono font-bold tracking-wider">DATA_BANK</span>
             </div>
-
-            <div className="flex-1 overflow-y-auto custom-scrollbar p-1 bg-gradient-to-b from-background to-muted/5">
-                {/* Config Section */}
-                <div className="px-2 py-2 mt-1 flex items-center gap-2 select-none">
-                    <span className="text-[9px] font-mono font-bold text-muted-foreground/40 tracking-widest uppercase">CONFIG</span>
-                    <div className="h-px bg-border/40 flex-1"></div>
-                </div>
-                <div className="space-y-0.5 mb-4">
-                    {DATA_FILES.map(f => (
-                        <div key={f.name} onClick={() => loadFile(f.name, true, f.path)} className={cn("group flex items-center text-xs px-2 py-1.5 border-l-2 transition-all cursor-pointer select-none", filename === f.name ? "bg-primary/10 border-primary text-primary" : "border-transparent text-muted-foreground hover:bg-muted/20 hover:text-foreground hover:border-muted-foreground/30")}>
-                            <span className={cn("icon-[ph--brackets-curly] size-3 mr-2 transition-opacity", filename === f.name ? "opacity-100" : "opacity-50 group-hover:opacity-80")}></span>
-                            <span className="font-mono truncate text-[11px]">{f.label}</span>
-                        </div>
-                    ))}
-                </div>
-
-                {/* Posts Section */}
-                <div className="px-2 py-2 mt-2 flex items-center gap-2 select-none">
-                    <span className="text-[9px] font-mono font-bold text-muted-foreground/40 tracking-widest uppercase">ARCHIVE</span>
-                    <div className="h-px bg-border/40 flex-1"></div>
-                </div>
-                <div className="space-y-px">
-                    {isLoadingFiles ? (
-                        <div className="p-8 text-center opacity-50">
-                            <span className="icon-[ph--spinner] animate-spin text-primary size-4"></span>
-                        </div>
-                    ) : remoteFiles.map(f => (
-                        <div key={f.sha} className={cn("group flex justify-between items-center text-xs px-2 py-1.5 border-l-2 transition-all cursor-pointer", filename === f.name ? "bg-primary/10 border-primary font-medium text-foreground" : "border-transparent text-muted-foreground hover:bg-muted/20 hover:border-muted-foreground/30 hover:text-foreground")}>
-                            <span onClick={() => loadFile(f.name)} className="font-mono truncate flex-1 text-[11px]">{f.name.replace('.md', '')}</span>
-                            <button onClick={(e) => { e.stopPropagation(); stageForDelete(f); }} className="text-muted-foreground hover:text-red-500 hover:bg-red-500/10 size-5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all"><span className="icon-[ph--trash] size-3"></span></button>
-                        </div>
-                    ))}
-                </div>
-            </div>
-          </div>
-
-          {/* 2. WORKSTATION (Middle Panel) */}
-          {/* 修复：移动端确保 border-x 和 border-b 完整；PC端保持 border-x (提供左右分割线) 和 border-y */}
-          <div className={cn(
-              "flex-col border-b border-x lg:border-y border-border bg-background lg:flex transition-[grid-column] duration-300 ease-linear relative z-0", 
-              mobileView === 'editor' ? 'flex h-[80vh] lg:h-auto' : 'hidden',
-              // Dynamic Spanning Logic:
-              // All Open (2 | 7 | 3)
-              showLeftPanel && showRightPanel ? "lg:col-span-7" :
-              // Left Closed, Right Open (0 | 9 | 3)
-              !showLeftPanel && showRightPanel ? "lg:col-span-9" :
-              // Left Open, Right Closed (2 | 10 | 0)
-              showLeftPanel && !showRightPanel ? "lg:col-span-10" :
-              // All Closed (12)
-              "lg:col-span-12"
-          )}>
-            {/* Toolbar */}
-            <div className="h-10 flex justify-between items-center border-b border-border bg-background relative z-10">
-                
-                {/* Left Side */}
-                <div className="flex items-center h-full flex-1 min-w-0">
-                    <button 
-                      onClick={() => setShowLeftPanel(!showLeftPanel)} 
-                      className="hidden lg:flex h-full w-8 items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/5 border-r border-border transition-colors focus:outline-none"
-                      title={showLeftPanel ? "Collapse Sidebar" : "Expand Sidebar"}
-                    >
-                      <span className={cn("size-3.5 transition-transform duration-300", showLeftPanel ? "" : "rotate-180", "icon-[ph--caret-left]")}></span>
-                    </button>
-
-                    <div className="flex items-center gap-2 flex-1 px-3 h-full max-w-md">
-                        <span className={cn("size-4 text-muted-foreground/50 shrink-0", currentMode === 'data' ? "icon-[ph--brackets-curly]" : "icon-[ph--file-text]")}></span>
-                        <div className="h-4 w-px bg-border/60 mx-1"></div>
-                        <div className="flex-1 flex items-center overflow-hidden">
-                            <span className="text-[9px] text-muted-foreground/30 font-mono mr-2 select-none hidden sm:block">FILE ::</span>
-                            <input 
-                                value={filename} 
-                                onChange={e => setFilename(e.target.value)} 
-                                disabled={currentMode === 'data'} 
-                                placeholder="UNTITLED_FILE" 
-                                className="bg-transparent text-xs font-mono font-medium w-full focus:outline-none uppercase tracking-wider placeholder:text-muted-foreground/20 text-foreground" 
-                            />
-                        </div>
-                    </div>
-                </div>
-
-                {/* Right Side */}
-                <div className="flex items-center h-full">
-                    <div className="flex items-center gap-px px-2 h-1/2 border-l border-border/40">
-                        {currentMode === 'post' ? (
-                            <>
-                                <button onClick={() => triggerUpload('body')} className="size-7 flex items-center justify-center hover:bg-primary/10 hover:text-primary text-muted-foreground transition-all" title="Insert Image"><span className="icon-[ph--image] size-4"></span></button>
-                                <button onClick={() => setShowMetaConfig(!showMetaConfig)} className={cn("size-7 flex items-center justify-center hover:bg-primary/10 hover:text-primary text-muted-foreground transition-all", showMetaConfig && "text-primary bg-primary/5")} title="Metadata"><span className="icon-[ph--sliders-horizontal] size-4"></span></button>
-                            </>
-                        ) : (
-                            <>
-                                <button onClick={() => setEditorMode(editorMode === 'visual' ? 'raw' : 'visual')} className="flex items-center gap-1.5 h-6 px-2 hover:bg-primary/10 text-[9px] font-mono text-muted-foreground hover:text-primary border border-transparent hover:border-primary/20 transition-all uppercase tracking-wider">
-                                  <span className={cn("icon-[ph--eye] size-3", editorMode === 'visual' && 'text-primary')}></span>
-                                  <span className="hidden sm:inline">{editorMode === 'visual' ? 'UI' : 'CODE'}</span>
-                                </button>
-                                {editorMode === 'raw' && <button onClick={() => triggerUpload('json_raw')} className="size-6 flex items-center justify-center hover:bg-muted text-xs"><span className="icon-[ph--image] size-3.5"></span></button>}
-                            </>
-                        )}
-                    </div>
-                    
-                    <button onClick={stageForWrite} className="flex items-center gap-2 bg-primary text-primary-foreground h-10 px-4 text-[10px] font-mono font-bold hover:bg-primary/90 tracking-widest uppercase transition-all border-l border-primary/50">
-                        <span className="icon-[ph--plus] size-3"></span>
-                        <span className="hidden sm:inline">STAGE</span>
-                    </button>
-
-                    <button 
-                        onClick={() => setShowRightPanel(!showRightPanel)} 
-                        className="hidden lg:flex h-full w-8 items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/5 border-l border-border transition-colors focus:outline-none"
-                        title={showRightPanel ? "Collapse Buffer" : "Expand Buffer"}
-                    >
-                      <span className={cn("size-3.5 transition-transform duration-300", showRightPanel ? "" : "rotate-180", "icon-[ph--caret-right]")}></span>
-                    </button>
-                </div>
-            </div>
-
-            {/* Editor Area */}
-            <div className="flex-1 relative w-full h-full min-h-[300px] flex flex-col overflow-hidden bg-background">
-                {isFetchingContent && (
-                    <div className="absolute inset-0 bg-background/80 z-20 flex flex-col items-center justify-center gap-3 backdrop-blur-[2px]">
-                        <span className="icon-[ph--spinner] animate-spin size-6 text-primary"></span>
-                        <span className="text-[10px] font-mono uppercase tracking-[0.2em] animate-pulse">Retrieving Data...</span>
-                    </div>
-                )}
-                {currentMode === 'post' && (
-                    <>
-                        {showMetaConfig && (
-                            <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 p-4 border-b border-border/40 bg-muted/5 text-xs shrink-0 shadow-[inset_0_-10px_20px_rgba(0,0,0,0.02)] animate-in slide-in-from-top-2 duration-200">
-                                <div className="sm:col-span-4 space-y-1">
-                                  <label className="text-[9px] font-mono text-muted-foreground/70 uppercase tracking-widest">Post Title</label>
-                                  <input value={meta.title} onChange={e=>setMeta({...meta, title: e.target.value})} className="w-full h-9 bg-background border border-border focus:border-primary px-3 font-mono text-sm focus:outline-none transition-colors placeholder:text-muted-foreground/20" placeholder="ENTER TITLE..." />
-                                </div>
-                                
-                                <div className="sm:col-span-4 space-y-1">
-                                  <label className="text-[9px] font-mono text-muted-foreground/70 uppercase tracking-widest">Description</label>
-                                  <input value={meta.description} onChange={e=>setMeta({...meta, description: e.target.value})} className="w-full h-9 bg-background border border-border focus:border-primary px-3 font-mono text-xs focus:outline-none transition-colors" placeholder="Brief summary..." />
-                                </div>
-                                
-                                <div className="sm:col-span-1 space-y-1">
-                                  <label className="text-[9px] font-mono text-muted-foreground/70 uppercase tracking-widest">Pub Date</label>
-                                  <input type="date" value={meta.pubDate} onChange={e=>setMeta({...meta, pubDate: e.target.value})} className="w-full h-9 bg-background border border-border focus:border-primary px-2 font-mono text-xs focus:outline-none uppercase" />
-                                </div>
-                                
-                                <div className="sm:col-span-2 space-y-1">
-                                  <label className="text-[9px] font-mono text-muted-foreground/70 uppercase tracking-widest">Tags (Comma)</label>
-                                  <input value={meta.tags} onChange={e=>setMeta({...meta, tags: e.target.value})} className="w-full h-9 bg-background border border-border focus:border-primary px-3 font-mono text-xs text-primary focus:outline-none" placeholder="REACT, TECH..." />
-                                </div>
-
-                                <div className="sm:col-span-1 flex items-end">
-                                    <label className="flex items-center justify-center gap-2 cursor-pointer group h-9 border border-border bg-background hover:border-primary/50 w-full select-none transition-all">
-                                        <input 
-                                            type="checkbox" 
-                                            checked={meta.recommend} 
-                                            onChange={e => setMeta({...meta, recommend: e.target.checked})}
-                                            className="appearance-none size-3 border border-muted-foreground/50 checked:bg-primary checked:border-primary rounded-none"
-                                        />
-                                        <span className={cn("text-[10px] font-mono font-bold tracking-wider", meta.recommend ? "text-primary" : "text-muted-foreground")}>
-                                            FEATURED
-                                        </span>
-                                    </label>
-                                </div>
-                                
-                                <div className="sm:col-span-4 space-y-1">
-                                  <label className="text-[9px] font-mono text-muted-foreground/70 flex justify-between uppercase tracking-widest">
-                                    <span>Hero Image URL</span>
-                                    <span onClick={()=>triggerUpload('hero')} className="cursor-pointer hover:text-primary transition-colors underline decoration-dotted">[UPLOAD_FILE]</span>
-                                  </label>
-                                  <input value={meta.heroImage} onChange={e=>setMeta({...meta, heroImage: e.target.value})} className="w-full h-9 bg-background border border-border focus:border-primary px-3 font-mono text-xs text-muted-foreground focus:outline-none" placeholder="HTTPS://..." />
-                                </div>
-                            </div>
-                        )}
-                        <textarea ref={textareaRef} value={body} onChange={e => setBody(e.target.value)} className="flex-1 p-6 bg-transparent text-sm font-mono leading-relaxed resize-none focus:outline-none custom-scrollbar placeholder:text-muted-foreground/20 selection:bg-primary/20" placeholder="// INITIATE MARKDOWN SEQUENCE..." spellCheck={false}/>
-                    </>
-                )}
-                {currentMode === 'data' && (
-                    <>
-                        {editorMode === 'visual' ? renderVisualEditor() : (
-                            <div className="flex-1 flex flex-col relative bg-[#1e1e1e]">
-                                <div className="absolute top-0 right-0 bg-primary/20 text-primary text-[9px] font-mono font-bold px-2 py-1 pointer-events-none z-10">RAW_JSON_EDIT</div>
-                                <textarea ref={jsonTextareaRef} value={jsonContent} onChange={e => setJsonContent(e.target.value)} className="flex-1 p-4 bg-transparent text-[#d4d4d4] text-xs font-mono leading-relaxed resize-none focus:outline-none custom-scrollbar" spellCheck={false}/>
-                            </div>
-                        )}
-                    </>
-                )}
-            </div>
-          </div>
-
-          {/* 3. BUFFER (Right Panel) */}
-          {/* 修复：移动端使用 border-x 补全两侧，PC端重置 x 轴并仅应用 border-r，防止与中面板边框重叠 */}
-          <div className={cn(
-              "flex-col border-b border-x lg:border-x-0 lg:border-r lg:border-y border-border bg-background transition-all duration-300 ease-linear overflow-hidden", 
-              mobileView === 'queue' ? 'flex h-[60vh] lg:h-auto' : 'hidden',
-              // Visibility Logic
-              showRightPanel ? 'lg:flex lg:col-span-3 opacity-100' : 'lg:hidden lg:col-span-0 opacity-0 w-0'
-          )}>
-            <div className="h-10 px-3 border-b border-border flex justify-between items-center bg-muted/10 backdrop-blur-md sticky top-0 z-10">
-              <div className="flex items-center gap-2">
-                  {/* Square Status Dot */}
-                  <div className="size-1.5 bg-yellow-500/50"></div>
-                  <span className="text-[10px] font-mono font-bold tracking-wider opacity-80">BUFFER_ZONE</span>
-              </div>
-              <span className="text-[9px] font-mono text-muted-foreground bg-border/50 px-1.5 py-0.5">{queue.length} OPS</span>
-            </div>
-            
-            <div className="flex-1 overflow-y-auto p-3 space-y-3 custom-scrollbar bg-muted/5">
-                {queue.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center h-full text-muted-foreground/30 select-none">
-                    <div className="border-2 border-dashed border-current p-3 mb-2 opacity-50">
-                        <span className="icon-[ph--queue] size-6 block"></span>
-                    </div>
-                    <span className="text-[10px] font-mono uppercase tracking-widest">Buffer Empty</span>
-                  </div>
-                ) : (
-                  queue.map(item => (
-                    <div key={item.id} className="relative bg-background border border-border p-3 flex flex-col gap-1.5 group shadow-sm hover:border-primary/40 transition-colors">
-                        {/* Status Indicator Bar */}
-                        <div className={cn("absolute left-0 top-0 bottom-0 w-1 transition-all", item.status === 'done' ? 'bg-emerald-500' : item.status === 'processing' ? 'bg-yellow-500 animate-pulse' : item.type === 'delete' ? 'bg-red-500' : 'bg-primary')}></div>
-                        
-                        <div className="flex justify-between items-start pl-2">
-                          <span className={cn("text-[9px] font-bold uppercase tracking-wider border px-1", item.type === 'delete' ? 'border-red-500/30 text-red-500 bg-red-500/5' : 'border-primary/30 text-primary bg-primary/5')}>
-                            {item.type === 'delete' ? 'DEL' : 'WRI'} : {item.isDataFile ? 'DATA' : 'POST'}
-                          </span>
-                          <div className="flex gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
-                            {item.type === 'write' && (
-                                <button onClick={() => loadFromQueue(item)} className="hover:bg-primary/10 border border-transparent hover:border-primary/30 p-0.5 text-primary transition-all" title="Recall">
-                                  <span className="icon-[ph--pencil-simple] size-3.5"></span>
-                                </button>
-                            )}
-                            {item.status === 'pending' && (
-                                <button onClick={(e)=>removeFromQueue(item.id, e)} className="hover:bg-red-500/10 border border-transparent hover:border-red-500/30 p-0.5 text-muted-foreground hover:text-red-500 transition-all" title="Discard">
-                                  <span className="icon-[ph--x] size-3.5"></span>
-                                </button>
-                            )}
-                          </div>
-                        </div>
-                        
-                        <div className="pl-2">
-                              <div className="text-xs font-mono font-bold truncate text-foreground" title={item.filename}>{item.filename.split('/').pop()}</div>
-                              {item.type === 'write' && (
-                                <div className="text-[10px] text-muted-foreground mt-1 border-l-2 border-border/40 pl-2 line-clamp-2 font-mono opacity-70 italic">
-                                    {item.content || '...'}
-                                </div>
-                              )}
-                        </div>
-                    </div>
-                  ))
-                )}
-            </div>
-            
-            <div className="p-3 border-t border-border bg-background">
-              <button 
-                onClick={processQueue} 
-                disabled={isProcessingQueue || queue.length === 0} 
-                className={cn(
-                  "w-full py-3 text-xs font-bold font-mono uppercase tracking-[0.15em] transition-all relative overflow-hidden group border",
-                  isProcessingQueue || queue.length === 0 
-                    ? "bg-muted text-muted-foreground border-border cursor-not-allowed opacity-50" 
-                    : "bg-primary text-primary-foreground border-primary hover:bg-primary/90 shadow-[0_0_10px_rgba(var(--primary),0.3)]"
-                )}
-              >
-                  {/* Scanline effect */}
-                  {!isProcessingQueue && queue.length > 0 && <div className="absolute inset-0 bg-white/10 translate-y-[-100%] group-hover:translate-y-[100%] transition-transform duration-700 ease-in-out"></div>}
-                  
-                {isProcessingQueue ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <span className="icon-[ph--spinner] animate-spin size-3"></span>
-                    PROCESSING_BATCH...
-                  </span>
-                ) : (
-                  `EXECUTE_SEQUENCE [${queue.length}]`
-                )}
+            <div className="flex gap-1">
+              <button onClick={handleNewPost} className="size-6 flex items-center justify-center hover:bg-primary/10 text-muted-foreground hover:text-primary" title="New Post">
+                <span className="icon-[ph--plus] size-3.5"></span>
               </button>
-              {queue.length > 0 && (
-                <div className="flex justify-between items-center mt-2 text-[9px] font-mono text-muted-foreground/50 uppercase">
-                  <span>Single Commit Mode</span>
-                  <span>{queue.length > 0 ? 'READY' : 'IDLE'}</span>
-                </div>
-              )}
+              <button onClick={() => fetchRemoteFiles()} className="size-6 flex items-center justify-center hover:bg-primary/10 text-muted-foreground hover:text-primary" title="Refresh">
+                <span className="icon-[ph--arrows-clockwise] size-3.5"></span>
+              </button>
             </div>
           </div>
+
+          {/* 面板内容：CONFIG + ARCHIVE，保留所有功能 */}
+          <div className="flex-1 overflow-y-auto p-2 bg-background">
+            {/* CONFIG 区域 */}
+            <div className="px-1 py-2 flex items-center gap-2">
+              <span className="text-[9px] font-mono font-bold text-muted-foreground/40 tracking-widest uppercase">CONFIG</span>
+              <div className="h-px bg-border/40 flex-1"></div>
+            </div>
+            <div className="space-y-1 mb-4">
+              {DATA_FILES.map(f => (
+                <div 
+                  key={f.name} 
+                  onClick={() => loadFile(f.name, true, f.path)} 
+                  className={cn(
+                    "group flex items-center text-xs px-2 py-1.5 border-l-2 transition-all cursor-pointer", 
+                    filename === f.name ? "bg-primary/10 border-primary text-primary" : "border-transparent text-muted-foreground hover:bg-muted/20 hover:text-foreground"
+                  )}
+                >
+                  <span className="icon-[ph--brackets-curly] size-3 mr-2 text-muted-foreground/50 group-hover:text-muted-foreground/80"></span>
+                  <span className="font-mono truncate">{f.label}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* ARCHIVE 区域 */}
+            <div className="px-1 py-2 flex items-center gap-2">
+              <span className="text-[9px] font-mono font-bold text-muted-foreground/40 tracking-widest uppercase">ARCHIVE</span>
+              <div className="h-px bg-border/40 flex-1"></div>
+            </div>
+            <div className="space-y-px">
+              {isLoadingFiles ? (
+                <div className="p-6 text-center text-muted-foreground/50">
+                  <span className="icon-[ph--spinner] animate-spin size-4"></span>
+                </div>
+              ) : remoteFiles.map(f => (
+                <div 
+                  key={f.sha} 
+                  className={cn(
+                    "group flex justify-between items-center text-xs px-2 py-1.5 border-l-2 transition-all cursor-pointer", 
+                    filename === f.name ? "bg-primary/10 border-primary text-foreground font-medium" : "border-transparent text-muted-foreground hover:bg-muted/20 hover:text-foreground"
+                  )}
+                >
+                  <span onClick={() => loadFile(f.name)} className="font-mono truncate flex-1">{f.name.replace('.md', '')}</span>
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); stageForDelete(f); }} 
+                    className="text-muted-foreground hover:text-red-500 size-5 flex items-center justify-center opacity-0 group-hover:opacity-100"
+                  >
+                    <span className="icon-[ph--trash] size-3"></span>
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* 2. 中间 WORKSTATION 编辑器面板：保留所有功能，初始样式 */}
+        <div className={cn(
+          "flex-col bg-background transition-all duration-300 overflow-hidden", 
+          mobileView === 'editor' ? 'flex h-full' : 'hidden',
+          showLeftPanel && showRightPanel ? "lg:flex lg:col-span-7" :
+          !showLeftPanel && showRightPanel ? "lg:flex lg:col-span-9" :
+          showLeftPanel && !showRightPanel ? "lg:flex lg:col-span-10" :
+          "lg:flex lg:col-span-12"
+        )}>
+          {/* 编辑器工具栏：保留所有功能，初始简洁样式 */}
+          <div className="h-10 flex justify-between items-center border-b border-border bg-background sticky top-0 z-10">
+            {/* 左侧折叠 + 文件名 */}
+            <div className="flex items-center h-full">
+              <button 
+                onClick={() => setShowLeftPanel(!showLeftPanel)} 
+                className="hidden lg:flex h-full w-8 items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/5 border-r border-border"
+                title={showLeftPanel ? "Collapse" : "Expand"}
+              >
+                <span className={cn("icon-[ph--caret-left] size-3.5", !showLeftPanel && "rotate-180")}></span>
+              </button>
+              <div className="flex items-center gap-2 px-3 h-full">
+                <span className={cn("size-4 text-muted-foreground/50", currentMode === 'data' ? "icon-[ph--brackets-curly]" : "icon-[ph--file-text]")}></span>
+                <div className="h-4 w-px bg-border/60 mx-1"></div>
+                <input 
+                  value={filename} 
+                  onChange={e => setFilename(e.target.value)} 
+                  disabled={currentMode === 'data'} 
+                  placeholder="UNTITLED" 
+                  className="bg-transparent text-xs font-mono w-full focus:outline-none uppercase tracking-wider placeholder:text-muted-foreground/20" 
+                />
+              </div>
+            </div>
+
+            {/* 右侧功能按钮 + STAGE + 折叠右侧 */}
+            <div className="flex items-center h-full">
+              <div className="flex items-center gap-1 px-2 h-1/2 border-l border-border/40">
+                {currentMode === 'post' ? (
+                  <>
+                    <button onClick={() => triggerUpload('body')} className="size-7 flex items-center justify-center hover:bg-primary/10 text-muted-foreground hover:text-primary" title="Insert Image">
+                      <span className="icon-[ph--image] size-4"></span>
+                    </button>
+                    <button 
+                      onClick={() => setShowMetaConfig(!showMetaConfig)} 
+                      className={cn("size-7 flex items-center justify-center hover:bg-primary/10 text-muted-foreground", showMetaConfig && "text-primary bg-primary/5")}
+                      title="Metadata"
+                    >
+                      <span className="icon-[ph--sliders-horizontal] size-4"></span>
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button 
+                      onClick={() => setEditorMode(editorMode === 'visual' ? 'raw' : 'visual')} 
+                      className="flex items-center gap-1 h-6 px-2 hover:bg-primary/10 text-[9px] font-mono text-muted-foreground hover:text-primary uppercase"
+                    >
+                      <span className={cn("icon-[ph--eye] size-3", editorMode === 'visual' && 'text-primary')}></span>
+                      {editorMode === 'visual' ? 'UI' : 'CODE'}
+                    </button>
+                    {editorMode === 'raw' && (
+                      <button onClick={() => triggerUpload('json_raw')} className="size-6 flex items-center justify-center hover:bg-muted text-xs" title="Upload Image">
+                        <span className="icon-[ph--image] size-3.5"></span>
+                      </button>
+                    )}
+                  </>
+                )}
+              </div>
+
+              <button 
+                onClick={stageForWrite} 
+                className="flex items-center gap-2 bg-primary text-primary-foreground h-10 px-4 text-[10px] font-mono font-bold hover:bg-primary/90 tracking-widest uppercase border-l border-primary/50"
+              >
+                <span className="icon-[ph--plus] size-3"></span>
+                STAGE
+              </button>
+
+              <button 
+                onClick={() => setShowRightPanel(!showRightPanel)} 
+                className="hidden lg:flex h-full w-8 items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/5 border-l border-border"
+                title={showRightPanel ? "Collapse" : "Expand"}
+              >
+                <span className={cn("icon-[ph--caret-right] size-3.5", !showRightPanel && "rotate-180")}></span>
+              </button>
+            </div>
+          </div>
+
+          {/* 编辑器核心内容：保留所有功能（Markdown/JSON/可视化/RAW） */}
+          <div className="flex-1 relative w-full h-full min-h-[300px] flex flex-col overflow-hidden bg-background">
+            {isFetchingContent && (
+              <div className="absolute inset-0 bg-background/80 z-20 flex items-center justify-center gap-3 backdrop-blur-sm">
+                <span className="icon-[ph--spinner] animate-spin size-6 text-primary"></span>
+                <span className="text-[10px] font-mono uppercase tracking-[0.2em]">LOADING...</span>
+              </div>
+            )}
+            
+            {/* Markdown 编辑器：元信息 + 正文，保留所有功能 */}
+            {currentMode === 'post' && (
+              <>
+                {showMetaConfig && (
+                  <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 p-4 border-b border-border/40 bg-muted/5 text-xs shrink-0">
+                    <div className="sm:col-span-4 space-y-1">
+                      <label className="text-[9px] font-mono text-muted-foreground/70 uppercase tracking-widest">TITLE</label>
+                      <input 
+                        value={meta.title} 
+                        onChange={e=>setMeta({...meta, title: e.target.value})} 
+                        className="w-full h-9 bg-background border border-border focus:border-primary px-3 font-mono text-sm focus:outline-none placeholder:text-muted-foreground/20" 
+                        placeholder="POST TITLE" 
+                      />
+                    </div>
+                    <div className="sm:col-span-4 space-y-1">
+                      <label className="text-[9px] font-mono text-muted-foreground/70 uppercase tracking-widest">DESCRIPTION</label>
+                      <input 
+                        value={meta.description} 
+                        onChange={e=>setMeta({...meta, description: e.target.value})} 
+                        className="w-full h-9 bg-background border border-border focus:border-primary px-3 font-mono text-xs focus:outline-none" 
+                        placeholder="BRIEF SUMMARY" 
+                      />
+                    </div>
+                    <div className="sm:col-span-1 space-y-1">
+                      <label className="text-[9px] font-mono text-muted-foreground/70 uppercase tracking-widest">PUB DATE</label>
+                      <input 
+                        type="date" 
+                        value={meta.pubDate} 
+                        onChange={e=>setMeta({...meta, pubDate: e.target.value})} 
+                        className="w-full h-9 bg-background border border-border focus:border-primary px-2 font-mono text-xs focus:outline-none" 
+                      />
+                    </div>
+                    <div className="sm:col-span-2 space-y-1">
+                      <label className="text-[9px] font-mono text-muted-foreground/70 uppercase tracking-widest">TAGS (COMMA)</label>
+                      <input 
+                        value={meta.tags} 
+                        onChange={e=>setMeta({...meta, tags: e.target.value})} 
+                        className="w-full h-9 bg-background border border-border focus:border-primary px-3 font-mono text-xs text-primary focus:outline-none" 
+                        placeholder="REACT, TECH" 
+                      />
+                    </div>
+                    <div className="sm:col-span-1 flex items-end">
+                      <label className="flex items-center justify-center gap-2 cursor-pointer group h-9 border border-border bg-background hover:border-primary/50 w-full">
+                        <input 
+                          type="checkbox" 
+                          checked={meta.recommend} 
+                          onChange={e => setMeta({...meta, recommend: e.target.checked})}
+                          className="appearance-none size-3 border border-muted-foreground/50 checked:bg-primary checked:border-primary rounded-none"
+                        />
+                        <span className={cn("text-[10px] font-mono font-bold tracking-wider", meta.recommend ? "text-primary" : "text-muted-foreground")}>
+                          FEATURED
+                        </span>
+                      </label>
+                    </div>
+                    <div className="sm:col-span-4 space-y-1">
+                      <label className="text-[9px] font-mono text-muted-foreground/70 flex justify-between uppercase tracking-widest">
+                        <span>HERO IMAGE</span>
+                        <span onClick={()=>triggerUpload('hero')} className="cursor-pointer hover:text-primary underline decoration-dotted">[UPLOAD]</span>
+                      </label>
+                      <input 
+                        value={meta.heroImage} 
+                        onChange={e=>setMeta({...meta, heroImage: e.target.value})} 
+                        className="w-full h-9 bg-background border border-border focus:border-primary px-3 font-mono text-xs text-muted-foreground focus:outline-none" 
+                        placeholder="HTTPS://..." 
+                      />
+                    </div>
+                  </div>
+                )}
+                <textarea 
+                  ref={textareaRef} 
+                  value={body} 
+                  onChange={e => setBody(e.target.value)} 
+                  className="flex-1 p-6 bg-transparent text-sm font-mono leading-relaxed resize-none focus:outline-none placeholder:text-muted-foreground/20 selection:bg-primary/20" 
+                  placeholder="// MARKDOWN EDITOR" 
+                  spellCheck={false}
+                />
+              </>
+            )}
+            
+            {/* JSON 编辑器：可视化 + RAW，保留所有功能 */}
+            {currentMode === 'data' && (
+              <>
+                {editorMode === 'visual' ? renderVisualEditor() : (
+                  <div className="flex-1 flex flex-col relative bg-[#1e1e1e]">
+                    <div className="absolute top-0 right-0 bg-primary/20 text-primary text-[9px] font-mono font-bold px-2 py-1 pointer-events-none z-10">RAW JSON</div>
+                    <textarea 
+                      ref={jsonTextareaRef} 
+                      value={jsonContent} 
+                      onChange={e => setJsonContent(e.target.value)} 
+                      className="flex-1 p-4 bg-transparent text-[#d4d4d4] text-xs font-mono leading-relaxed resize-none focus:outline-none" 
+                      spellCheck={false}
+                    />
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* 3. 右侧 BUFFER 队列面板：保留所有功能，初始样式 */}
+        <div className={cn(
+          "flex-col bg-background transition-all duration-300 overflow-hidden", 
+          mobileView === 'queue' ? 'flex h-full' : 'hidden',
+          showRightPanel ? 'lg:flex lg:col-span-3' : 'lg:hidden lg:col-span-0 w-0'
+        )}>
+          {/* 面板头部 */}
+          <div className="h-10 px-3 border-b border-border flex justify-between items-center bg-muted/10 sticky top-0 z-10">
+            <div className="flex items-center gap-2">
+              <div className="size-1.5 bg-yellow-500"></div>
+              <span className="text-[10px] font-mono font-bold tracking-wider">BUFFER_ZONE</span>
+            </div>
+            <span className="text-[9px] font-mono text-muted-foreground bg-border/50 px-1.5 py-0.5">{queue.length} TASKS</span>
+          </div>
+
+          {/* 队列内容：保留回读/删除/空状态，所有功能 */}
+          <div className="flex-1 overflow-y-auto p-3 space-y-3 bg-muted/5">
+            {queue.length === 0 ? (
+              <div className="flex flex-col items-center justify-center h-full text-muted-foreground/30">
+                <div className="border-2 border-dashed border-current p-3 mb-2 opacity-50">
+                  <span className="icon-[ph--queue] size-6 block"></span>
+                </div>
+                <span className="text-[10px] font-mono uppercase tracking-widest">BUFFER EMPTY</span>
+              </div>
+            ) : (
+              queue.map(item => (
+                <div 
+                  key={item.id} 
+                  className="relative bg-background border border-border p-3 flex flex-col gap-1.5 group hover:border-primary/40 transition-colors"
+                >
+                  <div className={cn(
+                    "absolute left-0 top-0 bottom-0 w-1", 
+                    item.status === 'done' ? 'bg-emerald-500' : 
+                    item.status === 'processing' ? 'bg-yellow-500 animate-pulse' : 
+                    item.type === 'delete' ? 'bg-red-500' : 'bg-primary'
+                  )}></div>
+                  <div className="flex justify-between items-start pl-2">
+                    <span className={cn(
+                      "text-[9px] font-bold uppercase tracking-wider border px-1", 
+                      item.type === 'delete' ? 'border-red-500/30 text-red-500 bg-red-500/5' : 'border-primary/30 text-primary bg-primary/5'
+                    )}>
+                      {item.type === 'delete' ? 'DEL' : 'WRI'} : {item.isDataFile ? 'DATA' : 'POST'}
+                    </span>
+                    <div className="flex gap-1">
+                      {item.type === 'write' && (
+                        <button 
+                          onClick={() => loadFromQueue(item)} 
+                          className="hover:bg-primary/10 p-0.5 text-primary transition-all" 
+                          title="Recall to Editor"
+                        >
+                          <span className="icon-[ph--pencil-simple] size-3.5"></span>
+                        </button>
+                      )}
+                      {item.status === 'pending' && (
+                        <button 
+                          onClick={(e)=>removeFromQueue(item.id, e)} 
+                          className="hover:bg-red-500/10 p-0.5 text-muted-foreground hover:text-red-500 transition-all" 
+                          title="Remove"
+                        >
+                          <span className="icon-[ph--x] size-3.5"></span>
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                  <div className="pl-2">
+                    <div className="text-xs font-mono font-bold truncate text-foreground" title={item.filename}>
+                      {item.filename.split('/').pop()}
+                    </div>
+                    {item.type === 'write' && (
+                      <div className="text-[10px] text-muted-foreground mt-1 border-l-2 border-border/40 pl-2 line-clamp-2 font-mono opacity-70">
+                        {item.content || '...'}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+
+          {/* 批量提交按钮：保留所有功能，初始样式 */}
+          <div className="p-3 border-t border-border bg-background">
+            <button 
+              onClick={processQueue} 
+              disabled={isProcessingQueue || queue.length === 0} 
+              className={cn(
+                "w-full py-3 text-xs font-bold font-mono uppercase tracking-[0.15em] transition-all border",
+                isProcessingQueue || queue.length === 0 
+                  ? "bg-muted text-muted-foreground border-border cursor-not-allowed opacity-50" 
+                  : "bg-primary text-primary-foreground border-primary hover:bg-primary/90"
+              )}
+            >
+              {isProcessingQueue ? (
+                <span className="flex items-center justify-center gap-2">
+                  <span className="icon-[ph--spinner] animate-spin size-3"></span>
+                  PROCESSING...
+                </span>
+              ) : (
+                `EXECUTE [${queue.length}]`
+              )}
+            </button>
+            {queue.length > 0 && (
+              <div className="flex justify-between items-center mt-2 text-[9px] font-mono text-muted-foreground/50 uppercase">
+                <span>SINGLE COMMIT</span>
+                <span>READY</span>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
+
 }

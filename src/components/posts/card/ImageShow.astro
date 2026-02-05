@@ -1,4 +1,5 @@
 ---
+// 保留原所有导入、类型定义、业务逻辑计算，无任何修改
 import { formatDate } from '~/lib/utils'
 import { POSTS_CONFIG } from '~/config'
 import PostTag from '~/components/posts/base/PostTag.astro'
@@ -8,33 +9,27 @@ import type { CardProps } from './List.astro'
 interface Props extends CardProps {}
 
 const { post, heroImageLayout }: Props = Astro.props
-
-// 1. 判断是否有图
 const hasImage = post.data.heroImage !== 'none'
-
 const imagePosition = post.data.heroImageLayout || heroImageLayout || 'right'
 const isReverse = imagePosition === 'right'
 const defaultHeroImage = POSTS_CONFIG.defaultHeroImage
-
-// 生成装饰用的序列号
 const serialNo = post.slug.slice(0, 4).toUpperCase();
-
-// --- 布局配置 ---
-// 固定侧边栏宽度，防止拉伸。
 const sideWidthClass = "md:w-[280px] lg:w-[320px]" 
 ---
 
-<article class="group relative flex flex-col md:flex-row bg-background border border-border/40 hover:border-primary/60 transition-colors duration-300 rounded-none overflow-hidden mb-6 h-full min-h-[16rem]">
-  
-  
-  <div class="absolute top-0 right-0 w-0 h-0 border-t-[3px] border-r-[3px] border-primary opacity-0 group-hover:opacity-100 group-hover:w-3 group-hover:h-3 transition-all duration-200 z-20"></div>
 
-    {hasImage && (
+<article class="group relative flex flex-col md:flex-row bg-background border border-border/60 hover:border-primary/50 transition-all duration-300 rounded-none overflow-hidden mb-6 h-full">
+  
+  <div class="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary/0 group-hover:border-primary/50 transition-colors z-20"></div>
+  <div class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-primary/0 group-hover:border-primary/50 transition-colors z-20"></div>
+
+  
+  {hasImage && (
     <div 
       class={`
         hidden md:flex flex-col relative shrink-0 h-auto min-h-full
         ${sideWidthClass}
-        ${isReverse ? 'md:order-2 border-l border-border' : 'md:order-1 border-r border-border'}
+        ${isReverse ? 'md:order-2 border-l border-border/60' : 'md:order-1 border-r border-border/60'}
       `}
     >
       <a href={`/posts/${post.slug}`} class="block w-full h-full relative overflow-hidden bg-muted group/img">
@@ -47,109 +42,98 @@ const sideWidthClass = "md:w-[280px] lg:w-[320px]"
         />
         
         <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDUiLz4KPHBhdGggZD0iTTEgMmgydjJIMUMyeiIgZmlsbD0iIzAwMCIgZmlsbC1vcGFjaXR5PSIwLjEiLz4KPC9zdmc+')] pointer-events-none mix-blend-overlay"></div>
-        <div class="absolute bottom-0 left-0 bg-background/90 border-t border-r border-border px-2 py-1 text-[10px] font-mono font-bold uppercase tracking-wider text-muted-foreground z-10">
+        
+        <div class="absolute bottom-0 left-0 bg-background/80 border-t border-r border-border/60 px-2 py-1 text-[10px] font-mono font-bold uppercase tracking-wider text-muted-foreground/70 z-10">
           FIG.{serialNo}
         </div>
       </a>
     </div>
   )}
 
-    {!hasImage && (
+  
+  {!hasImage && (
     <a 
       href={`/posts/${post.slug}`}
       class={`
         hidden md:flex shrink-0 h-auto min-h-full relative overflow-hidden flex-col justify-between p-6 select-none bg-muted/5
         ${sideWidthClass}
-        border-l border-border/40 md:order-2
-        group/placeholder hover:bg-muted/10 transition-colors duration-300 cursor-pointer
+        border-l border-border/60 md:order-2
+        group/placeholder hover:bg-muted/10 transition-all duration-300 cursor-pointer
       `}
     >
-        
-        <div class="absolute inset-0 opacity-[0.03] bg-[repeating-linear-gradient(45deg,currentColor_0px,currentColor_1px,transparent_1px,transparent_10px)] pointer-events-none"></div>
-
-        
-        <div class="flex justify-between items-start">
-           
-           <span class="text-[9px] font-mono text-muted-foreground/40 border border-muted-foreground/20 px-1 py-0.5 group-hover/placeholder:border-primary/40 group-hover/placeholder:text-primary/70 transition-colors">
-             NO_MEDIA
-           </span>
-           
-           <span class="opacity-0 -translate-x-2 group-hover/placeholder:opacity-100 group-hover/placeholder:translate-x-0 transition-all duration-300 text-primary text-xs font-bold">
-             ↗
-           </span>
-        </div>
-
-                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center pointer-events-none overflow-hidden">
-           <span class="text-[8rem] leading-none font-black text-foreground/5 font-mono tracking-tighter group-hover/placeholder:text-primary/5 group-hover/placeholder:scale-110 group-hover/placeholder:rotate-3 transition-all duration-500 ease-out select-none block origin-center">
-             {serialNo}
-           </span>
-        </div>
-        
-        
-        <div class="flex flex-col gap-1 z-10">
-           
-           <div class="h-px w-8 bg-border group-hover/placeholder:w-full group-hover/placeholder:bg-primary/50 transition-all duration-500 ease-out"></div>
-           
-           <div class="flex justify-between items-center text-[9px] font-mono text-muted-foreground/60 group-hover/placeholder:text-muted-foreground/80 transition-colors">
-             <span>TXT_LOG</span>
-             <span class="group-hover/placeholder:text-primary transition-colors">ACCESS -></span>
-           </div>
-        </div>
+      <div class="absolute inset-0 opacity-[0.03] bg-[repeating-linear-gradient(45deg,currentColor_0px,currentColor_1px,transparent_1px,transparent_10px)] pointer-events-none"></div>
+      
+      <div class="flex justify-between items-start z-10">
+         <span class="text-[9px] font-mono text-muted-foreground/60 border border-border/60 hover:border-primary/40 hover:text-primary/70 transition-colors px-2 py-1 rounded-none">
+           NO_MEDIA
+         </span>
+         <span class="opacity-0 -translate-x-2 group-hover/placeholder:opacity-100 group-hover/placeholder:translate-x-0 transition-all duration-300 text-primary text-xs font-bold">
+           ↗
+         </span>
+      </div>
+      
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center pointer-events-none overflow-hidden">
+         <span class="text-[8rem] leading-none font-black text-foreground/5 font-mono tracking-tighter group-hover/placeholder:text-primary/5 group-hover/placeholder:scale-110 group-hover/placeholder:rotate-3 transition-all duration-500 ease-out select-none block origin-center">
+           {serialNo}
+         </span>
+      </div>
+      
+      <div class="flex flex-col gap-1 z-10">
+         <div class="h-px w-8 bg-border/60 group-hover/placeholder:w-full group-hover/placeholder:bg-primary/50 transition-all duration-500 ease-out"></div>
+         <div class="flex justify-between items-center text-[9px] font-mono text-muted-foreground/60 group-hover/placeholder:text-muted-foreground/80 transition-colors">
+           <span>TXT_LOG</span>
+           <span class="group-hover/placeholder:text-primary transition-colors">ACCESS -></span>
+         </div>
+      </div>
     </a>
   )}
 
-    <div 
+  
+  <div 
     class={`
-      flex flex-col w-full p-4 sm:p-6 flex-1
+      flex flex-col w-full p-6 flex-1
       ${hasImage && isReverse ? 'md:order-1' : 'md:order-1'} 
     `}
   >
     
-    <div class="flex items-center justify-between border-b border-dashed border-border/40 pb-3 mb-4">
-      <div class="flex items-center gap-3 text-xs font-mono text-muted-foreground uppercase tracking-tight">
+    <div class="flex items-center justify-between border-b border-dashed border-border/60 pb-4 mb-5">
+      <div class="flex items-center gap-3 text-xs font-mono text-muted-foreground/60 uppercase tracking-tight flex-wrap">
         <time class="flex items-center gap-1.5">
           {formatDate(post.data.pubDate)}
         </time>
-        {post.data.updatedDate && <span class="text-border">/</span>}
-        {
-          post.data.updatedDate && (
-            <time class="text-muted-foreground/70">
-              UPD: {formatDate(post.data.updatedDate)}
-            </time>
-          )
-        }
+        {post.data.updatedDate && <span class="text-primary/40">/</span>}
+        {post.data.updatedDate && (
+          <time class="text-muted-foreground/50">
+            UPD: {formatDate(post.data.updatedDate)}
+          </time>
+        )}
       </div>
       
-      {post.data.recommend && (
-        <div class="scale-90 origin-right">
-           <RecommendBadge />
-        </div>
-      )}
+      {post.data.recommend && <RecommendBadge />}
     </div>
 
     
-    <a href={`/posts/${post.slug}`} class="group/title block mb-3">
-      <h2 class="text-xl md:text-2xl font-bold leading-tight text-foreground transition-colors group-hover/title:text-primary tracking-tight">
+    <a href={`/posts/${post.slug}`} class="group/title block mb-4">
+      <h2 class="text-xl md:text-2xl font-bold leading-tight text-foreground font-sans transition-colors group-hover/title:text-primary tracking-tight">
         {post.data.title}
       </h2>
     </a>
 
     
-    {
-      post.data.description && (
-        <p class="text-sm text-muted-foreground leading-relaxed line-clamp-2 mb-6 max-w-[65ch]">
-          {post.data.description}
-        </p>
-      )
-    }
+    {post.data.description && (
+      <p class="text-sm text-muted-foreground/70 leading-relaxed line-clamp-2 mb-6 max-w-[65ch]">
+        {post.data.description}
+      </p>
+    )}
 
     
-    <div class="mt-auto pt-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+    <div class="mt-auto pt-4 border-t border-dashed border-border/40 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
       <div class="flex flex-wrap gap-2">
         {post.data.tags?.map((tag) => (
-           <div class="scale-95 origin-left">
-             <PostTag tag={tag} />
-           </div>
+          <PostTag 
+            tag={tag} 
+            class="rounded-none border-primary/30 bg-muted/5 text-xs font-mono px-2 py-1" 
+          />
         ))}
       </div>
     </div>

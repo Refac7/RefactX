@@ -1,12 +1,14 @@
 ---
+// 1. 导入配置与组件
 import { TAGS_CONFIG } from '~/config'
 import Layout from '~/layouts/Layout.astro'
 import { getCollection } from 'astro:content'
 
+// 2. 异步获取文章数据并处理标签（保留原核心逻辑）
 const allPosts = await getCollection('posts')
 const tags = [...new Set(allPosts.flatMap((post) => post.data.tags || []))]
 
-// 按文章数量排序标签
+// 按文章数量排序标签，保留原计算逻辑
 const sortedTags = tags
   .map((tag) => ({
     name: tag,
@@ -14,112 +16,158 @@ const sortedTags = tags
   }))
   .sort((a, b) => b.count - a.count)
 
+// 3. 解构配置，保留原文案与统计计算
 const { title, description, introduce } = TAGS_CONFIG
+const maxCount = Math.max(...(sortedTags.map((t) => t.count).length > 0 ? sortedTags.map((t) => t.count) : [0]))
+const totalTags = tags.length.toString().padStart(3, '0')
+const totalPosts = allPosts.length.toString().padStart(3, '0')
+const lastUpdate = new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit' })
 
-// 统计数据计算
-const maxCount = Math.max(...sortedTags.map((t) => t.count))
-const totalTags = tags.length.toString().padStart(3, '0');
-const totalPosts = allPosts.length.toString().padStart(3, '0');
-const lastUpdate = new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit' });
+// 4. 复用模板核心样式常量，保证风格统一
+const SECTION_HEADER_CLASS = "flex items-end justify-between border-b border-border/60 pb-4 mb-8 select-none"
+const SECTION_TITLE_CLASS = "font-mono text-sm font-bold uppercase tracking-widest text-foreground/80"
+const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
 ---
 
-<Layout {title} {description}>
-  <div class="relative z-[1] py-12 px-6 sm:px-8 min-h-[70vh] font-sans">
-    
-    
-    <div class="pb-10">
-      
-      
-      <div class="flex items-center justify-between mb-8 text-[10px] font-mono uppercase tracking-widest text-muted-foreground/60">
-        <span>// SYSTEM_INDEX // KEYWORDS</span>
-        <div class="flex items-center gap-2 text-primary">
-             <span class="relative flex h-2 w-2">
-               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-500 opacity-75"></span>
-               <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
-             </span>
-             <span class="font-bold text-foreground">INDEXING</span>
-        </div>
-      </div>
+<Layout title={title} description={description}>
+  <div class="relative font-sans min-h-[80vh]">
+    {/* ================= HERO SECTION 复刻模板左8右4布局，保留标签页核心标识与统计 ================= */}
+    <div class="relative z-10 border-b border-border/60">
+      <div class="p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-0">
+        {/* Left: Title Area 左侧8列，保留INDEXING蓝色闪烁状态、大标题 */}
+        <div class="lg:col-span-8 flex flex-col justify-between min-h-[300px] lg:border-r border-border/60 lg:pr-12">
+          {/* Top Status Bar 状态条，保留标签页的SYSTEM_INDEX，INDEXING蓝色动效贴合模板样式 */}
+          <div class="flex flex-row justify-between items-start text-[10px] font-mono uppercase tracking-widest text-muted-foreground/60 select-none mb-8">
+            <span>// SYSTEM_INDEX // KEYWORDS</span>
+            <div class="flex items-center gap-2 text-primary">
+              <span class="relative flex h-1.5 w-1.5">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-none bg-blue-500 opacity-75"></span>
+                <span class="relative inline-flex rounded-none h-1.5 w-1.5 bg-blue-600"></span>
+              </span>
+              <span class="font-bold text-foreground">INDEXING</span>
+            </div>
+          </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
-        
-        <div class="lg:col-span-7">
-          <h1 class="text-7xl md:text-8xl font-bold tracking-tighter text-foreground leading-[0.9] -ml-1">
-            {title}<span class="text-primary">.</span>
-          </h1>
+          {/* Main Title 大标题，严格贴合模板规范（uppercase、font-black、leading-[0.8]） */}
+          <div>
+            <h1 class="text-6xl sm:text-8xl font-black tracking-tighter text-foreground leading-[0.8] mb-6 -ml-1 select-none">
+              {title.toUpperCase()}<span class="text-primary">.</span>
+            </h1>
+            {/* 模板经典装饰线+功能标识，替换为标签页的Tags Index */}
+            <div class="h-px w-24 bg-foreground/20 mt-8 mb-4"></div>
+            <div class="flex items-center gap-2 text-xs font-mono text-muted-foreground/60 uppercase">
+              <span class="icon-[ph--tag-bold] size-4"></span>
+              <span>Tags Index</span>
+            </div>
+          </div>
         </div>
 
-        
-        <div class="lg:col-span-5 flex flex-col gap-6">
-          <div class="border-l border-primary/40 pl-5">
-             <p class="text-base sm:text-lg text-muted-foreground leading-relaxed">
+        {/* Right: Stats Grid 右侧4列，复刻模板描述框+统计格，适配标签页3项统计 */}
+        <div class="lg:col-span-4 flex flex-col h-full border-t lg:border-t-0 border-border/60 lg:pl-0">
+          {/* Description Box 描述框，放标签页的introduce，贴合模板命名 */}
+          <div class="flex-1 p-6 sm:p-8 bg-muted/5 border-b border-border/60 lg:border-b border-dashed">
+            <span class="block text-[10px] uppercase text-muted-foreground/60 font-mono tracking-wider mb-4">// INDEX_INFO</span>
+            <p class="text-sm text-muted-foreground leading-loose font-mono">
               {introduce}
-             </p>
+              <br/><br/>
+              <span class="text-primary">> Sorting by relevance...</span>
+            </p>
           </div>
 
-          
-          <div class="grid grid-cols-2 gap-px bg-border/50 border border-border">
-            
-            <div class="bg-background/50 p-3 flex flex-col gap-1">
-              <span class="text-[9px] uppercase tracking-widest text-muted-foreground/70 font-mono">Index_Count</span>
-              <span class="text-2xl font-mono font-bold text-foreground">{totalTags}</span>
+          {/* Stats Grid 统计格，适配标签页3项统计（Index_Count/Linked_Files/Last_Rebuild），保留模板hover动效 */}
+          <div class="bg-border/60 gap-px border-t border-border/60 lg:border-t-0">
+            {/* 双格上半部分：索引数量+关联文章 */}
+            <div class="grid grid-cols-2 gap-px">
+              {/* Index Count 标签总数，保留模板hover角落小方块 */}
+              <div class="group relative flex flex-col items-center justify-center p-6 bg-background hover:bg-muted/10 transition-colors h-32">
+                <span class="text-3xl font-mono font-bold text-foreground tracking-tighter group-hover:text-primary transition-colors">
+                  {totalTags}
+                </span>
+                <span class="text-[9px] font-mono uppercase tracking-widest text-muted-foreground mt-2">
+                  Index_Count
+                </span>
+                <div class="absolute top-0 right-0 p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div class="w-1.5 h-1.5 bg-primary"></div>
+                </div>
+              </div>
+              {/* Linked Files 关联文章数 */}
+              <div class="group relative flex flex-col items-center justify-center p-6 bg-background hover:bg-muted/10 transition-colors h-32">
+                <span class="text-3xl font-mono font-bold text-foreground tracking-tighter group-hover:text-primary transition-colors">
+                  {totalPosts}
+                </span>
+                <span class="text-[9px] font-mono uppercase tracking-widest text-muted-foreground mt-2">
+                  Linked_Files
+                </span>
+                <div class="absolute bottom-0 left-0 p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div class="w-1.5 h-1.5 bg-primary"></div>
+                </div>
+              </div>
             </div>
-            
-            
-            <div class="bg-background/50 p-3 flex flex-col gap-1">
-              <span class="text-[9px] uppercase tracking-widest text-muted-foreground/70 font-mono">Linked_Files</span>
-              <span class="text-2xl font-mono font-bold text-foreground">{totalPosts}</span>
-            </div>
-            
-            
-            <div class="col-span-2 bg-background/50 p-2 flex items-center justify-between border-t border-border/40">
-               <span class="text-[9px] uppercase tracking-widest text-muted-foreground/70 font-mono">Last_Rebuild</span>
-               <span class="text-xs font-mono font-bold text-primary">{lastUpdate}</span>
+            {/* 单格下半部分：最后重建时间，贴合模板样式 */}
+            <div class="group relative flex items-center justify-between p-6 bg-background hover:bg-muted/10 transition-colors border-t border-border/60 gap-px">
+              <span class="text-[9px] font-mono uppercase tracking-widest text-muted-foreground">
+                Last_Rebuild
+              </span>
+              <span class="text-lg font-mono font-bold text-foreground group-hover:text-primary transition-colors">
+                {lastUpdate}
+              </span>
+              <div class="absolute bottom-0 right-0 p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div class="w-1.5 h-1.5 bg-primary"></div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    
-    <div class="flex items-end gap-4 mb-10 select-none">
-       <span class="font-mono text-4xl font-bold text-muted-foreground/10 leading-none -mb-1">04</span>
-       <span class="font-mono text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/50 mb-1">
-          Memory_Blocks
-       </span>
-       <div class="h-px bg-gradient-to-r from-border to-transparent flex-1 mb-1.5"></div>
-    </div>
+    {/* ================= 主内容区 复刻模板板块头，保留标签卡片核心功能（排序/占比/跳转） ================= */}
+    <div class="p-6 sm:p-8">
+      {/* Memory_Blocks 板块，严格复用模板编号板块头 */}
+      <div class={SECTION_HEADER_CLASS}>
+        <div class="flex items-center">
+          <span class={SECTION_NUM_CLASS}>01</span>
+          <h2 class={SECTION_TITLE_CLASS}>Memory_Blocks</h2>
+        </div>
+        <div class="hidden sm:block h-px flex-1 bg-border/40 ml-6 max-w-[100px]"></div>
+      </div>
 
-    
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 " data-astro-transition="animate">
-      {
-        sortedTags.map((tag, index) => {
-          // 计算占比
-          const percent = Math.min((tag.count / maxCount) * 100, 100)
-          const indexStr = `IDX-${(index + 1).toString().padStart(2, '0')}`;
+      {/* 标签卡片网格，保留原核心逻辑，样式完全贴合模板 */}
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" data-astro-transition="animate">
+        {sortedTags.map((tag, index) => {
+          // 保留原占比计算、IDX编号逻辑，兼容无标签边界情况
+          const percent = sortedTags.length > 0 ? Math.min((tag.count / maxCount) * 100, 100) : 0
+          const indexStr = `IDX-${(index + 1).toString().padStart(2, '0')}`
           
           return (
             <a
               href={`/tags/${tag.name}`}
-              class="group relative flex flex-col justify-between p-5 h-32
-                     bg-background border border-border/40 hover:border-primary/50
-                     transition-all duration-300 rounded-none overflow-hidden"
+              class="group relative flex flex-col justify-between p-6
+                     bg-background border border-border/60 hover:border-primary/50
+                     transition-all duration-300 rounded-none overflow-hidden h-36"
+              rel="noopener noreferrer"
             >
-              
-              <div class="absolute top-0 right-0 size-2 border-t border-r border-primary/20 group-hover:border-primary transition-colors"></div>
-              <div class="absolute bottom-0 left-0 size-2 border-b border-l border-primary/20 group-hover:border-primary transition-colors"></div>
+              {/* 模板经典角落装饰，hover动效统一 */}
+              <div class="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary/0 group-hover:border-primary/50 transition-colors"></div>
+              <div class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-primary/0 group-hover:border-primary/50 transition-colors"></div>
 
-              
-              <div class="flex justify-between items-start z-10">
-                 <span class="text-[10px] font-mono text-muted-foreground/40 tracking-widest group-hover:text-primary/70 transition-colors">
-                    {indexStr}
-                 </span>
-                 <span class="icon-[ph--arrow-up-right] size-3 text-muted-foreground/20 group-hover:text-primary transition-colors"></span>
+              {/* 水印编号，贴合模板友链节点的水印样式 */}
+              <div class="absolute top-2 right-4 pointer-events-none select-none">
+                <span class="font-mono text-6xl font-black text-muted-foreground/[0.03] group-hover:text-primary/[0.04] transition-colors">
+                  {(index + 1).toString().padStart(2, '0')}
+                </span>
               </div>
 
-              
-              <div class="relative z-10 flex items-baseline gap-2 mt-auto mb-3">
-                 <h3 class="font-bold text-xl text-foreground group-hover:text-primary transition-colors tracking-tight">
+              {/* IDX标识+跳转箭头，z-10保证层级 */}
+              <div class="flex justify-between items-start z-10">
+                 <span class="text-[10px] font-mono text-muted-foreground/60 tracking-widest group-hover:text-primary/70 transition-colors">
+                    {indexStr}
+                 </span>
+                 <span class="icon-[ph--arrow-up-right] size-3 text-muted-foreground/30 group-hover:text-primary transition-colors"></span>
+              </div>
+
+              {/* 标签名称+文章数量，字体层级贴合模板 */}
+              <div class="relative z-10 flex items-baseline gap-2 mt-auto mb-4">
+                 <h3 class="font-bold text-xl text-foreground group-hover:text-primary transition-colors tracking-tight font-sans">
                     {tag.name}
                  </h3>
                  <span class="text-xs font-mono text-muted-foreground/50">
@@ -127,38 +175,32 @@ const lastUpdate = new Date().toLocaleDateString('en-US', { month: 'short', day:
                  </span>
               </div>
 
-              
+              {/* 占比进度条，保留原逻辑，样式贴合模板 */}
               <div class="w-full h-1 bg-muted relative z-10 overflow-hidden">
                  <div 
                    class="h-full bg-primary/80 group-hover:bg-primary transition-all duration-500 ease-out" 
                    style={`width: ${percent}%`}
                  ></div>
               </div>
-              
-              
-              <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
             </a>
           )
-        })
-      }
-    </div>
+        })}
+      </div>
 
-    
-    {
-      tags.length === 0 && (
-        <div class="flex flex-col items-center justify-center py-24 border border-dashed border-border/40 mt-8 bg-muted/5">
+      {/* 空状态提示，保留原文案，样式贴合模板规范 */}
+      {tags.length === 0 && (
+        <div class="flex flex-col items-center justify-center py-24 border border-dashed border-border/60 mt-8 bg-muted/5">
           <span class="icon-[ph--warning-octagon] size-10 text-muted-foreground/30 mb-4" />
-          <p class="font-mono text-sm text-muted-foreground/50 uppercase tracking-widest">Database Empty // No Keywords</p>
+          <p class="font-mono text-sm text-muted-foreground/60 uppercase tracking-widest">Database Empty // No Keywords</p>
         </div>
-      )
-    }
+      )}
 
-    
-    <div class="mt-16 flex justify-center border-t border-dashed border-border/40 pt-6">
-        <span class="font-mono text-[10px] text-muted-foreground/30 uppercase tracking-[0.5em]">
-            End of Index
-        </span>
+      {/* 结尾标识，微调样式贴合模板，保留原文案 */}
+      <div class="mt-16 flex justify-center pt-6">
+          <span class="font-mono text-[10px] text-muted-foreground/30 uppercase tracking-[0.5em]">
+              // End of Index //
+          </span>
+      </div>
     </div>
-
   </div>
 </Layout>

@@ -2,7 +2,6 @@
 // src/components/Header.astro
 import { HEADER_LINKS } from '~/config'
 import ThemeToggle from '~/components/theme/ThemeToggle'
-import SectionDivider from '~/components/base/SectionDivider.astro'
 import HeaderLink from '~/components/base/HeaderLink.astro'
 import SearchSwitch from '~/components/base/SearchSwitch.astro'
 import { Image } from 'astro:assets'
@@ -12,8 +11,7 @@ import { CMS_CONFIG } from '~/config'
 
 <header>
   
-  <div class="fixed inset-0 z-0 pointer-events-none bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:48px_48px]"></div>
-  <div class="mx-auto flex justify-between px-6 sm:px-8 py-4 lg:px-8">
+  <div class="mx-auto flex justify-between px-6 sm:px-8 py-6 lg:px-8">
     <div class="flex gap-3 sm:gap-6 items-center flex-shrink-0">
       <a href="/" class="pointer-events-auto select-none" transition:persist>
         <Image src={favicon} width={56} height={56} alt="Logo" class="w-8 h-8 border-2 border-transparent" loading="eager"/>
@@ -71,6 +69,10 @@ import { CMS_CONFIG } from '~/config'
       <ThemeToggle client:load />
     </div>
   </div>
+  {/* 顶部装饰条：模拟撕纸或机械分割线 */}
+  <div class="absolute -bottom-px left-0 w-full h-px bg-border flex justify-between px-[10%]">
+      <div class="w-20 h-px bg-primary"></div>
+      <div class="w-20 h-px bg-primary"></div>
+  </div>
 </header>
 
-<SectionDivider className="border-t-border dark:border-t-border/50" />

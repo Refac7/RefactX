@@ -26,109 +26,156 @@ const { title, description, introduce } = POSTS_CONFIG
 
 // 计算当前进度的百分比
 const progressPercent = Math.round((page.currentPage / page.lastPage) * 100);
+
+const SECTION_HEADER_CLASS = "flex items-end justify-between border-b border-border/60 pb-4 mb-8 select-none"
+const SECTION_TITLE_CLASS = "font-mono text-sm font-bold uppercase tracking-widest text-foreground/80"
+const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
 ---
 
 <Layout {title} {description}>
-  <div class="relative py-12 px-6 sm:px-8 font-sans min-h-[80vh]">
+  
+  <div class="relative font-sans min-h-[80vh]">
     
-    
-    <div class="pb-10">
-      
-      
-      <div class="flex items-center justify-between mb-8 text-[10px] font-mono uppercase tracking-widest text-muted-foreground/60">
-        <span>// SYSTEM_LOGS // V.2.0</span>
-        <div class="flex items-center gap-2 text-primary">
-             <span class="relative flex h-1.5 w-1.5">
-               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-               <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary"></span>
-             </span>
-             <span>Live Feed</span>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
+    {/* ================= HERO SECTION ================= */}
+    <div class="relative z-10 border-b border-border/60">
+      <div class="p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-0">
         
-        <div class="lg:col-span-7">
-          <h1 class="text-7xl md:text-8xl font-bold tracking-tighter text-foreground leading-[0.9] -ml-1">
-            {title}<span class="text-primary/80">.</span>
-          </h1>
-        </div>
-
-        
-        <div class="lg:col-span-5 flex flex-col justify-end pb-2">
-          <div class="border-l border-primary/40 pl-6 flex flex-col gap-6">
-             <p class="text-base sm:text-lg text-muted-foreground leading-relaxed">
-              {introduce}
-             </p>
-
-            <div class="flex items-center gap-4 pt-4 border-t border-dashed border-border/40">
-              <div class="flex flex-col">
-                  <span class="text-[10px] uppercase text-muted-foreground/60 font-mono tracking-wider">Total_Entries</span>
-                  <span class="text-3xl font-mono font-bold text-foreground tracking-tight">
-                      {page.total}
+        {/* Left: Title Area */}
+        <div class="lg:col-span-8 flex flex-col justify-between min-h-[300px] lg:border-r border-border/60 lg:pr-12">
+            
+            {/* Top Status Bar */}
+            <div class="flex flex-row justify-between items-start text-[10px] font-mono uppercase tracking-widest text-muted-foreground/60 select-none mb-8">
+                <span>// SYSTEM_LOGS // V.2.0</span>
+                <div class="flex items-center gap-2 text-primary">
+                    <span class="relative flex h-1.5 w-1.5">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-none bg-primary opacity-75"></span>
+                    <span class="relative inline-flex rounded-none h-1.5 w-1.5 bg-primary"></span>
                     </span>
-              </div>
-              <div class="h-8 w-px bg-border/60"></div>
-              <div class="flex flex-col">
-                  <span class="text-[10px] uppercase text-muted-foreground/60 font-mono tracking-wider">Page_Index</span>
-                  <span class="text-sm font-mono text-foreground mt-1">
-                    <div class="flex items-baseline gap-1">
-                      <span class="text-2xl font-mono font-bold text-primary">{page.currentPage.toString().padStart(2, '0')}</span>
-                      <span class="text-xs text-muted-foreground/40 font-mono">/ {page.lastPage.toString().padStart(2, '0')}</span>
-                    </div>
-                  </span>
-              </div>
+                    <span>FEED: LIVE</span>
+                </div>
             </div>
+
+            {/* Main Title */}
+            <div>
+               <h1 class="text-6xl sm:text-8xl font-black tracking-tighter text-foreground leading-[0.8] mb-6 -ml-1 select-none">
+                {title.toUpperCase()}<span class="text-primary">.</span>
+               </h1>
+               
+               {/* 装饰性的箭头，放在标题下方 */}
+               <div class="h-px w-24 bg-foreground/20 mt-8 mb-4"></div>
+               <div class="flex items-center gap-2 text-xs font-mono text-muted-foreground/60 uppercase">
+                  <span class="icon-[ph--arrow-elbow-down-right] size-4"></span>
+                  <span>Directory Listing</span>
+               </div>
+            </div>
+        </div>
+
+        {/* Right: Stats Grid (Boxy Style) */}
+        <div class="lg:col-span-4 flex flex-col h-full border-t lg:border-t-0 border-border/60 lg:pl-0">
+          
+          {/* Description Box */}
+          <div class="flex-1 p-6 sm:p-8 bg-muted/5 border-b border-border/60 lg:border-b border-dashed">
+             <span class="block text-[10px] uppercase text-muted-foreground/60 font-mono tracking-wider mb-4">// QUERY_PARAMS</span>
+             <p class="text-sm text-muted-foreground leading-loose font-mono">
+               {introduce}
+               <br/><br/>
+               <span class="text-primary">> Fetching records...</span>
+             </p>
+          </div>
+
+          {/* Stats Grid - 模仿主页的 Social Grid */}
+          <div class="grid grid-cols-2 bg-border/60 gap-px border-t border-border/60 lg:border-t-0">
+              
+              {/* Total Entries */}
+              <div class="group relative flex flex-col items-center justify-center p-6 bg-background hover:bg-muted/10 transition-colors h-32">
+                 <span class="text-3xl font-mono font-bold text-foreground tracking-tighter group-hover:text-primary transition-colors">
+                    {page.total}
+                 </span>
+                 <span class="text-[9px] font-mono uppercase tracking-widest text-muted-foreground mt-2">
+                    Total_Entries
+                 </span>
+                 {/* Corner Accent */}
+                 <div class="absolute top-0 right-0 p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div class="w-1.5 h-1.5 bg-primary"></div>
+                 </div>
+              </div>
+
+              {/* Page Index */}
+              <div class="group relative flex flex-col items-center justify-center p-6 bg-background hover:bg-muted/10 transition-colors h-32">
+                 <div class="flex items-baseline gap-1">
+                    <span class="text-3xl font-mono font-bold text-foreground group-hover:text-primary transition-colors">
+                        {page.currentPage.toString().padStart(2, '0')}
+                    </span>
+                    <span class="text-xs text-muted-foreground/40 font-mono">/ {page.lastPage.toString().padStart(2, '0')}</span>
+                 </div>
+                 <span class="text-[9px] font-mono uppercase tracking-widest text-muted-foreground mt-2">
+                    Page_Index
+                 </span>
+                 {/* Corner Accent */}
+                 <div class="absolute bottom-0 left-0 p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div class="w-1.5 h-1.5 bg-primary"></div>
+                 </div>
+              </div>
+
           </div>
         </div>
       </div>
     </div>
 
-    
-    <div class="flex items-end gap-4 mb-10 select-none">
-       <span class="font-mono text-4xl font-bold text-muted-foreground/10 leading-none -mb-1">01</span>
-       <span class="font-mono text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/50 mb-1">
-          Stream_Sequence
-       </span>
-       <div class="h-px bg-gradient-to-r from-border to-transparent flex-1 mb-1.5"></div>
-    </div>
-
-    
-    <div class=" min-h-[40vh] relative z-10">
-      <List 
-        posts={page.data} 
-        type={POSTS_CONFIG.postPageConfig.type} 
-        heroImageLayout={POSTS_CONFIG.postPageConfig?.heroImageLayout} 
-      />
-    </div>
-
-    
-    <div class="mt-20">
-      
-      <div class="w-full h-px bg-border relative mb-8">
-        <div class="absolute top-0 left-0 h-[3px] bg-primary -mt-[1px] transition-all duration-500" style={`width: ${progressPercent}%`}>
-           <div class="absolute right-0 top-1/2 -translate-y-1/2 size-2 bg-primary shadow-[0_0_10px_rgba(var(--primary),0.5)]"></div>
+    {/* ================= LIST SECTION ================= */}
+    <div class="p-6 sm:p-8">
+        
+        <div class={SECTION_HEADER_CLASS}>
+           <div class="flex items-center">
+               <span class={SECTION_NUM_CLASS}>01</span>
+               <h2 class={SECTION_TITLE_CLASS}>Stream_Sequence</h2>
+           </div>
+           <div class="hidden sm:block h-px flex-1 bg-border/40 ml-6 max-w-[100px]"></div>
         </div>
-      </div>
 
-      <div class="flex flex-col md:flex-row items-center justify-between gap-6 pb-8">
-         <div class="hidden md:flex flex-col gap-1">
-            <span class="text-[10px] font-mono uppercase text-muted-foreground/50 tracking-widest">System Status</span>
-            <span class="text-xs font-bold text-muted-foreground">Reading Buffer: {progressPercent}%</span>
-         </div>
+        <div class="relative z-10 min-h-[400px]">
+          <List 
+            posts={page.data} 
+            type={POSTS_CONFIG.postPageConfig.type} 
+            heroImageLayout={POSTS_CONFIG.postPageConfig?.heroImageLayout} 
+          />
+        </div>
 
-         
-         <div class="flex-1 w-full md:w-auto flex justify-center md:justify-end">
-           <Pagination {page} baseUrl="/posts" />
-         </div>
-      </div>
-      
-      
-      <div class="flex justify-center border-t border-dashed border-border/40 pt-6">
-        <span class="font-mono text-[10px] text-muted-foreground/30 uppercase tracking-[0.3em]">
-          End of Segment // {new Date().getFullYear()}
-        </span>
-      </div>
+        {/* ================= PAGINATION & FOOTER ================= */}
+        <div class="mt-20 pt-8 border-t border-dashed border-border/60">
+          
+          {/* Progress Bar (Hard Edge Style) */}
+          <div class="mb-8">
+             <div class="flex justify-between text-[10px] font-mono uppercase text-muted-foreground/50 mb-2">
+                <span>Reading_Buffer</span>
+                <span>{progressPercent}%</span>
+             </div>
+             <div class="w-full h-2 bg-muted/20 border border-border/40 relative overflow-hidden">
+                <div class="absolute top-0 left-0 h-full bg-primary transition-all duration-500 ease-out" style={`width: ${progressPercent}%`}>
+                    {/* 扫描线纹理 */}
+                    <div class="w-full h-full bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.2)_50%,transparent_75%,transparent_100%)] bg-[size:10px_10px]"></div>
+                </div>
+             </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+             <div class="hidden md:flex flex-col gap-1">
+                <span class="text-[10px] font-mono uppercase text-muted-foreground/50 tracking-widest">Status: Ready</span>
+                <span class="text-xs font-bold text-muted-foreground font-mono">Awaiting Input...</span>
+             </div>
+
+             {/* Pagination Component Container */}
+             <div class="flex-1 w-full md:w-auto flex justify-center md:justify-end">
+               <Pagination {page} baseUrl="/posts" />
+             </div>
+          </div>
+          
+          <div class="flex justify-center mt-12">
+            <span class="font-mono text-[10px] text-muted-foreground/20 uppercase tracking-[0.5em] select-none">
+              // End of Segment //
+            </span>
+          </div>
+        </div>
     </div>
 
   </div>
