@@ -46,7 +46,11 @@ const SCHEMAS: Record<string, { key: string; label: string; type: 'text' | 'imag
   ]
 };
 
-const UPLOAD_CONFIG = {
+if (WALINE_CONFIG.enableImgUpload === false) {
+  console.warn('图片上传功能已禁用，无法上传图片到图床');
+}
+
+  const UPLOAD_CONFIG = {
   url: WALINE_CONFIG.imgbedURL,
   token: WALINE_CONFIG.uploadToken
 };
@@ -175,6 +179,7 @@ export default function AdminDashboard() {
     setIsLoggedIn(false); 
     setPassword(''); 
     setQueue([]); 
+    toast.success('SIGNED_OUT');
   };
 
   const parseContent = (raw: string) => {
@@ -603,7 +608,7 @@ ${body}`;
   if (!isLoggedIn) {
      return (
         <div className="min-h-[80vh] flex items-center justify-center text-foreground font-mono p-4 relative">
-            <Toaster toastOptions={{ style: { background: '#111', color: '#fff', border: '1px solid #333', fontFamily: 'monospace', fontSize: '12px', borderRadius: '0' } }} />
+            <Toaster position="top-left" toastOptions={{ style: { background: '#111', color: '#fff', marginTop: '100px', marginLeft: '10px', border: '1px solid #333', fontFamily: 'monospace', fontSize: '12px', borderRadius: '0' } }} />
             
             <div className="w-full max-w-sm bg-background border border-border p-1 relative shadow-xl">
                 {/* Decorative borders */}
@@ -665,50 +670,127 @@ ${body}`;
   // --- Render: Dashboard ---
   return (
     <div className="text-foreground font-sans min-h-screen flex flex-col relative">
-      <Toaster toastOptions={{ style: { background: '#111', color: '#fff', border: '1px solid #333', fontFamily: 'monospace', fontSize: '12px', borderRadius: '0' } }} />
+      <Toaster position="top-left" toastOptions={{ style: { background: '#111', color: '#fff', marginTop: '100px', marginLeft: '10px', border: '1px solid #333', fontFamily: 'monospace', fontSize: '12px', borderRadius: '0' } }} />
       <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
-      {/* Hero Header */}
-      <div className="border-b border-border/60 bg-background/50 backdrop-blur-sm z-50">
-          <div className="max-w-[1600px] p-6 sm:p-8">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-0">
-                <div className="lg:col-span-8 flex flex-col justify-between lg:pr-12 lg:border-r border-border/60">
-                     <div className="flex justify-between items-start mb-4">
-                        <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/60">// SYS_ADMIN // V.3.5</span>
+    {/* Hero Header */}
+      <div className="relative z-10 border-b border-border/60 bg-background">
+          <div className="max-w-[1400px] mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-12 p-6 sm:p-8">
+                
+                {/* Left: Title Area (8 cols) */}
+                <div className="lg:col-span-8 lg:border-r border-border/60 flex flex-col justify-between min-h-[360px]">
+                     
+                     {/* Top Status Bar */}
+                     <div className="flex justify-between items-start mb-8 lg:pr-12 select-none">
+                        <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/60">
+                            // SYS_ADMIN // V.3.5
+                        </span>
                         <div className="flex items-center gap-2">
-                            <span className="relative flex h-1.5 w-1.5">
+                            <div className="flex relative h-2 w-2">
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-none bg-emerald-500 opacity-75"></span>
-                                <span className="relative inline-flex rounded-none h-1.5 w-1.5 bg-emerald-500"></span>
+                                <span className="relative inline-flex rounded-none h-2 w-2 bg-emerald-600"></span>
+                            </div>
+                            <span className="font-mono text-[10px] uppercase text-foreground font-bold tracking-wider">
+                                SYS: ONLINE
                             </span>
-                            <span className="font-mono text-[10px] uppercase text-foreground font-bold">ONLINE</span>
                         </div>
                      </div>
-                     <h1 className="text-6xl sm:text-7xl font-black tracking-tighter text-foreground leading-none -ml-1">
-                        CONSOLE<span className="text-primary">.</span>
-                     </h1>
+
+                     {/* Main Heading */}
+                     <div>
+                        <h1 className="text-6xl sm:text-8xl font-black tracking-tighter leading-[0.85] text-foreground -ml-1 select-none">
+                            CONSOLE<span className="text-primary">.</span>
+                        </h1>
+                        <div className="mt-6 flex flex-col gap-2">
+                            <div className="h-1 w-12 bg-foreground/10"></div>
+                            <p className="text-lg sm:text-xl text-muted-foreground font-light max-w-xl leading-relaxed">
+                                Administrator Mode Active.<br/>
+                                <span className="text-xs font-mono text-muted-foreground/60 uppercase tracking-widest">
+                                    Full write access granted to repository.
+                                </span>
+                            </p>
+                        </div>
+                     </div>
                 </div>
 
-                {/* Right: Stats Grid */}
+                {/* Right: Stats & Info (4 cols) */}
                 <div className="lg:col-span-4 flex flex-col border-t lg:border-t-0 border-border/60">
-                    <div className="flex-1 bg-muted/5 border-b border-border/60 lg:border-b border-dashed p-4 flex flex-col justify-center">
-                        <span className="text-[10px] font-mono uppercase text-muted-foreground/60 tracking-wider mb-2">// TARGET_REPO</span>
-                        <span className="font-mono text-xs text-foreground break-all">{REPO_CONFIG.repo}</span>
+                    
+                    {/* Top Info Box */}
+                    <div className="flex-1 p-6 sm:p-8 bg-muted/5 border-b border-border/60 lg:border-b border-none xl:border-dashed flex flex-col">
+                        <span className="block text-[10px] font-mono uppercase text-muted-foreground/60 tracking-wider mb-4">
+                            // CURRENT_SESSION
+                        </span>
+                        
+                        <div className="flex-1 space-y-6">
+                            <div>
+                                <span className="text-[9px] uppercase tracking-widest text-muted-foreground/50 font-mono block mb-1">Target_Repo</span>
+                                <span className="font-mono text-xs text-foreground break-all bg-background border border-border px-2 py-1 inline-block">
+                                    {REPO_CONFIG.repo}
+                                </span>
+                            </div>
+                            
+                            <p className="text-xs text-muted-foreground leading-relaxed font-mono border-l-2 border-primary/20 pl-3">
+                                RefactX Control Panel.<br/>
+                                Centralized content management system.
+                            </p>
+                        </div>
+
+                        {/* Logout Button */}
+                        <div className="mt-8 pt-4 border-t border-dashed border-border/40">
+                            <button 
+                                onClick={handleLogout} 
+                                className="group w-full flex items-center justify-between text-xs font-mono font-bold uppercase tracking-wider text-red-500 hover:text-red-600 transition-colors"
+                            >
+                                <span>Terminate_Session</span>
+                                <span className="icon-[ph--sign-out] size-4 group-hover:translate-x-1 transition-transform"></span>
+                            </button>
+                        </div>
                     </div>
+
+                    {/* Bottom Stats Grid (1px gap style) */}
                     <div className="grid grid-cols-2 bg-border/60 gap-px border-t border-border/60 lg:border-t-0">
-                        <div className="bg-background p-4 flex flex-col items-center justify-center h-24 hover:bg-muted/5 transition-colors group relative">
-                            <span className="text-2xl font-mono font-bold text-foreground group-hover:text-primary transition-colors">{remoteFiles.length}</span>
-                            <span className="text-[9px] font-mono uppercase text-muted-foreground mt-1">Modules</span>
-                             <div className="absolute top-0 right-0 p-1 opacity-0 group-hover:opacity-100 transition-opacity"><div className="w-1 h-1 bg-primary"></div></div>
+                        
+                        {/* Modules Count */}
+                        <div className="bg-background p-6 flex flex-col items-center justify-center h-32 hover:bg-muted/5 transition-colors group relative">
+                            <span className="text-3xl font-mono font-bold text-foreground group-hover:text-primary transition-colors tracking-tighter">
+                                {remoteFiles.length.toString().padStart(2, '0')}
+                            </span>
+                            <span className="text-[9px] font-mono uppercase text-muted-foreground mt-2 tracking-widest">
+                                Total_Modules
+                            </span>
+                            {/* Corner Accent */}
+                            <div className="absolute top-0 right-0 p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <div className="w-1.5 h-1.5 bg-primary"></div>
+                            </div>
                         </div>
-                        <div className="bg-background p-4 flex flex-col items-center justify-center h-24 hover:bg-muted/5 transition-colors group relative cursor-pointer" onClick={() => setMobileView('queue')}>
-                             <span className={cn("text-2xl font-mono font-bold transition-colors", queue.length > 0 ? "text-primary animate-pulse" : "text-foreground")}>{queue.length}</span>
-                             <span className="text-[9px] font-mono uppercase text-muted-foreground mt-1">Buffer</span>
-                             <div className="absolute bottom-0 left-0 p-1 opacity-0 group-hover:opacity-100 transition-opacity"><div className="w-1 h-1 bg-primary"></div></div>
+
+                        {/* Buffer Count */}
+                        <div 
+                            className="bg-background p-6 flex flex-col items-center justify-center h-32 hover:bg-muted/5 transition-colors group relative cursor-pointer" 
+                            onClick={() => setMobileView('queue')}
+                        >
+                             <span className={cn(
+                                 "text-3xl font-mono font-bold tracking-tighter transition-colors", 
+                                 queue.length > 0 ? "text-primary animate-pulse" : "text-foreground"
+                             )}>
+                                 {queue.length.toString().padStart(2, '0')}
+                             </span>
+                             <span className="text-[9px] font-mono uppercase text-muted-foreground mt-2 tracking-widest">
+                                 Buffer_Tasks
+                             </span>
+                             {/* Corner Accent */}
+                             <div className="absolute bottom-0 left-0 p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                 <div className="w-1.5 h-1.5 bg-primary"></div>
+                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
           </div>
       </div>
+
 
       <div className="max-w-[1600px] mx-6 md:mx-8 flex-1 flex flex-col lg:grid lg:grid-cols-12 relative border-x border-border/60 bg-background/90">
           
@@ -774,14 +856,17 @@ ${body}`;
                     </button>
                     <div className="flex-1 flex items-center px-4 gap-2">
                         <span className={cn("size-3.5 text-primary", currentMode === 'data' ? "icon-[ph--brackets-curly]" : "icon-[ph--file-text]")}></span>
-                        <input value={filename} onChange={e => setFilename(e.target.value)} disabled={currentMode === 'data'} placeholder="UNTITLED_FILE" className="bg-transparent text-xs font-mono font-bold w-full focus:outline-none uppercase tracking-wide placeholder:text-muted-foreground/30 text-foreground" />
+                        <input value={filename} onChange={e => setFilename(e.target.value)} disabled={currentMode === 'data'} placeholder="UNTITLED_FILE" className="bg-transparent text-xs font-mono font-bold w-full focus:outline-none tracking-wide placeholder:text-muted-foreground/30 text-foreground" />
                     </div>
                 </div>
 
                 <div className="flex items-center h-full">
                     {currentMode === 'post' ? (
                         <>
-                            <button onClick={() => triggerUpload('body')} className="h-full px-3 hover:bg-primary/10 hover:text-primary text-muted-foreground border-l border-border transition-colors"><span className="icon-[ph--image] size-4"></span></button>
+                            {/* 未启用上传功能时隐藏 */}
+                            {WALINE_CONFIG.enableImgUpload && (
+                              <button onClick={() => triggerUpload('body')} className="h-full px-3 hover:bg-primary/10 hover:text-primary text-muted-foreground border-l border-border transition-colors"><span className="icon-[ph--image] size-4"></span></button>
+                            )}
                             <button onClick={() => setShowMetaConfig(!showMetaConfig)} className={cn("h-full px-3 hover:bg-primary/10 hover:text-primary text-muted-foreground border-l border-border transition-colors", showMetaConfig && "text-primary bg-primary/5")}><span className="icon-[ph--sliders-horizontal] size-4"></span></button>
                         </>
                     ) : (
@@ -839,7 +924,12 @@ ${body}`;
                                 </div>
                                 
                                 <div className="sm:col-span-4 bg-background p-2 flex items-center gap-2">
-                                  <span onClick={()=>triggerUpload('hero')} className="cursor-pointer text-[9px] font-mono text-primary border border-primary/30 px-1 hover:bg-primary/10 transition-colors uppercase">[Upload_Hero]</span>
+                                  {/* 未启用图床时隐藏上传按钮，直接输入URL */}
+                                  {WALINE_CONFIG.enableImgUpload ? (
+                                    <span onClick={()=>triggerUpload('hero')} className="cursor-pointer text-[9px] font-mono text-primary border border-primary/30 px-1 hover:bg-primary/10 transition-colors uppercase">[Upload_Hero]</span>
+                                  ) : (
+                                    <span className="text-[9px] font-mono text-muted-foreground/60 uppercase">[UPLOAD_DISABLED]</span>
+                                  )}
                                   <input value={meta.heroImage} onChange={e=>setMeta({...meta, heroImage: e.target.value})} className="flex-1 bg-transparent text-xs font-mono text-muted-foreground focus:outline-none rounded-none" placeholder="IMAGE_URL..." />
                                 </div>
                             </div>
