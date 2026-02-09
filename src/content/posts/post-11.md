@@ -3,10 +3,11 @@ title: 'RefactX Project v1.7 更新日志'
 description: '本次更新重点新增了内容管理系统的支持，更新全局设计，以及其他若干漏洞修复。'
 pubDate: 2026-02-07
 author: 'Refac7'
+tags: ['更新日志', '笔记']
+recommend: false
 heroImage: 'UpdateLog.webp'
 ogImage: 'UpdateLog.webp'
 heroImageAspectRatio: '16/9'
-tags: ['更新日志','笔记']
 ---
 
 ## 新增内容管理系统（CMS）
@@ -17,7 +18,7 @@ tags: ['更新日志','笔记']
 
 ### 配置方法
 
-1. 到https://github.com/settings/tokens创建新的Token，根据最小权限原则，仅包含该仓库的读写权限即可。
+1. 到 https://github.com/settings/tokens 创建新的Token，根据最小权限原则，仅包含该仓库的读写权限即可。
 2. 把项目git clone 到本地，使用 `node scripts/gen-hash.js 你的明文内容`来加密你的密码
 3. 在config.ts完成基本字段配置
 4. 在vercel或其他部署平台配置GITHUB_TOKEN=你的GitHub Token；以及ADMIN_PASSWORD=加密后的密码。这些内容不会暴露到前端，仅在nodejs服务器中流转。
