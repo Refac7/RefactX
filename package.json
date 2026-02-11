@@ -23,6 +23,7 @@
     "bcryptjs": "^3.0.3",
     "clsx": "^2.1.1",
     "framer-motion": "^12.5.0",
+    "jsonwebtoken": "^9.0.3",
     "medium-zoom": "^1.1.0",
     "nanostores": "^0.11.4",
     "react": "^19.2.1",
