@@ -18,7 +18,7 @@ const DATA_FILES = [
   { name: 'photos.json', path: 'src/content/data/photos.json', label: 'PHOTOS' }
 ];
 
-// Schema 定义
+// Schema 定义 (省略部分保持不变，为节省长度，直接引用你之前的内容)
 const SCHEMAS: Record<string, { key: string; label: string; type: 'text' | 'image' | 'textarea' | 'json' }[]> = {
   'friends.json': [
     { key: 'name', label: 'Site Name', type: 'text' },
@@ -138,6 +138,15 @@ export default function AdminDashboard() {
   }, [queue]);
 
   useEffect(() => {
+    const token = localStorage.getItem('admin_jwt_token');
+    if (token) {
+      // 移除敏感日志
+      // console.log('[AUTH] Found token on mount');
+      setIsLoggedIn(true);
+      fetchRemoteFiles();
+      return;
+    }
+
     const savedPass = localStorage.getItem('admin_simple_pass');
     if (savedPass) { setPassword(savedPass); performLogin(savedPass); }
   }, []);
@@ -146,30 +155,34 @@ export default function AdminDashboard() {
     if (!pass) return;
     setIsValidating(true);
     setLoginError(false);
-    
     try {
-      const res = await fetch('/api/auth', { 
-        method: 'POST', 
+      const res = await fetch('/api/auth', {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password: pass })
       });
+      const data = await res.json();
+      // 移除敏感日志
+      // console.log('[AUTH] login response', res.status); 
       
-      if (res.ok) {
-        localStorage.setItem('admin_simple_pass', pass);
-        setIsLoggedIn(true); 
+      if (res.ok && data.token) {
+        localStorage.setItem('admin_jwt_token', data.token);
+        setIsLoggedIn(true);
         setPassword(pass);
         toast.success('ACCESS GRANTED');
-        fetchRemoteFiles(pass);
+        fetchRemoteFiles();
       } else {
+        console.warn('[AUTH] Login failed');
         setLoginError(true);
-        localStorage.removeItem('admin_simple_pass');
+        localStorage.removeItem('admin_jwt_token');
         toast.error('ACCESS DENIED');
       }
-    } catch (error) { 
+    } catch (error) {
+      console.error('[AUTH] Login error');
       setLoginError(true);
-      toast.error('NETWORK ERROR'); 
-    } finally { 
-      setIsValidating(false); 
+      toast.error('NETWORK ERROR');
+    } finally {
+      setIsValidating(false);
     }
   };
 
@@ -210,13 +223,23 @@ export default function AdminDashboard() {
     } catch (e) { return { meta: DEFAULT_META, body: raw }; }
   };
 
-  const fetchRemoteFiles = async (pass = password) => {
+  const getAuthHeaders = () => {
+    const token = localStorage.getItem('admin_jwt_token');
+    // 移除敏感日志
+    return {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {})
+    };
+  };
+
+  const fetchRemoteFiles = async () => {
     setIsLoadingFiles(true);
     try {
-      const res = await fetch('/api/list-files', { 
-        method: 'POST', 
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password: pass, config: REPO_CONFIG }) 
+      const headers = getAuthHeaders();
+      const res = await fetch('/api/list-files', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ config: REPO_CONFIG })
       });
       const data = await res.json();
       if (data.files) setRemoteFiles(data.files);
@@ -227,52 +250,49 @@ export default function AdminDashboard() {
     if ((isData ? jsonContent : body).length > 50 && !confirm("Override current workspace?")) return;
     setIsFetchingContent(true);
     const toastId = toast.loading(`RETRIEVING ${name}...`);
-    
-    const requestBody = isData ? 
-      { password, config: REPO_CONFIG, absolutePath: path } : 
-      { password, config: REPO_CONFIG, filename: name };
-
+    const headers = getAuthHeaders();
+    const requestBody = isData ?
+      { config: REPO_CONFIG, absolutePath: path } :
+      { config: REPO_CONFIG, filename: name };
     try {
-        const res = await fetch('/api/get-content', { 
-          method: 'POST', 
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(requestBody) 
-        });
-        
-        if (res.status === 404 && isData) {
-            setFilename(name); setJsonContent('[]'); setParsedJson([]);
-            setCurrentMode('data'); setEditorMode('visual'); setEditingItemIndex(null); setMobileView('editor');
-            toast('FILE_NOT_FOUND // CREATING NEW', { icon: '🆕', id: toastId });
-            return;
+      // 移除敏感日志
+      const res = await fetch('/api/get-content', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(requestBody)
+      });
+      if (res.status === 404 && isData) {
+        setFilename(name); setJsonContent('[]'); setParsedJson([]);
+        setCurrentMode('data'); setEditorMode('visual'); setEditingItemIndex(null); setMobileView('editor');
+        toast('FILE_NOT_FOUND // CREATING NEW', { icon: '🆕', id: toastId });
+        return;
+      }
+      if (!res.ok) throw new Error('Fetch failed');
+      const data = await res.json();
+      if (isData) {
+        setFilename(name); setCurrentMode('data');
+        try {
+          const parsed = JSON.parse(data.content);
+          setJsonContent(JSON.stringify(parsed, null, 2));
+          setParsedJson(Array.isArray(parsed) ? parsed : []);
+          setEditingItemIndex(null);
+          setEditorMode('visual');
+        } catch(e) {
+          setJsonContent(data.content);
+          setEditorMode('raw');
+          toast.error('JSON_PARSE_ERROR');
         }
-
-        if (!res.ok) throw new Error('Fetch failed');
-        const data = await res.json();
-
-        if (isData) {
-            setFilename(name); setCurrentMode('data');
-            try {
-                const parsed = JSON.parse(data.content);
-                setJsonContent(JSON.stringify(parsed, null, 2));
-                setParsedJson(Array.isArray(parsed) ? parsed : []);
-                setEditingItemIndex(null);
-                setEditorMode('visual');
-            } catch(e) {
-                setJsonContent(data.content);
-                setEditorMode('raw');
-                toast.error('JSON_PARSE_ERROR');
-            }
-        } else {
-            const { meta: parsedMeta, body: parsedBody } = parseContent(data.content);
-            setFilename(name); setMeta(parsedMeta); setBody(parsedBody);
-            setCurrentMode('post');
-        }
-        setMobileView('editor');
-        toast.success('DATA_LOADED', { id: toastId });
-    } catch (e) { 
-      toast.error('FETCH_ERROR', { id: toastId }); 
-    } finally { 
-      setIsFetchingContent(false); 
+      } else {
+        const { meta: parsedMeta, body: parsedBody } = parseContent(data.content);
+        setFilename(name); setMeta(parsedMeta); setBody(parsedBody);
+        setCurrentMode('post');
+      }
+      setMobileView('editor');
+      toast.success('DATA_LOADED', { id: toastId });
+    } catch (e) {
+      toast.error('FETCH_ERROR', { id: toastId });
+    } finally {
+      setIsFetchingContent(false);
     }
   };
 
@@ -407,25 +427,25 @@ ${body}`;
     const toastId = toast.loading('PROCESSING BATCH...');
 
     try {
-        const res = await fetch('/api/batch-commit', { 
-            method: 'POST', 
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                password, config: REPO_CONFIG,
-                operations: queue.map(item => ({
-                    type: item.type, filename: item.filename, content: item.content, sha: item.sha, isDataFile: item.isDataFile
-                }))
-            }) 
-        });
-
-        if (!res.ok) throw new Error('BATCH FAILED');
-        setQueue([]);
-        localStorage.removeItem('admin_queue_v1'); 
-        toast.success(`BATCH COMPLETE // ${queue.length} OPS`, { id: toastId });
-        await fetchRemoteFiles();
-
-    } catch (error: any) { 
-        toast.error(`ERROR: ${error.message}`, { id: toastId });
+      const headers = getAuthHeaders();
+      // 移除敏感日志
+      const res = await fetch('/api/batch-commit', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          config: REPO_CONFIG,
+          operations: queue.map(item => ({
+            type: item.type, filename: item.filename, content: item.content, sha: item.sha, isDataFile: item.isDataFile
+          }))
+        })
+      });
+      if (!res.ok) throw new Error('BATCH FAILED');
+      setQueue([]);
+      localStorage.removeItem('admin_queue_v1');
+      toast.success(`BATCH COMPLETE // ${queue.length} OPS`, { id: toastId });
+      await fetchRemoteFiles();
+    } catch (error: any) {
+      toast.error(`ERROR: ${error.message}`, { id: toastId });
     } finally { setIsProcessingQueue(false); }
   };
 
@@ -467,12 +487,15 @@ ${body}`;
     setCurrentMode('post');
     setFilename(''); setBody(''); setMeta(DEFAULT_META);
     try {
-        const res = await fetch('/api/next-filename', { 
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ password, config: REPO_CONFIG }) 
-        });
-        const d = await res.json();
-        if(d.filename) setFilename(d.filename);
+      const headers = getAuthHeaders();
+      // 移除敏感日志
+      const res = await fetch('/api/next-filename', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ config: REPO_CONFIG })
+      });
+      const d = await res.json();
+      if(d.filename) setFilename(d.filename);
     } catch(e) {}
     setMobileView('editor');
     toast('WORKSPACE INITIALIZED', { icon: '✨' });

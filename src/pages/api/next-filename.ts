@@ -1,51 +1,48 @@
-// src/pages/api/next-filename.ts
 export const prerender = false;
-
 
 import type { APIRoute } from 'astro';
 import { Octokit } from '@octokit/rest';
-import bcrypt from 'bcryptjs';
 import {
   cleanupExpiredRecords,
   getClientIP,
-  checkRateLimit,
-  recordFailedAttempt,
-  clearRecord
+  checkRateLimit
 } from '~/lib/rateLimit';
 
 export const POST: APIRoute = async ({ request }) => {
   try {
     cleanupExpiredRecords();
     const clientIP = getClientIP(request);
+    
     const limitCheck = checkRateLimit(clientIP);
-    if (!limitCheck.allowed) {
-      return new Response(
-        JSON.stringify({ error: limitCheck.message || 'Rate limit exceeded' }),
-        { status: 429 }
-      );
-    }
+    if (!limitCheck.allowed) return new Response(JSON.stringify({ error: limitCheck.message }), { status: 429 });
 
     const body = await request.json();
-    const { password, config } = body;
+    const { config } = body;
 
-    // 1. 安全哈希验证密码
-    const HASHED_PASSWORD = import.meta.env.ADMIN_PASSWORD;
-    if (!HASHED_PASSWORD) {
-      return new Response(JSON.stringify({ error: 'Server misconfiguration' }), { status: 500 });
+    // --- JWT 修复开始 ---
+    const authHeader = request.headers.get('authorization');
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return new Response(JSON.stringify({ error: 'Missing token' }), { status: 401 });
     }
-    const isMatch = await bcrypt.compare(password, HASHED_PASSWORD);
-    if (!isMatch) {
-      recordFailedAttempt(clientIP);
-      return new Response(JSON.stringify({ error: 'Access Denied' }), { status: 401 });
+    const token = authHeader.split(' ')[1];
+
+    try {
+      const jwtImport = await import('jsonwebtoken');
+      // @ts-ignore
+      const jwt = jwtImport.default || jwtImport;
+      const SECRET = import.meta.env.ADMIN_JWT_SECRET;
+      jwt.verify(token, SECRET || 'default_secret');
+    } catch (e) {
+      return new Response(JSON.stringify({ error: 'Invalid token' }), { status: 401 });
     }
-    clearRecord(clientIP);
+    // --- JWT 修复结束 ---
 
     const GITHUB_TOKEN = import.meta.env.GITHUB_TOKEN;
     if (!GITHUB_TOKEN) return new Response(JSON.stringify({ error: 'Token missing' }), { status: 500 });
 
     const octokit = new Octokit({ auth: GITHUB_TOKEN });
 
-    // 2. 获取目录下的所有文件
+    // 获取文件列表
     const { data } = await octokit.repos.getContent({
       owner: config.owner,
       repo: config.repo,
@@ -56,8 +53,7 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ filename: 'post-01.md' }), { status: 200 });
     }
 
-    // 3. 筛选并计算最大序号
-    // 匹配 post-数字.md 格式
+    // 计算下一个序号
     const regex = /^post-(\d+)\.md$/;
     let maxNum = 0;
 
@@ -69,15 +65,13 @@ export const POST: APIRoute = async ({ request }) => {
       }
     });
 
-    // 4. 生成下一个序号 (补零)
     const nextNum = maxNum + 1;
     const nextFilename = `post-${nextNum.toString().padStart(2, '0')}.md`;
 
     return new Response(JSON.stringify({ filename: nextFilename }), { status: 200 });
 
   } catch (error: any) {
-    console.error('Fetch files error:', error);
-    // 如果出错（比如目录不存在），默认返回 post-01
+    // 如果目录不存在或为空，返回默认值
     return new Response(JSON.stringify({ filename: 'post-01.md' }), { status: 200 });
   }
 }

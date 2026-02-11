@@ -1,3 +1,4 @@
+// src/pages/api/repo-stats.ts
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
@@ -46,6 +47,7 @@ export const GET: APIRoute = async ({ request }) => {
     });
 
   } catch (error) {
+    console.error('Repo Stats Error:', error); // 建议加上日志方便调试
     return new Response(JSON.stringify({ error: 'Server Error' }), { status: 500 });
   }
 }
