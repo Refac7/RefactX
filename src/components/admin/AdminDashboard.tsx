@@ -18,7 +18,7 @@ const DATA_FILES = [
   { name: 'photos.json', path: 'src/content/data/photos.json', label: 'PHOTOS' }
 ];
 
-// Schema 定义 (省略部分保持不变，为节省长度，直接引用你之前的内容)
+// Schema 定义
 const SCHEMAS: Record<string, { key: string; label: string; type: 'text' | 'image' | 'textarea' | 'json' }[]> = {
   'friends.json': [
     { key: 'name', label: 'Site Name', type: 'text' },
@@ -525,7 +525,7 @@ ${body}`;
                         <div key={field.key} className="space-y-2 group">
                             <label className="flex justify-between items-end text-[10px] font-mono uppercase tracking-widest text-muted-foreground/70 group-focus-within:text-primary transition-colors">
                                 <span>{field.label}</span>
-                                {field.type === 'image' && (
+                                {field.type === 'image' && WALINE_CONFIG.enableImgUpload && (
                                     <span onClick={() => triggerUpload(`json____${editingItemIndex}___${field.key}`)} className="cursor-pointer text-xs hover:text-primary hover:underline decoration-dotted transition-colors">[UPLOAD_FILE]</span>
                                 )}
                             </label>
@@ -740,7 +740,7 @@ ${body}`;
                 <div className="lg:col-span-4 flex flex-col border-t lg:border-t-0 border-border/60">
                     
                     {/* Top Info Box */}
-                    <div className="flex-1 p-6 sm:p-8 bg-muted/5 border-b border-border/60 lg:border-b border-none xl:border-dashed flex flex-col">
+                    <div className="flex-1 p-6 sm:p-8 bg-muted lg:bg-muted/5 border-b border-border/60 lg:border-b border-none xl:border-dashed flex flex-col">
                         <span className="block text-[10px] font-mono uppercase text-muted-foreground/60 tracking-wider mb-4">
                             // CURRENT_SESSION
                         </span>
