@@ -737,10 +737,10 @@ ${body}`;
                 </div>
 
                 {/* Right: Stats & Info (4 cols) */}
-                <div className="lg:col-span-4 flex flex-col border-t lg:border-t-0 border-border/60">
+                <div className="lg:col-span-4 flex flex-col border-l-2 lg:border-l-0 border-l-foreground border-t lg:border-t-0 border-border/60">
                     
                     {/* Top Info Box */}
-                    <div className="flex-1 p-6 sm:p-8 bg-muted lg:bg-muted/5 border-b border-border/60 lg:border-b border-none xl:border-dashed flex flex-col">
+                    <div className="flex-1 p-6 sm:p-8 bg-muted/5 border-b border-border/60 lg:border-b border-none xl:border-dashed flex flex-col">
                         <span className="block text-[10px] font-mono uppercase text-muted-foreground/60 tracking-wider mb-4">
                             // CURRENT_SESSION
                         </span>
