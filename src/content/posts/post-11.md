@@ -21,7 +21,7 @@ heroImageAspectRatio: '16/9'
 1. 到 https://github.com/settings/tokens 创建新的Token，根据最小权限原则，仅包含该仓库的读写权限即可。
 2. 把项目git clone 到本地，使用 `node scripts/gen-hash.js 你的明文内容`来加密你的密码
 3. 在config.ts完成基本字段配置
-4. 在vercel或其他部署平台配置GITHUB_TOKEN=你的GitHub Token；以及ADMIN_PASSWORD=加密后的密码。这些内容不会暴露到前端，仅在nodejs服务器中流转。
+4. 在vercel或其他部署平台配置GITHUB_TOKEN=你的GitHub Token；以及ADMIN_PASSWORD=加密后的密码，以及配置ADMIN_JWT_SECRET=你的JWT密码字符串。这些内容不会暴露到前端，仅在nodejs服务器中流转。
 
 > [!NOTE]
 >
@@ -54,3 +54,5 @@ heroImageAspectRatio: '16/9'
 https://www.996icu.eu.org/blog/%E4%BC%98%E5%8C%96%E4%BA%86%E7%BD%91%E7%AB%99%E7%9A%84%E4%B8%80%E4%BA%9B%E5%8A%9F%E8%83%BD
 
 2月7日 初稿
+
+2月12日 第一次修改

@@ -65,8 +65,4 @@ sudo sh -c 'echo "127.0.0.1 refact.cc" >> /etc/hosts"
 
 许可证使用原作者，会在文档首尾标明
 
-> 此 HeroImage 的原始版本来自 https://icha.win/
-
-由 Refact 二次绘制
-
 1月3日 第一次修改

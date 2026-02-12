@@ -10,7 +10,7 @@ ogImage: none
 heroImageAspectRatio: '16/9'
 ---
 
-注意：启用图床将会禁用图片优化功能。如果你强制在`./astro.config.mjs`的52行处修改为你的图床地址，那大概会被防盗练拦截，所以图片优化仅限静态资源。
+注意：启用图床将会禁用图片优化功能。如果你强制在`./astro.config.mjs`的52行处修改为你的图床地址，那大概会被防盗链功能拦截，所以图片优化仅限静态资源。
 
 首先需要的是S3对象存储，任何提供商理论上都支持，由于涉及到接口的编写，所以以CF R2和Worker举例。
 
@@ -198,7 +198,7 @@ Waline评论上传的图片默认统一保存在comment文件夹下。
 :::
 ```
 
-更多用法，请到 https://refact-x-template.vercel.app/posts/markdown-extension-syntax 学习。
+更多用法，请到 https://refact-x-template-git-galaxy-msrefs-projects.vercel.app/posts/markdown-extension-syntax 学习。
 
 ## 外部访问提示
 
@@ -209,3 +209,5 @@ Waline评论上传的图片默认统一保存在comment文件夹下。
 12月30日 初稿
 
 1月4日 第一次修改
+
+2月12日 第二次修改
