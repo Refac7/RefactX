@@ -4,7 +4,7 @@ import ThemeToggle from '~/components/theme/ThemeToggle'
 import FooterLink from '~/components/base/FooterLink.astro'
 
 const currentYear = new Date().getFullYear()
-const CONTAINER_CLASS = " mx-auto px-6 sm:px-8 border-x border-border"
+const CONTAINER_CLASS = " mx-auto px-6 sm:px-8 border-x border-border bg-blue-500/5 lg:bg-background"
 ---
 
 <footer class="relative border-t border-border bg-background z-10">
@@ -40,24 +40,24 @@ const CONTAINER_CLASS = " mx-auto px-6 sm:px-8 border-x border-border"
     </div>
 
     {/* 第二行：技术栈展示 - 像表格一样排列 */}
-    <div class="flex flex-wrap items-center gap-px bg-background border-b border-border/60 text-[10px] sm:text-xs font-mono uppercase tracking-wide text-muted-foreground">
+    <div class="flex flex-wrap items-center gap-px border-b bg-none border-border/60 text-[10px] sm:text-xs font-mono uppercase tracking-wide text-muted-foreground">
         
         {/* Tech Item */}
-        <a href="https://astro.build" target="_blank" class="flex items-center gap-2 px-4 py-3 bg-background hover:text-primary hover:bg-muted/5 transition-colors flex-grow md:flex-grow-0">
+        <a href="https://astro.build" target="_blank" class="flex items-center gap-2 px-4 py-3 hover:text-primary hover:bg-muted/5 transition-colors flex-grow md:flex-grow-0">
            <span>Engine:</span>
            <span class="font-bold text-foreground">Astro</span>
            <span class="icon-[lineicons--astro] size-3.5"></span>
         </a>
 
         {/* Tech Item */}
-        <a href="https://www.vercel.com" target="_blank" class="flex items-center gap-2 px-4 py-3 bg-background hover:text-primary hover:bg-muted/5 transition-colors flex-grow md:flex-grow-0">
+        <a href="https://www.vercel.com" target="_blank" class="flex items-center gap-2 px-4 py-3 hover:text-primary hover:bg-muted/5 transition-colors flex-grow md:flex-grow-0">
            <span>Host:</span>
            <span class="font-bold text-foreground">Vercel</span>
            <span class="icon-[simple-icons--vercel] size-3"></span>
         </a>
 
         {/* Tech Item */}
-        <a href="https://github.com/Refac7/RefactX_Template" target="_blank" class="flex items-center gap-2 px-4 py-3 bg-background hover:text-primary hover:bg-muted/5 transition-colors flex-grow md:flex-grow-0">
+        <a href="https://github.com/Refac7/RefactX_Template" target="_blank" class="flex items-center gap-2 px-4 py-3 hover:text-primary hover:bg-muted/5 transition-colors flex-grow md:flex-grow-0">
            <span>Source:</span>
            <span class="font-bold text-foreground">Github</span>
            <span class="icon-[mingcute--github-fill] size-3.5"></span>
