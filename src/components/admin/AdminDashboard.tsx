@@ -187,7 +187,7 @@ export default function AdminDashboard() {
   };
 
   const handleLogout = () => { 
-    localStorage.removeItem('admin_simple_pass'); 
+    localStorage.removeItem('admin_jwt_token');
     localStorage.removeItem('admin_queue_v1');
     setIsLoggedIn(false); 
     setPassword(''); 

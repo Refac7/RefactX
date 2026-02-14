@@ -4,15 +4,15 @@ import ThemeToggle from '~/components/theme/ThemeToggle'
 import FooterLink from '~/components/base/FooterLink.astro'
 
 const currentYear = new Date().getFullYear()
-const CONTAINER_CLASS = " mx-auto px-6 sm:px-8 border-x border-border bg-blue-500/5 lg:bg-background"
+const CONTAINER_CLASS = " mx-auto px-6 sm:px-8 border-x border-border"
 ---
 
-<footer class="relative border-t border-border bg-background z-10">
+<footer class="relative z-10">
   
   {/* 顶部装饰条：模拟撕纸或机械分割线 */}
-  <div class="absolute -top-px left-0 w-full h-px bg-border flex justify-between px-[10%]">
-      <div class="hidden lg:block w-20 h-px bg-primary"></div>
-      <div class="hidden lg:block w-20 h-px bg-primary"></div>
+  <div class="hidden lg:flex absolute -top-px left-0 w-full h-px bg-border justify-between px-[10%]">
+      <div class="w-20 h-px bg-primary"></div>
+      <div class="w-20 h-px bg-primary"></div>
   </div>
 
   <div class={CONTAINER_CLASS}>

@@ -11,7 +11,7 @@ import { CMS_CONFIG } from '~/config'
 
 <header>
   
-  <div class="mx-auto flex justify-between px-6 sm:px-8 py-6 lg:px-8 bg-blue-500/5 lg:bg-background">
+  <div class="mx-auto flex justify-between px-6 sm:px-8 py-6 lg:px-8">
     <div class="flex gap-3 sm:gap-6 items-center flex-shrink-0">
       <a href="/" class="pointer-events-auto select-none" transition:persist>
         <Image src={favicon} width={56} height={56} alt="Logo" class="w-8 h-8 border-2 border-transparent" loading="eager"/>
@@ -70,9 +70,9 @@ import { CMS_CONFIG } from '~/config'
     </div>
   </div>
   {/* 底部装饰条：模拟撕纸或机械分割线 */}
-  <div class="absolute -bottom-px left-0 w-full h-px bg-border flex justify-between px-[10%]">
-      <div class="hidden lg:block w-20 h-px bg-primary"></div>
-      <div class="hidden lg:block w-20 h-px bg-primary"></div>
+  <div class="hidden lg:flex absolute -bottom-px left-0 w-full h-px bg-border justify-between px-[10%]">
+      <div class="w-20 h-px bg-primary"></div>
+      <div class="w-20 h-px bg-primary"></div>
   </div>
 </header>
 
