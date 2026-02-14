@@ -4,66 +4,73 @@
 
 <div 
   id="system-loader" 
-  class="fixed inset-0 z-[9999] bg-background flex flex-col items-center justify-center transition-opacity duration-300 opacity-100 pointer-events-auto"
+  class="fixed inset-0 z-[9999] bg-background flex flex-col items-center transition-opacity duration-500 opacity-100 pointer-events-auto overflow-hidden cursor-wait"
   aria-hidden="false"
 >
-  
-  {/* 1. 背景网格装饰 (与Layout保持一致) */}
-  <div class="absolute inset-0 z-0 opacity-[0.03]" 
-       style="background-image: linear-gradient(currentColor 1px, transparent 1px), linear-gradient(to right, currentColor 1px, transparent 1px); background-size: 40px 40px;">
-  </div>
 
-  {/* 2. 装饰性十字准星 (四个角落) */}
-  <div class="absolute top-8 left-8 w-4 h-4 border-t border-l border-foreground/20"></div>
-  <div class="absolute top-8 right-8 w-4 h-4 border-t border-r border-foreground/20"></div>
-  <div class="absolute bottom-8 left-8 w-4 h-4 border-b border-l border-foreground/20"></div>
-  <div class="absolute bottom-8 right-8 w-4 h-4 border-b border-r border-foreground/20"></div>
-
-  <div class="relative z-10 flex flex-col items-center gap-8">
+  <div class="relative z-10 w-full h-full max-w-6xl mx-auto 2xl:ml-[15rem] border-x border-border/60 bg-background flex flex-col justify-between">
     
-    {/* 3. 核心 Logo 区域 */}
-    <div class="relative">
-        {/* 外框 */}
-        <div class="w-20 h-20 border border-border bg-muted/5 flex items-center justify-center relative overflow-hidden group">
-            
-            {/* 扫描线动画 */}
-            <div class="absolute top-0 left-0 w-full h-[2px] bg-primary/50 animate-[scan_2s_linear_infinite]"></div>
+    {/* --- 顶部区域 --- */}
+    <div class="p-6 sm:p-12 border-b border-border/60">
+        <div class="flex justify-between items-start">
+            <span class="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                // System_Boot_Sequence
+            </span>
+            <span class="font-mono text-[10px] uppercase tracking-widest text-foreground font-bold">
+                REFAC7_OS <span class="opacity-50">V.3.5</span>
+            </span>
+        </div>
+    </div>
 
-            <span class="font-mono text-3xl font-black text-foreground tracking-tighter">
-                R<span class="text-primary">X</span>
+    <div class="flex-1 flex flex-col justify-center px-6 sm:px-12">
+        
+        {/* 状态文本 */}
+        <div class="mb-4 overflow-hidden">
+            <span id="loader-text" class="block font-mono text-xs sm:text-sm font-bold uppercase tracking-[0.1em] text-muted-foreground">
+                INITIALIZING...
+            </span>
+        </div>
+
+        {/* 巨型百分比数字 (Helvetica Style) */}
+        <div class="relative border-t-4 border-foreground pt-2 pb-8 w-full max-w-4xl">
+            <span id="loader-percent" class="block text-[15vw] sm:text-[12rem] leading-[0.8] font-black tracking-tighter text-foreground tabular-nums -ml-1 sm:-ml-2">
+                000
             </span>
             
-            {/* 四角装饰 (Corner Accents) */}
-            <div class="absolute top-0 left-0 w-1.5 h-1.5 bg-primary"></div>
-            <div class="absolute top-0 right-0 w-1.5 h-1.5 border-t border-r border-foreground/30"></div>
-            <div class="absolute bottom-0 left-0 w-1.5 h-1.5 border-b border-l border-foreground/30"></div>
-            <div class="absolute bottom-0 right-0 w-1.5 h-1.5 bg-foreground/10"></div>
+            {/* 实体进度条 (Solid Bar) */}
+            <div class="absolute bottom-0 left-0 w-full h-1 bg-border/40 overflow-hidden">
+                <div id="progress-bar" class="h-full bg-foreground w-0 transition-all duration-75 ease-linear"></div>
+            </div>
         </div>
-        
-        {/* 侧边装饰数字 */}
-        <div class="absolute -right-6 top-0 text-[9px] font-mono text-muted-foreground/40 vertical-text">
-           SYS.64
+
+        {/* 辅助信息网格 */}
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-8 mt-8 max-w-2xl border-t border-border/60 pt-4 opacity-60">
+            <div>
+                <span class="block text-[9px] font-mono text-muted-foreground uppercase tracking-widest mb-1">Status</span>
+                <span class="block text-xs font-mono text-foreground">LOADING_ASSETS</span>
+            </div>
+            <div>
+                <span class="block text-[9px] font-mono text-muted-foreground uppercase tracking-widest mb-1">Memory</span>
+                <span class="block text-xs font-mono text-foreground">ALLOCATED</span>
+            </div>
+            <div class="hidden sm:block">
+                <span class="block text-[9px] font-mono text-muted-foreground uppercase tracking-widest mb-1">Network</span>
+                <span class="block text-xs font-mono text-foreground">CONNECTED</span>
+            </div>
         </div>
     </div>
 
-    {/* 4. 加载状态与进度条 */}
-    <div class="flex flex-col items-center gap-2 w-48">
-        <div class="w-full flex justify-between text-[10px] font-mono uppercase tracking-widest text-muted-foreground/60">
-            <span id="loader-text">INITIALIZING</span>
-            <span class="text-primary animate-pulse">_</span>
+    {/* --- 底部区域 --- */}
+    <div class="p-6 sm:p-12 border-t border-border/60 flex justify-between items-end">
+        <div class="flex gap-px h-3">
+            {/* 动态生成的装饰块 */}
+            <div id="decor-blocks" class="flex gap-1"></div>
         </div>
-        
-        {/* 硬朗风格进度条 */}
-        <div class="w-full h-1 bg-border/30 relative overflow-hidden">
-             <div class="absolute left-0 top-0 h-full w-1/3 bg-primary animate-[loading_1s_ease-in-out_infinite]"></div>
-        </div>
+        <span class="font-mono text-[9px] text-muted-foreground uppercase tracking-widest">
+            © {new Date().getFullYear()} / ALL SYSTEMS NORMAL
+        </span>
     </div>
-  </div>
 
-  {/* 底部版权/版本号 */}
-  <div class="absolute bottom-8 flex flex-col items-center gap-1 text-[9px] font-mono text-muted-foreground/30 uppercase tracking-[0.3em]">
-    <span>System_Kernel_V1.7.0</span>
-    <span>Memory_Check: OK</span>
   </div>
 </div>
 
@@ -72,62 +79,107 @@
     opacity: 0 !important;
     pointer-events: none !important;
   }
-
-  .vertical-text {
-    writing-mode: vertical-rl;
-    text-orientation: mixed;
-  }
-
-  @keyframes scan {
-    0% { top: 0%; opacity: 0; }
-    50% { opacity: 1; }
-    100% { top: 100%; opacity: 0; }
-  }
-
-  /* 进度条动画：左右来回移动的方块 */
-  @keyframes loading {
-    0% { left: -30%; }
-    50% { left: 100%; }
-    100% { left: 100%; }
-  }
 </style>
 
 <script>
   function setupLoader() {
     const loader = document.getElementById('system-loader');
+    const percentElement = document.getElementById('loader-percent');
+    const progressBar = document.getElementById('progress-bar');
     const textElement = document.getElementById('loader-text');
-    // 使用更具有技术感的词汇
-    const texts = ['MOUNTING...', 'SYNCING...', 'RENDER_UI'];
+    const decorContainer = document.getElementById('decor-blocks');
     
     if (!loader) return;
 
+    // 1. 初始化装饰块 (Decoration Blocks)
+    if (decorContainer && decorContainer.childElementCount === 0) {
+        for(let i=0; i<8; i++) {
+            const div = document.createElement('div');
+            div.className = 'w-1 sm:w-2 h-full bg-foreground/20';
+            decorContainer.appendChild(div);
+        }
+    }
+
+    const texts = [
+        'MOUNTING_FILE_SYSTEM...', 
+        'PARSING_DOM_TREE...', 
+        'HYDRATING_COMPONENTS...', 
+        'READY_TO_LAUNCH'
+    ];
+
+    let percent = 0;
     let step = 0;
-    // 稍微加快文字跳动速度
+
+    // 2. 文字轮播 (Text Ticker)
     const textInterval = setInterval(() => {
         if(textElement && step < texts.length) {
             textElement.innerText = texts[step];
             step++;
         }
-    }, 120);
+    }, 180);
 
+    // 3. 进度动画 (Progress Animation)
+    const percentInterval = setInterval(() => {
+        if (percentElement && progressBar) {
+            // 随机增量，模拟非线性加载
+            const increment = Math.floor(Math.random() * 5) + 2;
+            percent += increment;
+            
+            if (percent > 100) percent = 100;
+            
+            // 更新数字 (补零)
+            percentElement.innerText = percent.toString().padStart(3, '0');
+            
+            // 更新进度条宽度
+            progressBar.style.width = `${percent}%`;
+
+            // 装饰块动画
+            if (decorContainer) {
+                const blocks = decorContainer.children;
+                const activeIndex = Math.floor((percent / 100) * blocks.length);
+                if (blocks[activeIndex]) {
+                    blocks[activeIndex].classList.remove('bg-foreground/20');
+                    blocks[activeIndex].classList.add('bg-foreground'); // 变成实色
+                }
+            }
+
+            if (percent === 100) {
+                clearInterval(percentInterval);
+            }
+        }
+    }, 25);
+
+    // 4. 隐藏逻辑
     const hide = () => {
       clearInterval(textInterval);
-      loader.classList.add('loader-hidden');
+      clearInterval(percentInterval);
+      
+      if(percentElement) percentElement.innerText = '100';
+      if(progressBar) progressBar.style.width = '100%';
+      if(textElement) textElement.innerText = 'EXECUTING...';
+
+      // 延迟一点点让用户看到 100%
       setTimeout(() => {
-        loader.style.display = 'none';
-      }, 300); // 缩短隐藏时间，让体验更干脆
+          loader.classList.add('loader-hidden');
+          // 动画结束后彻底移除，释放资源
+          setTimeout(() => {
+            loader.style.display = 'none';
+          }, 500);
+      }, 200);
     };
 
     const safetyTimeout = setTimeout(() => {
         hide();
     }, 5000);
 
-    // Astro View Transitions 通常很快，500ms 足够展示动画
+    // Astro View Transitions 极快，强制展示至少 800ms 动画
     setTimeout(() => {
       clearTimeout(safetyTimeout);
       hide();
     }, 500);
   }
+
+  // --- Astro Events ---
 
   document.addEventListener('astro:page-load', () => {
     setupLoader();
@@ -135,16 +187,28 @@
 
   document.addEventListener('astro:before-preparation', () => {
     const loader = document.getElementById('system-loader');
+    const percentElement = document.getElementById('loader-percent');
+    const progressBar = document.getElementById('progress-bar');
+    const decorContainer = document.getElementById('decor-blocks');
+    
     if (loader) {
       loader.style.display = 'flex';
-      // 强制重绘，确保 transition 生效
-      loader.offsetHeight; 
+      // 强制重绘
+      loader.offsetHeight;
+      
+      // 重置状态
+      if(percentElement) percentElement.innerText = '000';
+      if(progressBar) progressBar.style.width = '0%';
+      if(decorContainer) {
+          Array.from(decorContainer.children).forEach(el => {
+              el.classList.remove('bg-foreground');
+              el.classList.add('bg-foreground/20');
+          });
+      }
+      
       requestAnimationFrame(() => {
         loader.classList.remove('loader-hidden');
       });
-      
-      const textElement = document.getElementById('loader-text');
-      if (textElement) textElement.innerText = 'LOADING...';
     }
   });
 </script>

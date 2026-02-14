@@ -1,14 +1,16 @@
 # RefactX Theme
 
-> ⚠️ IMPORTANT NOTICE
-> This project may contain security vulnerabilities. In accordance with the MIT License, the template maintainers shall not be liable for any losses incurred as a result. By using this blog template, you acknowledge and accept such risks. You **must** modify the relevant configurations in `./src/config.ts` — **do not use this theme directly in production environments**. For the complete configuration guide, refer to the articles at: <https://refact-x-template.vercel.app>.
+> [!WARNING]
+>
+> This project may contain security vulnerabilities. In accordance with the MIT License, the template maintainers shall not be liable for any losses incurred as a result. By using this blog template, you acknowledge and accept such risks. You **must** modify the relevant configurations in `./src/config.ts` — **do not use this theme directly in production environments**. For the complete configuration guide, refer to the articles at: <https://refact-x-template-git-galaxy-msrefs-projects.vercel.app/>.
 
 ![RefactX Cover](./src/assets/cover@2x.png)  
 [Chinese Version](./README.MD)
 
 A modern, elegant Astro theme designed specifically for content creators and developers.
 
-> 📝 NOTE
+> [!NOTE]
+>
 > Developers have no mandatory obligation to maintain open-source software. If you wish to implement specific features, please first attempt to resolve them independently. Pull Requests (PRs) are welcome if feasible.
 
 ## Core Features
