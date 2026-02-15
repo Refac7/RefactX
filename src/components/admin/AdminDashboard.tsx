@@ -121,20 +121,22 @@ export default function AdminDashboard() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const uploadTargetRef = useRef<string>('body');
 
+
+  // 1. 初始化：组件加载时从 localStorage 读取
   useEffect(() => {
-    const saved = localStorage.getItem('admin_queue_v1');
-    if (saved) {
-      try { 
-        const parsed = JSON.parse(saved);
-        const resetQueue = parsed.map((item: QueueItem) => ({ ...item, status: 'pending' }));
-        setQueue(resetQueue); 
-      } catch (e) { console.error(e); }
+    const savedQueue = localStorage.getItem('admin_queue_v1');
+    if (savedQueue) {
+      try {
+        setQueue(JSON.parse(savedQueue));
+      } catch (e) {
+        console.error('Failed to parse queue', e);
+      }
     }
   }, []);
 
+  // 2. 持久化：当 queue 变化时，自动存入 localStorage
   useEffect(() => {
-    if (queue.length > 0) localStorage.setItem('admin_queue_v1', JSON.stringify(queue));
-    else localStorage.removeItem('admin_queue_v1');
+    localStorage.setItem('admin_queue_v1', JSON.stringify(queue));
   }, [queue]);
 
   useEffect(() => {
@@ -147,8 +149,6 @@ export default function AdminDashboard() {
       return;
     }
 
-    const savedPass = localStorage.getItem('admin_simple_pass');
-    if (savedPass) { setPassword(savedPass); performLogin(savedPass); }
   }, []);
 
   const performLogin = async (pass: string) => {
@@ -188,10 +188,8 @@ export default function AdminDashboard() {
 
   const handleLogout = () => { 
     localStorage.removeItem('admin_jwt_token');
-    localStorage.removeItem('admin_queue_v1');
     setIsLoggedIn(false); 
     setPassword(''); 
-    setQueue([]); 
     toast.success('SIGNED_OUT');
   };
 
@@ -387,30 +385,60 @@ ${body}`;
     }
 
     setQueue(prev => {
-        const existingIndex = prev.findIndex(p => p.filename === finalFilename);
         const newItem: QueueItem = {
             id: Date.now().toString(), 
-            type: 'write', 
+            type: 'write', // 确保类型是 write
             filename: finalFilename,
             content, 
             status: 'pending', 
             isDataFile: currentMode === 'data'
         };
+
+        // 查找是否存在同名文件的旧操作
+        const existingIndex = prev.findIndex(p => p.filename === finalFilename);
+
         if (existingIndex !== -1) {
+            // 场景：之前有 "修改" 或 "删除"，现在变成了新的 "修改"
+            // 直接替换该位置的对象，保留了队列顺序，但更新了状态
             const newQueue = [...prev];
-            newQueue[existingIndex] = newItem;
+            newQueue[existingIndex] = newItem; 
             return newQueue;
         }
+
+        // 没有旧操作，直接追加
         return [...prev, newItem];
     });
     toast.success('STAGED TO BUFFER');
   };
 
-  const stageForDelete = (file: RemoteFile) => {
+const stageForDelete = (file: RemoteFile) => {
     if (!confirm(`DELETE ${file.name}?`)) return;
-    setQueue(prev => [...prev, {
-        id: Date.now().toString(), type: 'delete', filename: file.name, sha: file.sha, status: 'pending', isDataFile: false
-    }]);
+
+    // 【优化后的 setQueue 逻辑】
+    setQueue(prev => {
+        const newItem: QueueItem = {
+            id: Date.now().toString(), 
+            type: 'delete', 
+            filename: file.name, 
+            sha: file.sha, 
+            status: 'pending', 
+            isDataFile: false
+        };
+
+        // 查找是否存在同名文件的旧操作
+        const existingIndex = prev.findIndex(p => p.filename === file.name);
+
+        if (existingIndex !== -1) {
+            // 场景：之前是 "修改"，现在用户点击了 "删除"
+            // 或者是之前已经 "删除"，现在更新删除信息
+            // 逻辑：直接覆盖为 "删除" 状态
+            const newQueue = [...prev];
+            newQueue[existingIndex] = newItem;
+            return newQueue;
+        }
+
+        return [...prev, newItem];
+    });
     toast.success('MARKED FOR DELETION');
   };
 
@@ -454,10 +482,35 @@ ${body}`;
     if (!file) return;
     const toastId = toast.loading('UPLOADING...');
     try {
+        const MAX_SIZE = 1024 * 1024;
+        let fileToUpload = file;
+        if (file.size > MAX_SIZE) {
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            await new Promise((resolve) => { img.onload = resolve; });
+            
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const scale = Math.sqrt(MAX_SIZE / file.size);
+            canvas.width = img.width * scale;
+            canvas.height = img.height * scale;
+            ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+            
+            const blob = await new Promise<Blob | null>((resolve) => {
+                canvas.toBlob(resolve, 'image/jpeg', 0.8);
+            });
+            if (!blob) throw new Error('Compression failed');
+            fileToUpload = new File([blob], file.name.replace(/\.\w+$/, '.jpg'), { type: 'image/jpeg' });
+        }
         const formData = new FormData();
-        formData.append('file', file);
-        const res = await fetch(UPLOAD_CONFIG.url, { 
-          method: 'POST', body: formData, headers: { 'Authorization': `Bearer ${UPLOAD_CONFIG.token}` } 
+        formData.append('file', fileToUpload);
+        const uploadUrl = new URL(UPLOAD_CONFIG.url);
+        uploadUrl.searchParams.set('path', 'root'); // 添加 path=root 参数
+
+        const res = await fetch(uploadUrl.toString(), { 
+            method: 'POST', 
+            body: formData, 
+            headers: { 'Authorization': `Bearer ${UPLOAD_CONFIG.token}` }
         });
         if (!res.ok) throw new Error('Failed');
         const { url } = await res.json();

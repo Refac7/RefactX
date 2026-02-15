@@ -32,13 +32,13 @@
         </div>
 
         {/* 巨型百分比数字 (Helvetica Style) */}
-        <div class="relative border-t-4 border-foreground pt-2 pb-8 w-full max-w-4xl">
-            <span id="loader-percent" class="block text-[15vw] sm:text-[12rem] leading-[0.8] font-black tracking-tighter text-foreground tabular-nums -ml-1 sm:-ml-2">
+        <div class="relative border-t-1 border-foreground pt-2 pb-8 w-full max-w-4xl">
+            <span id="loader-percent" class="block text-6xl sm:text-9xl leading-[0.8] font-black tracking-tighter text-foreground tabular-nums -ml-1 sm:-ml-2">
                 000
             </span>
             
             {/* 实体进度条 (Solid Bar) */}
-            <div class="absolute bottom-0 left-0 w-full h-1 bg-border/40 overflow-hidden">
+            <div class="absolute bottom-0 left-0 w-full h-px bg-border/40 overflow-hidden">
                 <div id="progress-bar" class="h-full bg-foreground w-0 transition-all duration-75 ease-linear"></div>
             </div>
         </div>

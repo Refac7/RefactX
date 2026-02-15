@@ -234,7 +234,7 @@ export const FRIENDS_CONTACT = {
   email: 'refs@aliyun.com',
   author: 'Refac7',
   sitelink: 'https://www.refact.cc',
-  siteavatar: 'https://refact.cc/avatar.png',
+  siteavatar: 'https://img.refact.cc/base/avatar.jpg',
   description: '形体是简单而纯粹的，它不是完整的群体，每个形体都指向其复杂性，并最终被复杂性联系在一起。', 
 }
 
