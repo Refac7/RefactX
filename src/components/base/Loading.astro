@@ -172,11 +172,10 @@
         hide();
     }, 5000);
 
-    // Astro View Transitions 极快，强制展示至少 800ms 动画
     setTimeout(() => {
       clearTimeout(safetyTimeout);
       hide();
-    }, 500);
+    }, 400);
   }
 
   // --- Astro Events ---
