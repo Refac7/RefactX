@@ -183,7 +183,7 @@ export const POSTS_CONFIG: PostConfig = {
   introduce: '不定时更新维护文章，可订阅 RSS 获取最新更新状态。',
   author: 'Refact',
   homePageConfig: {
-    size: 5,
+    size: 3,
     type: 'compact'
   },
   postPageConfig: {
