@@ -9,8 +9,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "format": "prettier . --check --ignore-unknown",
-    "format:write": "prettier . --write --ignore-unknown --cache",
-    "postbuild": "pagefind --site dist"
+    "format:write": "prettier . --write --ignore-unknown --cache"
   },
   "dependencies": {
     "@astrojs/react": "4.4.2",
