@@ -186,8 +186,8 @@ const QUICK_LINKS = [
         if(uaEl) uaEl.textContent = navigator.userAgent;
         if(screenEl) screenEl.textContent = `${window.innerWidth} x ${window.innerHeight}`;
 
-        if (window.consoleInterval) clearInterval(window.consoleInterval);
-        window.consoleInterval = setInterval(updateInfo, 1000);
+        if (window['consoleInterval']) clearInterval(window['consoleInterval']);
+        window['consoleInterval'] = setInterval(updateInfo, 1000);
         updateInfo();
 
         applyLayoutState();
