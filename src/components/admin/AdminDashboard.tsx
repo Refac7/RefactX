@@ -683,7 +683,7 @@ const stageForDelete = (file: RemoteFile) => {
   // --- Render: Login ---
   if (!isLoggedIn) {
      return (
-        <div className="min-h-[80vh] flex items-center justify-center text-foreground font-mono p-4 relative">
+        <div className="min-h-[80vh] flex items-center justify-center text-foreground font-mono p-6 relative">
             <Toaster position="top-left" toastOptions={{ style: { background: '#111', color: '#fff', marginTop: '100px', marginLeft: '10px', border: '1px solid #333', fontFamily: 'monospace', fontSize: '12px', borderRadius: '0' } }} />
             
             <div className="w-full max-w-sm bg-background border border-border p-1 relative shadow-xl">

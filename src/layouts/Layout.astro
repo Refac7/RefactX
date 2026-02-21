@@ -46,18 +46,17 @@ const { title, description, image }: Props = Astro.props
         <slot />
       </main>
 
-      <div class="relative z-50 bg-background">
+      <div class="relative z-70 bg-background">
         <Footer />
       </div>
 
     </div>
 
-    {/* 这里插入 Console 组件 */}
     <ConsolePanel />
     
     
     <div
-      class="pointer-events-none fixed bottom-0 left-0 h-28 w-full z-[60] bg-background [mask-image:linear-gradient(transparent,hsl(var(--background)))]"
+      class="pointer-events-none fixed bottom-0 left-0 h-28 w-full z-50 bg-background [mask-image:linear-gradient(transparent,hsl(var(--background)))]"
     >
     </div>
   </body>

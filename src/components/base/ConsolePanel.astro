@@ -2,7 +2,6 @@
 // src/components/ConsolePanel.astro
 import ThemeToggle from '~/components/theme/ThemeToggle'
 
-// 模拟的快捷链接数据
 const QUICK_LINKS = [
   { label: 'HOME', href: '/' },
   { label: 'BLOG', href: '/posts' },
@@ -11,153 +10,96 @@ const QUICK_LINKS = [
 ]
 ---
 
-<div id="console-panel-root" class="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-[100] font-mono pointer-events-none flex flex-col items-end">
+<div id="console-panel-root" class="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-60 font-mono flex flex-col items-end pointer-events-none">
   
-  {/* ================= 面板主体 (默认隐藏) ================= */}
+  {/* ================= 面板主体 ================= */}
   <div 
     id="console-main" 
-    class="pointer-events-auto bg-background/95 backdrop-blur-md border border-border/80 w-[calc(100vw-3rem)] sm:w-[380px] shadow-2xl transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] opacity-0 translate-y-10 scale-95 origin-bottom-right invisible mb-4"
+    class="pointer-events-auto bg-background/90 backdrop-blur-xl border border-border shadow-2xl w-[calc(100vw-3rem)] sm:w-[360px] transition-all duration-300 opacity-0 translate-y-4 scale-95 origin-bottom-right invisible mb-4 overflow-hidden"
   >
-    {/* 装饰性角标 */}
-    <div class="absolute -top-px -left-px w-3 h-3 border-t border-l border-primary"></div>
-    <div class="absolute -bottom-px -right-px w-3 h-3 border-b border-r border-primary"></div>
-
-    {/* 面板头部 */}
-    <div class="flex items-center justify-between px-4 py-2 border-b border-border/60 bg-muted/20 select-none">
-      <div class="flex items-center gap-2 text-[10px] uppercase tracking-widest text-muted-foreground">
-        <span class="w-1.5 h-1.5 bg-primary animate-pulse"></span>
-        <span>SYS_CONTROL_PANEL</span>
+    {/* 头部 */}
+    <div class="flex items-center justify-between px-4 py-3 border-b border-border bg-muted/30">
+      <div class="flex items-center gap-2 text-[10px] font-bold tracking-wider text-muted-foreground">
+        <span class="w-2 h-2 bg-primary animate-pulse"></span>
+        <span>SYS_PANEL</span>
       </div>
-      <button id="close-console" class="text-muted-foreground hover:text-primary transition-colors">
-        <span class="icon-[ph--x-bold] text-lg"></span>
+      <button id="close-console" class="text-muted-foreground hover:text-primary transition-colors p-1">
+        <span class="icon-[ph--x-bold] text-base"></span>
       </button>
     </div>
 
-    {/* 面板内容网格 */}
-    <div class="p-4 grid grid-cols-2 gap-4">
+    {/* 内容区域 */}
+    <div class="p-4 grid grid-cols-2 gap-3">
       
-      {/* 1. 时间模块 */}
-      <div class="col-span-2 sm:col-span-1 p-3 border border-dashed border-border/60 bg-background/50 flex flex-col justify-between h-24">
-        <span class="text-[9px] text-muted-foreground/60 uppercase tracking-widest">Local_Time</span>
-        <div class="font-bold text-2xl text-foreground tracking-tighter" id="console-time">00:00:00</div>
-        <div class="text-[10px] text-primary" id="console-date">YYYY-MM-DD</div>
+      {/* 1. 时间显示 */}
+      <div class="col-span-2 2xl:col-span-1 p-3 bg-muted/10 border border-border/50 flex flex-col justify-center">
+        <div class="text-xl font-bold text-foreground tabular-nums tracking-tight" id="console-time">00:00:00</div>
+        <div class="text-[10px] text-muted-foreground mt-1" id="console-date">YYYY-MM-DD</div>
       </div>
 
-      {/* 2. 布局控制模块 */}
-      <div class="hidden 2xl:flex col-span-2 sm:col-span-1 p-3 border border-dashed border-border/60 bg-background/50 flex-col justify-between h-24 group hover:border-primary/30 transition-colors">
-        <span class="text-[9px] text-muted-foreground/60 uppercase tracking-widest">Layout_Mode</span>
-        <div class="flex items-center gap-2 mt-1">
-             <button id="layout-toggle-btn" class="flex-1 h-8 border border-border bg-muted/10 hover:bg-primary/10 hover:border-primary/50 text-[10px] text-muted-foreground hover:text-primary transition-all flex items-center justify-center gap-2">
-                <span id="layout-icon" class="icon-[ph--align-left-simple-bold]"></span>
-                <span id="layout-text">OFFSET</span>
-             </button>
+      {/* 2. 布局切换 */}
+      <button id="layout-toggle-btn" class="col-span-1 p-3 bg-muted/10 border border-border/50 hover:bg-primary/5 hover:border-primary/30 transition-all hidden 2xl:flex flex-col justify-center items-start group text-left">
+        <span class="text-[9px] text-muted-foreground/60 mb-1">LAYOUT</span>
+        <div class="flex items-center gap-2 text-foreground group-hover:text-primary transition-colors">
+            <span id="layout-icon" class="icon-[ph--align-left-simple-bold] text-sm"></span>
+            <span id="layout-text" class="text-xs font-bold">OFFSET</span>
         </div>
-        <div class="text-[9px] text-muted-foreground/40 text-right mt-1">
-            View config
-        </div>
-      </div>
+      </button>
 
-      {/* 3. 系统信息 (UA & Screen) */}
-      <div class="col-span-2 p-3 border border-border/60 bg-muted/5 relative overflow-hidden">
-        <span class="text-[9px] text-muted-foreground/60 uppercase tracking-widest block mb-2">System_Metrics</span>
-        
-        <div class="grid grid-cols-2 gap-2 text-[10px] font-sans text-muted-foreground">
-            <div class="flex flex-col">
-                <span class="text-muted-foreground/40 font-mono text-[9px]">SCREEN</span>
-                <span id="console-screen" class="text-foreground">Loading...</span>
-            </div>
-            <div class="flex flex-col">
-                 <span class="text-muted-foreground/40 font-mono text-[9px]">THEME</span>
-                 <div class="flex items-center gap-2 mt-0.5">
-                    {/* 复用你提供的 ThemeToggle 组件 */}
-                    <div class="scale-75 origin-left -ml-1">
-                        <ThemeToggle client:visible />
-                    </div>
-                 </div>
+      {/* 3. 系统信息 & 主题 */}
+      <div class="col-span-2 p-3 bg-muted/10 border border-border/50 flex items-center justify-between gap-4">
+        <div class="flex flex-col gap-1 min-w-0 flex-1">
+            <span class="text-[9px] text-muted-foreground/60">SYSTEM INFO</span>
+            <div class="text-[10px] text-muted-foreground truncate flex gap-2">
+                <span id="console-screen">Loading...</span>
+                <span class="opacity-30">|</span>
+                <span id="console-ua" class="truncate max-w-[120px]">UA...</span>
             </div>
         </div>
-
-        <div class="mt-3 pt-2 border-t border-dashed border-border/40">
-            <span class="text-muted-foreground/40 font-mono text-[9px] block mb-0.5">USER_AGENT</span>
-            <div class="w-full overflow-hidden text-[9px] whitespace-nowrap text-muted-foreground/70 leading-tight">
-                <div id="console-ua" class="animate-marquee inline-block">Detecting User Agent...</div>
-            </div>
+        <div class="shrink-0 scale-90">
+             <ThemeToggle client:visible />
         </div>
       </div>
 
-      {/* 4. 快速跳转 (Footer Links 风格) */}
-      <div class="col-span-2">
-         <span class="text-[9px] text-muted-foreground/60 uppercase tracking-widest block mb-2 px-1">// Quick_Navigation</span>
-         <div class="grid grid-cols-4 gap-2">
-            {QUICK_LINKS.map(link => (
-                <a href={link.href} class="group flex flex-col items-center justify-center p-2 border border-border/40 hover:border-primary/50 hover:bg-primary/5 transition-all">
-                    <span class="text-[10px] font-bold text-muted-foreground group-hover:text-primary transition-colors">{link.label}</span>
-                </a>
-            ))}
-         </div>
+      {/* 4. 快速导航 */}
+      <div class="col-span-2 grid grid-cols-4 gap-2 mt-1">
+        {QUICK_LINKS.map(link => (
+            <a href={link.href} class="flex items-center justify-center py-2 px-1 bg-muted/20 hover:bg-primary hover:text-primary-foreground text-[10px] font-bold text-muted-foreground transition-all">
+                {link.label}
+            </a>
+        ))}
       </div>
 
     </div>
     
-    {/* 底部状态条 */}
-    <div class="bg-muted/30 p-1.5 flex justify-between items-center text-[9px] uppercase tracking-widest text-muted-foreground/50 border-t border-border/60">
-        <span>Console_v2.0</span>
-        <span class="flex items-center gap-1">
-            <span class="w-1 h-1 bg-emerald-500 rounded-full"></span>
-            Online
-        </span>
+    {/* 底部状态 */}
+    <div class="px-4 py-1.5 bg-muted/50 border-t border-border flex justify-between text-[9px] text-muted-foreground/50 uppercase">
+        <span>v2.1.0</span>
+        <span>Online</span>
     </div>
   </div>
 
 
-  {/* ================= 触发按钮 (右下角) ================= */}
+  {/* ================= 触发按钮 ================= */}
   <button 
     id="console-toggle" 
-    class="pointer-events-auto group relative hidden md:flex items-center justify-center w-12 h-12 bg-red-500 border border-border/60 hover:border-primary transition-colors shadow-lg"
+    class="pointer-events-auto hidden lg:flex items-center justify-center w-10 h-10 md:w-12 md:h-12 bg-red-600 hover:bg-red-600/80 text-white shadow-lg transition-all"
     aria-label="Toggle Console"
   >
-    
-    {/* 图标 */}
-    <span class="icon-[ph--terminal-window-bold] text-xl text-white group-hover:text-primary transition-colors"></span>
-
+    <span class="icon-[ph--terminal-window-bold] text-lg md:text-xl"></span>
   </button>
 
 </div>
 
-<style>
-    /* 定义简单的跑马灯动画 */
-    @keyframes marquee {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-50%); }
-    }
-    .animate-marquee {
-        animation: marquee 15s linear infinite;
-    }
-</style>
-
-<style>
-    @keyframes marquee {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-50%); }
-    }
-    .animate-marquee {
-        animation: marquee 15s linear infinite;
-    }
-</style>
-
 <script is:inline>
-    /**
-     * 定义核心布局更新逻辑
-     * 该函数需要在页面初始化(init)和页面切换后(after-swap)立即执行
-     */
     function applyLayoutState() {
         const mode = localStorage.getItem('site_layout_mode') || 'offset';
         const mainContent = document.getElementById('main-content');
-        const postBtns = document.getElementById('backToTopDesktopGroup'); // 文章页的悬浮按钮组
+        const postBtns = document.getElementById('backToTopDesktopGroup');
         const layoutText = document.getElementById('layout-text');
         const layoutIcon = document.getElementById('layout-icon');
 
-        // 1. 处理主内容区域 (Main Content)
+        // 处理主内容
         if (mainContent) {
             if (mode === 'center') {
                 mainContent.classList.remove('2xl:ml-[15rem]');
@@ -168,91 +110,68 @@ const QUICK_LINKS = [
             }
         }
 
-        // 2. 处理文章页悬浮按钮 (仅在文章详情页存在)
+        // 处理悬浮按钮
         if (postBtns) {
             if (mode === 'center') {
-                // === 中心模式 ===
-                // 移除 Offset 模式的定位
                 postBtns.classList.remove('left-[77rem]', 'translate-x-full');
-                
-                // 应用 Center 模式定位：
-                // left-[50%] 移动到屏幕中线
-                // ml-[38rem] 向右偏移 (文章宽约72rem的一半36rem + 2rem间距)
                 postBtns.classList.add('left-[50%]', 'ml-[38rem]');
             } else {
-                // === 偏移模式 (默认) ===
                 postBtns.classList.add('left-[77rem]', 'translate-x-full');
                 postBtns.classList.remove('left-[50%]', 'ml-[38rem]');
             }
         }
 
-        // 3. 更新面板上的按钮文字与图标状态
+        // 更新 UI
         if (layoutText && layoutIcon) {
             if (mode === 'center') {
                 layoutText.textContent = "CENTER";
-                layoutIcon.className = "icon-[ph--align-center-horizontal-simple-bold]";
+                layoutIcon.className = "icon-[ph--align-center-horizontal-simple-bold] text-sm";
             } else {
                 layoutText.textContent = "OFFSET";
-                layoutIcon.className = "icon-[ph--align-left-simple-bold]";
+                layoutIcon.className = "icon-[ph--align-left-simple-bold] text-sm";
             }
         }
     }
 
-    /**
-     * 初始化控制台交互逻辑
-     * 该函数在每次页面加载/切换完成后执行 (astro:page-load)
-     */
+    // 初始化交互
     function initConsole() {
         const toggleBtn = document.getElementById('console-toggle');
         const closeBtn = document.getElementById('close-console');
         const panel = document.getElementById('console-main');
         const layoutBtn = document.getElementById('layout-toggle-btn');
-        
-        // --- A. 面板开关逻辑 ---
         let isOpen = false;
 
-        function togglePanel() {
-            isOpen = !isOpen;
-            // 使用可选链 ?. 防止元素在某些极端情况下不存在
+        function togglePanel(forceState) {
+            isOpen = forceState !== undefined ? forceState : !isOpen;
             if (isOpen) {
-                panel?.classList.remove('opacity-0', 'translate-y-10', 'scale-95', 'invisible');
+                panel?.classList.remove('opacity-0', 'translate-y-4', 'scale-95', 'invisible');
                 panel?.classList.add('opacity-100', 'translate-y-0', 'scale-100', 'visible');
             } else {
-                panel?.classList.add('opacity-0', 'translate-y-10', 'scale-95', 'invisible');
+                panel?.classList.add('opacity-0', 'translate-y-4', 'scale-95', 'invisible');
                 panel?.classList.remove('opacity-100', 'translate-y-0', 'scale-100', 'visible');
             }
         }
 
-        // 绑定点击事件 (阻止冒泡防止立即触发 document 点击关闭)
-        toggleBtn?.addEventListener('click', (e) => { 
-            e.stopPropagation(); 
-            togglePanel(); 
-        });
+        // 事件绑定
+        toggleBtn?.addEventListener('click', (e) => { e.stopPropagation(); togglePanel(); });
+        closeBtn?.addEventListener('click', (e) => { e.stopPropagation(); togglePanel(false); });
         
-        closeBtn?.addEventListener('click', (e) => { 
-            e.stopPropagation(); 
-            togglePanel(); 
-        });
-
-        // 点击外部关闭面板
         document.addEventListener('click', (e) => {
             if (isOpen && panel && !panel.contains(e.target) && !toggleBtn.contains(e.target)) {
-                togglePanel();
+                togglePanel(false);
             }
         });
 
-        // --- B. 布局切换点击事件 ---
+        // 布局切换
         layoutBtn?.addEventListener('click', () => {
             const currentMode = localStorage.getItem('site_layout_mode') || 'offset';
             const newMode = currentMode === 'offset' ? 'center' : 'offset';
-            
-            // 保存状态并立即应用
             localStorage.setItem('site_layout_mode', newMode);
             applyLayoutState();
         });
 
-        // --- C. 时间与系统信息 ---
-        function updateTime() {
+        // 定时器更新 (时间)
+        function updateInfo() {
             const now = new Date();
             const timeEl = document.getElementById('console-time');
             const dateEl = document.getElementById('console-date');
@@ -261,31 +180,19 @@ const QUICK_LINKS = [
             if(dateEl) dateEl.textContent = now.toLocaleDateString('en-CA'); 
         }
 
-        function updateSystemInfo() {
-            const uaEl = document.getElementById('console-ua');
-            const screenEl = document.getElementById('console-screen');
-            if(uaEl) uaEl.textContent = navigator.userAgent;
-            if(screenEl) screenEl.textContent = `${window.innerWidth} x ${window.innerHeight}`;
-        }
+        // 系统信息 (仅更新一次)
+        const uaEl = document.getElementById('console-ua');
+        const screenEl = document.getElementById('console-screen');
+        if(uaEl) uaEl.textContent = navigator.userAgent;
+        if(screenEl) screenEl.textContent = `${window.innerWidth} x ${window.innerHeight}`;
 
-        // 清除可能存在的旧定时器 (防止页面切换叠加多个定时器)
         if (window.consoleInterval) clearInterval(window.consoleInterval);
-        window.consoleInterval = setInterval(updateTime, 1000);
-        
-        // 立即运行一次
-        updateTime();
-        updateSystemInfo();
-        
-        // 监听窗口大小变化
-        window.removeEventListener('resize', updateSystemInfo);
-        window.addEventListener('resize', updateSystemInfo);
+        window.consoleInterval = setInterval(updateInfo, 1000);
+        updateInfo();
 
-        // --- D. 确保当前页面布局正确 ---
         applyLayoutState();
     }
 
     document.addEventListener('astro:page-load', initConsole);
-
     document.addEventListener('astro:after-swap', applyLayoutState);
-
 </script>
