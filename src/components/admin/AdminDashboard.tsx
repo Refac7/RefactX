@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { cn } from '~/lib/utils';
 import { CMS_CONFIG, WALINE_CONFIG } from '~/config';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 // --- 配置区域 ---
 const REPO_CONFIG = {
@@ -98,6 +100,10 @@ export default function AdminDashboard() {
   const [body, setBody] = useState('');
   const [meta, setMeta] = useState(DEFAULT_META);
   
+  // New State for Preview & Toolbar
+  const [showPreview, setShowPreview] = useState(false);
+  const [showToolbar, setShowToolbar] = useState(true);
+
   // JSON Data
   const [jsonContent, setJsonContent] = useState(''); 
   const [parsedJson, setParsedJson] = useState<any[]>([]); 
@@ -142,13 +148,10 @@ export default function AdminDashboard() {
   useEffect(() => {
     const token = localStorage.getItem('admin_jwt_token');
     if (token) {
-      // 移除敏感日志
-      // console.log('[AUTH] Found token on mount');
       setIsLoggedIn(true);
       fetchRemoteFiles();
       return;
     }
-
   }, []);
 
   const performLogin = async (pass: string) => {
@@ -162,8 +165,6 @@ export default function AdminDashboard() {
         body: JSON.stringify({ password: pass })
       });
       const data = await res.json();
-      // 移除敏感日志
-      // console.log('[AUTH] login response', res.status); 
       
       if (res.ok && data.token) {
         localStorage.setItem('admin_jwt_token', data.token);
@@ -223,7 +224,6 @@ export default function AdminDashboard() {
 
   const getAuthHeaders = () => {
     const token = localStorage.getItem('admin_jwt_token');
-    // 移除敏感日志
     return {
       'Content-Type': 'application/json',
       ...(token ? { Authorization: `Bearer ${token}` } : {})
@@ -253,7 +253,6 @@ export default function AdminDashboard() {
       { config: REPO_CONFIG, absolutePath: path } :
       { config: REPO_CONFIG, filename: name };
     try {
-      // 移除敏感日志
       const res = await fetch('/api/get-content', {
         method: 'POST',
         headers,
@@ -387,25 +386,21 @@ ${body}`;
     setQueue(prev => {
         const newItem: QueueItem = {
             id: Date.now().toString(), 
-            type: 'write', // 确保类型是 write
+            type: 'write', 
             filename: finalFilename,
             content, 
             status: 'pending', 
             isDataFile: currentMode === 'data'
         };
 
-        // 查找是否存在同名文件的旧操作
         const existingIndex = prev.findIndex(p => p.filename === finalFilename);
 
         if (existingIndex !== -1) {
-            // 场景：之前有 "修改" 或 "删除"，现在变成了新的 "修改"
-            // 直接替换该位置的对象，保留了队列顺序，但更新了状态
             const newQueue = [...prev];
             newQueue[existingIndex] = newItem; 
             return newQueue;
         }
 
-        // 没有旧操作，直接追加
         return [...prev, newItem];
     });
     toast.success('STAGED TO BUFFER');
@@ -414,7 +409,6 @@ ${body}`;
 const stageForDelete = (file: RemoteFile) => {
     if (!confirm(`DELETE ${file.name}?`)) return;
 
-    // 【优化后的 setQueue 逻辑】
     setQueue(prev => {
         const newItem: QueueItem = {
             id: Date.now().toString(), 
@@ -425,13 +419,9 @@ const stageForDelete = (file: RemoteFile) => {
             isDataFile: false
         };
 
-        // 查找是否存在同名文件的旧操作
         const existingIndex = prev.findIndex(p => p.filename === file.name);
 
         if (existingIndex !== -1) {
-            // 场景：之前是 "修改"，现在用户点击了 "删除"
-            // 或者是之前已经 "删除"，现在更新删除信息
-            // 逻辑：直接覆盖为 "删除" 状态
             const newQueue = [...prev];
             newQueue[existingIndex] = newItem;
             return newQueue;
@@ -456,7 +446,6 @@ const stageForDelete = (file: RemoteFile) => {
 
     try {
       const headers = getAuthHeaders();
-      // 移除敏感日志
       const res = await fetch('/api/batch-commit', {
         method: 'POST',
         headers,
@@ -505,7 +494,7 @@ const stageForDelete = (file: RemoteFile) => {
         const formData = new FormData();
         formData.append('file', fileToUpload);
         const uploadUrl = new URL(UPLOAD_CONFIG.url);
-        uploadUrl.searchParams.set('path', 'root'); // 添加 path=root 参数
+        uploadUrl.searchParams.set('path', 'root'); 
 
         const res = await fetch(uploadUrl.toString(), { 
             method: 'POST', 
@@ -523,8 +512,7 @@ const stageForDelete = (file: RemoteFile) => {
              const ta = jsonTextareaRef.current;
              if(ta) setJsonContent(ta.value.substring(0, ta.selectionStart) + url + ta.value.substring(ta.selectionEnd));
         } else if (target === 'body') {
-            const ta = textareaRef.current;
-            if(ta) setBody(ta.value.substring(0, ta.selectionStart) + `![](${url})` + ta.value.substring(ta.selectionEnd));
+            insertText(`![](${url})`, '');
         } else if (target === 'hero') setMeta(p => ({ ...p, heroImage: url, ogImage: p.ogImage ? p.ogImage : url }));
         else if (target === 'og') setMeta(p => ({ ...p, ogImage: url }));
         
@@ -541,7 +529,6 @@ const stageForDelete = (file: RemoteFile) => {
     setFilename(''); setBody(''); setMeta(DEFAULT_META);
     try {
       const headers = getAuthHeaders();
-      // 移除敏感日志
       const res = await fetch('/api/next-filename', {
         method: 'POST',
         headers,
@@ -553,6 +540,63 @@ const stageForDelete = (file: RemoteFile) => {
     setMobileView('editor');
     toast('WORKSPACE INITIALIZED', { icon: '✨' });
   };
+
+  // --- Formatting Utils ---
+  const insertText = (before: string, after: string = '') => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+    
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = textarea.value;
+    const selection = text.substring(start, end);
+    
+    // 如果没有选中文本，直接插入 before + after
+    // 如果选中了文本，包裹选中的文本
+    const newText = text.substring(0, start) + before + selection + after + text.substring(end);
+    
+    setBody(newText);
+    
+    // 需要在 React 渲染后重新设置光标，使用 setTimeout
+    setTimeout(() => {
+        if (textarea) {
+            textarea.focus();
+            const newCursorPos = start + before.length + selection.length + after.length;
+            // 如果原本没有选中，光标放在中间方便输入
+            if (start === end) {
+                textarea.setSelectionRange(start + before.length, start + before.length);
+            } else {
+                 // 如果选中了，保留选中状态（包裹后）
+                textarea.setSelectionRange(start, newCursorPos);
+            }
+        }
+    }, 0);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    // Shortcuts: Ctrl/Cmd + ...
+    if ((e.ctrlKey || e.metaKey) && !e.shiftKey) {
+        switch (e.key.toLowerCase()) {
+            case 'b': e.preventDefault(); insertText('**', '**'); break;
+            case 'i': e.preventDefault(); insertText('*', '*'); break;
+            case 'k': e.preventDefault(); insertText('[', '](url)'); break;
+            case 's': e.preventDefault(); stageForWrite(); break; // Save
+        }
+    }
+  };
+
+  const TOOLBAR_ITEMS = [
+      { icon: 'icon-[ph--text-b]', label: 'Bold', action: () => insertText('**', '**'), shortcut: '⌘B' },
+      { icon: 'icon-[ph--text-italic]', label: 'Italic', action: () => insertText('*', '*'), shortcut: '⌘I' },
+      { icon: 'icon-[ph--text-strikethrough]', label: 'Strike', action: () => insertText('~~', '~~'), shortcut: '' },
+      { icon: 'icon-[ph--code]', label: 'Code', action: () => insertText('`', '`'), shortcut: '' },
+      { icon: 'icon-[ph--link]', label: 'Link', action: () => insertText('[', '](url)'), shortcut: '⌘K' },
+      { icon: 'icon-[ph--quotes]', label: 'Quote', action: () => insertText('> ', ''), shortcut: '' },
+      { icon: 'icon-[ph--list-bullets]', label: 'List', action: () => insertText('- ', ''), shortcut: '' },
+      { icon: 'icon-[ph--text-h-one]', label: 'H1', action: () => insertText('# ', ''), shortcut: '' },
+      { icon: 'icon-[ph--text-h-two]', label: 'H2', action: () => insertText('## ', ''), shortcut: '' },
+      { icon: 'icon-[ph--image]', label: 'Img', action: () => triggerUpload('body'), shortcut: '' },
+  ];
 
   // --- Render Visual JSON Editor (Card Style) ---
   const renderVisualEditor = () => {
@@ -939,10 +983,16 @@ const stageForDelete = (file: RemoteFile) => {
                 <div className="flex items-center h-full">
                     {currentMode === 'post' ? (
                         <>
-                            {/* 未启用上传功能时隐藏 */}
-                            {WALINE_CONFIG.enableImgUpload && (
-                              <button onClick={() => triggerUpload('body')} className="h-full px-3 hover:bg-primary/10 hover:text-primary text-muted-foreground border-l border-border transition-colors"><span className="icon-[ph--image] size-4"></span></button>
-                            )}
+                            <button 
+                                onClick={() => setShowPreview(!showPreview)} 
+                                className={cn(
+                                    "h-full px-3 text-[10px] font-mono font-bold uppercase tracking-wider border-l border-border transition-colors flex items-center gap-2",
+                                    showPreview ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted/5 hover:text-primary"
+                                )}
+                            >
+                                <span className={cn("size-3.5", showPreview ? "icon-[ph--eye-slash]" : "icon-[ph--eye]")}></span>
+                                <span className="hidden sm:inline">PREVIEW</span>
+                            </button>
                             <button onClick={() => setShowMetaConfig(!showMetaConfig)} className={cn("h-full px-3 hover:bg-primary/10 hover:text-primary text-muted-foreground border-l border-border transition-colors", showMetaConfig && "text-primary bg-primary/5")}><span className="icon-[ph--sliders-horizontal] size-4"></span></button>
                         </>
                     ) : (
@@ -970,8 +1020,8 @@ const stageForDelete = (file: RemoteFile) => {
                 )}
                 {currentMode === 'post' && (
                     <>
-                        {showMetaConfig && (
-                            <div className="grid grid-cols-1 sm:grid-cols-4 gap-px bg-border border-b border-border shadow-sm">
+                        {showMetaConfig && !showPreview && (
+                            <div className="grid grid-cols-1 sm:grid-cols-4 gap-px bg-border border-b border-border shadow-sm shrink-0">
                                 <div className="sm:col-span-4 bg-background p-2">
                                   <label className="block text-[9px] font-mono text-muted-foreground/60 uppercase tracking-widest mb-1">Title</label>
                                   <input value={meta.title} onChange={e=>setMeta({...meta, title: e.target.value})} className="w-full bg-transparent text-sm font-bold focus:outline-none rounded-none placeholder:text-muted-foreground/20" placeholder="ENTER TITLE..." />
@@ -1010,7 +1060,58 @@ const stageForDelete = (file: RemoteFile) => {
                                 </div>
                             </div>
                         )}
-                        <textarea ref={textareaRef} value={body} onChange={e => setBody(e.target.value)} className="flex-1 p-8 bg-transparent text-sm font-mono leading-relaxed resize-none focus:outline-none custom-scrollbar placeholder:text-muted-foreground/10" placeholder="// START_ENTRY..." spellCheck={false}/>
+                        
+                        <div className="flex-1 relative flex flex-col min-h-0 bg-background">
+                            {showPreview ? (
+                                <div className="flex-1 p-8 bg-background text-foreground overflow-y-auto custom-scrollbar prose prose-sm max-w-none dark:prose-invert prose-pre:bg-muted/50 prose-pre:border prose-pre:border-border prose-headings:font-bold prose-headings:tracking-tight prose-p:leading-relaxed prose-a:text-primary prose-img:rounded-none">
+                                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{body}</ReactMarkdown>
+                                </div>
+                            ) : (
+                                <textarea 
+                                    ref={textareaRef} 
+                                    value={body} 
+                                    onChange={e => setBody(e.target.value)} 
+                                    onKeyDown={handleKeyDown}
+                                    className="flex-1 p-8 bg-transparent text-sm font-mono leading-relaxed resize-none focus:outline-none custom-scrollbar placeholder:text-muted-foreground/10 text-foreground" 
+                                    placeholder="// START_ENTRY..." 
+                                    spellCheck={false}
+                                />
+                            )}
+                        </div>
+
+                        {/* Formatting Toolbar (Bottom) */}
+                        {!showPreview && (
+                            <div className="border-t border-border bg-background shrink-0 transition-all duration-300">
+                                <div className="flex items-center justify-between h-9 px-2">
+                                    <button 
+                                        onClick={() => setShowToolbar(!showToolbar)} 
+                                        className="h-full px-2 text-muted-foreground hover:text-primary transition-colors flex items-center justify-center"
+                                        title="Toggle Toolbar"
+                                    >
+                                        <span className={cn("size-3.5 transition-transform icon-[ph--caret-right]", showToolbar ? "rotate-90" : "")}></span>
+                                    </button>
+
+                                    {showToolbar && (
+                                        <div className="flex-1 flex items-center gap-1 overflow-x-auto custom-scrollbar px-2">
+                                            {TOOLBAR_ITEMS.map((tool, i) => (
+                                                <button
+                                                    key={i}
+                                                    onClick={tool.action}
+                                                    className="h-7 px-2 min-w-[32px] flex items-center justify-center gap-1.5 rounded-none hover:bg-primary/10 text-muted-foreground hover:text-primary transition-colors text-xs border border-transparent hover:border-primary/20 group"
+                                                    title={tool.shortcut ? `${tool.label} (${tool.shortcut})` : tool.label}
+                                                >
+                                                    <span className={cn("size-4", tool.icon)}></span>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    )}
+                                    
+                                    <div className="text-[9px] font-mono text-muted-foreground/40 uppercase tracking-widest px-2 select-none">
+                                        MD_MODE
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </>
                 )}
                 {currentMode === 'data' && (
