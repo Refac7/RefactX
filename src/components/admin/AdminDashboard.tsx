@@ -145,11 +145,49 @@ export default function AdminDashboard() {
     localStorage.setItem('admin_queue_v1', JSON.stringify(queue));
   }, [queue]);
 
+  // --- 修复重点：检查 JWT 是否过期 ---
+  const isTokenValid = (token: string) => {
+    try {
+      // JWT 格式为 header.payload.signature
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+
+      const payload = JSON.parse(jsonPayload);
+      const currentTime = Date.now() / 1000;
+      
+      // 如果 token 中有 exp 且当前时间大于 exp，则已过期
+      if (payload.exp && payload.exp < currentTime) {
+        return false;
+      }
+      return true;
+    } catch (e) {
+      console.error('Invalid Token Format', e);
+      return false;
+    }
+  };
+
+  const handleLogout = () => { 
+    localStorage.removeItem('admin_jwt_token');
+    setIsLoggedIn(false); 
+    setPassword(''); 
+    setRemoteFiles([]); // 清除敏感数据
+    toast.success('SIGNED_OUT');
+  };
+
+  // 3. 初始化鉴权
   useEffect(() => {
     const token = localStorage.getItem('admin_jwt_token');
     if (token) {
-      setIsLoggedIn(true);
-      fetchRemoteFiles();
+      if (isTokenValid(token)) {
+        setIsLoggedIn(true);
+        fetchRemoteFiles();
+      } else {
+        toast.error('SESSION_EXPIRED');
+        handleLogout();
+      }
       return;
     }
   }, []);
@@ -185,13 +223,6 @@ export default function AdminDashboard() {
     } finally {
       setIsValidating(false);
     }
-  };
-
-  const handleLogout = () => { 
-    localStorage.removeItem('admin_jwt_token');
-    setIsLoggedIn(false); 
-    setPassword(''); 
-    toast.success('SIGNED_OUT');
   };
 
   const parseContent = (raw: string) => {
@@ -239,9 +270,22 @@ export default function AdminDashboard() {
         headers,
         body: JSON.stringify({ config: REPO_CONFIG })
       });
+
+      // --- 修复重点：拦截 401 错误 ---
+      if (res.status === 401) {
+          throw new Error('UNAUTHORIZED');
+      }
+
       const data = await res.json();
       if (data.files) setRemoteFiles(data.files);
-    } catch (e) { toast.error('SYNC FAILED'); } finally { setIsLoadingFiles(false); }
+    } catch (e: any) { 
+        if (e.message === 'UNAUTHORIZED') {
+            handleLogout();
+            toast.error('SESSION EXPIRED / RE-LOGIN REQUIRED');
+        } else {
+            toast.error('SYNC FAILED'); 
+        }
+    } finally { setIsLoadingFiles(false); }
   };
 
   const loadFile = async (name: string, isData = false, path?: string) => {
@@ -258,6 +302,12 @@ export default function AdminDashboard() {
         headers,
         body: JSON.stringify(requestBody)
       });
+      
+      // --- 修复重点：拦截 401 错误 ---
+      if (res.status === 401) {
+         throw new Error('UNAUTHORIZED');
+      }
+
       if (res.status === 404 && isData) {
         setFilename(name); setJsonContent('[]'); setParsedJson([]);
         setCurrentMode('data'); setEditorMode('visual'); setEditingItemIndex(null); setMobileView('editor');
@@ -286,8 +336,13 @@ export default function AdminDashboard() {
       }
       setMobileView('editor');
       toast.success('DATA_LOADED', { id: toastId });
-    } catch (e) {
-      toast.error('FETCH_ERROR', { id: toastId });
+    } catch (e: any) {
+        if (e.message === 'UNAUTHORIZED') {
+            handleLogout();
+            toast.error('SESSION EXPIRED');
+        } else {
+            toast.error('FETCH_ERROR', { id: toastId });
+        }
     } finally {
       setIsFetchingContent(false);
     }
@@ -456,13 +511,24 @@ const stageForDelete = (file: RemoteFile) => {
           }))
         })
       });
+
+      // --- 修复重点：拦截 401 错误 ---
+      if (res.status === 401) {
+        throw new Error('UNAUTHORIZED');
+      }
+
       if (!res.ok) throw new Error('BATCH FAILED');
       setQueue([]);
       localStorage.removeItem('admin_queue_v1');
       toast.success(`BATCH COMPLETE // ${queue.length} OPS`, { id: toastId });
       await fetchRemoteFiles();
     } catch (error: any) {
-      toast.error(`ERROR: ${error.message}`, { id: toastId });
+      if (error.message === 'UNAUTHORIZED') {
+          handleLogout();
+          toast.error('SESSION EXPIRED', { id: toastId });
+      } else {
+          toast.error(`ERROR: ${error.message}`, { id: toastId });
+      }
     } finally { setIsProcessingQueue(false); }
   };
 
@@ -534,9 +600,15 @@ const stageForDelete = (file: RemoteFile) => {
         headers,
         body: JSON.stringify({ config: REPO_CONFIG })
       });
+      if (res.status === 401) throw new Error('UNAUTHORIZED');
       const d = await res.json();
       if(d.filename) setFilename(d.filename);
-    } catch(e) {}
+    } catch(e: any) {
+        if (e.message === 'UNAUTHORIZED') {
+            handleLogout();
+            toast.error('SESSION EXPIRED');
+        }
+    }
     setMobileView('editor');
     toast('WORKSPACE INITIALIZED', { icon: '✨' });
   };
@@ -585,18 +657,24 @@ const stageForDelete = (file: RemoteFile) => {
     }
   };
 
-  const TOOLBAR_ITEMS = [
-      { icon: 'icon-[ph--text-b]', label: 'Bold', action: () => insertText('**', '**'), shortcut: '⌘B' },
-      { icon: 'icon-[ph--text-italic]', label: 'Italic', action: () => insertText('*', '*'), shortcut: '⌘I' },
-      { icon: 'icon-[ph--text-strikethrough]', label: 'Strike', action: () => insertText('~~', '~~'), shortcut: '' },
-      { icon: 'icon-[ph--code]', label: 'Code', action: () => insertText('`', '`'), shortcut: '' },
-      { icon: 'icon-[ph--link]', label: 'Link', action: () => insertText('[', '](url)'), shortcut: '⌘K' },
-      { icon: 'icon-[ph--quotes]', label: 'Quote', action: () => insertText('> ', ''), shortcut: '' },
-      { icon: 'icon-[ph--list-bullets]', label: 'List', action: () => insertText('- ', ''), shortcut: '' },
-      { icon: 'icon-[ph--text-h-one]', label: 'H1', action: () => insertText('# ', ''), shortcut: '' },
-      { icon: 'icon-[ph--text-h-two]', label: 'H2', action: () => insertText('## ', ''), shortcut: '' },
-      { icon: 'icon-[ph--image]', label: 'Img', action: () => triggerUpload('body'), shortcut: '' },
-  ];
+    const TOOLBAR_ITEMS = [
+        { icon: 'icon-[ph--text-b]', label: 'Bold', action: () => insertText('**', '**'), shortcut: '⌘B' },
+        { icon: 'icon-[ph--text-italic]', label: 'Italic', action: () => insertText('*', '*'), shortcut: '⌘I' },
+        { icon: 'icon-[ph--text-strikethrough]', label: 'Strike', action: () => insertText('~~', '~~'), shortcut: '' },
+        { icon: 'icon-[ph--code]', label: 'Code', action: () => insertText('`', '`'), shortcut: '' },
+        { icon: 'icon-[ph--link]', label: 'Link', action: () => insertText('[', '](url)'), shortcut: '⌘K' },
+        { icon: 'icon-[ph--quotes]', label: 'Quote', action: () => insertText('> ', ''), shortcut: '' },
+        { icon: 'icon-[ph--list-bullets]', label: 'List', action: () => insertText('- ', ''), shortcut: '' },
+        { icon: 'icon-[ph--text-h-one]', label: 'H1', action: () => insertText('# ', ''), shortcut: '' },
+        { icon: 'icon-[ph--text-h-two]', label: 'H2', action: () => insertText('## ', ''), shortcut: '' },
+        // 只有当开启了图片上传功能时，才显示图片上传按钮
+        ...(WALINE_CONFIG.enableImgUpload ? [{ 
+            icon: 'icon-[ph--image]', 
+            label: 'Img', 
+            action: () => triggerUpload('body'), 
+            shortcut: '' 
+        }] : []),
+    ];
 
   // --- Render Visual JSON Editor (Card Style) ---
   const renderVisualEditor = () => {
@@ -993,7 +1071,18 @@ const stageForDelete = (file: RemoteFile) => {
                                 <span className={cn("size-3.5", showPreview ? "icon-[ph--eye-slash]" : "icon-[ph--eye]")}></span>
                                 <span className="hidden sm:inline">PREVIEW</span>
                             </button>
-                            <button onClick={() => setShowMetaConfig(!showMetaConfig)} className={cn("h-full px-3 hover:bg-primary/10 hover:text-primary text-muted-foreground border-l border-border transition-colors", showMetaConfig && "text-primary bg-primary/5")}><span className="icon-[ph--sliders-horizontal] size-4"></span></button>
+                            <button 
+                                disabled={showPreview}
+                                onClick={() => setShowMetaConfig(!showMetaConfig)} 
+                                className={cn(
+                                    "h-full px-3 border-l border-border transition-colors",
+                                    showPreview 
+                                        ? "opacity-30 cursor-not-allowed text-muted-foreground" 
+                                        : cn("text-muted-foreground hover:bg-primary/10 hover:text-primary", showMetaConfig && "text-primary bg-primary/5")
+                                )}
+                            >
+                                <span className="icon-[ph--sliders-horizontal] size-3.5"></span>
+                            </button>
                         </>
                     ) : (
                         <button onClick={() => setEditorMode(editorMode === 'visual' ? 'raw' : 'visual')} className="h-full px-3 border-l border-border hover:bg-primary/10 text-[10px] font-mono font-bold text-muted-foreground hover:text-primary transition-colors uppercase tracking-wider">
@@ -1063,7 +1152,8 @@ const stageForDelete = (file: RemoteFile) => {
                         
                         <div className="flex-1 relative flex flex-col min-h-0 bg-background">
                             {showPreview ? (
-                                <div className="flex-1 p-8 bg-background text-foreground overflow-y-auto custom-scrollbar prose prose-sm max-w-none dark:prose-invert prose-pre:bg-muted/50 prose-pre:border prose-pre:border-border prose-headings:font-bold prose-headings:tracking-tight prose-p:leading-relaxed prose-a:text-primary prose-img:rounded-none">
+                                /* 使用 absolute inset-0 强制填满父容器，不撑开高度，从而触发内部滚动 */
+                                <div className="absolute inset-0 overflow-y-auto p-8 bg-background text-foreground custom-scrollbar prose prose-sm max-w-none dark:prose-invert prose-pre:bg-muted/50 prose-pre:border prose-pre:border-border prose-headings:font-bold prose-headings:tracking-tight prose-p:leading-relaxed prose-a:text-primary prose-img:rounded-none">
                                     <ReactMarkdown remarkPlugins={[remarkGfm]}>{body}</ReactMarkdown>
                                 </div>
                             ) : (
