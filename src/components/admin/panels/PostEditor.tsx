@@ -96,7 +96,7 @@ export default function PostEditor({ showPreview, showMetaConfig }: PostEditorPr
         
         <div className="flex-1 relative flex flex-col min-h-0 bg-background">
             {showPreview ? (
-                <div className="absolute inset-0 overflow-y-auto w-full p-8 bg-background text-foreground custom-scrollbar prose prose-sm max-w-none dark:prose-invert prose-pre:bg-muted/50 prose-pre:border prose-pre:border-border prose-headings:font-bold prose-headings:tracking-tight prose-p:leading-relaxed prose-a:text-primary prose-img:rounded-none">
+                <div className="absolute inset-0 overflow-y-auto w-full p-8 bg-background text-foreground custom-scrollbar prose prose-sm max-w-none dark:prose-invert prose-pre:bg-muted/50 prose-pre:border prose-pre:border-border prose-headings:font-bold prose-headings:tracking-tight prose-p:leading-relaxed prose-a:text-primary prose-img:rounded-none break-words">
                     <ReactMarkdown remarkPlugins={[remarkGfm]}>{body}</ReactMarkdown>
                 </div>
             ) : (
