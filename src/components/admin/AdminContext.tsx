@@ -161,20 +161,46 @@ const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     if (!pass) return;
     setIsValidating(true);
     setLoginError(false);
+    toast.dismiss();
+    
     try {
-      const res = await fetch('/api/auth', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: pass }) });
+      const res = await fetch('/api/auth', { 
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' }, 
+        body: JSON.stringify({ password: pass }) 
+      });
+
       const data = await res.json();
+
+      if (res.status === 429) {
+        setLoginError(true);
+        toast.error(data.error || 'RATE LIMIT EXCEEDED', { 
+            id: 'auth_ratelimit', 
+            duration: 5000,
+            icon: '🚫'
+        });
+        return;
+      }
+
       if (res.ok && data.token) {
         localStorage.setItem('admin_jwt_token', data.token);
         setIsLoggedIn(true);
-        toast.success('ACCESS GRANTED');
+        toast.dismiss(); 
+        toast.success('ACCESS GRANTED', { id: 'auth_status', duration: 2000 });
         fetchRemoteFiles();
-      } else {
+      } 
+      else {
         setLoginError(true);
         localStorage.removeItem('admin_jwt_token');
-        toast.error('ACCESS DENIED');
+        const errorMsg = data.error === 'Wrong password' ? 'INVALID PASSKEY' : 'ACCESS DENIED';
+        toast.error(errorMsg, { id: 'auth_error', duration: 2000 });
       }
-    } catch (error) { setLoginError(true); toast.error('NETWORK ERROR'); } finally { setIsValidating(false); }
+    } catch (error) { 
+        setLoginError(true); 
+        toast.error('NETWORK ERROR', { id: 'net_error' }); 
+    } finally { 
+        setIsValidating(false); 
+    }
   };
 
   const loadFile = async (name: string, isData = false, path?: string) => {
