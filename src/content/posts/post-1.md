@@ -6,7 +6,6 @@ author: 'Refact'
 tags: ['Me', '杂谈']
 recommend: true
 heroImage: none
-ogImage: none
 heroImageAspectRatio: '16/9'
 ---
 

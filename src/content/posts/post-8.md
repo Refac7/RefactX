@@ -4,7 +4,6 @@ description: '本文从多方面总结了今年的经历，大学生活，和自
 pubDate: 2025-12-28
 author: 'Refact'
 heroImage: none
-ogImage: none
 heroImageAspectRatio: '16/9'
 tags: ['年度总结','杂谈']
 ---

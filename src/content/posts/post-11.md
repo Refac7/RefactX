@@ -5,8 +5,7 @@ pubDate: 2026-02-07
 author: 'Refac7'
 tags: ['更新日志', '笔记']
 recommend: false
-heroImage: 'UpdateLog.webp'
-ogImage: 'UpdateLog.webp'
+heroImage: 'https://img.refact.cc/base/UpdateLog.webp'
 heroImageAspectRatio: '16/9'
 ---
 

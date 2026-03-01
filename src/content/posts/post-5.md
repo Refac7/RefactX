@@ -4,7 +4,6 @@ description: '本文重点指出了在部署 Waline 评论系统时可能遇到�
 pubDate: 2025-09-26
 author: 'Refact'
 heroImage: none
-ogImage: none
 heroImageAspectRatio: '16/9'
 tags: ['笔记']
 ---

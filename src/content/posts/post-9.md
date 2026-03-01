@@ -6,7 +6,6 @@ author: 'Refact'
 tags: ['笔记']
 recommend: false
 heroImage: none
-ogImage: none
 heroImageAspectRatio: '16/9'
 ---
 

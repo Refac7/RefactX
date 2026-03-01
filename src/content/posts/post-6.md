@@ -4,7 +4,6 @@ description: '本文重点指出了河南某高校在校园网连接数上卡学
 pubDate: 2025-11-28
 author: 'Refact'
 heroImage: none
-ogImage: none
 heroImageAspectRatio: '16/9'
 tags: ['笔记','网络']
 ---
