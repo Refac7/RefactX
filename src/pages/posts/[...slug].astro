@@ -2,18 +2,13 @@
 import { getCollection } from 'astro:content'
 import { postsSort } from '~/lib/utils'
 import Layout from '~/layouts/Layout.astro'
-import NoImage from '~/components/posts/layouts/NoImage.astro'
-import Horizontal from '~/components/posts/layouts/Horizontal.astro'
-import Vertical from '~/components/posts/layouts/Vertical.astro'
 import PostNavigation from '~/components/posts/base/PostNavigation.astro'
-import PostFeatures from '~/components/posts/toc/PostFeatures.astro'
 import TocMobile from '~/components/posts/toc/TocMobile.astro'
 import Jap from '~/components/posts/layouts/Jap.astro'
 import { POSTS_CONFIG } from '~/config'
 import SectionDivider from '~/components/base/SectionDivider.astro'
 import Comments from '~/components/posts/base/Comments.astro';
 
-// ... (getStaticPaths 保持不变) ...
 export async function getStaticPaths() {
   const posts = await getCollection('posts')
   const sortedPosts = postsSort(posts)
@@ -34,7 +29,6 @@ const { Content, headings, remarkPluginFrontmatter } = await post.render()
 
 const filterHeadings = headings.filter((heading) => heading.slug !== 'footnote-label')
 
-// ... (字数统计逻辑保持不变) ...
 const getWordCount = (content: string) => {
   if (!content) return 0;
   let cleanContent = content;
@@ -50,11 +44,7 @@ const getWordCount = (content: string) => {
 };
 const wordCount = getWordCount(post.body);
 
-const hasValidHeadings = filterHeadings.length > 1
 const layoutMap = {
-  'no-image': NoImage,
-  'vertical': Vertical,
-  'horizontal': Horizontal,
   'jap': Jap,
 }
 
@@ -63,16 +53,15 @@ const PostLayout = layoutMap[layoutKey]
 ---
 
 <Layout title={frontmatter.title} description={frontmatter.description || frontmatter.title} image={frontmatter.ogImage}>
-  {/* 
-    【修改点】：
-    移除了 relative 和 right-24 等偏移样式。
-    现在文章主体在所有屏幕上都是默认居中的。
-  */}
+
   <div class="flex flex-col justify-between h-fit transition-all duration-500 ease-out">
-    
-    {/* TocMobile 始终显示 */}
     <TocMobile {post} {posts} headings={filterHeadings} />
-    
+
+    <!-- Back to top button -->
+    <div class="hidden md:flex z-60 w-12 h-12 fixed left-8 bottom-8 bg-foreground hover:bg-foreground/80 text-primary-foreground items-center justify-center cursor-pointer transition-all" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+      <span class="icon-[mdi--arrow-up] size-5"></span>
+    </div>   
+
     <PostLayout 
       {frontmatter} 
       minutesRead={remarkPluginFrontmatter.minutesRead}
@@ -81,12 +70,9 @@ const PostLayout = layoutMap[layoutKey]
       <Content />
     </PostLayout>
 
-    <div class="px-6 sm:px-8 pb-6 sm:pb-8 max-w-6xl mx-auto w-full">
+    <div class="px-6 sm:px-8 pb-6 sm:pb-8 mx-auto w-full">
       {posts.length > 1 && <PostNavigation {prev} {next} />}
     </div>
-
-    {/* PostFeatures 现在只包含悬浮按钮，没有 TOC 了 */}
-    {hasValidHeadings && <PostFeatures {post} {posts} headings={filterHeadings} />}
 
     <div class="w-full">
       <SectionDivider/>

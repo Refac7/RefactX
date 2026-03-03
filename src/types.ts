@@ -48,7 +48,7 @@ export interface PostCardPageConfig {
   heroImageLayout?: HeroImageLayout
 }
 
-export type PostType = 'no-image' | 'vertical' | 'horizontal' | 'jap'
+export type PostType = 'jap'
 
 /**
  * 文章配置接口 / Post configuration interface

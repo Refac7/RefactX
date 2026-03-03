@@ -32,19 +32,10 @@ const QUICK_LINKS = [
     <div class="p-4 grid grid-cols-2 gap-3">
       
       {/* 1. 时间显示 */}
-      <div class="col-span-2 2xl:col-span-1 p-3 bg-muted/10 border border-border/50 flex flex-col justify-center">
+      <div class="col-span-2 p-3 bg-muted/10 border border-border/50 flex flex-col justify-center">
         <div class="text-xl font-bold text-foreground tabular-nums tracking-tight" id="console-time">00:00:00</div>
         <div class="text-[10px] text-muted-foreground mt-1" id="console-date">YYYY-MM-DD</div>
       </div>
-
-      {/* 2. 布局切换 */}
-      <button id="layout-toggle-btn" class="col-span-1 p-3 bg-muted/10 border border-border/50 hover:bg-primary/5 hover:border-primary/30 transition-all hidden 2xl:flex flex-col justify-center items-start group text-left">
-        <span class="text-[9px] text-muted-foreground/60 mb-1">LAYOUT</span>
-        <div class="flex items-center gap-2 text-foreground group-hover:text-primary transition-colors">
-            <span id="layout-icon" class="icon-[ph--align-left-simple-bold] text-sm"></span>
-            <span id="layout-text" class="text-xs font-bold">OFFSET</span>
-        </div>
-      </button>
 
       {/* 3. 系统信息 & 主题 */}
       <div class="col-span-2 p-3 bg-muted/10 border border-border/50 flex items-center justify-between gap-4">
@@ -83,7 +74,7 @@ const QUICK_LINKS = [
   {/* ================= 触发按钮 ================= */}
   <button 
     id="console-toggle" 
-    class="pointer-events-auto hidden lg:flex items-center justify-center w-10 h-10 md:w-12 md:h-12 bg-red-600 hover:bg-red-600/80 text-white shadow-lg transition-all"
+    class="pointer-events-auto hidden lg:flex items-center justify-center w-12 md:h-12 bg-red-600 hover:bg-red-600/80 text-white shadow-lg transition-all"
     aria-label="Toggle Console"
   >
     <span class="icon-[ph--terminal-window-bold] text-lg md:text-xl"></span>
@@ -92,53 +83,12 @@ const QUICK_LINKS = [
 </div>
 
 <script is:inline>
-    function applyLayoutState() {
-        const mode = localStorage.getItem('site_layout_mode') || 'offset';
-        const mainContent = document.getElementById('main-content');
-        const postBtns = document.getElementById('backToTopDesktopGroup');
-        const layoutText = document.getElementById('layout-text');
-        const layoutIcon = document.getElementById('layout-icon');
-
-        // 处理主内容
-        if (mainContent) {
-            if (mode === 'center') {
-                mainContent.classList.remove('2xl:ml-[15rem]');
-                mainContent.classList.add('mx-auto');
-            } else {
-                mainContent.classList.add('2xl:ml-[15rem]');
-                mainContent.classList.remove('mx-auto'); 
-            }
-        }
-
-        // 处理悬浮按钮
-        if (postBtns) {
-            if (mode === 'center') {
-                postBtns.classList.remove('left-[77rem]', 'translate-x-full');
-                postBtns.classList.add('left-[50%]', 'ml-[38rem]');
-            } else {
-                postBtns.classList.add('left-[77rem]', 'translate-x-full');
-                postBtns.classList.remove('left-[50%]', 'ml-[38rem]');
-            }
-        }
-
-        // 更新 UI
-        if (layoutText && layoutIcon) {
-            if (mode === 'center') {
-                layoutText.textContent = "CENTER";
-                layoutIcon.className = "icon-[ph--align-center-horizontal-simple-bold] text-sm";
-            } else {
-                layoutText.textContent = "OFFSET";
-                layoutIcon.className = "icon-[ph--align-left-simple-bold] text-sm";
-            }
-        }
-    }
 
     // 初始化交互
     function initConsole() {
         const toggleBtn = document.getElementById('console-toggle');
         const closeBtn = document.getElementById('close-console');
         const panel = document.getElementById('console-main');
-        const layoutBtn = document.getElementById('layout-toggle-btn');
         let isOpen = false;
 
         function togglePanel(forceState) {
@@ -162,14 +112,6 @@ const QUICK_LINKS = [
             }
         });
 
-        // 布局切换
-        layoutBtn?.addEventListener('click', () => {
-            const currentMode = localStorage.getItem('site_layout_mode') || 'offset';
-            const newMode = currentMode === 'offset' ? 'center' : 'offset';
-            localStorage.setItem('site_layout_mode', newMode);
-            applyLayoutState();
-        });
-
         // 定时器更新 (时间)
         function updateInfo() {
             const now = new Date();
@@ -189,10 +131,7 @@ const QUICK_LINKS = [
         if (window['consoleInterval']) clearInterval(window['consoleInterval']);
         window['consoleInterval'] = setInterval(updateInfo, 1000);
         updateInfo();
-
-        applyLayoutState();
     }
 
     document.addEventListener('astro:page-load', initConsole);
-    document.addEventListener('astro:after-swap', applyLayoutState);
 </script>

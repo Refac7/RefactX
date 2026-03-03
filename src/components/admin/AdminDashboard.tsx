@@ -20,7 +20,7 @@ const DashboardLayout = () => {
       
       {/* Hero Header */}
       <div className="relative z-10 border-b border-border/60 bg-background">
-          <div className="max-w-[1400px] mx-auto">
+          <div className="mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-12 p-6 sm:p-8">
                 <div className="lg:col-span-8 lg:border-r border-border/60 flex flex-col justify-between min-h-[360px]">
                      <div className="flex justify-between items-start mb-8 lg:pr-12 select-none">
@@ -75,7 +75,7 @@ const DashboardLayout = () => {
           </div>
       </div>
 
-      <div className="max-w-[1600px] mx-6 md:mx-8 flex-1 flex flex-col lg:grid lg:grid-cols-12 relative border-x border-border/60 bg-background/90">
+      <div className="mx-6 md:mx-8 flex-1 flex flex-col lg:grid lg:grid-cols-12 relative border-x border-border/60 bg-background/90">
           <div className="grid grid-cols-3 border-b border-border lg:hidden bg-background">
               {['files', 'editor', 'queue'].map(v => (
                  <button key={v} onClick={() => setMobileView(v as any)} className={cn("py-3 text-[10px] tracking-widest uppercase font-mono border-r last:border-r-0 border-border hover:bg-muted/5 focus:outline-none rounded-none", mobileView === v ? 'bg-primary/10 text-primary font-bold shadow-[inset_0_-2px_0_0_rgba(var(--primary))]' : 'text-muted-foreground')}>

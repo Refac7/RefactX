@@ -21,9 +21,6 @@
             --border: #e4e4e7;
             --primary: #000000; /* 或跟随你网站的主色 */
             --accent: #ff3b30;
-            
-            /* 网格背景颜色 */
-            --grid-color: rgba(0, 0, 0, 0.04);
           }
 
           @media (prefers-color-scheme: dark) {
@@ -35,7 +32,6 @@
               --muted-light: #27272a;
               --border: #27272a;
               --primary: #ffffff;
-              --grid-color: rgba(255, 255, 255, 0.05);
             }
           }
 
@@ -48,10 +44,6 @@
             color: var(--fg);
             line-height: 1.6;
             font-size: 16px;
-            /* 背景网格 */
-            background-image: 
-              linear-gradient(to right, var(--grid-color) 1px, transparent 1px), 
-              linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
             background-size: 40px 40px;
             min-height: 100vh;
           }
@@ -62,7 +54,6 @@
 
           /* 容器 */
           .layout {
-            max-width: 1200px;
             margin: 0 auto;
             border-left: 1px solid var(--border);
             border-right: 1px solid var(--border);
