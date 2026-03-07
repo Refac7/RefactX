@@ -21,7 +21,7 @@ const DashboardLayout = () => {
       {/* Hero Header */}
       <div className="relative z-10 border-b border-border/60 bg-background">
           <div className="mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-12 p-6 sm:p-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 p-6 lg:p-8 xl:p-12">
                 <div className="lg:col-span-8 lg:border-r border-border/60 flex flex-col justify-between min-h-[360px]">
                      <div className="flex justify-between items-start mb-8 lg:pr-12 select-none">
                         <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/60">// SYS_ADMIN // V.3.5</span>
@@ -45,7 +45,7 @@ const DashboardLayout = () => {
                      </div>
                 </div>
                 <div className="lg:col-span-4 flex flex-col border-l-2 lg:border-l-0 border-l-foreground border-t lg:border-t-0 border-border/60">
-                    <div className="flex-1 p-6 sm:p-8 bg-muted/5 border-b border-border/60 lg:border-b border-none xl:border-dashed flex flex-col">
+                    <div className="flex-1 p-6 lg:p-8 xl:p-12 bg-muted/5 border-b border-border/60 lg:border-b border-none xl:border-dashed flex flex-col">
                         <span className="block text-[10px] font-mono uppercase text-muted-foreground/60 tracking-wider mb-4">// CURRENT_SESSION</span>
                         <div className="flex-1 space-y-6">
                             <div>
@@ -75,7 +75,7 @@ const DashboardLayout = () => {
           </div>
       </div>
 
-      <div className="mx-6 md:mx-8 flex-1 flex flex-col lg:grid lg:grid-cols-12 relative border-x border-border/60 bg-background/90">
+      <div className="mx-6 lg:mx-8 xl:mx-12 flex-1 flex flex-col lg:grid lg:grid-cols-12 relative border-x border-border/60 bg-background/90">
           <div className="grid grid-cols-3 border-b border-border lg:hidden bg-background">
               {['files', 'editor', 'queue'].map(v => (
                  <button key={v} onClick={() => setMobileView(v as any)} className={cn("py-3 text-[10px] tracking-widest uppercase font-mono border-r last:border-r-0 border-border hover:bg-muted/5 focus:outline-none rounded-none", mobileView === v ? 'bg-primary/10 text-primary font-bold shadow-[inset_0_-2px_0_0_rgba(var(--primary))]' : 'text-muted-foreground')}>
