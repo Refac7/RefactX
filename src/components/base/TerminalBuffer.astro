@@ -1,0 +1,116 @@
+---
+// src/components/base/TerminalBuffer.astro
+
+interface Props {
+  layout?: 'list' | 'grid' | 'article'; // 增加了 article 模式
+  count?: number;           // 列表/网格模式下的粗略占位块数量
+  delay?: number;           // 模拟延迟的时间(毫秒)
+}
+
+const { layout = 'list', count = 4, delay = 500 } = Astro.props;
+
+// 生成一个指定长度的数组用于循环（仅 list/grid 模式使用）
+const blocks = Array.from({ length: count });
+---
+
+<div class="terminal-buffer-wrapper" data-delay={delay}>
+  
+  {/* 1. 骨架屏占位 */}
+  <div class:list={[
+    "buffer-skeleton w-full animate-pulse select-none pointer-events-none",
+    layout === 'grid' ? "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" : 
+    layout === 'article' ? "flex flex-col gap-6" : "flex flex-col gap-8"
+  ]}>
+    
+    {layout === 'article' ? (
+      <>
+        
+        {/* 头部标题区解码占位 */}
+        <div class="relative bg-muted/5 border border-border/30 h-32 w-full flex items-center justify-center mt-12">
+          <span class="font-mono text-[10px] text-muted-foreground/30 uppercase tracking-[0.3em]">
+            Decrypting_Header_Block...
+          </span>
+          <div class="absolute top-0 left-0 w-2 h-2 border-t border-l border-muted/20"></div>
+          <div class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-muted/20"></div>
+        </div>
+        
+        {/* 4个元数据方块占位 */}
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div class="bg-muted/5 border border-border/30 h-24 flex items-center justify-center">
+               <span class="font-mono text-[10px] text-muted-foreground/20">META_BLK_0{i+1}</span>
+            </div>
+          ))}
+        </div>
+        
+        {/* 超大正文内容解析占位 */}
+        <div class="relative bg-muted/5 border border-border/30 h-[50vh] w-full flex flex-col items-center justify-center gap-4">
+          <span class="icon-[ph--file-text-light] size-8 text-muted-foreground/20"></span>
+          <span class="font-mono text-[10px] text-muted-foreground/30 uppercase tracking-[0.3em]">
+            Parsing_Content_Payload...
+          </span>
+          <div class="absolute top-0 left-0 w-2 h-2 border-t border-l border-muted/20"></div>
+          <div class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-muted/20"></div>
+        </div>
+      </>
+    ) : (
+      <>
+        {blocks.map((_, i) => (
+          <div class="relative bg-muted/5 border border-border/30 h-32 w-full flex items-center justify-center">
+            <span class="font-mono text-[10px] text-muted-foreground/30 uppercase tracking-[0.3em]">
+              Allocating_Mem[0x{(i+1).toString(16).padStart(4, '0')}]
+            </span>
+            <div class="absolute top-0 left-0 w-2 h-2 border-t border-l border-muted/20"></div>
+            <div class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-muted/20"></div>
+          </div>
+        ))}
+      </>
+    )}
+  </div>
+
+  {/* 2. 真实数据容器 (初始隐藏) */}
+  <div class="buffer-content hidden opacity-0 transition-opacity duration-700 ease-out">
+    <slot />
+  </div>
+</div>
+
+<script is:inline>
+  function initTerminalBuffers() {
+    const wrappers = document.querySelectorAll('.terminal-buffer-wrapper');
+    
+    wrappers.forEach(wrapper => {
+      // 避免 Astro View Transitions 导致重复触发
+      if (wrapper.dataset.loaded === "true") return; 
+
+      const skeleton = wrapper.querySelector('.buffer-skeleton');
+      const content = wrapper.querySelector('.buffer-content');
+      const delay = parseInt(wrapper.dataset.delay || '500');
+
+      if (skeleton && content) {
+        skeleton.classList.remove('hidden');
+        content.classList.add('hidden');
+        content.classList.remove('opacity-100');
+        content.classList.add('opacity-0');
+
+        setTimeout(() => {
+          skeleton.classList.add('hidden');
+          content.classList.remove('hidden');
+          
+          // 强制浏览器重排，确保过渡动画生效
+          void content.offsetWidth; 
+          
+          content.classList.remove('opacity-0');
+          content.classList.add('opacity-100');
+          wrapper.dataset.loaded = "true"; // 标记为已加载
+        }, delay);
+      }
+    });
+  }
+
+  document.addEventListener('astro:page-load', initTerminalBuffers);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTerminalBuffers);
+  } else {
+    initTerminalBuffers();
+  }
+</script>

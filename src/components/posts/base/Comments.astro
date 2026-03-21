@@ -33,7 +33,7 @@ const { class: className } = Astro.props;
     WALINE_CONFIG.enableComment ? (
       <div id="waline-container" class="waline-lazy relative min-h-[200px]">
         <div class="waline-loading absolute inset-0 flex flex-col items-center justify-center border border-dashed border-border bg-muted/5 z-0">
-            <div class="mb-4 size-10 flex items-center justify-center border border-dashed border-border/60 rounded-none animate-[spin_3s_linear_infinite]">
+            <div class="mb-4 size-10 flex items-center justify-center border border-dashed  rounded-none animate-[spin_3s_linear_infinite]">
                 <span class="icon-[ph--spinner] size-5 text-muted-foreground"></span>
             </div>
             <div class="flex flex-col items-center gap-1">
@@ -45,7 +45,7 @@ const { class: className } = Astro.props;
       </div>
     ) : (
       <div class="border border-dashed border-border bg-muted/10 p-8 text-center">
-        <div class="mb-4 size-16 mx-auto flex items-center justify-center border border-dashed border-border/60 rounded-none">
+        <div class="mb-4 size-16 mx-auto flex items-center justify-center border border-dashed  rounded-none">
           <span class="icon-[ph--chat] size-8 text-muted-foreground"></span>
         </div>
         <div class="flex flex-col items-center gap-2">

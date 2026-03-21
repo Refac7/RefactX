@@ -1,5 +1,4 @@
 ---
-// 1. 导入类型、配置与核心组件
 import type { GetStaticPaths, Page } from 'astro'
 import type { CollectionEntry } from 'astro:content'
 import { getCollection } from 'astro:content'
@@ -8,50 +7,35 @@ import { postsSort } from '~/lib/utils'
 import Layout from '~/layouts/Layout.astro'
 import Pagination from '~/components/base/Pagination.astro'
 import List from '~/components/posts/card/List.astro'
+import TerminalBuffer from '~/components/base/TerminalBuffer.astro'
 
-// 2. 保留原动态路由&分页核心逻辑，无任何修改
 export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
   const allPosts = await getCollection('posts')
   const sortedPosts = postsSort(allPosts)
-  const uniqueTags = [...new Set(sortedPosts.flatMap((post) => post.data.tags || []))]
-
-  return uniqueTags
-    .map((tag) => {
+  const uniqueTags =[...new Set(sortedPosts.flatMap((post) => post.data.tags || []))]
+  return uniqueTags.map((tag) => {
       const tagPosts = sortedPosts.filter((post) => post.data.tags?.includes(tag))
-      return paginate(tagPosts, {
-        params: { tag },
-        props: { tag },
-        pageSize: POSTS_CONFIG.tagsPageConfig.size,
-      })
-    })
-    .flat()
+      return paginate(tagPosts, { params: { tag }, props: { tag }, pageSize: POSTS_CONFIG.tagsPageConfig.size })
+  }).flat()
 }
 
-// 3. 保留原Props类型定义
-interface Props {
-  page: Page<CollectionEntry<'posts'>>
-  tag: string
-}
-
-// 4. 解构参数与核心计算，保留原业务逻辑
+interface Props { page: Page<CollectionEntry<'posts'>>; tag: string; }
 const { page, tag } = Astro.props
 const description = `Archive filtered by tag: #${tag}`
 const progressPercent = Math.round((page.currentPage / page.lastPage) * 100)
 
-// 5. 复用模板核心样式常量，保证整站风格统一
-const SECTION_HEADER_CLASS = "flex items-end justify-between border-b border-border/60 pb-4 mb-8 select-none"
+const SECTION_HEADER_CLASS = "flex items-end justify-between border-b  pb-4 mb-8 select-none"
 const SECTION_TITLE_CLASS = "font-mono text-sm font-bold uppercase tracking-widest text-foreground/80"
 const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
 ---
 
 <Layout title={`#${tag}`} {description}>
-  <div class="relative font-sans min-h-[80vh]">
-    {/* ================= HERO SECTION 复刻模板左8右4布局，保留标签详情页核心标识/导航/统计 ================= */}
-    <div class="relative z-10 border-b border-border/60">
-      <div class="p-6 lg:p-8 xl:p-12 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-0">
-        {/* Left: Title Area 左侧8列，保留Filter Active状态、标签大标题、目录标识 */}
-        <div class="lg:col-span-8 flex flex-col justify-between min-h-[300px] lg:border-r border-border/60 lg:pr-12">
-          {/* Top Status Bar 状态条，保留原SYSTEM_QUERY，Filter Active脉冲动效贴合模板样式 */}
+  <div class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
+    <aside class="w-full lg:w-1/3 lg:sticky lg:top-0 lg:h-screen flex flex-col lg:border-r  z-20 bg-background lg:shadow-[4px_0_24px_-12px_rgba(0,0,0,0.1)] dark:shadow-none">
+      
+      <!-- MOBILE HERO -->
+      <div class="lg:hidden p-6 grid grid-cols-1 gap-12 border-b">
+        <div class="flex flex-col justify-between min-h-[300px]">
           <div class="flex flex-row justify-between items-start text-[10px] font-mono uppercase tracking-widest text-muted-foreground/60 select-none mb-8">
             <span>// SYSTEM_QUERY // FILTER_MODE</span>
             <div class="flex items-center gap-2 text-primary">
@@ -59,134 +43,102 @@ const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
               <span class="font-bold text-foreground">FILTER_ACTIVE</span>
             </div>
           </div>
-
-          {/* Main Title 大标题，贴合模板规范（uppercase、font-black、leading-[0.8]），保留#标签标识 */}
           <div>
-            <div class="flex items-center gap-3 text-muted-foreground/50 mb-4">
-              <span class="icon-[ph--folder-open-bold] text-xl"></span>
-              <span class="font-mono text-sm tracking-wider">DIRECTORY</span>
-            </div>
-            <h1 class="text-6xl sm:text-8xl font-black tracking-tighter text-foreground leading-[0.8] mb-6 -ml-1 select-none break-all">
-              <span class="text-primary/40 mr-2">#</span>{tag.toUpperCase()}<span class="text-primary">.</span>
-            </h1>
-            {/* 模板经典装饰线+过滤功能标识 */}
+            <div class="flex items-center gap-3 text-muted-foreground/50 mb-4"><span class="icon-[ph--folder-open-bold] text-xl"></span><span class="font-mono text-sm tracking-wider">DIRECTORY</span></div>
+            <h1 class="text-6xl sm:text-8xl font-black tracking-tighter text-foreground leading-[0.8] mb-6 -ml-1 select-none break-all"><span class="text-primary/40 mr-2">#</span>{tag.toUpperCase()}<span class="text-primary">.</span></h1>
             <div class="h-px w-24 bg-foreground/20 mt-8 mb-4"></div>
-            <div class="flex items-center gap-2 text-xs font-mono text-muted-foreground/60 uppercase">
-              <span class="icon-[ph--funnel-bold] size-4"></span>
-              <span>Query Results</span>
-            </div>
+            <div class="flex items-center gap-2 text-xs font-mono text-muted-foreground/60 uppercase"><span class="icon-[ph--funnel-bold] size-4"></span><span>Query Results</span></div>
           </div>
         </div>
-
-        {/* Right: Stats Grid 右侧4列，复刻模板描述框+统计格，适配路径导航/命中数/页码统计 */}
-        <div class="lg:col-span-4 flex flex-col border-l-2 lg:border-l-0 border-l-foreground h-full border-t lg:border-t-0 border-border/60 lg:pl-0">
-          {/* Description Box 描述框，替换为当前路径导航，贴合模板科技风命名 */}
-          <div class="flex-1 p-6 lg:p-8 xl:p-12 bg-muted/5 border-b border-border/60 lg:border-b xl:border-dashed">
+        <div class="flex flex-col border-l-2 border-t">
+          <div class="flex-1 p-6 bg-muted/5 border-b">
             <span class="block text-[10px] uppercase text-muted-foreground/60 font-mono tracking-wider mb-4">// CURRENT_PATH</span>
             <div class="font-mono text-sm text-muted-foreground flex items-center gap-2 flex-wrap leading-loose">
-              <a href="/" class="hover:text-primary transition-colors">root</a>
-              <span class="text-muted-foreground/30">/</span>
-              <a href="/tags" class="hover:text-primary transition-colors">tags</a>
-              <span class="text-muted-foreground/30">/</span>
-              <span class="text-foreground font-bold bg-muted px-1">{tag}</span>
+              <a href="/" class="hover:text-primary transition-colors">root</a><span class="text-muted-foreground/30">/</span><a href="/tags" class="hover:text-primary transition-colors">tags</a><span class="text-muted-foreground/30">/</span><span class="text-foreground font-bold bg-muted px-1">{tag}</span>
             </div>
-            {/* 返回索引按钮，放在描述框底部，贴合模板样式 */}
-            <a 
-              href="/tags" 
-              class="group flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors mt-6 w-fit"
-            >
-              <span class="icon-[ph--arrow-u-up-left] size-4"></span>
-              <span class="border-b border-transparent group-hover:border-primary">Return_Index</span>
-            </a>
+            <a href="/tags" class="group flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors mt-6 w-fit"><span class="icon-[ph--arrow-u-up-left] size-4"></span><span class="border-b border-transparent group-hover:border-primary">Return_Index</span></a>
           </div>
-
-          {/* Stats Grid 统计格，保留原Hits_Found/Page_View，加模板hover动效+角落小方块 */}
-          <div class="grid grid-cols-2 bg-border/60 gap-px border-t border-border/60 lg:border-t-0">
-            {/* Hits Found 命中文章总数 */}
+          <div class="grid grid-cols-2 bg-border/60 gap-px border-t">
             <div class="group relative flex flex-col items-center justify-center p-6 bg-background hover:bg-muted/10 transition-colors h-32">
-              <span class="text-3xl font-mono font-bold text-foreground tracking-tighter group-hover:text-primary transition-colors">
-                {page.total}
-              </span>
-              <span class="text-[9px] font-mono uppercase tracking-widest text-muted-foreground mt-2">
-                Hits_Found
-              </span>
-              <div class="absolute top-0 right-0 p-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                <div class="w-1.5 h-1.5 bg-primary"></div>
-              </div>
+              <span class="text-3xl font-mono font-bold text-foreground tracking-tighter group-hover:text-primary transition-colors">{page.total}</span>
+              <span class="text-[9px] font-mono uppercase tracking-widest text-muted-foreground mt-2">Hits_Found</span>
+              <div class="absolute top-0 right-0 p-1 opacity-0 group-hover:opacity-100 transition-opacity"><div class="w-1.5 h-1.5 bg-primary"></div></div>
             </div>
-            {/* Page View 当前页码/总页码 */}
             <div class="group relative flex flex-col items-center justify-center p-6 bg-background hover:bg-muted/10 transition-colors h-32">
-              <div class="flex items-baseline gap-1 text-2xl font-mono font-bold text-foreground group-hover:text-primary transition-colors">
-                <span>{page.currentPage.toString().padStart(2, '0')}</span>
-                <span class="text-xs text-muted-foreground/40 font-mono">/ {page.lastPage.toString().padStart(2, '0')}</span>
-              </div>
-              <span class="text-[9px] font-mono uppercase tracking-widest text-muted-foreground mt-2">
-                Page_View
-              </span>
-              <div class="absolute bottom-0 left-0 p-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                <div class="w-1.5 h-1.5 bg-primary"></div>
-              </div>
+              <div class="flex items-baseline gap-1 text-2xl font-mono font-bold text-foreground group-hover:text-primary transition-colors"><span>{page.currentPage.toString().padStart(2, '0')}</span><span class="text-xs text-muted-foreground/40 font-mono">/ {page.lastPage.toString().padStart(2, '0')}</span></div>
+              <span class="text-[9px] font-mono uppercase tracking-widest text-muted-foreground mt-2">Page_View</span>
+              <div class="absolute bottom-0 left-0 p-1 opacity-0 group-hover:opacity-100 transition-opacity"><div class="w-1.5 h-1.5 bg-primary"></div></div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    {/* ================= 主内容区 复刻模板板块头，保留List组件核心展示 ================= */}
-    <div class="p-6 lg:p-8 xl:p-12">
-      {/* Filtered_Results 板块，严格复用模板编号板块头 */}
-      <div class={SECTION_HEADER_CLASS}>
-        <div class="flex items-center">
-          <span class={SECTION_NUM_CLASS}>01</span>
-          <h2 class={SECTION_TITLE_CLASS}>Filtered_Results</h2>
-        </div>
-        <div class="hidden sm:block h-px flex-1 bg-border/40 ml-6 max-w-[100px]"></div>
-      </div>
-
-      {/* 文章列表核心展示，保留原List组件所有props，样式贴合模板间距 */}
-      <div class="space-y-8 min-h-[40vh] mt-8">
-        <List 
-          posts={page.data} 
-          type={POSTS_CONFIG.tagsPageConfig.type} 
-          heroImageLayout={POSTS_CONFIG.tagsPageConfig?.heroImageLayout} 
-        />
-      </div>
-
-      {/* ================= PAGINATION & FOOTER ================= */}
-      <div class="mt-20 pt-8 border-t border-dashed border-border/60">
-        
-        {/* Progress Bar (Hard Edge Style) */}
-        <div class="mb-8">
-            <div class="flex justify-between text-[10px] font-mono uppercase text-muted-foreground/50 mb-2">
-              <span>Reading_Buffer</span>
-              <span>{progressPercent}%</span>
+      <!-- PC HERO -->
+      <div class="hidden lg:flex flex-1 overflow-y-auto scrollbar-hide flex-col">
+        <div class="p-8 xl:p-12 pb-0 shrink-0">
+          <div class="flex flex-row justify-between items-start text-[10px] font-mono uppercase tracking-widest text-muted-foreground/60 select-none">
+            <span>// SYSTEM_QUERY // FILTER_MODE</span>
+            <div class="flex items-center gap-2 text-primary">
+              <span class="size-1.5 bg-primary rounded-none animate-pulse"></span>
+              <span class="font-bold text-foreground">FILTER_ACTIVE</span>
             </div>
-            <div class="w-full h-2 bg-muted/20 border border-border/40 relative overflow-hidden">
-              <div class="absolute top-0 left-0 h-full bg-primary transition-all duration-500 ease-out" style={`width: ${progressPercent}%`}>
-                  {/* 扫描线纹理 */}
-                  <div class="w-full h-full bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.2)_50%,transparent_75%,transparent_100%)] bg-[size:10px_10px]"></div>
+          </div>
+        </div>
+        <div class="flex-1 flex flex-col justify-center p-8 xl:p-12 min-h-[250px]">
+          <div class="flex items-center gap-3 text-muted-foreground/50 mb-4"><span class="icon-[ph--folder-open-bold] text-xl"></span><span class="font-mono text-sm tracking-wider">DIRECTORY</span></div>
+          <h1 class="text-7xl xl:text-8xl font-black tracking-tighter text-foreground leading-[0.8] mb-6 -ml-1 select-none break-all"><span class="text-primary/40 mr-2">#</span>{tag.toUpperCase()}<span class="text-primary">.</span></h1>
+          <div class="h-px w-24 bg-foreground/20 mt-8 mb-4"></div>
+          <div class="flex items-center gap-2 text-xs font-mono text-muted-foreground/60 uppercase"><span class="icon-[ph--funnel-bold] size-4"></span><span>Query Results</span></div>
+        </div>
+        <div class="shrink-0 p-8 xl:p-12 bg-muted/5 border-t  border-dashed">
+          <span class="block text-[10px] uppercase text-muted-foreground/60 font-mono tracking-wider mb-4">// CURRENT_PATH</span>
+          <div class="font-mono text-sm text-muted-foreground flex items-center gap-2 flex-wrap leading-loose">
+            <a href="/" class="hover:text-primary transition-colors">root</a><span class="text-muted-foreground/30">/</span><a href="/tags" class="hover:text-primary transition-colors">tags</a><span class="text-muted-foreground/30">/</span><span class="text-foreground font-bold bg-muted px-1">{tag}</span>
+          </div>
+          <a href="/tags" class="group flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors mt-6 w-fit"><span class="icon-[ph--arrow-u-up-left] size-4"></span><span class="border-b border-transparent group-hover:border-primary">Return_Index</span></a>
+        </div>
+      </div>
+      <div class="hidden lg:grid grid-cols-2 bg-border/60 gap-px border-t  shrink-0">
+        <div class="group relative flex flex-col items-center justify-center p-6 bg-background hover:bg-muted/10 transition-colors h-28 xl:h-32">
+          <span class="text-3xl font-mono font-bold text-foreground tracking-tighter group-hover:text-primary transition-colors">{page.total}</span>
+          <span class="text-[9px] font-mono uppercase tracking-widest text-muted-foreground mt-2">Hits_Found</span>
+          <div class="absolute top-0 right-0 p-1 opacity-0 group-hover:opacity-100 transition-opacity"><div class="w-1.5 h-1.5 bg-primary"></div></div>
+        </div>
+        <div class="group relative flex flex-col items-center justify-center p-6 bg-background hover:bg-muted/10 transition-colors h-28 xl:h-32">
+          <div class="flex items-baseline gap-1 text-2xl font-mono font-bold text-foreground group-hover:text-primary transition-colors"><span>{page.currentPage.toString().padStart(2, '0')}</span><span class="text-xs text-muted-foreground/40 font-mono">/ {page.lastPage.toString().padStart(2, '0')}</span></div>
+          <span class="text-[9px] font-mono uppercase tracking-widest text-muted-foreground mt-2">Page_View</span>
+          <div class="absolute bottom-0 left-0 p-1 opacity-0 group-hover:opacity-100 transition-opacity"><div class="w-1.5 h-1.5 bg-primary"></div></div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="w-full lg:w-2/3 z-10 flex flex-col">
+      <div class="p-6 lg:p-10 xl:p-16 2xl:p-20 flex-1 flex flex-col">
+        <div class={SECTION_HEADER_CLASS}>
+          <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>Filtered_Results</h2></div>
+          <div class="hidden sm:block h-px flex-1 bg-border/40 ml-6 max-w-[200px]"></div>
+        </div>
+        <TerminalBuffer layout='list' count={6} delay={500}>
+          <div class="space-y-8 min-h-[40vh] mt-8 flex-1">
+            <List posts={page.data} type={POSTS_CONFIG.tagsPageConfig.type} heroImageLayout={POSTS_CONFIG.tagsPageConfig?.heroImageLayout} />
+          </div>
+        </TerminalBuffer>
+
+        <div class="mt-20 pt-8 border-t border-dashed">
+          <div class="mb-8">
+              <div class="flex justify-between text-[10px] font-mono uppercase text-muted-foreground/50 mb-2"><span>Reading_Buffer</span><span>{progressPercent}%</span></div>
+              <div class="w-full h-2 bg-muted/20 border border-border/40 relative overflow-hidden">
+                <div class="absolute top-0 left-0 h-full bg-primary transition-all duration-500 ease-out" style={`width: ${progressPercent}%`}><div class="w-full h-full bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.2)_50%,transparent_75%,transparent_100%)] bg-[size:10px_10px]"></div></div>
               </div>
-            </div>
-        </div>
-
-        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div class="hidden md:flex flex-col gap-1">
-              <span class="text-[10px] font-mono uppercase text-muted-foreground/50 tracking-widest">Status: Ready</span>
-              <span class="text-xs font-bold text-muted-foreground font-mono">Awaiting Input...</span>
-            </div>
-
-            {/* Pagination Component Container */}
-            <div class="flex-1 w-full md:w-auto flex justify-center md:justify-end">
-              <Pagination {page} baseUrl="/posts" />
-            </div>
-        </div>
-        
-        <div class="flex justify-center mt-12">
-          <span class="font-mono text-[10px] text-muted-foreground/20 uppercase tracking-[0.5em] select-none">
-            // End of Segment //
-          </span>
+          </div>
+          <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+              <div class="hidden md:flex flex-col gap-1"><span class="text-[10px] font-mono uppercase text-muted-foreground/50 tracking-widest">Status: Ready</span><span class="text-xs font-bold text-muted-foreground font-mono">Awaiting Input...</span></div>
+              <div class="flex-1 w-full md:w-auto flex justify-center md:justify-end"><Pagination {page} baseUrl="/posts" /></div>
+          </div>
+          <div class="flex justify-center mt-12"><span class="font-mono text-[10px] text-muted-foreground/20 uppercase tracking-[0.5em] select-none">// End of Segment //</span></div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </Layout>
+<style>.scrollbar-hide::-webkit-scrollbar{display:none;}.scrollbar-hide{-ms-overflow-style:none;scrollbar-width:none;}</style>

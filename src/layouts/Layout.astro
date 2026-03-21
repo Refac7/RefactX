@@ -6,8 +6,6 @@ import { SITE } from '~/config'
 import Head from '~/components/base/Head.astro'
 import Header from './Header.astro'
 import Footer from './Footer.astro'
-import Loading from '~/components/base/Loading.astro'
-import ConsolePanel from '~/components/base/ConsolePanel.astro'
 
 type Props = {
   title: string
@@ -24,9 +22,6 @@ const { title, description, image }: Props = Astro.props
     <Head title={`${title} | ${SITE.title}`} {description} {image} />
   </head>
   <body>
-
-    <Loading />
-
     
     <div class="select-text selection:bg-foreground/20 selection:text-foreground">
       <div class="relative z-10 bg-background">
@@ -44,9 +39,6 @@ const { title, description, image }: Props = Astro.props
       </div>
 
     </div>
-
-    <ConsolePanel />
-    
     
     <div
       class="pointer-events-none fixed bottom-0 left-0 h-28 w-full z-0 bg-background [mask-image:linear-gradient(transparent,hsl(var(--background)))]"

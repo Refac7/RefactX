@@ -11,7 +11,7 @@ const { post }: Props = Astro.props
 ---
 
 
-<div class="group relative block p-6 border border-border/60 bg-background hover:border-primary/50 hover:bg-muted/5 transition-all duration-300 rounded-none overflow-hidden">
+<div class="group relative block p-6 border  bg-background hover:border-primary/50 hover:bg-muted/5 transition-all duration-300 rounded-none overflow-hidden">
   
   <div class="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary/0 group-hover:border-primary/50 transition-colors z-10"></div>
   <div class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-primary/0 group-hover:border-primary/50 transition-colors z-10"></div>
@@ -62,7 +62,7 @@ const { post }: Props = Astro.props
           />
         ))}
         {post.data.tags.length > 4 && (
-          <span class="text-xs font-mono border border-border/60 px-2 py-1 text-muted-foreground/60 bg-background self-center">
+          <span class="text-xs font-mono border  px-2 py-1 text-muted-foreground/60 bg-background self-center">
             [+{post.data.tags.length - 4}]
           </span>
         )}

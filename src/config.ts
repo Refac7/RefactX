@@ -86,7 +86,7 @@ export const SOCIAL_LINKS: SocialLink[] = [
  * get icon https://icon-sets.iconify.design/
  */
 export const SKILLSSHOWCASE_CONFIG: SkillsShowcaseConfig = {
-  SKILLS_ENABLED: false,
+  SKILLS_ENABLED: true,
   SKILLS_DATA: [
     {
       direction: 'left',
@@ -216,7 +216,7 @@ export const TAGS_CONFIG: TagsConfig = {
 
 // 项目配置
 export const PROJECTS_CONFIG: ProjectConfig = {
-  title: 'Projects',
+  title: 'Projs',
   description: '我的项目案例',
   introduce: '以下是我的项目案例展示，不定期维护项目。'
 }

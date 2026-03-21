@@ -18,7 +18,7 @@ const sideWidthClass = "md:w-[280px] lg:w-[320px]"
 ---
 
 
-<article class="group relative flex flex-col md:flex-row bg-background border border-border/60 hover:border-primary/50 transition-all duration-300 rounded-none overflow-hidden mb-6 h-full">
+<article class="group relative flex flex-col md:flex-row bg-background border  hover:border-primary/50 transition-all duration-300 rounded-none overflow-hidden mb-6 h-full">
   
   <div class="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary/0 group-hover:border-primary/50 transition-colors z-20"></div>
   <div class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-primary/0 group-hover:border-primary/50 transition-colors z-20"></div>
@@ -29,7 +29,7 @@ const sideWidthClass = "md:w-[280px] lg:w-[320px]"
       class={`
         hidden md:flex flex-col relative shrink-0 h-auto min-h-full
         ${sideWidthClass}
-        ${isReverse ? 'md:order-2 border-l border-border/60' : 'md:order-1 border-r border-border/60'}
+        ${isReverse ? 'md:order-2 border-l ' : 'md:order-1 border-r '}
       `}
     >
       <a href={`/posts/${post.slug}`} class="block w-full h-full relative overflow-hidden bg-muted group/img">
@@ -43,7 +43,7 @@ const sideWidthClass = "md:w-[280px] lg:w-[320px]"
         
         <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDUiLz4KPHBhdGggZD0iTTEgMmgydjJIMUMyeiIgZmlsbD0iIzAwMCIgZmlsbC1vcGFjaXR5PSIwLjEiLz4KPC9zdmc+')] pointer-events-none mix-blend-overlay"></div>
         
-        <div class="absolute bottom-0 left-0 bg-background/80 border-t border-r border-border/60 px-2 py-1 text-[10px] font-mono font-bold uppercase tracking-wider text-muted-foreground/70 z-10">
+        <div class="absolute bottom-0 left-0 bg-background/80 border-t border-r  px-2 py-1 text-[10px] font-mono font-bold uppercase tracking-wider text-muted-foreground/70 z-10">
           FIG.{serialNo}
         </div>
       </a>
@@ -57,14 +57,14 @@ const sideWidthClass = "md:w-[280px] lg:w-[320px]"
       class={`
         hidden md:flex shrink-0 h-auto min-h-full relative overflow-hidden flex-col justify-between p-6 select-none bg-muted/5
         ${sideWidthClass}
-        border-l border-border/60 md:order-2
+        border-l  md:order-2
         group/placeholder hover:bg-muted/10 transition-all duration-300 cursor-pointer
       `}
     >
       <div class="absolute inset-0 opacity-[0.03] bg-[repeating-linear-gradient(45deg,currentColor_0px,currentColor_1px,transparent_1px,transparent_10px)] pointer-events-none"></div>
       
       <div class="flex justify-between items-start z-10">
-         <span class="text-[9px] font-mono text-muted-foreground/60 border border-border/60 hover:border-primary/40 hover:text-primary/70 transition-colors px-2 py-1 rounded-none">
+         <span class="text-[9px] font-mono text-muted-foreground/60 border  hover:border-primary/40 hover:text-primary/70 transition-colors px-2 py-1 rounded-none">
            NO_MEDIA
          </span>
          <span class="opacity-0 -translate-x-2 group-hover/placeholder:opacity-100 group-hover/placeholder:translate-x-0 transition-all duration-300 text-primary text-xs font-bold">
@@ -96,7 +96,7 @@ const sideWidthClass = "md:w-[280px] lg:w-[320px]"
     `}
   >
     
-    <div class="flex items-center justify-between border-b border-dashed border-border/60 pb-4 mb-5">
+    <div class="flex items-center justify-between border-b border-dashed  pb-4 mb-5">
       <div class="flex items-center gap-3 text-xs font-mono text-muted-foreground/60 uppercase tracking-tight flex-wrap">
         <time class="flex items-center gap-1.5">
           {formatDate(post.data.pubDate)}
