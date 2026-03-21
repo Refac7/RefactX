@@ -7,7 +7,6 @@ import GithubContributions from '~/components/base/GithubContributions.tsx'
 import List from '~/components/posts/card/List.astro'
 import SkillsShowcase from '~/components/base/SkillsShowcase.astro'
 import Snowfall from '~/components/base/Snowfall.astro'
-import TerminalBuffer from '~/components/base/TerminalBuffer.astro'
 
 const { ENABLED, GITHUB_USERNAME, TOOLTIP_ENABLED } = GITHUB_CONFIG
 const { size, type, heroImageLayout } = POSTS_CONFIG.homePageConfig
@@ -34,55 +33,14 @@ const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
 
   <div class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
     
-    <aside class="w-full lg:w-1/3 lg:sticky lg:top-0 lg:h-screen flex flex-col z-20 bg-background lg:shadow-[4px_0_40px_-16px_rgba(0,0,0,0.03)] dark:shadow-none">
+    <aside class="w-full lg:w-1/3 lg:sticky lg:top-0 lg:h-screen flex flex-col z-20 bg-background lg:shadow-[4px_0_40px_-16px_rgba(0,0,0,0.03)] dark:shadow-none border-b border-border/60 lg:border-none">
       
-      <div class="lg:hidden p-6 grid grid-cols-1 gap-12 border-b border-border/60">
-        <div class="flex flex-col justify-between min-h-[400px]">
-          <div class="flex flex-row justify-between items-start text-[10px] font-mono uppercase tracking-widest text-muted-foreground/60 select-none mb-12">
-            <span>// REF_CORE_V1.7</span>
-            <div class="flex items-center gap-6">
-                <button class="snow-toggle-btn group flex items-center gap-2 hover:text-foreground transition-colors cursor-pointer focus:outline-none">
-                    <div class="w-2 h-2 border border-current group-hover:bg-primary transition-colors"></div>
-                    <span>FX: <span class="snow-status-text">ON</span></span>
-                </button>
-                <div class="flex items-center gap-2 text-primary">
-                    <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full bg-emerald-500 opacity-75"></span><span class="relative inline-flex h-2 w-2 bg-emerald-600"></span></span>
-                    <span>SYS: ONLINE</span>
-                </div>
-            </div>
-          </div>
-          <div>
-            <h1 class="text-7xl sm:text-9xl font-black tracking-tighter text-foreground leading-[0.8] mb-6 -ml-1 select-none">
-                REFAC<span class="text-transparent bg-clip-text bg-gradient-to-br from-primary to-foreground/50">7</span><span class="text-primary">.</span>
-            </h1>
-            <p class="text-xl sm:text-2xl text-muted-foreground font-light max-w-2xl leading-relaxed">
-                Architect of the <span class="text-foreground font-medium">Digital Void</span>.<br/>Trying to find order in the chaos of code.
-            </p>
-          </div>
-        </div>
-        <div class="flex flex-col border-l-2 border-foreground">
-           <div class="flex-1 p-6 bg-muted/5 border-b border-border/60">
-              <span class="block text-[10px] uppercase text-muted-foreground/60 font-mono tracking-wider mb-4">// BIO_SUMMARY</span>
-              <p class="text-sm text-muted-foreground leading-loose font-mono">你好，我是 Refac7。一名时空修剪者。<br/>此站点是我的数字世界，用于存档技术日志、交换信号与部署模块。<br/><br/><span class="text-primary">> Protocol initialized...</span></p>
-           </div>
-           <div class="grid grid-cols-2 bg-border/60 gap-px border-t border-border/60">
-              {SOCIAL_LINKS.map((item) => (
-                <a href={item.url} target="_blank" class="group relative flex flex-col items-center justify-center p-6 bg-background hover:bg-muted/10 transition-colors h-32">
-                    <span class={`${item.icon} size-6 text-foreground/70 group-hover:text-primary transition-colors mb-3`}></span>
-                    <span class="text-[10px] font-mono uppercase tracking-widest text-muted-foreground group-hover:text-foreground">{item.name || 'LINK'}</span>
-                    <div class="absolute top-0 right-0 p-1 opacity-0 group-hover:opacity-100 transition-opacity"><div class="w-1.5 h-1.5 bg-primary"></div></div>
-                </a>
-              ))}
-           </div>
-        </div>
-      </div>
-
-      <div class="hidden lg:flex flex-1 overflow-y-auto scrollbar-hide flex-col">
-        <div class="p-8 xl:p-12 pb-0 shrink-0">
+      <div class="flex flex-1 lg:overflow-y-auto scrollbar-hide flex-col">
+        <div class="p-6 lg:p-8 xl:p-12 pb-0 shrink-0">
           <div class="flex flex-row justify-between items-start text-[10px] font-mono uppercase tracking-widest text-muted-foreground/60 select-none">
             <span>// REF_CORE_V1.7</span>
             <div class="flex items-center gap-6">
-                <button class="snow-toggle-btn group flex items-center gap-2 hover:text-foreground transition-colors cursor-pointer focus:outline-none">
+                <button class="snow-toggle-btn group hidden sm:flex items-center gap-2 hover:text-foreground transition-colors cursor-pointer focus:outline-none">
                     <div class="w-2 h-2 border border-current group-hover:bg-primary transition-colors"></div>
                     <span>FX: <span class="snow-status-text">ON</span></span>
                 </button>
@@ -93,35 +51,36 @@ const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
             </div>
           </div>
         </div>
-        <div class="flex-1 flex flex-col justify-center p-8 xl:p-12 min-h-[300px]">
+        
+        <div class="flex-1 flex flex-col justify-end lg:justify-center p-6 lg:p-8 xl:p-12 min-h-[350px] lg:min-h-[300px]">
           <div class="flex flex-col gap-6">
             <div class="flex items-center gap-3 text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest select-none"><span class="h-px w-4 bg-primary/50"></span><span>Root_Terminal</span></div>
-            <h1 class="text-7xl xl:text-8xl font-black tracking-tighter leading-[0.85] text-foreground -ml-1 select-none">
-                REFAC<span class="text-transparent bg-clip-text bg-gradient-to-br from-primary to-primary/50">7</span><span class="text-primary">.</span><br>
-                <span class="font-bold">SYSTEM</span>
+            <h1 class="text-7xl lg:text-8xl font-black tracking-tighter leading-[0.85] text-foreground -ml-1 select-none">
+                REFAC<span class="text-transparent bg-clip-text bg-gradient-to-br from-primary to-primary/50">7</span><span class="text-primary">.</span><br class="hidden lg:block">
+                <span class="font-bold hidden lg:inline-block">SYSTEM</span>
             </h1>
           </div>
         </div>
         
-        <div class="shrink-0 p-8 xl:p-12 relative overflow-hidden group">
-            <div class="absolute right-6 -top-4 text-[8rem] font-black font-mono text-muted-foreground/[0.02] select-none pointer-events-none group-hover:text-primary/[0.03] transition-colors">00</div>
+        <div class="shrink-0 p-6 lg:p-8 xl:p-12 relative overflow-hidden group bg-muted/5 lg:bg-transparent border-t border-border/60 lg:border-none">
+            <div class="absolute right-6 -top-4 text-[8rem] font-black font-mono text-muted-foreground/[0.02] select-none pointer-events-none group-hover:text-primary/[0.03] transition-colors hidden sm:block">00</div>
             <div class="relative z-10">
-                <div class="flex items-center justify-between mb-6 select-none"><span class="text-[10px] uppercase text-muted-foreground/50 font-mono tracking-[0.2em]">// SYS_PROFILE</span><span class="icon-[ph--identification-card-bold] size-4 text-primary/40"></span></div>
+                <div class="flex items-center justify-between mb-4 lg:mb-6 select-none"><span class="text-[10px] uppercase text-muted-foreground/50 font-mono tracking-[0.2em]">// SYS_PROFILE</span><span class="icon-[ph--identification-card-bold] size-4 text-primary/40"></span></div>
                 <div class="space-y-4 font-sans text-sm text-muted-foreground font-light leading-loose">
                     <p>你好，我是 <span class="text-foreground font-medium">Refac7</span>。一名时空修剪者。</p>
                     <p>此站点是我的数字世界，用于<span class="text-foreground border-b border-primary/30 pb-0.5">存档技术日志</span>、<span class="text-foreground border-b border-primary/30 pb-0.5">交换信号</span>与部署模块。</p>
                 </div>
-                <div class="mt-8 pt-4 border-t border-dashed border-border/20 flex items-center justify-between text-[10px] font-mono select-none">
+                <div class="mt-6 lg:mt-8 pt-4 border-t border-dashed border-border/20 flex items-center justify-between text-[10px] font-mono select-none">
                      <div class="flex items-center gap-2 text-primary"><span class="animate-pulse">_</span><span class="uppercase tracking-widest">Awaiting input</span></div>
-                     <span class="text-muted-foreground/30 uppercase tracking-widest">LOC: Localhost</span>
+                     <span class="text-muted-foreground/30 uppercase tracking-widest hidden sm:block">LOC: Localhost</span>
                 </div>
             </div>
         </div>
       </div>
       
-      <div class="hidden lg:grid grid-cols-2 shrink-0 select-none">
+      <div class="grid grid-cols-2 bg-border/40 gap-px border-t border-border/40 shrink-0 select-none">
         {SOCIAL_LINKS.map((item) => (
-          <a href={item.url} target="_blank" class="group relative flex flex-col items-center justify-center p-6 bg-transparent hover:bg-muted/5 transition-colors h-24 xl:h-28">
+          <a href={item.url} target="_blank" class="group relative flex flex-col items-center justify-center p-6 bg-background hover:bg-muted/5 transition-colors h-32 lg:h-28">
               <span class={`${item.icon} size-5 xl:size-6 text-foreground/50 group-hover:text-primary transition-colors mb-2`}></span>
               <span class="text-[10px] font-mono uppercase tracking-widest text-muted-foreground group-hover:text-foreground transition-colors">{item.name || 'LINK'}</span>
               <div class="absolute top-0 right-0 p-1.5 opacity-0 group-hover:opacity-100 transition-opacity"><div class="w-1 h-1 bg-primary"></div></div>
@@ -157,7 +116,6 @@ const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
               </div>
           </div>
 
-
           <div class="mb-8">
               <div class={SECTION_HEADER_CLASS}>
                 <div class="flex items-center"><span class={SECTION_NUM_CLASS}>04</span><h2 class={SECTION_TITLE_CLASS}>Transmissions</h2></div>
@@ -189,7 +147,7 @@ const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
                 <div class="flex items-center"><span class={SECTION_NUM_CLASS}>03</span><h2 class={SECTION_TITLE_CLASS}>Arsenal Matrix</h2></div>
                 <div class="hidden sm:block h-px flex-1 bg-gradient-to-r from-border/40 to-transparent ml-6 max-w-[200px]"></div>
               </div>
-              <div class="[&_.skill-card]:rounded-none [&_.skill-card]:border-transparent [&_.skill-card]:bg-muted/5 [&_.skill-card]:shadow-none hover:[&_.skill-card]:bg-muted/10">
+              <div class="[&_.skill-card]:rounded-none [&_.skill-card]:border-transparent [&_.skill-card]:bg-muted/5[&_.skill-card]:shadow-none hover:[&_.skill-card]:bg-muted/10">
                   <SkillsShowcase skillsData={SKILLS_DATA} />
               </div>
             </div>

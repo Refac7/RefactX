@@ -37,8 +37,8 @@ const getWordCount = (content: string) => {
   cleanContent = cleanContent.replace(/\[([^\]]*)\]\([^)]*\)/g, '$1');
   cleanContent = cleanContent.replace(/!\[.*?\]\(.*?\)/g, '');
   cleanContent = cleanContent.replace(/[*#>`~\-\[\]]/g, '');
-  const cn = (cleanContent.match(/[\u4e00-\u9fa5]/g) || []).length;
-  const en = (cleanContent.replace(/[\u4e00-\u9fa5]/g, ' ').match(/[a-zA-Z0-9_\-]+/g) || []).length;
+  const cn = (cleanContent.match(/[\u4e00-\u9fa5]/g) ||[]).length;
+  const en = (cleanContent.replace(/[\u4e00-\u9fa5]/g, ' ').match(/[a-zA-Z0-9_\-]+/g) ||[]).length;
   return cn + en;
 };
 const wordCount = getWordCount(post.body);
@@ -56,7 +56,6 @@ const PostLayout = layoutMap[layoutKey]
   <div class="flex flex-col justify-between h-fit transition-all duration-500 ease-out">
     <TocMobile {post} {posts} headings={filterHeadings} />
 
-    <!-- Back to top button -->
     <div class="hidden md:flex z-60 w-12 h-12 fixed left-8 bottom-8 bg-foreground hover:bg-foreground/80 text-primary-foreground items-center justify-center cursor-pointer transition-all" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
       <span class="icon-[mdi--arrow-up] size-5"></span>
     </div>   
