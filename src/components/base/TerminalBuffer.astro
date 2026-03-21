@@ -2,115 +2,157 @@
 // src/components/base/TerminalBuffer.astro
 
 interface Props {
-  layout?: 'list' | 'grid' | 'article'; // 增加了 article 模式
-  count?: number;           // 列表/网格模式下的粗略占位块数量
-  delay?: number;           // 模拟延迟的时间(毫秒)
+  layout?: 'list' | 'grid' | 'article' | 'project' | 'photo' | 'home';
+  count?: number;
+  delay?: number;
 }
 
 const { layout = 'list', count = 4, delay = 500 } = Astro.props;
-
-// 生成一个指定长度的数组用于循环（仅 list/grid 模式使用）
 const blocks = Array.from({ length: count });
 ---
 
 <div class="terminal-buffer-wrapper" data-delay={delay}>
   
-  {/* 1. 骨架屏占位 */}
+  {/* 骨架屏占位 */}
   <div class:list={[
     "buffer-skeleton w-full animate-pulse select-none pointer-events-none",
     layout === 'grid' ? "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" : 
-    layout === 'article' ? "flex flex-col gap-6" : "flex flex-col gap-8"
+    (layout === 'article' || layout === 'home' || layout === 'photo') ? "flex flex-col gap-8" : 
+    "flex flex-col gap-6"
   ]}>
     
-    {layout === 'article' ? (
+    {/* 1. Article 布局 (文章详情) */}
+    {layout === 'article' && (
       <>
-        
-        {/* 头部标题区解码占位 */}
         <div class="relative bg-muted/5 border border-border/30 h-32 w-full flex items-center justify-center mt-12">
-          <span class="font-mono text-[10px] text-muted-foreground/30 uppercase tracking-[0.3em]">
-            Decrypting_Header_Block...
-          </span>
+          <span class="font-mono text-[10px] text-muted-foreground/30 uppercase tracking-[0.3em]">Decrypting_Header...</span>
           <div class="absolute top-0 left-0 w-2 h-2 border-t border-l border-muted/20"></div>
           <div class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-muted/20"></div>
         </div>
-        
-        {/* 4个元数据方块占位 */}
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {Array.from({ length: 4 }).map((_, i) => (
+          {Array.from({ length: 4 }).map(() => (
             <div class="bg-muted/5 border border-border/30 h-24 flex items-center justify-center">
-               <span class="font-mono text-[10px] text-muted-foreground/20">META_BLK_0{i+1}</span>
+               <span class="font-mono text-[10px] text-muted-foreground/20">META_BLK</span>
             </div>
           ))}
         </div>
-        
-        {/* 超大正文内容解析占位 */}
         <div class="relative bg-muted/5 border border-border/30 h-[50vh] w-full flex flex-col items-center justify-center gap-4">
-          <span class="icon-[ph--file-text-light] size-8 text-muted-foreground/20"></span>
-          <span class="font-mono text-[10px] text-muted-foreground/30 uppercase tracking-[0.3em]">
-            Parsing_Content_Payload...
-          </span>
+          <div class="w-8 h-8 border border-muted/20 border-dashed rounded-none"></div>
+          <span class="font-mono text-[10px] text-muted-foreground/30 uppercase tracking-[0.3em]">Parsing_Payload...</span>
           <div class="absolute top-0 left-0 w-2 h-2 border-t border-l border-muted/20"></div>
           <div class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-muted/20"></div>
         </div>
       </>
-    ) : (
-      <>
-        {blocks.map((_, i) => (
-          <div class="relative bg-muted/5 border border-border/30 h-32 w-full flex items-center justify-center">
-            <span class="font-mono text-[10px] text-muted-foreground/30 uppercase tracking-[0.3em]">
-              Allocating_Mem[0x{(i+1).toString(16).padStart(4, '0')}]
-            </span>
-            <div class="absolute top-0 left-0 w-2 h-2 border-t border-l border-muted/20"></div>
-            <div class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-muted/20"></div>
-          </div>
-        ))}
-      </>
     )}
+
+    {/* 2. Home 布局 (首页综合区块) */}
+    {layout === 'home' && (
+      <div class="flex flex-col gap-16 w-full mt-8">
+        <div>
+           <div class="flex items-end justify-between pb-4 border-b border-border/30 mb-8"><div class="h-4 bg-muted/20 w-40"></div></div>
+           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+             {Array.from({length: 4}).map(() => <div class="bg-muted/5 border border-border/30 h-[180px]"></div>)}
+           </div>
+        </div>
+        <div>
+           <div class="flex items-end justify-between pb-4 border-b border-border/30 mb-8"><div class="h-4 bg-muted/20 w-40"></div></div>
+           <div class="space-y-6">
+             {Array.from({length: 3}).map(() => <div class="bg-muted/5 border border-border/30 h-40"></div>)}
+           </div>
+        </div>
+      </div>
+    )}
+
+    {/* 3. Grid 布局 (友链 / 标签) */}
+    {layout === 'grid' && blocks.map(() => (
+      <div class="bg-muted/5 border border-border/30 h-40 p-6 flex flex-col justify-between">
+        <div class="flex items-start gap-4">
+          <div class="size-12 bg-muted/20 border border-border/20 shrink-0"></div>
+          <div class="flex-1 space-y-2 mt-1">
+            <div class="h-4 bg-muted/20 w-3/4"></div>
+            <div class="h-2 bg-muted/20 w-1/2"></div>
+          </div>
+        </div>
+        <div class="space-y-2 mt-4">
+          <div class="h-2 bg-muted/20 w-full"></div>
+          <div class="h-2 bg-muted/20 w-5/6"></div>
+        </div>
+      </div>
+    ))}
+
+    {/* 4. List 布局 (文章列表) */}
+    {layout === 'list' && blocks.map(() => (
+      <div class="bg-muted/5 border border-border/30 p-6 flex flex-col h-40 justify-center">
+         <div class="h-2 bg-muted/20 w-24 mb-4"></div>
+         <div class="h-5 bg-muted/20 w-2/3 mb-4"></div>
+         <div class="h-2 bg-muted/20 w-full mb-2"></div>
+         <div class="h-2 bg-muted/20 w-4/5"></div>
+      </div>
+    ))}
+
+    {/* 5. Project 布局 (开源项目) */}
+    {layout === 'project' && blocks.map(() => (
+      <div class="bg-muted/5 border border-border/30 min-h-[220px] flex flex-col p-6 relative overflow-hidden">
+         <div class="absolute right-4 top-4 text-6xl font-black text-muted/5 pointer-events-none">00</div>
+         <div class="flex justify-between items-start mb-6">
+             <div class="size-12 bg-muted/20 border border-border/20"></div>
+             <div class="size-8 bg-muted/20 border border-border/20"></div>
+         </div>
+         <div class="h-5 bg-muted/20 w-1/2 mb-4 relative z-10"></div>
+         <div class="space-y-2 flex-1 relative z-10"><div class="h-2 bg-muted/20 w-full"></div><div class="h-2 bg-muted/20 w-5/6"></div></div>
+         <div class="mt-6 pt-3 border-t border-border/20 flex justify-between relative z-10"><div class="h-2 bg-muted/20 w-20"></div></div>
+      </div>
+    ))}
+
+    {/* 6. Photo 布局 (相册时间轴) */}
+    {layout === 'photo' && blocks.map(() => (
+      <div class="flex gap-6 relative">
+        <div class="w-px bg-muted/20 absolute top-0 bottom-0 left-3"></div>
+        <div class="ml-10 bg-muted/5 border border-border/30 h-[250px] w-full p-6 flex flex-col justify-end relative">
+          <div class="absolute -left-[2.1rem] top-1/2 size-2 bg-muted/20"></div>
+          <div class="h-4 bg-muted/20 w-32 mb-3"></div>
+          <div class="h-2 bg-muted/20 w-24"></div>
+        </div>
+      </div>
+    ))}
   </div>
 
-  {/* 2. 真实数据容器 (初始隐藏) */}
-  <div class="buffer-content hidden opacity-0 transition-opacity duration-700 ease-out">
+  {/* 真实数据容器 (启用GPU加速) */}
+  <div class="buffer-content hidden opacity-0 transition-opacity duration-700 ease-out will-change-[opacity]">
     <slot />
   </div>
 </div>
 
 <script is:inline>
-  function initTerminalBuffers() {
-    const wrappers = document.querySelectorAll('.terminal-buffer-wrapper');
-    
-    wrappers.forEach(wrapper => {
-      // 避免 Astro View Transitions 导致重复触发
-      if (wrapper.dataset.loaded === "true") return; 
+  (function() {
+    function initTerminalBuffers() {
+      document.querySelectorAll('.terminal-buffer-wrapper:not([data-loaded])').forEach(wrapper => {
+        wrapper.dataset.loaded = "1"; // 防治Astro生命周期重复触发
+        
+        const skeleton = wrapper.querySelector('.buffer-skeleton');
+        const content = wrapper.querySelector('.buffer-content');
+        if (!skeleton || !content) return;
 
-      const skeleton = wrapper.querySelector('.buffer-skeleton');
-      const content = wrapper.querySelector('.buffer-content');
-      const delay = parseInt(wrapper.dataset.delay || '500');
-
-      if (skeleton && content) {
-        skeleton.classList.remove('hidden');
-        content.classList.add('hidden');
-        content.classList.remove('opacity-100');
-        content.classList.add('opacity-0');
+        const delay = parseInt(wrapper.dataset.delay || '500');
 
         setTimeout(() => {
-          skeleton.classList.add('hidden');
-          content.classList.remove('hidden');
-          
-          // 强制浏览器重排，确保过渡动画生效
-          void content.offsetWidth; 
-          
-          content.classList.remove('opacity-0');
-          content.classList.add('opacity-100');
-          wrapper.dataset.loaded = "true"; // 标记为已加载
+          // 使用 requestAnimationFrame 优化渲染树构建，避免掉帧
+          requestAnimationFrame(() => {
+            skeleton.classList.add('hidden');
+            content.classList.remove('hidden');
+            
+            requestAnimationFrame(() => {
+              content.classList.remove('opacity-0');
+              content.classList.add('opacity-100');
+            });
+          });
         }, delay);
-      }
-    });
-  }
+      });
+    }
 
-  document.addEventListener('astro:page-load', initTerminalBuffers);
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initTerminalBuffers);
-  } else {
-    initTerminalBuffers();
-  }
+    document.addEventListener('astro:page-load', initTerminalBuffers);
+    document.readyState === 'loading' 
+      ? document.addEventListener('DOMContentLoaded', initTerminalBuffers) 
+      : initTerminalBuffers();
+  })();
 </script>

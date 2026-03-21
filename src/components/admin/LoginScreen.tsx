@@ -24,7 +24,7 @@ export default function LoginScreen() {
           </div>
           
           <div className="flex-1 flex flex-col justify-end lg:justify-center p-6 lg:p-8 xl:p-12 min-h-[300px] lg:min-h-[250px]">
-              <h1 className="text-6xl sm:text-7xl font-black uppercase tracking-tighter leading-[0.85] opacity-90 mb-6 -ml-1">Identity<br/>Core<span className="text-primary">.</span></h1>
+              <h1 className="text-6xl xl:text-7xl font-black uppercase tracking-tighter leading-[0.85] opacity-90 mb-6 -ml-1">Identity<br/>Core<span className="text-primary">.</span></h1>
               <div className="border-l-2 border-primary pl-4 py-1">
                 <p className="text-xs lg:text-sm text-muted-foreground uppercase tracking-[0.2em] font-mono">Restricted Access Area</p>
                 <p className="text-[10px] text-muted-foreground/60 uppercase mt-2 font-mono">Auth_Protocol: SHA-256</p>

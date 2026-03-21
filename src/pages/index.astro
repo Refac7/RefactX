@@ -7,6 +7,7 @@ import GithubContributions from '~/components/base/GithubContributions.tsx'
 import List from '~/components/posts/card/List.astro'
 import SkillsShowcase from '~/components/base/SkillsShowcase.astro'
 import Snowfall from '~/components/base/Snowfall.astro'
+import TerminalBuffer from '~/components/base/TerminalBuffer.astro'
 
 const { ENABLED, GITHUB_USERNAME, TOOLTIP_ENABLED } = GITHUB_CONFIG
 const { size, type, heroImageLayout } = POSTS_CONFIG.homePageConfig
@@ -55,9 +56,9 @@ const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
         <div class="flex-1 flex flex-col justify-end lg:justify-center p-6 lg:p-8 xl:p-12 min-h-[350px] lg:min-h-[300px]">
           <div class="flex flex-col gap-6">
             <div class="flex items-center gap-3 text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest select-none"><span class="h-px w-4 bg-primary/50"></span><span>Root_Terminal</span></div>
-            <h1 class="text-7xl lg:text-8xl font-black tracking-tighter leading-[0.85] text-foreground -ml-1 select-none">
+            <h1 class="text-7xl xl:text-8xl font-black tracking-tighter leading-[0.85] text-foreground -ml-1 select-none">
                 REFAC<span class="text-transparent bg-clip-text bg-gradient-to-br from-primary to-primary/50">7</span><span class="text-primary">.</span><br class="hidden lg:block">
-                <span class="font-bold hidden lg:inline-block">SYSTEM</span>
+                <span class="hidden lg:inline-block">SYSTEM</span>
             </h1>
           </div>
         </div>
@@ -89,72 +90,73 @@ const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
       </div>
     </aside>
 
-    <main class="w-full lg:w-2/3 z-10 flex flex-col">
-      <div class="p-6 lg:p-10 xl:p-16 2xl:p-20 flex-1">
-          
-          <div class="mb-20">
-              <div class={SECTION_HEADER_CLASS}>
-                <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>Navigation Hub</h2></div>
-                <div class="hidden sm:block h-px flex-1 bg-gradient-to-r from-border/40 to-transparent ml-6 max-w-[200px]"></div>
-              </div>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {NAV_CARDS.map((card) => (
-                      <a href={card.href} class="group relative flex flex-col justify-between bg-muted/5 hover:bg-muted/10 border border-transparent transition-all duration-300 min-h-[180px]">
-                          <span class="absolute right-4 top-2 text-6xl font-black text-muted-foreground/[0.03] group-hover:text-primary/[0.04] transition-colors pointer-events-none font-mono select-none">{card.id}</span>
-                          <div class="p-6 relative z-10">
-                              <div class="flex justify-between items-start mb-4"><span class={cn('size-6 text-foreground/80 group-hover:text-primary transition-colors', card.icon)}></span><span class="icon-[ph--arrow-up-right] size-4 text-muted-foreground/40 group-hover:text-primary transition-colors"></span></div>
-                              <h3 class="text-lg font-bold text-foreground mb-1 group-hover:text-primary group-hover:translate-x-1 transition-all font-mono tracking-tighter">{card.title}</h3>
-                              <p class="text-xs text-muted-foreground/70 leading-relaxed font-sans">{card.desc}</p>
-                          </div>
-                          <div class="mt-auto pt-3 pb-4 px-6">
-                              <div class="flex items-center justify-between text-[9px] font-mono uppercase tracking-wider text-muted-foreground/60"><span>STATUS:</span><span class="text-primary/80">{card.status}</span></div>
-                          </div>
-                          <div class="absolute top-0 right-0 w-2 h-2 border-t border-r border-primary/0 group-hover:border-primary/50 transition-colors"></div>
-                          <div class="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-primary/0 group-hover:border-primary/50 transition-colors"></div>
-                      </a>
-                  ))}
-              </div>
-          </div>
+      <main class="w-full lg:w-2/3 z-10 flex flex-col">
+        <div class="p-6 lg:p-10 xl:p-16 2xl:p-20 flex-1">
+          <TerminalBuffer layout="home" delay={700}>
+            <div class="mb-20">
+                <div class={SECTION_HEADER_CLASS}>
+                  <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>Navigation Hub</h2></div>
+                  <div class="hidden sm:block h-px flex-1 bg-gradient-to-r from-border/40 to-transparent ml-6 max-w-[200px]"></div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {NAV_CARDS.map((card) => (
+                        <a href={card.href} class="group relative flex flex-col justify-between bg-muted/5 hover:bg-muted/10 border border-transparent transition-all duration-300 min-h-[180px]">
+                            <span class="absolute right-4 top-2 text-6xl font-black text-muted-foreground/[0.03] group-hover:text-primary/[0.04] transition-colors pointer-events-none font-mono select-none">{card.id}</span>
+                            <div class="p-6 relative z-10">
+                                <div class="flex justify-between items-start mb-4"><span class={cn('size-6 text-foreground/80 group-hover:text-primary transition-colors', card.icon)}></span><span class="icon-[ph--arrow-up-right] size-4 text-muted-foreground/40 group-hover:text-primary transition-colors"></span></div>
+                                <h3 class="text-lg font-bold text-foreground mb-1 group-hover:text-primary group-hover:translate-x-1 transition-all font-mono tracking-tighter">{card.title}</h3>
+                                <p class="text-xs text-muted-foreground/70 leading-relaxed font-sans">{card.desc}</p>
+                            </div>
+                            <div class="mt-auto pt-3 pb-4 px-6">
+                                <div class="flex items-center justify-between text-[9px] font-mono uppercase tracking-wider text-muted-foreground/60"><span>STATUS:</span><span class="text-primary/80">{card.status}</span></div>
+                            </div>
+                            <div class="absolute top-0 right-0 w-2 h-2 border-t border-r border-primary/0 group-hover:border-primary/50 transition-colors"></div>
+                            <div class="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-primary/0 group-hover:border-primary/50 transition-colors"></div>
+                        </a>
+                    ))}
+                </div>
+            </div>
 
-          <div class="mb-8">
-              <div class={SECTION_HEADER_CLASS}>
-                <div class="flex items-center"><span class={SECTION_NUM_CLASS}>04</span><h2 class={SECTION_TITLE_CLASS}>Transmissions</h2></div>
-                <div class="hidden sm:flex items-center flex-1 ml-6">
-                    <div class="h-px flex-1 bg-gradient-to-r from-border/40 to-transparent max-w-[200px] mr-auto"></div>
-                    <a href="/posts" class="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors"><span>View All Logs</span><span class="icon-[ph--arrow-right]"></span></a>
+            <div class="mb-8">
+                <div class={SECTION_HEADER_CLASS}>
+                  <div class="flex items-center"><span class={SECTION_NUM_CLASS}>04</span><h2 class={SECTION_TITLE_CLASS}>Transmissions</h2></div>
+                  <div class="hidden sm:flex items-center flex-1 ml-6">
+                      <div class="h-px flex-1 bg-gradient-to-r from-border/40 to-transparent max-w-[200px] mr-auto"></div>
+                      <a href="/posts" class="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors"><span>View All Logs</span><span class="icon-[ph--arrow-right]"></span></a>
+                  </div>
+                </div>
+                
+                <List {posts} {type} heroImageLayout={heroImageLayout} />
+                
+                <div class="mt-8 flex sm:hidden justify-center"><a href="/posts" class="flex items-center gap-2 px-6 py-3 border border-border text-xs font-mono uppercase hover:bg-muted/10 transition-colors w-full justify-center"><span>View All Logs</span></a></div>
+            </div>
+
+            {ENABLED && (
+              <div class="mb-20">
+                <div class={SECTION_HEADER_CLASS}>
+                  <div class="flex items-center"><span class={SECTION_NUM_CLASS}>02</span><h2 class={SECTION_TITLE_CLASS}>Activity Stream</h2></div>
+                  <div class="hidden sm:block h-px flex-1 bg-gradient-to-r from-border/40 to-transparent ml-6 max-w-[200px]"></div>
+                </div>
+                <GithubContributions username={GITHUB_USERNAME} tooltipEnabled={TOOLTIP_ENABLED} client:visible transition:animate="none" />
+                <div class="mt-4 flex justify-between text-[10px] font-mono text-muted-foreground/40 pt-2 border-t border-dashed border-border/20"></div>
+              </div>
+            )}
+
+            {SKILLS_ENABLED && SKILLS_DATA.length > 0 && (
+              <div class="mb-20">
+                <div class={SECTION_HEADER_CLASS}>
+                  <div class="flex items-center"><span class={SECTION_NUM_CLASS}>03</span><h2 class={SECTION_TITLE_CLASS}>Arsenal Matrix</h2></div>
+                  <div class="hidden sm:block h-px flex-1 bg-gradient-to-r from-border/40 to-transparent ml-6 max-w-[200px]"></div>
+                </div>
+                <div class="[&_.skill-card]:rounded-none [&_.skill-card]:border-transparent [&_.skill-card]:bg-muted/5[&_.skill-card]:shadow-none hover:[&_.skill-card]:bg-muted/10">
+                    <SkillsShowcase skillsData={SKILLS_DATA} />
                 </div>
               </div>
-              
-              <List {posts} {type} heroImageLayout={heroImageLayout} />
-              
-              <div class="mt-8 flex sm:hidden justify-center"><a href="/posts" class="flex items-center gap-2 px-6 py-3 border border-border text-xs font-mono uppercase hover:bg-muted/10 transition-colors w-full justify-center"><span>View All Logs</span></a></div>
-          </div>
+            )}
+          </TerminalBuffer>
+        </div>
+      </main>
 
-          {ENABLED && (
-            <div class="mb-20">
-              <div class={SECTION_HEADER_CLASS}>
-                <div class="flex items-center"><span class={SECTION_NUM_CLASS}>02</span><h2 class={SECTION_TITLE_CLASS}>Activity Stream</h2></div>
-                <div class="hidden sm:block h-px flex-1 bg-gradient-to-r from-border/40 to-transparent ml-6 max-w-[200px]"></div>
-              </div>
-              <GithubContributions username={GITHUB_USERNAME} tooltipEnabled={TOOLTIP_ENABLED} client:visible transition:animate="none" />
-              <div class="mt-4 flex justify-between text-[10px] font-mono text-muted-foreground/40 pt-2 border-t border-dashed border-border/20"></div>
-            </div>
-          )}
-
-          {SKILLS_ENABLED && SKILLS_DATA.length > 0 && (
-            <div class="mb-20">
-              <div class={SECTION_HEADER_CLASS}>
-                <div class="flex items-center"><span class={SECTION_NUM_CLASS}>03</span><h2 class={SECTION_TITLE_CLASS}>Arsenal Matrix</h2></div>
-                <div class="hidden sm:block h-px flex-1 bg-gradient-to-r from-border/40 to-transparent ml-6 max-w-[200px]"></div>
-              </div>
-              <div class="[&_.skill-card]:rounded-none [&_.skill-card]:border-transparent [&_.skill-card]:bg-muted/5[&_.skill-card]:shadow-none hover:[&_.skill-card]:bg-muted/10">
-                  <SkillsShowcase skillsData={SKILLS_DATA} />
-              </div>
-            </div>
-          )}
-
-      </div>
-    </main>
   </div>
 </Layout>
 
