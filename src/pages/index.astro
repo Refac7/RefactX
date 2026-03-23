@@ -99,7 +99,7 @@ const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {NAV_CARDS.map((card) => (
-                        <a href={card.href} class="group relative flex flex-col justify-between bg-muted/5 hover:bg-muted/10 border border-transparent transition-all duration-300 min-h-[180px]">
+                        <a href={card.href} class="group relative flex flex-col justify-between bg-background border hover:border-primary/50 transition-all duration-300 min-h-[180px]">
                             <span class="absolute right-4 top-2 text-6xl font-black text-muted-foreground/[0.03] group-hover:text-primary/[0.04] transition-colors pointer-events-none font-mono select-none">{card.id}</span>
                             <div class="p-6 relative z-10">
                                 <div class="flex justify-between items-start mb-4"><span class={cn('size-6 text-foreground/80 group-hover:text-primary transition-colors', card.icon)}></span><span class="icon-[ph--arrow-up-right] size-4 text-muted-foreground/40 group-hover:text-primary transition-colors"></span></div>
