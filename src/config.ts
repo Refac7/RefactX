@@ -226,6 +226,7 @@ export const FRIENDS_CONFIG = {
   title: 'Friends',
   description: '我的朋友们都在这里，欢迎互访～',
   introduce: '已获取星图定位，正在前往友链星系的路上……',
+  enableAdd: false,
 }
 
 // 我的友链信息

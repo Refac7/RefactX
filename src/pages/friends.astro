@@ -7,7 +7,7 @@ import TerminalBuffer from '~/components/base/TerminalBuffer.astro';
 
 interface Friend { name: string; url: string; author: string; description: string; avatar: string; }
 const FRIENDS_LIST = rawFriendsList as Friend[];
-const { title, description, introduce } = FRIENDS_CONFIG
+const { title, description, introduce, enableAdd } = FRIENDS_CONFIG
 const { sitename, email, author, sitelink, siteavatar, description: myDescription } = FRIENDS_CONTACT;
 const totalLinks = FRIENDS_LIST.length.toString().padStart(2, '0');
 
@@ -88,49 +88,70 @@ const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
                 </a>
               )
             })}
-            <a href="#exchange-section" class="group relative flex flex-col items-center justify-center p-6 cursor-pointer bg-muted/[0.02] border border-dashed hover:border-primary/40 hover:bg-muted/5 transition-all duration-300 min-h-[200px]">
-                <div class="size-12 flex items-center justify-center border border-border/40 bg-background group-hover:scale-110 transition-transform mb-4"><span class="icon-[ph--plus] size-5 text-muted-foreground group-hover:text-primary transition-colors"></span></div>
-                <span class="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground/70 group-hover:text-foreground transition-colors">Initialize_Link</span>
-                <div class="absolute bottom-4 right-4 font-mono text-xs text-muted-foreground/20">SLOT: {parseInt(totalLinks) + 1}</div>
-            </a>
+            
+            {enableAdd ? (
+              <a href="#exchange-section" class="group relative flex flex-col items-center justify-center p-6 cursor-pointer bg-muted/[0.02] border border-dashed hover:border-primary/40 hover:bg-muted/5 transition-all duration-300 min-h-[200px]">
+                  <div class="size-12 flex items-center justify-center border border-border/40 bg-background group-hover:scale-110 transition-transform mb-4"><span class="icon-[ph--plus] size-5 text-muted-foreground group-hover:text-primary transition-colors"></span></div>
+                  <span class="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground/70 group-hover:text-foreground transition-colors">Initialize_Link</span>
+                  <div class="absolute bottom-4 right-4 font-mono text-xs text-muted-foreground/20">SLOT: {parseInt(totalLinks) + 1}</div>
+              </a>
+            ) : (
+              <div class="relative flex flex-col items-center justify-center p-6 bg-muted/[0.02] border border-dashed border-border/20 min-h-[200px] select-none">
+                  <div class="size-12 flex items-center justify-center border border-border/20 bg-background/50 mb-4"><span class="icon-[ph--lock-key] size-5 text-muted-foreground/30"></span></div>
+                  <span class="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground/40">Link_Locked</span>
+                  <div class="absolute bottom-4 right-4 font-mono text-xs text-muted-foreground/20">SLOT: {parseInt(totalLinks) + 1}</div>
+              </div>
+            )}
           </div>
         </TerminalBuffer>
         
-        <div id="exchange-section" class="mt-32">
-          <div class={SECTION_HEADER_CLASS}>
-            <div class="flex items-center"><span class={SECTION_NUM_CLASS}>02</span><h2 class={SECTION_TITLE_CLASS}>Exchange_Protocol</h2></div>
-            <div class="hidden sm:block h-px flex-1 bg-border/40 ml-6 max-w-[200px]"></div>
-          </div>
-          <div class="grid xl:grid-cols-2 gap-12">
-              <div class="flex flex-col justify-between">
-                  <div>
-                      <div class="border-l-2 border-primary pl-6 py-1 mb-8"><h3 class="text-xl font-bold uppercase tracking-tight mb-2">Transmission Rules</h3><p class="text-sm text-muted-foreground font-mono">Follow protocols to establish connection.</p></div>
-                      <ul class="space-y-4 text-sm text-muted-foreground/80 font-mono list-disc list-inside marker:text-primary"><li>确保内容符合行业法规。</li><li>在请求上行链接前添加本地链接。</li><li>优先考虑技术、设计和科幻节点。</li><li>不活跃的节点将定期清理。</li></ul>
-                  </div>
-                  <div class="mt-12 p-6 border bg-muted/[0.02]">
-                      <span class="text-[9px] font-bold text-muted-foreground uppercase tracking-wider font-mono block mb-3">// Direct_Line</span>
-                      <a href={`mailto:${email}`} class="flex items-center gap-3 hover:text-primary transition-colors group"><span class="icon-[ph--envelope-simple] size-5"></span><span class="text-base font-mono text-foreground break-all border-b border-transparent group-hover:border-primary transition-colors">{email}</span></a>
-                  </div>
+        {enableAdd ? (
+          <>
+            <div id="exchange-section" class="mt-32">
+              <div class={SECTION_HEADER_CLASS}>
+                <div class="flex items-center"><span class={SECTION_NUM_CLASS}>02</span><h2 class={SECTION_TITLE_CLASS}>Exchange_Protocol</h2></div>
+                <div class="hidden sm:block h-px flex-1 bg-border/40 ml-6 max-w-[200px]"></div>
               </div>
-              <div class="relative mt-8 xl:mt-0">
-                  <div class="absolute -top-1 -left-1 size-3 border-t border-l border-primary"></div>
-                  <div class="absolute -bottom-1 -right-1 size-3 border-b border-r border-primary"></div>
-                  <div class="border bg-background p-6 lg:p-8">
-                      <div class="flex justify-between items-end mb-8 border-b border-dashed pb-4"><span class="font-bold text-sm uppercase tracking-widest">Site_Configuration</span><span class="font-mono text-[10px] text-muted-foreground bg-muted/10 px-2 py-1">JSON_V1.0</span></div>
-                      <div class="space-y-px bg-border/40 border border-border/40">
-                          {[{ label: 'NAME', value: sitename },{ label: 'AUTHOR', value: author },{ label: 'URL', value: sitelink },{ label: 'AVATAR', value: siteavatar },{ label: 'DESC', value: myDescription }].map(item => (
-                              <div class="grid grid-cols-[80px_1fr] gap-4 bg-background p-3 group hover:bg-muted/[0.02] transition-colors"><span class="text-muted-foreground/50 text-[10px] font-mono pt-0.5 select-none">{item.label}</span><span class="text-foreground text-xs font-mono break-all select-all">{item.value}</span></div>
-                          ))}
+              <div class="grid xl:grid-cols-2 gap-12">
+                  <div class="flex flex-col justify-between">
+                      <div>
+                          <div class="border-l-2 border-primary pl-6 py-1 mb-8"><h3 class="text-xl font-bold uppercase tracking-tight mb-2">Transmission Rules</h3><p class="text-sm text-muted-foreground font-mono">Follow protocols to establish connection.</p></div>
+                          <ul class="space-y-4 text-sm text-muted-foreground/80 font-mono list-disc list-inside marker:text-primary"><li>确保内容符合行业法规。</li><li>在请求上行链接前添加本地链接。</li><li>优先考虑技术、设计和科幻节点。</li><li>不活跃的节点将定期清理。</li></ul>
                       </div>
-                      <button id="copy-btn" class="copy-trigger mt-6 w-full py-4 bg-foreground text-background hover:bg-primary/80 transition-all duration-200 font-mono text-xs font-bold tracking-[0.2em] rounded-none flex items-center justify-center gap-3 group active:scale-[0.99] border border-transparent" data-sitename={sitename} data-author={author} data-sitelink={sitelink} data-siteavatar={siteavatar} data-description={myDescription}>
-                        <span id="copy-icon" class="icon-[ph--brackets-curly] size-4"></span><span id="copy-text">COPY_CONFIG</span>
-                      </button>
+                      <div class="mt-12 p-6 border bg-muted/[0.02]">
+                          <span class="text-[9px] font-bold text-muted-foreground uppercase tracking-wider font-mono block mb-3">// Direct_Line</span>
+                          <a href={`mailto:${email}`} class="flex items-center gap-3 hover:text-primary transition-colors group"><span class="icon-[ph--envelope-simple] size-5"></span><span class="text-base font-mono text-foreground break-all border-b border-transparent group-hover:border-primary transition-colors">{email}</span></a>
+                      </div>
+                  </div>
+                  <div class="relative mt-8 xl:mt-0">
+                      <div class="absolute -top-1 -left-1 size-3 border-t border-l border-primary"></div>
+                      <div class="absolute -bottom-1 -right-1 size-3 border-b border-r border-primary"></div>
+                      <div class="border bg-background p-6 lg:p-8">
+                          <div class="flex justify-between items-end mb-8 border-b border-dashed pb-4"><span class="font-bold text-sm uppercase tracking-widest">Site_Configuration</span><span class="font-mono text-[10px] text-muted-foreground bg-muted/10 px-2 py-1">JSON_V1.0</span></div>
+                          <div class="space-y-px bg-border/40 border border-border/40">
+                              {[{ label: 'NAME', value: sitename },{ label: 'AUTHOR', value: author },{ label: 'URL', value: sitelink },{ label: 'AVATAR', value: siteavatar },{ label: 'DESC', value: myDescription }].map(item => (
+                                  <div class="grid grid-cols-[80px_1fr] gap-4 bg-background p-3 group hover:bg-muted/[0.02] transition-colors"><span class="text-muted-foreground/50 text-[10px] font-mono pt-0.5 select-none">{item.label}</span><span class="text-foreground text-xs font-mono break-all select-all">{item.value}</span></div>
+                              ))}
+                          </div>
+                          <button id="copy-btn" class="copy-trigger mt-6 w-full py-4 bg-foreground text-background hover:bg-primary/80 transition-all duration-200 font-mono text-xs font-bold tracking-[0.2em] rounded-none flex items-center justify-center gap-3 group active:scale-[0.99] border border-transparent" data-sitename={sitename} data-author={author} data-sitelink={sitelink} data-siteavatar={siteavatar} data-description={myDescription}>
+                            <span id="copy-icon" class="icon-[ph--brackets-curly] size-4"></span><span id="copy-text">COPY_CONFIG</span>
+                          </button>
+                      </div>
                   </div>
               </div>
-          </div>
-        </div>
+            </div>
 
-        <div class="pb-12 mt-4 w-full"><Comments /></div>
+            <div class="pb-12 mt-4 w-full"><Comments /></div>
+          </>
+        ) : (
+          <div class="mt-32 pb-12 w-full">
+            <div class="border border-border/30 bg-muted/5 p-12 text-center rounded-none flex flex-col items-center justify-center min-h-[250px]">
+              <span class="icon-[ph--link-break] size-10 text-muted-foreground/40 mb-4 block mx-auto"></span>
+              <span class="font-mono text-xs uppercase tracking-widest text-muted-foreground/60 block mb-2">// SYS_DISABLED</span>
+              <p class="text-muted-foreground/50 text-xs">友链申请通道已离线，如有需要请通过邮件联系站长。</p>
+            </div>
+          </div>
+        )}
       </div>
     </main>
   </div>
