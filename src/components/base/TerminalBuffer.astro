@@ -127,7 +127,7 @@ const blocks = Array.from({ length: count });
   (function() {
     function initTerminalBuffers() {
       document.querySelectorAll('.terminal-buffer-wrapper:not([data-loaded])').forEach(wrapper => {
-        wrapper.dataset.loaded = "1"; // 防治Astro生命周期重复触发
+        wrapper.dataset.loaded = "1"; 
         
         const skeleton = wrapper.querySelector('.buffer-skeleton');
         const content = wrapper.querySelector('.buffer-content');
@@ -136,11 +136,12 @@ const blocks = Array.from({ length: count });
         const delay = parseInt(wrapper.dataset.delay || '500');
 
         setTimeout(() => {
-          // 使用 requestAnimationFrame 优化渲染树构建，避免掉帧
           requestAnimationFrame(() => {
             skeleton.classList.add('hidden');
             content.classList.remove('hidden');
             
+            document.dispatchEvent(new CustomEvent('terminal-buffer:loaded'));
+
             requestAnimationFrame(() => {
               content.classList.remove('opacity-0');
               content.classList.add('opacity-100');
