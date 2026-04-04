@@ -34,29 +34,22 @@
 
 /* ===== 字体配置 ===== */
 @layer base {
-  /* 数字字体 */
   @font-face {
     font-family: 'Numbers';
     src: url('/fonts/GeistVF.woff2') format('woff2');
     font-display: swap;
   }
-
-  /* 破折号字体 */
   @font-face {
     font-family: 'CJKEmDash';
     unicode-range: U+2014, U+2E3A-2E3B;
     src: url('/fonts/ZhudouSansVF-subset.woff2') format('woff2');
     font-display: swap;
   }
-
-  /* 标题字体 */
   @font-face {
     font-family: 'Lexend';
     src: url('/fonts/Lexend-VariableFont_wght.woff2') format('woff2');
     font-display: swap;
   }
-
-  /* 等宽字体 */
   @font-face {
     font-family: 'GeistMono';
     src: url('/fonts/GeistMono.woff2') format('woff2');
@@ -67,41 +60,29 @@
 /* ===== 颜色变量 ===== */
 @layer base {
   :root {
-    /* 字体族 */
     --font-lexend: 'Lexend', 'CJKEmDash', 'Numbers', 'ShangguSansSC-VF', ui-sans-serif, system-ui, sans-serif;
     --font-sans: 'CJKEmDash', 'Numbers', 'ShangguSansSC-VF', ui-sans-serif, system-ui, sans-serif;
     --font-geist-mono: 'GeistMono', 'Input Mono', 'Fira Code', 'ShangguSansSC-VF', monospace;
 
-    /* 基础色调 */
+    /* 默认基础色调 */
     --background: 255 100% 100%;
     --foreground: 225 15% 12%;
-
-    /* 交互状态 */
     --accent: 220 25% 94%;
     --accent-foreground: 225 15% 12%;
-
-    /* 主要强调色 */
     --primary: 225 15% 12%;
     --primary-foreground: 220 30% 98%;
-
-    /* 弱化元素 */
     --muted: 220 25% 92%;
     --muted-foreground: 225 10% 40%;
     --border: 220 20% 90%;
     --ring: 225 15% 12%;
-
-    /* 标签系统 */
     --tag-bg: 220 25% 96%;
     --tag-bg-hover: 220 25% 92%;
     --tag-border: 220 25% 90%;
     --tag-text: 225 15% 35%;
-
-    /* 滚动条 */
     --scrollbar: 220 20% 80%;
     --scrollbar-bg: 220 25% 95%;
   }
 
-  /* 暗色模式变量 */
   .dark {
     --background: 240 10% 4%;
     --foreground: 0 0% 98%;
@@ -120,81 +101,70 @@
     --scrollbar: 240 10% 30%;
     --scrollbar-bg: 240 10% 15%;
   }
+
+  /* 🏮 国庆节/新年：红色主题覆盖 */
+  html.theme-red {
+    --primary: 350 85% 45%; /* 中国红 */
+    --primary-foreground: 0 0% 100%;
+    --accent: 350 80% 95%;
+    --accent-foreground: 350 85% 45%;
+    --ring: 350 85% 45%;
+    --tag-bg: 350 80% 95%;
+    --tag-bg-hover: 350 80% 90%;
+    --tag-border: 350 80% 85%;
+    --tag-text: 350 85% 45%;
+  }
+  html.dark.theme-red {
+    --primary: 350 85% 55%;
+    --primary-foreground: 0 0% 100%;
+    --accent: 350 40% 15%;
+    --accent-foreground: 350 85% 75%;
+    --ring: 350 85% 55%;
+    --tag-bg: 350 40% 12%;
+    --tag-bg-hover: 350 40% 18%;
+    --tag-border: 350 40% 25%;
+    --tag-text: 350 85% 75%;
+  }
+}
+
+/* 🕊️ 清明节/公祭日：全站黑白 (灰度滤镜) */
+html.theme-mourning {
+  filter: grayscale(100%) !important;
 }
 
 /* ===== 基础样式 ===== */
 @layer base {
-  * {
-    @apply border-border;
-  }
-
+  * { @apply border-border; }
   html {
     color-scheme: light;
     background-color: var(--color-background);
     font-family: var(--font-sans);
     scroll-behavior: smooth;
-    @variant dark {
-      color-scheme: dark;
-    }
+    @variant dark { color-scheme: dark; }
   }
-
-  body {
-    @apply min-h-screen bg-background text-foreground;
-  }
-
-  /* 标题样式 */
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-serif font-medium;
-  }
-
-  /* 链接样式 */
-  a {
-    @apply underline-offset-4;
-  }
-
-  /* 工具类 */
-  .pro {
-    @apply prose prose-zinc dark:prose-invert;
-  }
+  body { @apply min-h-screen bg-background text-foreground; }
+  h1, h2, h3, h4, h5, h6 { @apply font-serif font-medium; }
+  a { @apply underline-offset-4; }
+  .pro { @apply prose prose-zinc dark:prose-invert; }
 }
 
 /* ===== 动画效果 ===== */
 @layer base {
-  /* 淡入上升动画 */
-  . {
+  /* 🔥 修复了这里原先的无名选择器 ". {" */
+  .fade-up {
     opacity: 0;
     transform: translateY(2rem);
     animation: fadeUp 0.6s forwards;
     will-change: opacity, transform;
   }
-
   @keyframes fadeUp {
-    from {
-      opacity: 0;
-      transform: translateY(2rem);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(2rem); }
+    to { opacity: 1; transform: translateY(0); }
   }
+  .animation-delay-100 { animation-delay: 100ms; }
+  .animation-delay-150 { animation-delay: 150ms; }
+  .animation-delay-200 { animation-delay: 200ms; }
 
-  .animation-delay-100 {
-    animation-delay: 100ms;
-  }
-  .animation-delay-150 {
-    animation-delay: 150ms;
-  }
-  .animation-delay-200 {
-    animation-delay: 200ms;
-  }
-
-  /* 主题切换动画 */
   html.disable-transition,
   html.disable-transition * {
     transition: none !important;
@@ -204,100 +174,48 @@
 }
 
 /* ===== 滚动条样式 ===== */
-/* Firefox */
 @supports (scrollbar-width: auto) {
   * {
     scrollbar-width: auto;
     scrollbar-color: hsl(var(--scrollbar)) hsl(var(--scrollbar-bg));
   }
 }
-
-/* Webkit */
 @supports selector(::-webkit-scrollbar) {
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-  ::-webkit-scrollbar:horizontal {
-    height: 8px;
-  }
-  ::-webkit-scrollbar-track {
-    border-radius: 10px;
-    background: hsl(var(--scrollbar-bg));
-  }
-  ::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background: hsl(var(--scrollbar));
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--scrollbar) / 0.8);
-  }
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar:horizontal { height: 8px; }
+  ::-webkit-scrollbar-track { border-radius: 10px; background: hsl(var(--scrollbar-bg)); }
+  ::-webkit-scrollbar-thumb { border-radius: 10px; background: hsl(var(--scrollbar)); }
+  ::-webkit-scrollbar-thumb:hover { background: hsl(var(--scrollbar) / 0.8); }
 }
-
 .no-scrollbar {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
+.no-scrollbar::-webkit-scrollbar { display: none; }
 
 /* ===== 搜索样式 ===== */
-/* 隐藏搜索框清除按钮 */
 #search-input::-webkit-search-decoration,
 #search-input::-webkit-search-cancel-button,
 #search-input::-webkit-search-results-button,
-#search-input::-webkit-search-results-decoration {
-  -webkit-appearance: none;
-}
-
-#search-input::-ms-clear {
-  display: none;
-  width: 0;
-  height: 0;
-}
-
-input[type='search']::-moz-search-cancel-button {
-  display: none;
-}
-
-/* 搜索结果容器与条目样式（优化） */
-#search-results {
-  padding: 0.25rem;
-}
-
+#search-input::-webkit-search-results-decoration { -webkit-appearance: none; }
+#search-input::-ms-clear { display: none; width: 0; height: 0; }
+input[type='search']::-moz-search-cancel-button { display: none; }
+#search-results { padding: 0.25rem; }
 .search-results-item {
   display: block;
   padding: 0.875rem 1rem;
   border-bottom: 1px solid hsl(var(--border) / 0.7);
-  transition:
-    background-color 0.18s ease,
-    transform 0.12s ease,
-    color 0.18s ease;
+  transition: background-color 0.18s ease, transform 0.12s ease, color 0.18s ease;
 }
-
-/* 连续主结果之间增加轻微的垂直间距 */
-.search-results-item:not(.sub-result) + .search-results-item:not(.sub-result) {
-  margin-top: 0.375rem;
-}
-/* 子结果结束到下一个主结果的过渡间距 */
-.search-results-item.sub-result + .search-results-item:not(.sub-result) {
-  margin-top: 0.5rem;
-}
-
-.search-results-item:hover {
-  background-color: hsl(var(--accent) / 0.6);
-}
-
+.search-results-item:not(.sub-result) + .search-results-item:not(.sub-result) { margin-top: 0.375rem; }
+.search-results-item.sub-result + .search-results-item:not(.sub-result) { margin-top: 0.5rem; }
+.search-results-item:hover { background-color: hsl(var(--accent) / 0.6); }
 .search-results-item:focus-visible {
   outline: 2px solid hsl(var(--ring));
   outline-offset: 2px;
   background-color: hsl(var(--accent) / 0.7);
 }
-
-.search-results-item:active {
-  transform: scale(0.997);
-}
-
+.search-results-item:active { transform: scale(0.997); }
 .search-results-item.sub-result {
   padding-left: 1.25rem;
   border-left: 2px solid hsl(var(--accent));
@@ -305,7 +223,6 @@ input[type='search']::-moz-search-cancel-button {
   font-size: 0.875rem;
   opacity: 0.9;
 }
-
 .search-results-title {
   font-size: 1rem;
   font-weight: 600;
@@ -317,16 +234,8 @@ input[type='search']::-moz-search-cancel-button {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-
-.search-results-item:hover .search-results-title {
-  color: hsl(var(--primary));
-}
-
-.search-results-item.sub-result .search-results-title {
-  font-weight: 500;
-  font-size: 0.9375rem;
-}
-
+.search-results-item:hover .search-results-title { color: hsl(var(--primary)); }
+.search-results-item.sub-result .search-results-title { font-weight: 500; font-size: 0.9375rem; }
 .search-results-excerpt {
   font-size: 0.875rem;
   color: hsl(var(--muted-foreground));
@@ -337,7 +246,6 @@ input[type='search']::-moz-search-cancel-button {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-
 .search-results-excerpt mark {
   background-color: hsl(var(--accent));
   color: hsl(var(--accent-foreground));
@@ -345,53 +253,23 @@ input[type='search']::-moz-search-cancel-button {
   border-radius: 0.25em;
   font-weight: 600;
 }
-
-/* 搜索面板动画 */
-.search-panel-show {
-  animation: searchPanelShow 0.3s cubic-bezier(0.21, 1.02, 0.73, 1) forwards;
-}
-
+.search-panel-show { animation: searchPanelShow 0.3s cubic-bezier(0.21, 1.02, 0.73, 1) forwards; }
 @keyframes searchPanelShow {
-  0% {
-    opacity: 0;
-    transform: translate(0%, -2rem);
-  }
-  100% {
-    opacity: 1;
-    transform: translate(0%, 0);
-  }
+  0% { opacity: 0; transform: translate(0%, -2rem); }
+  100% { opacity: 1; transform: translate(0%, 0); }
 }
 
 /* ===== 工具类 ===== */
-.perspective-1000 {
-  perspective: 1000px;
-}
-
-/* 时间线滑入动画 */
+.perspective-1000 { perspective: 1000px; }
 @keyframes slide-down {
-  0% {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0px);
-  }
+  0% { opacity: 0; transform: translateY(-10px); }
+  100% { opacity: 1; transform: translateY(0px); }
 }
+.animate-slide-down { animation: slide-down 0.3s ease-out forwards; }
+.markdown a { overflow-wrap: anywhere; word-break: break-word; white-space: normal; }
 
-.animate-slide-down {
-  animation: slide-down 0.3s ease-out forwards;
-}
-
-/* 文章正文里的链接自动换行 */
-.markdown a {
-  overflow-wrap: anywhere;
-  word-break: break-word;
-  white-space: normal;
-}
 /* ===== 图片懒加载过渡 ===== */
 .lazy-image {
-  /* 加载中：模糊效果 */
   filter: blur(4px) !important;
   opacity: 0.8;
   transition: filter 0.3s ease-out, opacity 0.3s ease-out;
@@ -399,37 +277,25 @@ input[type='search']::-moz-search-cancel-button {
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
-
-/* 加载完成后移除模糊 - 使用 !important 确保优先级 */
 .lazy-image-loaded {
   filter: none !important;
   opacity: 1 !important;
   animation: none !important;
 }
-
 .lazy-image[complete],
 .lazy-image[loaded] {
   filter: blur(0) !important;
   opacity: 1 !important;
   animation: none !important;
 }
-
-/* 防止 hover 时重新应用模糊效果 */
 .lazy-image:hover:not(.lazy-image-loaded) {
   filter: blur(4px) !important;
   opacity: 0.8 !important;
 }
-
 @keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
-
-/* 深色模式适配 */
 .dark .lazy-image {
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
 }

@@ -1,0 +1,106 @@
+---
+// src/components/base/HolidayTheme.astro
+---
+
+<!-- 样式修正：强制防止滤镜和主题色的渐变闪烁 -->
+<style is:global>
+  html.theme-mourning {
+    transition: filter 0s !important;
+    animation: none !important;
+  }
+</style>
+
+<!-- 1. 节日主题计算与应用脚本 -->
+<script is:inline>
+  (function() {
+    function applyHolidayTheme() {
+      const date = new Date();
+      const month = date.getMonth() + 1;
+      const day = date.getDate();
+      const todayStr = `${date.getFullYear()}-${month}-${day}`;
+      
+      const isMourning = (month === 4 && day >= 4 && day <= 6) || (month === 12 && day === 13);
+      const isRedFestival = (month === 10 && day <= 7) || (month === 1 && day === 1);
+
+      let activeTheme = null;
+      let themeMsg = '';
+
+      if (isMourning) {
+        activeTheme = 'theme-mourning';
+        themeMsg = '今日是特殊纪念日，全站已开启哀悼模式。';
+      } else if (isRedFestival) {
+        activeTheme = 'theme-red';
+        themeMsg = '欢度佳节，全站已切换至节日主题。';
+      }
+
+      const overrideDate = localStorage.getItem('disable-holiday-theme');
+      
+      if (activeTheme) {
+        if (overrideDate !== todayStr) {
+          document.documentElement.classList.add(activeTheme);
+          window.__HOLIDAY_ACTIVE__ = true;
+          window.__HOLIDAY_MSG__ = themeMsg;
+          window.__HOLIDAY_CLASS__ = activeTheme;
+          window.__TODAY_STR__ = todayStr;
+        } else {
+          document.documentElement.classList.remove(activeTheme);
+          window.__HOLIDAY_ACTIVE__ = false;
+        }
+      } else {
+        // 清理由于路由切换可能带来的遗留状态
+        document.documentElement.classList.remove('theme-mourning', 'theme-red');
+        window.__HOLIDAY_ACTIVE__ = false;
+      }
+    }
+
+    applyHolidayTheme();
+    document.addEventListener('astro:after-swap', applyHolidayTheme);
+  })();
+</script>
+
+<!-- 2. 节日主题提示 Banner UI (默认隐藏) -->
+<div id="holiday-banner" class="hidden relative w-full z-[100] bg-primary text-primary-foreground px-4 py-2.5 text-xs sm:text-sm justify-between items-center shadow-md">
+  <div class="flex items-center gap-2 overflow-hidden">
+    <span class="icon-[mdi--information-outline] text-base shrink-0"></span>
+    <span id="holiday-msg" class="truncate font-medium"></span>
+  </div>
+  <button 
+    id="close-holiday-btn" 
+    class="shrink-0 ml-4 hover:bg-background/20 px-2 py-1 rounded transition-colors font-mono text-[10px] uppercase tracking-wider border border-primary-foreground/20 cursor-pointer"
+  >
+    恢复默认
+  </button>
+</div>
+
+<!-- 3. Banner 逻辑控制脚本 -->
+<script is:inline>
+  (function() {
+    function initHolidayBanner() {
+      const banner = document.getElementById('holiday-banner');
+      const msgEl = document.getElementById('holiday-msg');
+      const closeBtn = document.getElementById('close-holiday-btn');
+      
+      if (window.__HOLIDAY_ACTIVE__ && banner && msgEl) {
+        msgEl.textContent = window.__HOLIDAY_MSG__;
+        banner.classList.remove('hidden');
+        banner.classList.add('flex');
+        
+        closeBtn.onclick = () => {
+          document.documentElement.classList.remove(window.__HOLIDAY_CLASS__);
+          banner.classList.add('hidden');
+          banner.classList.remove('flex');
+          localStorage.setItem('disable-holiday-theme', window.__TODAY_STR__);
+          window.__HOLIDAY_ACTIVE__ = false;
+        };
+      } else if (banner) {
+        banner.classList.add('hidden');
+        banner.classList.remove('flex');
+      }
+    }
+
+    document.readyState === 'loading' 
+      ? document.addEventListener('DOMContentLoaded', initHolidayBanner)
+      : initHolidayBanner();
+    document.addEventListener('astro:after-swap', initHolidayBanner);
+  })();
+</script>
