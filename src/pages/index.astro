@@ -22,7 +22,7 @@ const NAV_CARDS =[
   { id: '04', title: 'TAGS', desc: 'Core filters', href: '/tags', icon: 'icon-[ph--tag-bold]', status: 'Verified' }
 ]
 
-const SECTION_HEADER_CLASS = "flex items-end justify-between pb-4 mb-8 select-none"
+const SECTION_HEADER_CLASS = "flex items-end justify-between border-b pb-4 mb-8 select-none"
 const SECTION_TITLE_CLASS = "font-mono text-sm font-bold uppercase tracking-widest text-foreground/80"
 const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
 ---
@@ -34,7 +34,7 @@ const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
 
   <div class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
     
-    <aside class="w-full lg:w-1/3 lg:sticky lg:top-0 lg:h-screen flex flex-col z-20 bg-background border-b border-border/60 lg:border-none">
+    <aside class="w-full lg:w-1/3 lg:sticky lg:top-0 lg:h-screen flex flex-col lg:border-r z-20 bg-background border-b border-border/60 lg:border-none">
       
       <div class="flex flex-1 lg:overflow-y-auto scrollbar-hide flex-col">
         <div class="p-6 lg:p-8 xl:p-12 pb-0 shrink-0">
@@ -46,7 +46,7 @@ const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
                     <span>FX: <span class="snow-status-text">ON</span></span>
                 </button>
                 <div class="flex items-center gap-2 text-primary">
-                    <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full bg-emerald-500 opacity-75"></span><span class="relative inline-flex h-2 w-2 bg-emerald-600"></span></span>
+                    <span class="relative flex h-1.5 w-1.5"><span class="animate-ping absolute inline-flex h-full w-full bg-emerald-500 opacity-75"></span><span class="relative inline-flex h-1.5 w-1.5 bg-emerald-600"></span></span>
                     <span>ONLINE</span>
                 </div>
             </div>
@@ -62,40 +62,34 @@ const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
           </div>
         </div>
         
-        <div class="shrink-0 p-6 lg:p-8 xl:p-12 relative overflow-hidden group bg-muted/5 lg:bg-transparent border-t border-border/60 lg:border-none">
-            <div class="absolute right-6 -top-4 text-[8rem] font-black font-mono text-muted-foreground/[0.02] select-none pointer-events-none group-hover:text-primary/[0.03] transition-colors hidden sm:block">00</div>
-            <div class="relative z-10">
-                <div class="flex items-center justify-between mb-4 lg:mb-6 select-none"><span class="text-[10px] uppercase text-muted-foreground/50 font-mono tracking-[0.2em]">// SYS_PROFILE</span><span class="icon-[ph--identification-card-bold] size-4 text-primary/40"></span></div>
-                <div class="space-y-4 font-sans text-sm text-muted-foreground font-light leading-loose">
-                    <p>你好，我是 <span class="text-foreground font-medium">Refac7</span>。一名时空修剪者。</p>
-                    <p>此站点是我的数字世界，用于<span class="text-foreground border-b border-primary/30 pb-0.5">存档技术日志</span>、<span class="text-foreground border-b border-primary/30 pb-0.5">交换信号</span>与部署模块。</p>
-                </div>
-                <div class="mt-6 lg:mt-8 pt-4 border-t border-dashed border-border/20 flex items-center justify-between text-[10px] font-mono select-none">
-                     <div class="flex items-center gap-2 text-primary"><span class="animate-pulse">_</span><span class="uppercase tracking-widest">Awaiting input</span></div>
-                     <span class="text-muted-foreground/30 uppercase tracking-widest hidden sm:block">LOC: Localhost</span>
-                </div>
-            </div>
+        <div class="shrink-0 p-6 lg:p-8 xl:p-12 bg-muted/5 border-t border-dashed border-border/40">
+           <span class="block text-[10px] uppercase text-muted-foreground/60 font-mono tracking-wider mb-4">// SYS_PROFILE</span>
+           <p class="text-sm text-muted-foreground leading-loose font-mono">
+              你好，我是 <span class="text-foreground">Refac7</span>。一名时空修剪者。<br/><br/>
+              <span class="text-primary">> </span>此站点是我的数字世界，用于存档技术日志、交换信号与部署模块。
+           </p>
         </div>
       </div>
       
       <div class="grid grid-cols-2 bg-border/40 gap-px border-t border-border/40 shrink-0 select-none">
         {SOCIAL_LINKS.map((item) => (
-          <a href={item.url} target="_blank" class="group relative flex flex-col items-center justify-center p-6 bg-background hover:bg-muted/5 transition-colors h-32 lg:h-28">
+          <a href={item.url} target="_blank" class="group relative flex flex-col items-center justify-center p-6 bg-background hover:bg-muted/10 transition-colors h-32 lg:h-28 xl:h-32">
               <span class={`${item.icon} size-5 xl:size-6 text-foreground/50 group-hover:text-primary transition-colors mb-2`}></span>
               <span class="text-[10px] font-mono uppercase tracking-widest text-muted-foreground group-hover:text-foreground transition-colors">{item.name || 'LINK'}</span>
-              <div class="absolute top-0 right-0 p-1.5 opacity-0 group-hover:opacity-100 transition-opacity"><div class="w-1 h-1 bg-primary"></div></div>
+              <div class="absolute top-0 right-0 p-1 opacity-0 group-hover:opacity-100 transition-opacity"><div class="w-1.5 h-1.5 bg-primary"></div></div>
           </a>
         ))}
       </div>
     </aside>
 
       <main class="w-full lg:w-2/3 z-10 flex flex-col">
-        <div class="p-6 lg:p-10 xl:p-16 2xl:p-20 flex-1">
+        <div class="p-6 lg:p-10 xl:p-16 2xl:p-20 flex-1 flex flex-col">
           <TerminalBuffer layout="home" delay={700}>
+            
             <div class="mb-20">
                 <div class={SECTION_HEADER_CLASS}>
                   <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>Navigation Hub</h2></div>
-                  <div class="hidden sm:block h-px flex-1 bg-gradient-to-r from-border/40 to-transparent ml-6 max-w-[200px]"></div>
+                  <div class="hidden sm:block h-px flex-1 bg-border/40 ml-6 max-w-[200px]"></div>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {NAV_CARDS.map((card) => (
@@ -116,11 +110,11 @@ const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
                 </div>
             </div>
 
-            <div class="mb-8">
+            <div class="mb-20">
                 <div class={SECTION_HEADER_CLASS}>
-                  <div class="flex items-center"><span class={SECTION_NUM_CLASS}>04</span><h2 class={SECTION_TITLE_CLASS}>Transmissions</h2></div>
+                  <div class="flex items-center"><span class={SECTION_NUM_CLASS}>02</span><h2 class={SECTION_TITLE_CLASS}>Transmissions</h2></div>
                   <div class="hidden sm:flex items-center flex-1 ml-6">
-                      <div class="h-px flex-1 bg-gradient-to-r from-border/40 to-transparent max-w-[200px] mr-auto"></div>
+                      <div class="h-px flex-1 bg-border/40 max-w-[200px] mr-auto"></div>
                       <a href="/posts" class="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors"><span>View All Logs</span><span class="icon-[ph--arrow-right]"></span></a>
                   </div>
                 </div>
@@ -133,25 +127,29 @@ const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
             {ENABLED && (
               <div class="mb-20">
                 <div class={SECTION_HEADER_CLASS}>
-                  <div class="flex items-center"><span class={SECTION_NUM_CLASS}>02</span><h2 class={SECTION_TITLE_CLASS}>Activity Stream</h2></div>
-                  <div class="hidden sm:block h-px flex-1 bg-gradient-to-r from-border/40 to-transparent ml-6 max-w-[200px]"></div>
+                  <div class="flex items-center"><span class={SECTION_NUM_CLASS}>03</span><h2 class={SECTION_TITLE_CLASS}>Activity Stream</h2></div>
+                  <div class="hidden sm:block h-px flex-1 bg-border/40 ml-6 max-w-[200px]"></div>
                 </div>
                 <GithubContributions username={GITHUB_USERNAME} tooltipEnabled={TOOLTIP_ENABLED} client:visible transition:animate="none" />
-                <div class="mt-4 flex justify-between text-[10px] font-mono text-muted-foreground/40 pt-2 border-t border-dashed border-border/20"></div>
               </div>
             )}
 
             {SKILLS_ENABLED && SKILLS_DATA.length > 0 && (
-              <div class="mb-20">
+              <div class="mb-12">
                 <div class={SECTION_HEADER_CLASS}>
-                  <div class="flex items-center"><span class={SECTION_NUM_CLASS}>03</span><h2 class={SECTION_TITLE_CLASS}>Arsenal Matrix</h2></div>
-                  <div class="hidden sm:block h-px flex-1 bg-gradient-to-r from-border/40 to-transparent ml-6 max-w-[200px]"></div>
+                  <div class="flex items-center"><span class={SECTION_NUM_CLASS}>04</span><h2 class={SECTION_TITLE_CLASS}>Arsenal Matrix</h2></div>
+                  <div class="hidden sm:block h-px flex-1 bg-border/40 ml-6 max-w-[200px]"></div>
                 </div>
                 <div class="[&_.skill-card]:rounded-none [&_.skill-card]:border-transparent [&_.skill-card]:bg-muted/5[&_.skill-card]:shadow-none hover:[&_.skill-card]:bg-muted/10">
                     <SkillsShowcase skillsData={SKILLS_DATA} />
                 </div>
               </div>
             )}
+            
+            <div class="mt-20 pt-8 border-t border-dashed border-border/40 flex justify-center">
+                <span class="font-mono text-[10px] text-muted-foreground/20 uppercase tracking-[0.5em] select-none">// End of Stream //</span>
+            </div>
+
           </TerminalBuffer>
         </div>
       </main>

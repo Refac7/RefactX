@@ -1,8 +1,3 @@
----
-// src/components/base/HolidayTheme.astro
----
-
-<!-- 样式修正：强制防止滤镜和主题色的渐变闪烁 -->
 <style is:global>
   html.theme-mourning {
     transition: filter 0s !important;
@@ -10,7 +5,6 @@
   }
 </style>
 
-<!-- 1. 节日主题计算与应用脚本 -->
 <script is:inline>
   (function() {
     function applyHolidayTheme() {
@@ -47,7 +41,6 @@
           window.__HOLIDAY_ACTIVE__ = false;
         }
       } else {
-        // 清理由于路由切换可能带来的遗留状态
         document.documentElement.classList.remove('theme-mourning', 'theme-red');
         window.__HOLIDAY_ACTIVE__ = false;
       }
@@ -58,7 +51,6 @@
   })();
 </script>
 
-<!-- 2. 节日主题提示 Banner UI (默认隐藏) -->
 <div id="holiday-banner" class="hidden relative w-full z-[100] bg-primary text-primary-foreground px-4 py-2.5 text-xs sm:text-sm justify-between items-center shadow-md">
   <div class="flex items-center gap-2 overflow-hidden">
     <span class="icon-[mdi--information-outline] text-base shrink-0"></span>
@@ -66,13 +58,12 @@
   </div>
   <button 
     id="close-holiday-btn" 
-    class="shrink-0 ml-4 hover:bg-background/20 px-2 py-1 rounded transition-colors font-mono text-[10px] uppercase tracking-wider border border-primary-foreground/20 cursor-pointer"
+    class="shrink-0 ml-4 hover:bg-background/20 px-2 py-1 transition-colors font-mono text-[10px] uppercase tracking-wider border border-primary-foreground/20 cursor-pointer"
   >
     恢复默认
   </button>
 </div>
 
-<!-- 3. Banner 逻辑控制脚本 -->
 <script is:inline>
   (function() {
     function initHolidayBanner() {
