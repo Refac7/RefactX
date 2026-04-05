@@ -17,6 +17,7 @@ export const SITE: Site = {
   base: '/',
   author: 'Refact',
   ogImage: '/og-image.webp',
+  version: '1.8',
 }
 
 export const HEADER_LINKS: Link[] = [
@@ -259,3 +260,9 @@ export const CMS_CONFIG = {
   branch: 'main', // 分支名称
   pathPrefix: 'src/content/posts/' // 内容在仓库中的路径前缀
 };
+
+// 如果想要增加更多效果，您需要转到 .src/components/base/HolidayTheme.astro 进行修改。并且在 global.css 中配置颜色。
+
+export const Holiday_Effects = {
+  enableHolidayEffects: true, // 是否启用节日特效
+}

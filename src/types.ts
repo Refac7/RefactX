@@ -15,6 +15,7 @@ export type Site = {
   author: string
   website: string
   ogImage: string
+  version: string
 }
 
 /**

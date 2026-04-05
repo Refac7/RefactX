@@ -52,7 +52,7 @@ export default function JsonEditor() {
                     </button>
                     <span className="text-4xl font-black font-mono text-muted-foreground/10 select-none pointer-events-none">{serialId}</span>
                 </div>
-                <div className="grid grid-cols-1 gap-8 max-w-3xl mx-auto">
+                <div className="grid grid-cols-1 gap-8 mx-auto">
                     {schema.map((field: SchemaField) => (
                         <div key={field.key} className="space-y-2 group">
                             <label className="flex justify-between items-end text-[10px] font-mono uppercase tracking-widest text-muted-foreground/70 group-focus-within:text-primary transition-colors">
