@@ -2,7 +2,7 @@
 // src/components/base/TerminalBuffer.astro
 
 interface Props {
-  layout?: 'list' | 'grid' | 'article' | 'project' | 'photo' | 'home';
+  layout?: 'list' | 'grid' | 'article' | 'project' | 'photo' | 'home' | 'about';
   count?: number;
   delay?: number;
 }
@@ -13,15 +13,15 @@ const blocks = Array.from({ length: count });
 
 <div class="terminal-buffer-wrapper" data-delay={delay}>
   
-  {/* 骨架屏占位 */}
+  {/* 骨架屏占位区 (仅展示占位动画) */}
   <div class:list={[
     "buffer-skeleton w-full animate-pulse select-none pointer-events-none",
     layout === 'grid' ? "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" : 
-    (layout === 'article' || layout === 'home' || layout === 'photo') ? "flex flex-col gap-8" : 
+    (layout === 'article' || layout === 'home' || layout === 'photo' || layout === 'about') ? "flex flex-col gap-8" : 
     "flex flex-col gap-6"
   ]}>
     
-    {/* 1. Article 布局 (文章详情) */}
+    {/* 1. Article 布局 */}
     {layout === 'article' && (
       <>
         <div class="relative bg-muted/5 border border-border/30 h-32 w-full flex items-center justify-center mt-12">
@@ -45,7 +45,7 @@ const blocks = Array.from({ length: count });
       </>
     )}
 
-    {/* 2. Home 布局 (首页综合区块) */}
+    {/* 2. Home 布局 */}
     {layout === 'home' && (
       <div class="flex flex-col gap-16 w-full mt-8">
         <div>
@@ -63,7 +63,7 @@ const blocks = Array.from({ length: count });
       </div>
     )}
 
-    {/* 3. Grid 布局 (友链 / 标签) */}
+    {/* 3. Grid 布局 */}
     {layout === 'grid' && blocks.map(() => (
       <div class="bg-muted/5 border border-border/30 h-40 p-6 flex flex-col justify-between">
         <div class="flex items-start gap-4">
@@ -80,7 +80,7 @@ const blocks = Array.from({ length: count });
       </div>
     ))}
 
-    {/* 4. List 布局 (文章列表) */}
+    {/* 4. List 布局 */}
     {layout === 'list' && blocks.map(() => (
       <div class="bg-muted/5 border border-border/30 p-6 flex flex-col h-40 justify-center">
          <div class="h-2 bg-muted/20 w-24 mb-4"></div>
@@ -90,7 +90,7 @@ const blocks = Array.from({ length: count });
       </div>
     ))}
 
-    {/* 5. Project 布局 (开源项目) */}
+    {/* 5. Project 布局 */}
     {layout === 'project' && blocks.map(() => (
       <div class="bg-muted/5 border border-border/30 min-h-[220px] flex flex-col p-6 relative overflow-hidden">
          <div class="absolute right-4 top-4 text-6xl font-black text-muted/5 pointer-events-none">00</div>
@@ -104,7 +104,7 @@ const blocks = Array.from({ length: count });
       </div>
     ))}
 
-    {/* 6. Photo 布局 (相册时间轴) */}
+    {/* 6. Photo 布局 */}
     {layout === 'photo' && blocks.map(() => (
       <div class="flex gap-6 relative">
         <div class="w-px bg-muted/20 absolute top-0 bottom-0 left-3"></div>
@@ -115,9 +115,41 @@ const blocks = Array.from({ length: count });
         </div>
       </div>
     ))}
+
+    {/* 7. About 布局 (新增) */}
+    {layout === 'about' && (
+      <div class="flex flex-col gap-20 w-full mt-2">
+        {/* 档案区骨架 */}
+        <div>
+          <div class="flex items-end justify-between pb-4 border-b border-border/30 mb-8"><div class="h-4 bg-muted/20 w-32"></div></div>
+          <div class="flex flex-col md:flex-row gap-8 items-start">
+            <div class="w-32 h-32 sm:w-40 sm:h-40 bg-muted/10 border border-border/30 shrink-0"></div>
+            <div class="flex-1 w-full space-y-4 mt-2 md:mt-0">
+              <div class="h-6 md:h-8 bg-muted/20 w-48"></div>
+              <div class="h-3 bg-muted/20 w-32 mb-6"></div>
+              <div class="space-y-3"><div class="h-3 bg-muted/20 w-full"></div><div class="h-3 bg-muted/20 w-full"></div><div class="h-3 bg-muted/20 w-4/5"></div></div>
+            </div>
+          </div>
+        </div>
+        {/* 矩阵区骨架 */}
+        <div>
+          <div class="flex items-end justify-between pb-4 border-b border-border/30 mb-8"><div class="h-4 bg-muted/20 w-32"></div></div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {Array.from({length: 4}).map(() => <div class="bg-muted/5 border border-border/30 h-28"></div>)}
+          </div>
+        </div>
+        {/* 硬件/清单区骨架 */}
+        <div>
+          <div class="flex items-end justify-between pb-4 border-b border-border/30 mb-8"><div class="h-4 bg-muted/20 w-32"></div></div>
+          <div class="border border-border/30 bg-muted/5">
+            {Array.from({length: 4}).map(() => <div class="h-16 border-b border-border/20 border-dashed"></div>)}
+          </div>
+        </div>
+      </div>
+    )}
   </div>
 
-  {/* 真实数据容器 (启用GPU加速) */}
+  {/* 真实数据容器 (启用GPU加速平滑渲染) */}
   <div class="buffer-content hidden opacity-0 transition-opacity duration-700 ease-out will-change-[opacity]">
     <slot />
   </div>
