@@ -1,0 +1,245 @@
+---
+import Layout from '~/layouts/Layout.astro'
+import TerminalBuffer from '~/components/base/TerminalBuffer.astro'
+import { ABOUT_CONFIG } from '~/config'
+
+const { title, description, introduce, profile, skills, equipment, games, courseSchedule, todos } = ABOUT_CONFIG
+
+const SECTION_HEADER_CLASS = "flex items-end justify-between border-b pb-4 mb-8 select-none"
+const SECTION_TITLE_CLASS = "font-mono text-sm font-bold uppercase tracking-widest text-foreground/80"
+const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
+---
+
+<Layout title={title} description={description}>
+  <div class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
+    
+    <aside class="w-full lg:w-1/3 lg:sticky lg:top-0 lg:h-screen flex flex-col lg:border-r z-20 bg-background border-b border-border/60 lg:border-none">
+      <div class="flex flex-1 lg:overflow-y-auto scrollbar-hide flex-col">
+        <div class="p-6 lg:p-8 xl:p-12 pb-0 shrink-0">
+          <div class="flex flex-row justify-between items-start text-[10px] font-mono uppercase tracking-widest text-muted-foreground/60 select-none">
+              <span>// SYSTEM_LOGS // OPERATOR_PROFILE</span>
+              <div class="flex items-center gap-2 text-primary">
+                  <span class="relative flex h-1.5 w-1.5"><span class="animate-ping absolute inline-flex h-full w-full bg-emerald-500 opacity-75"></span><span class="relative inline-flex h-1.5 w-1.5 bg-emerald-500"></span></span>
+                  <span class="font-bold text-foreground">STATUS: ALIVE</span>
+              </div>
+          </div>
+        </div>
+        
+        <div class="flex-1 flex flex-col justify-end lg:justify-center p-6 lg:p-8 xl:p-12 min-h-[300px] lg:min-h-[250px]">
+           <h1 class="text-6xl sm:text-7xl xl:text-8xl font-black tracking-tighter text-foreground leading-[0.8] mb-6 -ml-1 select-none">{title.toUpperCase()}<span class="text-primary">.</span></h1>
+           <div class="h-px w-24 bg-foreground/20 mt-2 mb-4"></div>
+           <div class="flex items-center gap-2 text-xs font-mono text-muted-foreground/60 uppercase"><span class="icon-[ph--user-bold] size-4"></span><span>Entity Profile</span></div>
+        </div>
+        
+        <div class="shrink-0 p-6 lg:p-8 xl:p-12 bg-muted/5 border-t border-dashed border-border/40">
+           <span class="block text-[10px] uppercase text-muted-foreground/60 font-mono tracking-wider mb-4">// CURRENT_THOUGHT</span>
+           <p class="text-sm text-muted-foreground leading-loose font-mono">{introduce}<br/><br/><span class="text-primary">> Decoding human essence...</span></p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 bg-border/40 gap-px border-t border-border/40 shrink-0">
+          <div class="group relative flex flex-col items-center justify-center p-6 bg-background hover:bg-muted/10 transition-colors h-32 lg:h-28 xl:h-32">
+             <span class="text-lg font-mono font-bold text-foreground tracking-tighter group-hover:text-primary transition-colors">Carbon-based</span>
+             <span class="text-[9px] font-mono uppercase tracking-widest text-muted-foreground mt-2">Life_Form</span>
+             <div class="absolute top-0 right-0 p-1 opacity-0 group-hover:opacity-100 transition-opacity"><div class="w-1.5 h-1.5 bg-primary"></div></div>
+          </div>
+          <div class="group relative flex flex-col items-center justify-center p-6 bg-background hover:bg-muted/10 transition-colors h-32 lg:h-28 xl:h-32">
+             <span class="text-lg font-mono font-bold text-foreground group-hover:text-primary transition-colors">Earth / UTC+8</span>
+             <span class="text-[9px] font-mono uppercase tracking-widest text-muted-foreground mt-2">Location_Node</span>
+             <div class="absolute bottom-0 left-0 p-1 opacity-0 group-hover:opacity-100 transition-opacity"><div class="w-1.5 h-1.5 bg-primary"></div></div>
+          </div>
+      </div>
+    </aside>
+
+    <main class="w-full lg:w-2/3 z-10 flex flex-col">
+      <div class="p-6 lg:p-10 xl:p-16 2xl:p-20 flex-1 flex flex-col">
+        <TerminalBuffer layout="home" delay={500}>
+            
+            {/* 01. 个人档案区域 */}
+            <div class="mb-20">
+                <div class={SECTION_HEADER_CLASS}>
+                    <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>The Operator</h2></div>
+                    <div class="hidden sm:block h-px flex-1 bg-border/40 ml-6 max-w-[200px]"></div>
+                </div>
+                
+                <div class="flex flex-col md:flex-row gap-8 items-start">
+                    <div class="relative shrink-0 group">
+                        <div class="absolute -top-2 -left-2 w-4 h-4 border-t-2 border-l-2 border-primary/50 group-hover:border-primary transition-colors"></div>
+                        <div class="absolute -bottom-2 -right-2 w-4 h-4 border-b-2 border-r-2 border-primary/50 group-hover:border-primary transition-colors"></div>
+                        <div class="w-32 h-32 sm:w-40 sm:h-40 p-1 border border-border bg-muted/5 relative z-10">
+                            <img src={profile.avatar} alt={profile.name} class="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-500" />
+                        </div>
+                        <div class="mt-4 text-center">
+                            <span class="text-[10px] font-mono uppercase tracking-widest text-primary bg-primary/10 px-2 py-1">ID: {profile.name}</span>
+                        </div>
+                    </div>
+
+                    <div class="flex-1 mt-2 md:mt-0">
+                        <h3 class="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mb-2">{profile.name}</h3>
+                        <p class="text-xs font-mono text-muted-foreground/60 uppercase tracking-widest mb-6">{profile.role}</p>
+                        <div class="prose prose-sm dark:prose-invert prose-p:leading-loose prose-p:text-muted-foreground/90 max-w-none font-sans whitespace-pre-wrap">
+                            {profile.bio}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* 02. 技能矩阵 */}
+            <div class="mb-20">
+                <div class={SECTION_HEADER_CLASS}>
+                    <div class="flex items-center"><span class={SECTION_NUM_CLASS}>02</span><h2 class={SECTION_TITLE_CLASS}>Skill Matrix</h2></div>
+                    <div class="hidden sm:block h-px flex-1 bg-border/40 ml-6 max-w-[200px]"></div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {skills.map((skillGroup, index) => (
+                        <div class="p-6 border border-border bg-background hover:border-primary/30 hover:bg-muted/[0.02] transition-all group relative">
+                            <div class="absolute top-0 right-0 p-2 text-muted-foreground/10 group-hover:text-primary/20 font-mono text-2xl font-black transition-colors select-none">
+                                {(index + 1).toString().padStart(2, '0')}
+                            </div>
+                            <h4 class="text-xs font-mono font-bold text-foreground uppercase tracking-widest mb-4 flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 bg-primary/50 group-hover:bg-primary transition-colors"></span>
+                                {skillGroup.category}
+                            </h4>
+                            <div class="flex flex-wrap gap-2 relative z-10">
+                                {skillGroup.items.map(item => (
+                                    <span class="px-2.5 py-1 text-xs font-mono text-muted-foreground border border-border/60 bg-muted/5 group-hover:text-foreground transition-colors cursor-default">
+                                        {item}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* 03. 硬件装备区域 */}
+            <div class="mb-20">
+                <div class={SECTION_HEADER_CLASS}>
+                    <div class="flex items-center"><span class={SECTION_NUM_CLASS}>03</span><h2 class={SECTION_TITLE_CLASS}>Hardware Loadout</h2></div>
+                    <div class="hidden sm:block h-px flex-1 bg-border/40 ml-6 max-w-[200px]"></div>
+                </div>
+                <div class="border border-border/60 bg-background">
+                    {equipment.map((item, index) => (
+                        <div class={`flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 hover:bg-muted/5 transition-colors group ${index !== equipment.length - 1 ? 'border-b border-border/40 border-dashed' : ''}`}>
+                            <div class="flex items-center gap-4 mb-2 sm:mb-0">
+                                <span class="text-[10px] font-mono text-muted-foreground/40 w-8">{String(index + 1).padStart(2, '0')}</span>
+                                <span class="text-xs font-mono uppercase tracking-widest text-muted-foreground group-hover:text-primary transition-colors">{item.type}</span>
+                            </div>
+                            <div class="flex flex-col sm:items-end pl-12 sm:pl-0">
+                                <span class="text-sm font-bold text-foreground font-sans">{item.name}</span>
+                                <span class="text-[11px] font-mono text-muted-foreground/60">{item.desc}</span>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* 04. 游戏爱好区域 */}
+            <div class="mb-20">
+                <div class={SECTION_HEADER_CLASS}>
+                    <div class="flex items-center"><span class={SECTION_NUM_CLASS}>04</span><h2 class={SECTION_TITLE_CLASS}>Gaming Log</h2></div>
+                    <div class="hidden sm:block h-px flex-1 bg-border/40 ml-6 max-w-[200px]"></div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {games.map(game => (
+                        <div class="p-5 border border-border/60 bg-background hover:bg-muted/5 hover:border-primary/40 transition-colors group flex flex-col justify-between min-h-[120px]">
+                            <div class="flex justify-between items-start mb-4">
+                                <span class="text-sm font-bold text-foreground tracking-tight group-hover:text-primary transition-colors">{game.title}</span>
+                                <span class="text-[10px] font-mono text-muted-foreground/50">{game.hours}</span>
+                            </div>
+                            <div class="flex items-center justify-between mt-auto">
+                                <span class="text-xs font-mono text-muted-foreground/80">{game.platform}</span>
+                                <div class="flex items-center gap-1.5">
+                                    <div class={`w-1.5 h-1.5 ${game.color} ${game.status === 'Playing' ? 'animate-pulse' : ''}`}></div>
+                                    <span class="text-[9px] font-mono uppercase tracking-widest text-muted-foreground">{game.status}</span>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* 05. 课程表 (Course Schedule Matrix) */}
+            <div class="mb-20">
+                <div class={SECTION_HEADER_CLASS}>
+                    <div class="flex items-center"><span class={SECTION_NUM_CLASS}>05</span><h2 class={SECTION_TITLE_CLASS}>Course Matrix</h2></div>
+                    <div class="hidden sm:block h-px flex-1 bg-border/40 ml-6 max-w-[200px]"></div>
+                </div>
+                
+                {/* 课程表网格：在大屏上并排5列，中屏3列，小屏2列/1列 */}
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5 gap-4">
+                    {courseSchedule.map((dayData, index) => (
+                        <div class="flex flex-col border border-border/60 bg-background hover:border-primary/30 transition-colors group">
+                            {/* 列标题 (星期几) */}
+                            <div class="flex justify-between items-center px-3 py-2 bg-muted/10 border-b border-border/40">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-mono font-bold text-foreground uppercase tracking-widest">{dayData.day}</span>
+                                    <span class="text-[9px] font-mono text-muted-foreground/50">{dayData.label}</span>
+                                </div>
+                                <span class="text-[9px] font-mono text-primary/40 font-bold group-hover:text-primary transition-colors">
+                                    0{index + 1}
+                                </span>
+                            </div>
+                            
+                            {/* 课程列表 */}
+                            <div class="p-3 flex flex-col gap-4 flex-1">
+                                {dayData.courses.length > 0 ? (
+                                    dayData.courses.map(course => (
+                                        <div class="relative pl-3 border-l-2 border-primary/30 hover:border-primary transition-colors">
+                                            <span class="block text-[9px] font-mono text-muted-foreground/60 mb-0.5 tracking-wider">{course.time}</span>
+                                            <span class="block text-xs font-bold text-foreground leading-tight mb-1">{course.name}</span>
+                                            <span class="flex items-center gap-1 text-[9px] font-mono text-muted-foreground/40">
+                                                <span class="icon-[ph--map-pin] size-2.5"></span>
+                                                {course.location}
+                                            </span>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div class="flex-1 flex flex-col items-center justify-center opacity-30 py-4 select-none">
+                                        <span class="icon-[ph--coffee] size-5 mb-1 text-muted-foreground"></span>
+                                        <span class="text-[9px] font-mono uppercase tracking-widest text-muted-foreground">No Classes</span>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* 06. 待办清单 */}
+            <div class="mb-12">
+                <div class={SECTION_HEADER_CLASS}>
+                    <div class="flex items-center"><span class={SECTION_NUM_CLASS}>06</span><h2 class={SECTION_TITLE_CLASS}>Active Threads</h2></div>
+                    <div class="hidden sm:block h-px flex-1 bg-border/40 ml-6 max-w-[200px]"></div>
+                </div>
+                <div class="border border-border/60 bg-muted/5 p-6">
+                    <div class="space-y-3">
+                        {todos.map(todo => (
+                            <div class="flex items-start gap-3 group">
+                                <div class="mt-0.5 shrink-0 text-muted-foreground group-hover:text-primary transition-colors">
+                                    {todo.completed ? (
+                                        <span class="icon-[ph--check-square-fill] size-4 text-primary"></span>
+                                    ) : (
+                                        <span class="icon-[ph--square] size-4 text-muted-foreground/60"></span>
+                                    )}
+                                </div>
+                                <span class={`text-sm font-sans ${todo.completed ? 'text-muted-foreground/40 line-through' : 'text-foreground group-hover:text-primary/90'} transition-colors`}>
+                                    {todo.task}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-20 pt-8 border-t border-dashed border-border/40 flex justify-center">
+                <span class="font-mono text-[10px] text-muted-foreground/20 uppercase tracking-[0.5em] select-none">// End of Record //</span>
+            </div>
+            
+        </TerminalBuffer>
+      </div>
+    </main>
+  </div>
+</Layout>
+
+<style>.scrollbar-hide::-webkit-scrollbar{display:none;}.scrollbar-hide{-ms-overflow-style:none;scrollbar-width:none;}</style>

@@ -9,22 +9,46 @@ import favicon from '../../public/favicon.webp'
 import { CMS_CONFIG } from '~/config'
 ---
 
-<header>
+{/* 增加 relative z-50 确保 Header 层级最高，下拉菜单不会被遮挡 */}
+<header class="relative z-50">
   
   <div class="mx-auto flex justify-between px-6 sm:px-8 border-x border-border/40 py-6 lg:px-8">
     <div class="flex gap-3 sm:gap-6 items-center flex-shrink-0">
-      <a href="/" class="pointer-events-auto select-none" transition:persist>
+      <a href="/" class="pointer-events-auto select-none shrink-0" transition:persist>
         <Image src={favicon} width={56} height={56} alt="Logo" class="w-8 h-8 border-2 border-transparent" loading="eager"/>
       </a>
       
-      {/* 1. 移动端视图 (md:hidden)：只渲染数组的前 2 个元素 (.slice(0, 2)) */}
-      <div class="flex gap-1 md:hidden">
+      {/* 1. 移动端视图 (md:hidden) */}
+      <div class="flex gap-1 md:hidden items-center relative">
+        {/* 固定显示前 2 个链接 */}
         {
           HEADER_LINKS.slice(0, 2).map((link) => (
             <HeaderLink href={link.url} background>
               {link.name}
             </HeaderLink>
           ))
+        }
+
+        {/* 超过 2 个链接时，生成下拉菜单折叠按钮 */}
+        {
+          HEADER_LINKS.length > 2 && (
+            <div class="relative flex items-center h-full -ml-1">
+              <button id="mobile-menu-btn" class="flex items-center justify-center gap-1.5 px-3 h-9 bg-transparent border border-transparent hover:border-border/40 hover:bg-muted/10 text-muted-foreground hover:text-primary transition-colors focus:outline-none rounded-none">
+                <span class="icon-[ph--caret-down-bold] size-3 transition-transform duration-300" id="mobile-menu-icon"></span>
+              </button>
+              
+              {/* 下拉悬浮面板 */}
+              <div id="mobile-menu-dropdown" class="absolute top-full left-0 mt-3 w-30 bg-background/95 backdrop-blur-md border border-border/60 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] opacity-0 invisible translate-y-[-10px] transition-all duration-300 flex flex-col p-1.5 z-[100]">
+                {HEADER_LINKS.slice(2).map((link) => (
+                  <a href={link.url} class="px-4 py-3 text-xs font-mono font-bold uppercase tracking-widest text-muted-foreground hover:text-primary hover:bg-muted/10 border-l-2 border-transparent hover:border-primary transition-all">
+                    {link.name}
+                  </a>
+                ))}
+                <div class="h-px w-full bg-border/40 my-1"></div>
+                <div class="text-[9px] font-mono text-muted-foreground/30 text-center uppercase tracking-[0.2em] py-1 select-none">// EXT_NAV</div>
+              </div>
+            </div>
+          )
         }
       </div>
 
@@ -40,7 +64,8 @@ import { CMS_CONFIG } from '~/config'
       </div>
 
     </div>
-    <div class="flex gap-2 items-center" transition:persist="header-theme-toggle">
+    
+    <div class="flex gap-2 items-center shrink-0" transition:persist="header-theme-toggle">
       <SearchSwitch />
       <a
         href="/rss.xml"
@@ -65,10 +90,10 @@ import { CMS_CONFIG } from '~/config'
         )
       }
 
-
       <ThemeToggle client:load />
     </div>
   </div>
+  
   {/* 底部装饰条：模拟撕纸或机械分割线 */}
   <div class="hidden lg:flex absolute -bottom-px left-0 w-full h-px bg-border justify-between px-[10%]">
       <div class="w-20 h-px bg-primary"></div>
@@ -76,3 +101,50 @@ import { CMS_CONFIG } from '~/config'
   </div>
 </header>
 
+<script is:inline>
+  // 封装下拉菜单交互逻辑，完美兼容 Astro 的 ViewTransitions
+  function initMobileNav() {
+    const btn = document.getElementById('mobile-menu-btn');
+    const dropdown = document.getElementById('mobile-menu-dropdown');
+    const icon = document.getElementById('mobile-menu-icon');
+    
+    if (!btn || !dropdown) return;
+
+    // 清理可能由于 ViewTransitions 残留的旧监听器
+    const newBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(newBtn, btn);
+    
+    const openMenu = () => {
+      dropdown.classList.remove('opacity-0', 'invisible', 'translate-y-[-10px]');
+      dropdown.classList.add('opacity-100', 'visible', 'translate-y-0');
+      icon?.classList.add('rotate-180');
+    };
+
+    const closeMenu = () => {
+      dropdown.classList.add('opacity-0', 'invisible', 'translate-y-[-10px]');
+      dropdown.classList.remove('opacity-100', 'visible', 'translate-y-0');
+      icon?.classList.remove('rotate-180');
+    };
+
+    newBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isExpanded = dropdown.classList.contains('opacity-100');
+      isExpanded ? closeMenu() : openMenu();
+    });
+
+    // 点击页面空白处关闭菜单
+    document.addEventListener('click', (e) => {
+      if (!newBtn.contains(e.target) && !dropdown.contains(e.target)) {
+        closeMenu();
+      }
+    });
+  }
+
+  // 监听 Astro 的页面加载事件
+  document.addEventListener('astro:page-load', initMobileNav);
+  if (document.readyState === 'loading') { 
+    document.addEventListener('DOMContentLoaded', initMobileNav); 
+  } else { 
+    initMobileNav(); 
+  }
+</script>
