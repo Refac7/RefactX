@@ -143,7 +143,7 @@ export const ABOUT_CONFIG = {
     name: 'Refac7',
     avatar: '/avatar.png',
     role: 'Creative Developer / UI Designer',
-    bio: '又是又是……又是借口 / Another another... Another execuse. \n\n某计科专业在读，高数苦手。喜欢电子音乐，熟悉以下所有技术栈的拼写，熟练使用剪贴板和cmd c和cmd v. 如果你和我有共同爱好，欢迎随时使用你能找到的所有渠道联系我哦～',
+    bio: '又是又是……又是借口 / Another another... Another excuse. \n\n某计科专业在读，高数苦手。喜欢电子音乐，熟悉以下所有技术栈的拼写，熟练使用剪贴板和cmd c和cmd v. 如果你和我有共同爱好，欢迎随时使用你能找到的所有渠道联系我哦～',
   },
   
   // 技能矩阵
