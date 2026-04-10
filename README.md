@@ -67,5 +67,9 @@
 ## 其他说明
 
 本项目使用 **pnpm** 包管理器进行依赖管理。
+
+本项目在且仅在 Vercel 通过测试，为了避免兼容性问题，请通过 Vercel 部署此项目，
+
 原始版本源自 [Litos theme](https://github.com/Dnzzk2/Litos)（MIT 许可证）。
+
 本副本由 Refac7 维护，沿用原始版本的 MIT 许可证。

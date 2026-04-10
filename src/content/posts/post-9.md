@@ -40,7 +40,7 @@ export default {
     const pathname = url.pathname;
 
     const referer = request.headers.get('Referer') || '';
-    const allowedDomains = ['localhost'];
+    const allowedDomains = ['refact.cc', 'www.refact.cc', 'xlog.app', 'refact.xlog.app', 'localhost'];
 
     // -----------------------------
     // ✅ CORS 预检
@@ -86,9 +86,22 @@ export default {
           );
         }
 
-        // ✅ 清理文件名
+        // 1. 获取 URL 参数 ?path=xxx
+        const pathType = url.searchParams.get('path');
+
+        // 2. 生成基础随机文件名
         const ext = file.name.substring(file.name.lastIndexOf('.')) || '';
-        const filename = `comment/${Date.now()}-${Math.random().toString(36).slice(2)}${ext}`;
+        const uniqueName = `${Date.now()}-${Math.random().toString(36).slice(2)}${ext}`;
+
+        // 3. 根据参数决定最终路径
+        let filename;
+        if (pathType === 'root') {
+          // 如果参数是 root，直接放在根目录 (Admin 上传)
+          filename = uniqueName;
+        } else {
+          // 默认情况，放在 comment 文件夹下 (Waline 评论)
+          filename = `comment/${uniqueName}`;
+        }
 
         const buffer = await file.arrayBuffer();
 
@@ -112,31 +125,44 @@ export default {
     // ✅ GET 图片（Referer 防盗链）
     // -----------------------------
     if (request.method === 'GET') {
-      // 只对 GET 做防盗链
       let allowed = false;
-      for (const domain of allowedDomains) {
-        if (referer.includes(domain)) {
-          allowed = true;
-          break;
+      
+      // 如果路径以 /base/ 开头，直接允许，不检查 Referer
+      if (pathname.startsWith('/base/')) {
+        allowed = true;
+      } 
+      else {
+        // 否则，执行常规的 Referer 检查
+        for (const domain of allowedDomains) {
+          if (referer.includes(domain)) {
+            allowed = true;
+            break;
+          }
         }
       }
+      
 
       if (!allowed) {
-        const warning = await env.MY_BUCKET.get('hotlink-warning.png');
-        if (warning) {
-          return new Response(warning.body, {
-            status: 200,
-            headers: {
-              'Content-Type': 'image/png',
-              'Cache-Control': 'public, max-age=3600',
-              'X-Robots-Tag': 'noindex'
-            }
+        // 如果想允许直接浏览器访问（无 Referer），可以把下面的注释打开
+        // if (!referer) allowed = true; 
+
+        if (!allowed) {
+          const warning = await env.MY_BUCKET.get('hotlink-warning.png');
+          if (warning) {
+            return new Response(warning.body, {
+              status: 200,
+              headers: {
+                'Content-Type': 'image/png',
+                'Cache-Control': 'public, max-age=3600',
+                'X-Robots-Tag': 'noindex'
+              }
+            });
+          }
+          return new Response('Hotlinking not allowed', {
+            status: 403,
+            headers: { 'Content-Type': 'text/plain', 'X-Robots-Tag': 'noindex' }
           });
         }
-        return new Response('Hotlinking not allowed', {
-          status: 403,
-          headers: { 'Content-Type': 'text/plain', 'X-Robots-Tag': 'noindex' }
-        });
       }
 
       const key = pathname.slice(1);
@@ -210,3 +236,5 @@ Waline评论上传的图片默认统一保存在comment文件夹下。
 1月4日 第一次修改
 
 2月12日 第二次修改
+
+4月10日 第三次修改

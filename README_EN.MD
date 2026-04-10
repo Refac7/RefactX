@@ -68,5 +68,8 @@ A modern, elegant Astro theme designed specifically for content creators and dev
 
 This project uses **pnpm** as the package manager for dependency management.
 
+This project has been tested only on Vercel. To avoid compatibility issues, please deploy this project through Vercel.
+
 Original version is derived from [Litos theme](https://github.com/Dnzzk2/Litos) (MIT License).  
+
 This fork is maintained by Refac7 and inherits the MIT License from the original version.

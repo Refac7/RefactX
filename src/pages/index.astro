@@ -27,7 +27,7 @@ const SECTION_TITLE_CLASS = "font-mono text-sm font-bold uppercase tracking-wide
 const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
 ---
 
-<Layout title="主页" description={SITE.description}>
+<Layout title="Home" description={SITE.description}>
   <div id="snowfall-container" class="fixed inset-0 pointer-events-none z-[1] transition-opacity duration-700 ease-in-out opacity-0">
     <Snowfall />
   </div>
@@ -82,8 +82,7 @@ const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
 
     <main class="w-full lg:w-2/3 z-10 flex flex-col fade-up animation-delay-150">
       <div class="p-6 lg:p-10 xl:p-16 2xl:p-20 flex-1 flex flex-col">
-        <TerminalBuffer layout="home" delay={700}>
-          <!-- 01. 导航卡片区 -->
+        <TerminalBuffer layout="home" delay={500}>
           <div class="mb-20">
               <div class={SECTION_HEADER_CLASS}>
                 <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>Navigation Hub</h2></div>
@@ -108,7 +107,6 @@ const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
               </div>
           </div>
 
-          <!-- 02. 最近文章 -->
           <div class="mb-20 fade-up" style="animation-delay: 200ms">
               <div class={SECTION_HEADER_CLASS}>
                 <div class="flex items-center"><span class={SECTION_NUM_CLASS}>02</span><h2 class={SECTION_TITLE_CLASS}>Transmissions</h2></div>
@@ -120,7 +118,6 @@ const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
               <List {posts} {type} heroImageLayout={heroImageLayout} />
           </div>
 
-          <!-- 03. GitHub 动态 -->
           {ENABLED && (
             <div class="mb-20 fade-up" style="animation-delay: 300ms">
               <div class={SECTION_HEADER_CLASS}>
@@ -131,7 +128,6 @@ const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
             </div>
           )}
 
-          <!-- 04. 技能展示 -->
           {SKILLS_ENABLED && SKILLS_DATA.length > 0 && (
             <div class="mb-12 fade-up" style="animation-delay: 400ms">
               <div class={SECTION_HEADER_CLASS}>
