@@ -53,26 +53,28 @@ const PostLayout = layoutMap[layoutKey] || Jap
 
 <Layout title={frontmatter.title} description={frontmatter.description || frontmatter.title} image={frontmatter.ogImage}>
 
-  <div class="flex flex-col justify-between h-fit transition-all duration-500 ease-out">
+  <div class="flex flex-col justify-between h-fit transition-all duration-500 ease-out fade-up">
     <TocMobile {post} {posts} headings={filterHeadings} />
 
-    <div class="hidden md:flex z-60 w-12 h-12 fixed left-8 bottom-8 bg-foreground hover:bg-foreground/80 text-primary-foreground items-center justify-center cursor-pointer transition-all" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+    <div class="hidden md:flex z-60 w-12 h-12 fixed left-8 bottom-8 bg-foreground hover:bg-foreground/80 text-primary-foreground items-center justify-center cursor-pointer transition-all animate-slide-down" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
       <span class="icon-[mdi--arrow-up] size-5"></span>
     </div>   
 
-    <PostLayout 
-      {frontmatter} 
-      minutesRead={remarkPluginFrontmatter.minutesRead}
-      wordCount={wordCount}
-    >
-      <Content />
-    </PostLayout>
+    <div class="fade-up animation-delay-100">
+      <PostLayout 
+        {frontmatter} 
+        minutesRead={remarkPluginFrontmatter.minutesRead}
+        wordCount={wordCount}
+      >
+        <Content />
+      </PostLayout>
+    </div>
 
-    <div class="px-6 sm:px-8 pb-6 sm:pb-8 mx-auto w-full">
+    <div class="px-6 sm:px-8 pb-6 sm:pb-8 mx-auto w-full fade-up animation-delay-150">
       {posts.length > 1 && <PostNavigation {prev} {next} />}
     </div>
 
-    <div class="mt-8 p-6 lg:p-8 xl:p-12 pb-12 mx-auto w-full">
+    <div class="mt-8 p-6 lg:p-8 xl:p-12 pb-12 mx-auto w-full fade-up animation-delay-200">
       <Comments />
     </div>
   </div>

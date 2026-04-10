@@ -21,7 +21,7 @@ const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
     <aside class="w-full lg:w-1/3 lg:sticky lg:top-0 lg:h-screen flex flex-col lg:border-r z-20 bg-background border-b border-border/60 lg:border-none">
       
       <div class="flex flex-1 lg:overflow-y-auto scrollbar-hide flex-col">
-        <div class="p-6 lg:p-8 xl:p-12 pb-0 shrink-0">
+        <div class="p-6 lg:p-8 xl:p-12 pb-0 shrink-0 fade-up">
           <div class="flex flex-row justify-between items-start text-[10px] font-mono uppercase tracking-widest text-muted-foreground/60 select-none">
               <span>// SYSTEM_LINKS // NETWORK</span>
               <div class="flex items-center gap-2 text-primary">
@@ -31,19 +31,19 @@ const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
           </div>
         </div>
         
-        <div class="flex-1 flex flex-col justify-end lg:justify-center p-6 lg:p-8 xl:p-12 min-h-[300px] lg:min-h-[250px]">
+        <div class="flex-1 flex flex-col justify-end lg:justify-center p-6 lg:p-8 xl:p-12 min-h-[300px] lg:min-h-[250px] fade-up animation-delay-100">
            <h1 class="text-6xl sm:text-7xl xl:text-8xl font-black tracking-tighter text-foreground leading-[0.8] mb-6 -ml-1 select-none">{title.toUpperCase()}<span class="text-primary">.</span></h1>
            <div class="h-px w-24 bg-foreground/20 mt-2 mb-4"></div>
            <div class="flex items-center gap-2 text-xs font-mono text-muted-foreground/60 uppercase"><span class="icon-[ph--planet-bold] size-4"></span><span>Signal Exchange</span></div>
         </div>
         
-        <div class="shrink-0 p-6 lg:p-8 xl:p-12 bg-muted/5 border-t border-dashed border-border/40">
+        <div class="shrink-0 p-6 lg:p-8 xl:p-12 bg-muted/5 border-t border-dashed border-border/40 fade-up animation-delay-150">
            <span class="block text-[10px] uppercase text-muted-foreground/60 font-mono tracking-wider mb-4">// NODE_INFO</span>
            <p class="text-sm text-muted-foreground leading-loose font-mono">{introduce}<br/><br/><span class="text-primary">> Scanning frequency...</span></p>
         </div>
       </div>
 
-      <div class="grid grid-cols-2 bg-border/40 gap-px border-t border-border/40 shrink-0">
+      <div class="grid grid-cols-2 bg-border/40 gap-px border-t border-border/40 shrink-0 fade-up animation-delay-200">
           <div class="group relative flex flex-col items-center justify-center p-6 bg-background hover:bg-muted/10 transition-colors h-32 lg:h-28 xl:h-32">
              <span class="text-3xl font-mono font-bold text-foreground tracking-tighter group-hover:text-primary transition-colors">{totalLinks}</span>
              <span class="text-[9px] font-mono uppercase tracking-widest text-muted-foreground mt-2">Active_Nodes</span>
@@ -57,7 +57,7 @@ const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
       </div>
     </aside>
 
-    <main class="w-full lg:w-2/3 z-10 flex flex-col">
+    <main class="w-full lg:w-2/3 z-10 flex flex-col fade-up animation-delay-150">
       <div class="p-6 lg:p-10 xl:p-16 2xl:p-20 flex-1 flex flex-col">
         <div class={SECTION_HEADER_CLASS}>
             <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>Node_Sequence</h2></div>
@@ -68,7 +68,13 @@ const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
             {FRIENDS_LIST.map((friend, index) => {
               const paddedIndex = (index + 1).toString().padStart(2, '0');
               return (
-                <a href={friend.url} target="_blank" rel="noopener noreferrer" class="friend-card group relative flex flex-col p-6 bg-background border hover:border-primary/50 transition-all duration-300 min-h-[200px]">
+                <a 
+                  href={friend.url} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="friend-card group relative flex flex-col p-6 bg-background border hover:border-primary/50 transition-all duration-300 min-h-[200px] fade-up"
+                  style={`animation-delay: ${index * 50}ms`}
+                >
                   <div class="absolute top-2 right-4 pointer-events-none select-none"><span class="font-mono text-6xl font-black text-muted-foreground/[0.03] group-hover:text-primary/[0.04] transition-colors">{paddedIndex}</span></div>
                   <div class="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary/0 group-hover:border-primary/50 transition-colors"></div>
                   <div class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-primary/0 group-hover:border-primary/50 transition-colors"></div>
@@ -90,7 +96,7 @@ const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
                 </a>
               )
             })}
-            
+              
             {enableAdd ? (
               <a href="#exchange-section" class="group relative flex flex-col items-center justify-center p-6 cursor-pointer bg-muted/[0.02] border border-dashed hover:border-primary/40 hover:bg-muted/5 transition-all duration-300 min-h-[200px]">
                   <div class="size-12 flex items-center justify-center border border-border/40 bg-background group-hover:scale-110 transition-transform mb-4"><span class="icon-[ph--plus] size-5 text-muted-foreground group-hover:text-primary transition-colors"></span></div>
@@ -160,7 +166,6 @@ const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
 </Layout>
 <style>.scrollbar-hide::-webkit-scrollbar{display:none;}.scrollbar-hide{-ms-overflow-style:none;scrollbar-width:none;}</style>
 <script is:inline>
-  // 处理复制逻辑
   function initCopy() {
     const btns = document.querySelectorAll(".copy-trigger");
     btns.forEach(btn => {
@@ -186,36 +191,15 @@ const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
     });
   }
 
-  // 纯客户端随机乱序算法
   function shuffleFriends() {
     const cards = Array.from(document.querySelectorAll('.friend-card'));
     if(cards.length === 0) return;
-    
-    // 提取出所有卡片的链接地址和纯内容信息(排除外部编号元素)
-    const cardsData = cards.map(card => ({
-        href: card.getAttribute('href'),
-        contentHtml: card.querySelector('.friend-content').innerHTML
-    }));
-
-    // Fisher-Yates 洗牌随机打乱
-    for (let i = cardsData.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [cardsData[i], cardsData[j]] = [cardsData[j], cardsData[i]];
-    }
-
-    // 重新写回到原本固定的卡片位置中，01、02、03将岿然不动
-    cards.forEach((card, index) => {
-        card.setAttribute('href', cardsData[index].href);
-        card.querySelector('.friend-content').innerHTML = cardsData[index].contentHtml;
-    });
+    const cardsData = cards.map(card => ({ href: card.getAttribute('href'), contentHtml: card.querySelector('.friend-content').innerHTML }));
+    for (let i = cardsData.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));[cardsData[i], cardsData[j]] = [cardsData[j], cardsData[i]]; }
+    cards.forEach((card, index) => { card.setAttribute('href', cardsData[index].href); card.querySelector('.friend-content').innerHTML = cardsData[index].contentHtml; });
   }
 
-  // 统筹执行
-  function initAll() {
-    shuffleFriends();
-    initCopy();
-  }
-
+  function initAll() { shuffleFriends(); initCopy(); }
   document.addEventListener('astro:page-load', initAll);
   if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initAll); } else { initAll(); }
 </script>

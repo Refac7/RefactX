@@ -3,20 +3,16 @@ import Layout from '~/layouts/Layout.astro'
 ---
 
 <Layout title="System Failure" description="404 Page Not Found">
-  <div class="relative min-h-[80vh] flex flex-col items-center justify-center p-6 lg:p-8 xl:p-12 font-sans overflow-hidden">
+  <div class="relative min-h-[80vh] flex flex-col items-center justify-center p-6 lg:p-8 xl:p-12 font-sans overflow-hidden fade-up">
     <div class="w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
       
-      
       <div class="relative flex flex-col select-none">
-         
          <span class="font-mono text-xs font-bold text-primary uppercase tracking-[0.3em] mb-2">
             // Critical_Error
          </span>
-         
          <h1 class="text-[10rem] sm:text-[12rem] leading-[0.8] font-bold tracking-tighter text-foreground/5 mix-blend-overlay select-none absolute -top-10 -left-10 z-0">
             404
          </h1>
-         
          <div class="relative z-10">
             <h2 class="text-7xl sm:text-8xl font-bold tracking-tighter text-foreground mb-4">
               404<span class="text-primary animate-pulse">_</span>
@@ -28,11 +24,8 @@ import Layout from '~/layouts/Layout.astro'
          </div>
       </div>
 
-      
-      <div class="w-full">
-        
+      <div class="w-full fade-up animation-delay-200">
         <div class="border border-border/40 bg-background shadow-2xl relative overflow-hidden">
-           
            <div class="flex items-center justify-between px-4 py-2 bg-muted/20 border-b border-border/40">
               <span class="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">sys_diagnostic.log</span>
               <div class="flex gap-1.5">
@@ -41,7 +34,6 @@ import Layout from '~/layouts/Layout.astro'
                  <div class="size-2 rounded-full bg-green-500/50"></div>
               </div>
            </div>
-           
            
            <div class="p-6 font-mono text-sm min-h-[200px] flex flex-col justify-center bg-black/5 dark:bg-black/20">
               <div class="flex items-center text-muted-foreground mb-2 animate-fade-in opacity-0">
@@ -77,7 +69,6 @@ import Layout from '~/layouts/Layout.astro'
            </div>
         </div>
 
-        
         <div class="flex justify-between mt-4 font-mono text-[10px] text-muted-foreground/30 uppercase tracking-widest">
            <span>ERR_CODE: 0x00F4</span>
            <span>MEM_DUMP: EMPTY</span>
@@ -89,7 +80,6 @@ import Layout from '~/layouts/Layout.astro'
 </Layout>
 
 <style>
-  /* 打字机光标效果 */
   .animate-typing {
     display: inline-block;
     overflow: hidden;
@@ -98,34 +88,22 @@ import Layout from '~/layouts/Layout.astro'
     width: 0;
     animation: typing 0.8s steps(30, end) forwards, blink 0.7s step-end infinite;
   }
-  /* 只有最后一行或者正在打字的那一行才闪烁光标，这里为了简单让所有打字动画结束后移除边框 */
   .animate-typing:last-child {
       border-right-color: rgba(var(--primary), 0.5);
   }
-
   @keyframes typing {
     from { width: 0 }
     to { width: 100% }
   }
-  
   @keyframes blink {
     from, to { border-color: transparent }
     50% { border-color: currentColor }
   }
-
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(2px); }
     to { opacity: 1; transform: translateY(0); }
   }
-
   .animate-fade-in {
     animation: fadeIn 0.3s ease-out forwards;
   }
 </style>
-
-<script>
-  // 简单的脚本来处理打字动画宽度的兼容性（虽然主要靠CSS steps实现）
-  document.addEventListener('DOMContentLoaded', () => {
-    // 可以在这里添加更复杂的音效或逻辑
-  })
-</script>
