@@ -14,7 +14,6 @@ export default defineConfig({
   site: SITE.website,
   base: SITE.base,
   
-  // [!code warning] 修改这里：Astro 5 中使用 static 配合 adapter 即可支持 SSR
   output: 'static', 
   
   adapter: vercel({
@@ -26,6 +25,7 @@ export default defineConfig({
     defaultStrategy: 'viewport',
   },
   vite: {
+    // @ts-ignore
     plugins: [tailwindcss()],
     envDir: '.',
     build: {
@@ -38,12 +38,18 @@ export default defineConfig({
       },
       rollupOptions: {
         output: {
-          manualChunks: {
-            'react-vendor': ['react', 'react-dom'],
-            'framer-vendor': ['framer-motion'],
-            'utils': ['clsx', 'tailwind-merge'],
-          },
-        },
+          manualChunks(id) {
+            if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) {
+              return 'react-vendor'
+            }
+            if (id.includes('node_modules/framer-motion')) {
+              return 'framer-vendor'
+            }
+            if (id.includes('node_modules/clsx') || id.includes('node_modules/tailwind-merge')) {
+              return 'utils'
+            }
+          }
+        }
       },
     },
   },

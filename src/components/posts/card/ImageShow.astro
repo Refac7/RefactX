@@ -13,7 +13,7 @@ const hasImage = post.data.heroImage !== 'none'
 const imagePosition = post.data.heroImageLayout || heroImageLayout || 'right'
 const isReverse = imagePosition === 'right'
 const defaultHeroImage = POSTS_CONFIG.defaultHeroImage
-const serialNo = post.slug.slice(0, 4).toUpperCase();
+const serialNo = post.id.slice(0, 4).toUpperCase();
 const sideWidthClass = "md:w-[280px] lg:w-[320px]" 
 ---
 
@@ -32,7 +32,7 @@ const sideWidthClass = "md:w-[280px] lg:w-[320px]"
         ${isReverse ? 'md:order-2 border-l ' : 'md:order-1 border-r '}
       `}
     >
-      <a href={`/posts/${post.slug}`} class="block w-full h-full relative overflow-hidden bg-muted group/img">
+      <a href={`/posts/${post.id}`} class="block w-full h-full relative overflow-hidden bg-muted group/img">
         <img
           src={post.data.heroImage || defaultHeroImage}
           alt={post.data.title}
@@ -53,7 +53,7 @@ const sideWidthClass = "md:w-[280px] lg:w-[320px]"
   
   {!hasImage && (
     <a 
-      href={`/posts/${post.slug}`}
+      href={`/posts/${post.id}`}
       class={`
         hidden md:flex shrink-0 h-auto min-h-full relative overflow-hidden flex-col justify-between p-6 select-none bg-muted/5
         ${sideWidthClass}
@@ -113,7 +113,7 @@ const sideWidthClass = "md:w-[280px] lg:w-[320px]"
     </div>
 
     
-    <a href={`/posts/${post.slug}`} class="group/title block mb-4">
+    <a href={`/posts/${post.id}`} class="group/title block mb-4">
       <h2 class="text-xl md:text-2xl font-bold leading-tight text-foreground font-sans transition-colors group-hover/title:text-primary tracking-tight">
         {post.data.title}
       </h2>

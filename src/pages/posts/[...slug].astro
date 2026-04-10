@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content'
+import { getCollection, render } from 'astro:content'
 import { postsSort } from '~/lib/utils'
 import Layout from '~/layouts/Layout.astro'
 import PostNavigation from '~/components/posts/base/PostNavigation.astro'
@@ -12,7 +12,7 @@ export async function getStaticPaths() {
   const posts = await getCollection('posts')
   const sortedPosts = postsSort(posts)
   return sortedPosts.map((post, index) => ({
-    params: { slug: post.slug },
+    params: { slug: post.id },
     props: {
       post,
       posts: sortedPosts,
@@ -24,7 +24,7 @@ export async function getStaticPaths() {
 
 const { post, posts, prev, next } = Astro.props
 const { data: frontmatter } = post
-const { Content, headings, remarkPluginFrontmatter } = await post.render()
+const { Content, headings, remarkPluginFrontmatter } = await render(post)
 
 const filterHeadings = headings.filter((heading) => heading.slug !== 'footnote-label')
 
@@ -41,14 +41,14 @@ const getWordCount = (content: string) => {
   const en = (cleanContent.replace(/[\u4e00-\u9fa5]/g, ' ').match(/[a-zA-Z0-9_\-]+/g) ||[]).length;
   return cn + en;
 };
-const wordCount = getWordCount(post.body);
+const wordCount = getWordCount(post.body || '');
 
 const layoutMap = {
   'jap': Jap,
-}
+} as const
 
-const layoutKey = frontmatter.postType || POSTS_CONFIG.postType
-const PostLayout = layoutMap[layoutKey]
+const layoutKey = (frontmatter.postType || POSTS_CONFIG.postType) as keyof typeof layoutMap
+const PostLayout = layoutMap[layoutKey] || Jap
 ---
 
 <Layout title={frontmatter.title} description={frontmatter.description || frontmatter.title} image={frontmatter.ogImage}>
