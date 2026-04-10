@@ -7,6 +7,12 @@ import TerminalBuffer from '~/components/base/TerminalBuffer.astro';
 
 interface Friend { name: string; url: string; author: string; description: string; avatar: string; }
 const FRIENDS_LIST = rawFriendsList as Friend[];
+
+const shuffledFriendsList = [...FRIENDS_LIST];
+for (let i = shuffledFriendsList.length - 1; i > 0; i--) {
+  const j = Math.floor(Math.random() * (i + 1));
+  [shuffledFriendsList[i], shuffledFriendsList[j]] = [shuffledFriendsList[j], shuffledFriendsList[i]];
+}
 const { title, description, introduce, enableAdd } = FRIENDS_CONFIG
 const { sitename, email, author, sitelink, siteavatar, description: myDescription } = FRIENDS_CONTACT;
 const totalLinks = FRIENDS_LIST.length.toString().padStart(2, '0');
@@ -65,7 +71,8 @@ const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
         </div>
         <TerminalBuffer layout="grid" count={12} delay={500}>
           <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            {FRIENDS_LIST.map((friend, index) => {
+            {/* === 修改：使用 shuffledFriendsList 替代原有的 FRIENDS_LIST 渲染 === */}
+            {shuffledFriendsList.map((friend, index) => {
               const paddedIndex = (index + 1).toString().padStart(2, '0');
               return (
                 <a href={friend.url} target="_blank" rel="noopener noreferrer" class="group relative flex flex-col p-6 bg-background border hover:border-primary/50 transition-all duration-300 min-h-[200px]">
