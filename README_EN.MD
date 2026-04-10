@@ -5,7 +5,13 @@
 > This project may contain security vulnerabilities. In accordance with the MIT License, the template maintainers shall not be liable for any losses incurred as a result. By using this blog template, you acknowledge and accept such risks. You **must** modify the relevant configurations in `./src/config.ts` — **do not use this theme directly in production environments**. For the complete configuration guide, refer to the articles at: <https://refact-x-template-git-galaxy-msrefs-projects.vercel.app/>.
 
 ![RefactX Cover](./src/assets/cover@2x.png)  
-[Chinese Version](./README.MD)
+[中文版本](./README.MD)
+
+![License](https://img.shields.io/github/license/Refac7/RefactX_Template?color=blue&style=flat-square)
+![Astro](https://img.shields.io/badge/Astro-v6.0-orange?style=flat-square&logo=astro)
+![React](https://img.shields.io/badge/React-v19.0-blue?style=flat-square&logo=react)
+![Tailwind](https://img.shields.io/badge/TailwindCSS-v4.0-38b2ac?style=flat-square&logo=tailwindcss)
+![TypeScript](https://img.shields.io/badge/TypeScript-v5.0-blue?style=flat-square&logo=typescript)
 
 A modern, elegant Astro theme designed specifically for content creators and developers.
 

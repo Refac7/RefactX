@@ -7,6 +7,12 @@
 ![RefactX 封面](./src/assets/cover@2x.png)  
 [English version](./README_EN.MD)
 
+![License](https://img.shields.io/github/license/Refac7/RefactX_Template?color=blue&style=flat-square)
+![Astro](https://img.shields.io/badge/Astro-v6.0-orange?style=flat-square&logo=astro)
+![React](https://img.shields.io/badge/React-v19.0-blue?style=flat-square&logo=react)
+![Tailwind](https://img.shields.io/badge/TailwindCSS-v4.0-38b2ac?style=flat-square&logo=tailwindcss)
+![TypeScript](https://img.shields.io/badge/TypeScript-v5.0-blue?style=flat-square&logo=typescript)
+
 一款为内容创作者和开发者打造的现代、优雅的 Astro 主题。
 
 > [!NOTE]
