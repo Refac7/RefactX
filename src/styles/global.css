@@ -150,12 +150,11 @@ html.theme-mourning {
 
 /* ===== 动画效果 ===== */
 @layer base {
-  /* 🔥 修复了这里原先的无名选择器 ". {" */
   .fade-up {
     opacity: 0;
     transform: translateY(2rem);
-    animation: fadeUp 0.6s forwards;
-    will-change: opacity, transform;
+    animation: fadeUp 0.6s cubic-bezier(0.2, 0, 0.2, 1) forwards;
+    backface-visibility: hidden;
   }
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(2rem); }
