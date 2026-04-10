@@ -27,17 +27,15 @@ const SECTION_TITLE_CLASS = "font-mono text-sm font-bold uppercase tracking-wide
 const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
 ---
 
-<Layout title="主页" description={SITE.description}>
+<Layout title="Home" description={SITE.description}>
   <div id="snowfall-container" class="fixed inset-0 pointer-events-none z-[1] transition-opacity duration-700 ease-in-out opacity-0">
     <Snowfall />
   </div>
 
   <div class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
-    
     <aside class="w-full lg:w-1/3 lg:sticky lg:top-0 lg:h-screen flex flex-col lg:border-r z-20 bg-background border-b border-border/60 lg:border-none">
-      
       <div class="flex flex-1 lg:overflow-y-auto scrollbar-hide flex-col">
-        <div class="p-6 lg:p-8 xl:p-12 pb-0 shrink-0">
+        <div class="p-6 lg:p-8 xl:p-12 pb-0 shrink-0 fade-up">
           <div class="flex flex-row justify-between items-start text-[10px] font-mono uppercase tracking-widest text-muted-foreground/60 select-none">
             <span>// REF_CORE_V{SITE.version}</span>
             <div class="flex items-center gap-6">
@@ -53,7 +51,7 @@ const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
           </div>
         </div>
         
-        <div class="flex-1 flex flex-col justify-end lg:justify-center p-6 lg:p-8 xl:p-12 min-h-[300px] lg:min-h-[300px]">
+        <div class="flex-1 flex flex-col justify-end lg:justify-center p-6 lg:p-8 xl:p-12 min-h-[300px] lg:min-h-[300px] fade-up animation-delay-100">
           <div class="flex flex-col gap-6">
             <div class="flex items-center gap-3 text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest select-none"><span class="h-px w-4 bg-primary/50"></span><span>Root_Terminal</span></div>
             <h1 class="text-7xl md:text-8xl lg:text-7xl xl:text-8xl font-black tracking-tighter leading-[0.85] text-foreground -ml-1 select-none">
@@ -62,7 +60,7 @@ const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
           </div>
         </div>
         
-        <div class="shrink-0 p-6 lg:p-8 xl:p-12 bg-muted/5 border-t border-dashed border-border/40">
+        <div class="shrink-0 p-6 lg:p-8 xl:p-12 bg-muted/5 border-t border-dashed border-border/40 fade-up animation-delay-150">
            <span class="block text-[10px] uppercase text-muted-foreground/60 font-mono tracking-wider mb-4">// SYS_PROFILE</span>
            <p class="text-sm text-muted-foreground leading-loose font-mono">
               你好，我是 <span class="text-foreground">Refac7</span>。一名时空修剪者。<br/><br/>
@@ -71,7 +69,7 @@ const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
         </div>
       </div>
       
-      <div class="grid grid-cols-2 bg-border/40 gap-px border-t border-border/40 shrink-0 select-none">
+      <div class="grid grid-cols-2 bg-border/40 gap-px border-t border-border/40 shrink-0 select-none fade-up animation-delay-200">
         {SOCIAL_LINKS.map((item) => (
           <a href={item.url} target="_blank" class="group relative flex flex-col items-center justify-center p-6 bg-background hover:bg-muted/10 transition-colors h-32 lg:h-28 xl:h-32">
               <span class={`${item.icon} size-5 xl:size-6 text-foreground/50 group-hover:text-primary transition-colors mb-2`}></span>
@@ -82,88 +80,86 @@ const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
       </div>
     </aside>
 
-      <main class="w-full lg:w-2/3 z-10 flex flex-col">
-        <div class="p-6 lg:p-10 xl:p-16 2xl:p-20 flex-1 flex flex-col">
-          <TerminalBuffer layout="home" delay={700}>
-            
-            <div class="mb-20">
-                <div class={SECTION_HEADER_CLASS}>
-                  <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>Navigation Hub</h2></div>
-                  <div class="hidden sm:block h-px flex-1 bg-border/40 ml-6 max-w-[200px]"></div>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {NAV_CARDS.map((card) => (
-                        <a href={card.href} class="group relative flex flex-col justify-between bg-background border hover:border-primary/50 transition-all duration-300 min-h-[180px]">
-                            <span class="absolute right-4 top-2 text-6xl font-black text-muted-foreground/[0.03] group-hover:text-primary/[0.04] transition-colors pointer-events-none font-mono select-none">{card.id}</span>
-                            <div class="p-6 relative z-10">
-                                <div class="flex justify-between items-start mb-4"><span class={cn('size-6 text-foreground/80 group-hover:text-primary transition-colors', card.icon)}></span><span class="icon-[ph--arrow-up-right] size-4 text-muted-foreground/40 group-hover:text-primary transition-colors"></span></div>
-                                <h3 class="text-lg font-bold text-foreground mb-1 group-hover:text-primary group-hover:translate-x-1 transition-all font-mono tracking-tighter">{card.title}</h3>
-                                <p class="text-xs text-muted-foreground/70 leading-relaxed font-sans">{card.desc}</p>
-                            </div>
-                            <div class="mt-auto pt-3 pb-4 px-6">
-                                <div class="flex items-center justify-between text-[9px] font-mono uppercase tracking-wider text-muted-foreground/60"><span>STATUS:</span><span class="text-primary/80">{card.status}</span></div>
-                            </div>
-                            <div class="absolute top-0 right-0 w-2 h-2 border-t border-r border-primary/0 group-hover:border-primary/50 transition-colors"></div>
-                            <div class="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-primary/0 group-hover:border-primary/50 transition-colors"></div>
-                        </a>
-                    ))}
-                </div>
-            </div>
-
-            <div class="mb-20">
-                <div class={SECTION_HEADER_CLASS}>
-                  <div class="flex items-center"><span class={SECTION_NUM_CLASS}>02</span><h2 class={SECTION_TITLE_CLASS}>Transmissions</h2></div>
-                  <div class="hidden sm:flex items-center flex-1 ml-6">
-                      <div class="h-px flex-1 bg-border/40 max-w-[200px] mr-auto"></div>
-                      <a href="/posts" class="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors"><span>View All Logs</span><span class="icon-[ph--arrow-right]"></span></a>
-                  </div>
-                </div>
-                
-                <List {posts} {type} heroImageLayout={heroImageLayout} />
-                
-                <div class="mt-8 flex sm:hidden justify-center"><a href="/posts" class="flex items-center gap-2 px-6 py-3 border border-border text-xs font-mono uppercase hover:bg-muted/10 transition-colors w-full justify-center"><span>View All Logs</span></a></div>
-            </div>
-
-            {ENABLED && (
-              <div class="mb-20">
-                <div class={SECTION_HEADER_CLASS}>
-                  <div class="flex items-center"><span class={SECTION_NUM_CLASS}>03</span><h2 class={SECTION_TITLE_CLASS}>Activity Stream</h2></div>
-                  <div class="hidden sm:block h-px flex-1 bg-border/40 ml-6 max-w-[200px]"></div>
-                </div>
-                <GithubContributions username={GITHUB_USERNAME} tooltipEnabled={TOOLTIP_ENABLED} client:visible transition:animate="none" />
+    <main class="w-full lg:w-2/3 z-10 flex flex-col fade-up animation-delay-150">
+      <div class="p-6 lg:p-10 xl:p-16 2xl:p-20 flex-1 flex flex-col">
+        <TerminalBuffer layout="home" delay={500}>
+          <div class="mb-20">
+              <div class={SECTION_HEADER_CLASS}>
+                <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>Navigation Hub</h2></div>
+                <div class="hidden sm:block h-px flex-1 bg-border/40 ml-6 max-w-[200px]"></div>
               </div>
-            )}
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {NAV_CARDS.map((card, i) => (
+                      <a href={card.href} class="group relative flex flex-col justify-between bg-background border hover:border-primary/50 transition-all duration-300 min-h-[180px] fade-up" style={`animation-delay: ${i * 50}ms`}>
+                          <span class="absolute right-4 top-2 text-6xl font-black text-muted-foreground/[0.03] group-hover:text-primary/[0.04] transition-colors pointer-events-none font-mono select-none">{card.id}</span>
+                          <div class="p-6 relative z-10">
+                              <div class="flex justify-between items-start mb-4"><span class={cn('size-6 text-foreground/80 group-hover:text-primary transition-colors', card.icon)}></span><span class="icon-[ph--arrow-up-right] size-4 text-muted-foreground/40 group-hover:text-primary transition-colors"></span></div>
+                              <h3 class="text-lg font-bold text-foreground mb-1 group-hover:text-primary group-hover:translate-x-1 transition-all font-mono tracking-tighter">{card.title}</h3>
+                              <p class="text-xs text-muted-foreground/70 leading-relaxed font-sans">{card.desc}</p>
+                          </div>
+                          <div class="mt-auto pt-3 pb-4 px-6">
+                              <div class="flex items-center justify-between text-[9px] font-mono uppercase tracking-wider text-muted-foreground/60"><span>STATUS:</span><span class="text-primary/80">{card.status}</span></div>
+                          </div>
+                          <div class="absolute top-0 right-0 w-2 h-2 border-t border-r border-primary/0 group-hover:border-primary/50 transition-colors"></div>
+                          <div class="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-primary/0 group-hover:border-primary/50 transition-colors"></div>
+                      </a>
+                  ))}
+              </div>
+          </div>
 
-            {SKILLS_ENABLED && SKILLS_DATA.length > 0 && (
-              <div class="mb-12">
-                <div class={SECTION_HEADER_CLASS}>
-                  <div class="flex items-center"><span class={SECTION_NUM_CLASS}>04</span><h2 class={SECTION_TITLE_CLASS}>Arsenal Matrix</h2></div>
-                  <div class="hidden sm:block h-px flex-1 bg-border/40 ml-6 max-w-[200px]"></div>
-                </div>
-                <div class="[&_.skill-card]:rounded-none [&_.skill-card]:border-transparent [&_.skill-card]:bg-muted/5[&_.skill-card]:shadow-none hover:[&_.skill-card]:bg-muted/10">
-                    <SkillsShowcase skillsData={SKILLS_DATA} />
+          <div class="mb-20 fade-up" style="animation-delay: 200ms">
+              <div class={SECTION_HEADER_CLASS}>
+                <div class="flex items-center"><span class={SECTION_NUM_CLASS}>02</span><h2 class={SECTION_TITLE_CLASS}>Transmissions</h2></div>
+                <div class="hidden sm:flex items-center flex-1 ml-6">
+                    <div class="h-px flex-1 bg-border/40 max-w-[200px] mr-auto"></div>
+                    <a href="/posts" class="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors"><span>View All Logs</span><span class="icon-[ph--arrow-right]"></span></a>
                 </div>
               </div>
-            )}
-            
-            <div class="mt-20 pt-8 border-t border-dashed border-border/40 flex justify-center">
-                <span class="font-mono text-[10px] text-muted-foreground/20 uppercase tracking-[0.5em] select-none">// End of Stream //</span>
+              <List {posts} {type} heroImageLayout={heroImageLayout} />
+          </div>
+
+          {ENABLED && (
+            <div class="mb-20 fade-up" style="animation-delay: 300ms">
+              <div class={SECTION_HEADER_CLASS}>
+                <div class="flex items-center"><span class={SECTION_NUM_CLASS}>03</span><h2 class={SECTION_TITLE_CLASS}>Activity Stream</h2></div>
+                <div class="hidden sm:block h-px flex-1 bg-border/40 ml-6 max-w-[200px]"></div>
+              </div>
+              <GithubContributions username={GITHUB_USERNAME} tooltipEnabled={TOOLTIP_ENABLED} client:visible transition:animate="none" />
             </div>
+          )}
 
-          </TerminalBuffer>
-        </div>
-      </main>
+          {SKILLS_ENABLED && SKILLS_DATA.length > 0 && (
+            <div class="mb-12 fade-up" style="animation-delay: 400ms">
+              <div class={SECTION_HEADER_CLASS}>
+                <div class="flex items-center"><span class={SECTION_NUM_CLASS}>04</span><h2 class={SECTION_TITLE_CLASS}>Arsenal Matrix</h2></div>
+                <div class="hidden sm:block h-px flex-1 bg-border/40 ml-6 max-w-[200px]"></div>
+              </div>
+              <div class="[&_.skill-card]:rounded-none [&_.skill-card]:border-transparent [&_.skill-card]:bg-muted/5 hover:[&_.skill-card]:bg-muted/10">
+                  <SkillsShowcase skillsData={SKILLS_DATA} />
+              </div>
+            </div>
+          )}
+          
+          <div class="mt-20 pt-8 border-t border-dashed border-border/40 flex justify-center">
+              <span class="font-mono text-[10px] text-muted-foreground/20 uppercase tracking-[0.5em] select-none">// End of Stream //</span>
+          </div>
 
+        </TerminalBuffer>
+      </div>
+    </main>
   </div>
 </Layout>
 
 <style>.scrollbar-hide::-webkit-scrollbar{display:none;}.scrollbar-hide{-ms-overflow-style:none;scrollbar-width:none;}</style>
+
 <script is:inline>
   function initSnowToggle() {
     const btns = document.querySelectorAll('.snow-toggle-btn');
     const snowContainer = document.getElementById('snowfall-container');
     if (!btns.length || !snowContainer) return;
+
     const isEnabled = localStorage.getItem('snowfall_enabled') === 'true';
+    
     const updateUI = (active) => {
       snowContainer.style.opacity = active ? '1' : '0';
       document.querySelectorAll('.snow-status-text').forEach(span => {
@@ -171,18 +167,27 @@ const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
         active ? span.classList.add('text-primary') : span.classList.remove('text-primary');
       });
     };
+
     updateUI(isEnabled);
+
     btns.forEach(oldBtn => {
       const newBtn = oldBtn.cloneNode(true);
       oldBtn.parentNode.replaceChild(newBtn, oldBtn);
       newBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        const newState = !(localStorage.getItem('snowfall_enabled') === 'true');
+        const currentState = localStorage.getItem('snowfall_enabled') === 'true';
+        const newState = !currentState;
         updateUI(newState);
         localStorage.setItem('snowfall_enabled', String(newState));
       });
     });
   }
+
+  // 支持 Astro 的视图转换 (View Transitions)
   document.addEventListener('astro:page-load', initSnowToggle);
-  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initSnowToggle); } else { initSnowToggle(); }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSnowToggle);
+  } else {
+    initSnowToggle();
+  }
 </script>

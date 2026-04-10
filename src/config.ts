@@ -135,8 +135,8 @@ export const PROJECTS_CONFIG: ProjectConfig = {
 // 关于页面配置
 export const ABOUT_CONFIG = {
   title: 'About',
-  description: 'System operator profile and loadout.',
-  introduce: 'Exploring the boundary between human intuition and machine precision.',
+  description: 'Who am I?',
+  introduce: ' 我那丑陋的情感，就不要表现出来啊。',
   
   // 个人档案
   profile: {
@@ -245,7 +245,7 @@ export const FRIENDS_CONFIG = {
 // 博主专属友链卡片信息
 export const FRIENDS_CONTACT = {
   sitename: 'RefactX Project',
-  email: 'refs@aliyun.com',
+  email: 'i@refact.cc',
   author: 'Refac7',
   sitelink: 'https://www.refact.cc',
   siteavatar: 'https://img.refact.cc/base/avatar.jpg',

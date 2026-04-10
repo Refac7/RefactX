@@ -7,6 +7,12 @@
 ![RefactX 封面](./src/assets/cover@2x.png)  
 [English version](./README_EN.MD)
 
+![License](https://img.shields.io/github/license/Refac7/RefactX_Template?color=blue&style=flat-square)
+![Astro](https://img.shields.io/badge/Astro-v6.0-orange?style=flat-square&logo=astro)
+![React](https://img.shields.io/badge/React-v19.0-blue?style=flat-square&logo=react)
+![Tailwind](https://img.shields.io/badge/TailwindCSS-v4.0-38b2ac?style=flat-square&logo=tailwindcss)
+![TypeScript](https://img.shields.io/badge/TypeScript-v5.0-blue?style=flat-square&logo=typescript)
+
 一款为内容创作者和开发者打造的现代、优雅的 Astro 主题。
 
 > [!NOTE]
@@ -61,5 +67,9 @@
 ## 其他说明
 
 本项目使用 **pnpm** 包管理器进行依赖管理。
+
+本项目在且仅在 Vercel 通过测试，为了避免兼容性问题，请通过 Vercel 部署此项目，
+
 原始版本源自 [Litos theme](https://github.com/Dnzzk2/Litos)（MIT 许可证）。
+
 本副本由 Refac7 维护，沿用原始版本的 MIT 许可证。

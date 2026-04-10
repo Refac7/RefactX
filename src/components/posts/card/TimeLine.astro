@@ -46,7 +46,7 @@ const { post }: Props = Astro.props
 
     {/* 标题与描述 - 强调留白与字体层级对比 */}
     <div class="flex flex-col gap-3">
-      <a href={`/posts/${post.slug}`} class="block outline-none" target="_self">
+      <a href={`/posts/${post.id}`} class="block outline-none" target="_self">
         <h2 class="text-xl sm:text-2xl font-bold text-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-300 tracking-tight leading-tight font-sans">
           {post.data.title}
         </h2>

@@ -12,13 +12,13 @@
     "format:write": "prettier . --write --ignore-unknown --cache"
   },
   "dependencies": {
-    "@astrojs/react": "4.4.2",
-    "@astrojs/vercel": "^9.0.2",
+    "@astrojs/react": "5.0.3",
+    "@astrojs/vercel": "^10.0.4",
     "@floating-ui/react": "^0.27.12",
     "@nanostores/react": "^0.8.4",
     "@octokit/rest": "^22.0.1",
     "@waline/client": "^3.6.0",
-    "astro": "^5.16.4",
+    "astro": "^6.1.5",
     "bcryptjs": "^3.0.3",
     "clsx": "^2.1.1",
     "framer-motion": "^12.5.0",
@@ -34,11 +34,11 @@
     "typescript": "^5.9.3"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.6",
-    "@astrojs/markdown-remark": "^6.3.9",
-    "@astrojs/mdx": "^4.3.12",
-    "@astrojs/rss": "^4.0.14",
-    "@astrojs/sitemap": "3.6.0",
+    "@astrojs/check": "^0.9.8",
+    "@astrojs/markdown-remark": "^7.1.0",
+    "@astrojs/mdx": "^5.0.3",
+    "@astrojs/rss": "^4.0.18",
+    "@astrojs/sitemap": "3.7.2",
     "@expressive-code/plugin-collapsible-sections": "^0.41.1",
     "@expressive-code/plugin-line-numbers": "^0.41.1",
     "@iconify/json": "^2.2.321",

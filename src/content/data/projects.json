@@ -1,5 +1,15 @@
 [
   {
+    "name": "Mail_Terminal",
+    "description": "无服务器 SMTP 邮件发送器",
+    "website": "https://mail.refact.cc",
+    "githubUrl": "https://github.com/refac7/mail-terminal",
+    "type": "icon",
+    "icon": "icon-[ri--terminal-box-line]",
+    "star": "0",
+    "fork": "0"
+  },
+  {
     "name": "Cover_Forge",
     "description": "基于 Astro 的文章封面生成器",
     "website": "https://cover.refact.cc",
