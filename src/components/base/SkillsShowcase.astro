@@ -16,7 +16,7 @@ const duplicateSkills = (skills: Skill[]) => [...skills, ...skills, ...skills, .
     skillsData.map((row: SkillData) => {
       const duplicatedSkills = duplicateSkills(row.skills)
       return (
-        <div class="relative w-full overflow-hidden my-4 group">
+        <div class="relative w-full overflow-hidden my-3 group">
           <div
             class={cn(
               'flex w-max will-change-transform',
@@ -27,9 +27,9 @@ const duplicateSkills = (skills: Skill[]) => [...skills, ...skills, ...skills, .
             style="transform: translateZ(0); -webkit-transform: translateZ(0);"
           >
             {duplicatedSkills.map((skill) => (
-              <div class="safari-item group flex items-center gap-2 px-5 py-3 mx-2 border border-border bg-accent text-foreground whitespace-nowrap hover:bg-tag-bg-hover dark:shadow-md">
-                <span class={cn('flex items-center justify-center w-5 h-5', skill.icon)} />
-                <span class="font-sans text-sm font-medium">{skill.name}</span>
+              <div class="safari-item group flex items-center gap-2.5 px-4 py-2.5 mx-2 rounded-full border border-border/40 bg-background/50 hover:bg-muted/30 transition-all duration-300">
+                <span class={cn('flex items-center justify-center w-4 h-4 text-foreground/70 group-hover:text-foreground transition-colors', skill.icon)} />
+                <span class="font-sans text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">{skill.name}</span>
               </div>
             ))}
           </div>
@@ -41,61 +41,30 @@ const duplicateSkills = (skills: Skill[]) => [...skills, ...skills, ...skills, .
 
 <style is:global>
   @-webkit-keyframes scroll {
-    0% {
-      -webkit-transform: translate3d(0, 0, 0);
-      transform: translate3d(0, 0, 0);
-    }
-    100% {
-      -webkit-transform: translate3d(-25%, 0, 0);
-      transform: translate3d(-25%, 0, 0);
-    }
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-25%, 0, 0); }
   }
-
   @keyframes scroll {
-    0% {
-      -webkit-transform: translate3d(0, 0, 0);
-      transform: translate3d(0, 0, 0);
-    }
-    100% {
-      -webkit-transform: translate3d(-25%, 0, 0);
-      transform: translate3d(-25%, 0, 0);
-    }
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-25%, 0, 0); }
   }
-
   @-webkit-keyframes scroll-reverse {
-    0% {
-      -webkit-transform: translate3d(-25%, 0, 0);
-      transform: translate3d(-25%, 0, 0);
-    }
-    100% {
-      -webkit-transform: translate3d(0, 0, 0);
-      transform: translate3d(0, 0, 0);
-    }
+    0% { transform: translate3d(-25%, 0, 0); }
+    100% { transform: translate3d(0, 0, 0); }
   }
-
   @keyframes scroll-reverse {
-    0% {
-      -webkit-transform: translate3d(-25%, 0, 0);
-      transform: translate3d(-25%, 0, 0);
-    }
-    100% {
-      -webkit-transform: translate3d(0, 0, 0);
-      transform: translate3d(0, 0, 0);
-    }
+    0% { transform: translate3d(-25%, 0, 0); }
+    100% { transform: translate3d(0, 0, 0); }
   }
-
-  /* Safari 优化 */
   .safari-only {
     -webkit-transform-style: preserve-3d;
     transform-style: preserve-3d;
   }
-
   .safari-item {
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    /* Chrome 优化 */
     contain: layout style paint;
     will-change: transform;
   }
@@ -112,7 +81,5 @@ const duplicateSkills = (skills: Skill[]) => [...skills, ...skills, ...skills, .
       track.style.animationDuration = newDuration
     })
   }
-
-  // 监听事件
   window.addEventListener('before-swap', adjustAnimationSpeed)
 </script>

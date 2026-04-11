@@ -12,6 +12,8 @@ export type Site = {
   title: string
   base: string
   description: string
+  indexIntro1: string
+  indexIntro2?: string
   author: string
   website: string
   ogImage: string
@@ -49,7 +51,7 @@ export interface PostCardPageConfig {
   heroImageLayout?: HeroImageLayout
 }
 
-export type PostType = 'jap'
+export type PostType = 'no-image' | 'vertical' | 'horizontal' | 'jap'
 
 /**
  * 文章配置接口 / Post configuration interface

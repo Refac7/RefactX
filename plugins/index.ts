@@ -13,7 +13,6 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeCallouts from 'rehype-callouts'
 import rehypeExternalLinks from 'rehype-external-links'
 import rehypeKatex from 'rehype-katex'
-import rehypeImageLoading from './rehype-image-loading'
 
 import type { RemarkPlugin, RehypePlugin } from '@astrojs/markdown-remark'
 import { type PropertiesFromTextDirective } from 'remark-directive-sugar'
@@ -93,6 +92,5 @@ export const rehypePlugins = [
       rel: ['noopener', 'noreferrer'],
     },
   ],
-  rehypeImageLoading,
   rehypeKatex,
 ] as RehypePlugin[]

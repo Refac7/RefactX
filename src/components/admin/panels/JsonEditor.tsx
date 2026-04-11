@@ -31,7 +31,7 @@ export default function JsonEditor() {
   };
 
   const handleDeleteItem = (index: number) => {
-    if(!confirm('CONFIRM DELETION?')) return;
+    if(!confirm('Are you sure you want to delete this item?')) return;
     const newData = parsedJson.filter((_, i) => i !== index);
     setParsedJson(newData); setJsonContent(JSON.stringify(newData, null, 2));
     if (editingItemIndex === index) setEditingItemIndex(null);
@@ -39,26 +39,27 @@ export default function JsonEditor() {
 
   const renderVisualEditor = () => {
     const schema = SCHEMAS[filename] || [];
-    if (schema.length === 0) return <div className="p-8 text-center text-muted-foreground text-xs font-mono">NO SCHEMA FOUND. USE RAW MODE.</div>;
+    if (schema.length === 0) return <div className="p-8 text-center text-muted-foreground text-sm">No visual schema available. Please use Raw Mode.</div>;
 
     if (editingItemIndex !== null) {
         const item = parsedJson[editingItemIndex] || {};
-        const serialId = `0${editingItemIndex + 1}`.slice(-2);
         return (
-            <div className="flex-1 overflow-y-auto p-4 sm:p-6 custom-scrollbar bg-background">
-                <div className="flex items-center justify-between mb-8 pb-4 border-b border-dashed border-border">
-                    <button onClick={() => setEditingItemIndex(null)} className="group flex items-center gap-2 text-xs font-mono font-bold text-muted-foreground hover:text-primary transition-colors">
-                        <span className="icon-[ph--arrow-left] size-4 group-hover:-translate-x-1 transition-transform"></span> RETURN_TO_GRID
+            <div className="flex-1 overflow-y-auto p-4 sm:p-8 custom-scrollbar bg-background">
+                <div className="flex items-center justify-between mb-8 pb-4 border-b border-border/40">
+                    <button onClick={() => setEditingItemIndex(null)} className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5 rounded-xs hover:bg-muted">
+                        <span className="icon-[ph--arrow-left] size-4"></span> Back to List
                     </button>
-                    <span className="text-4xl font-black font-mono text-muted-foreground/10 select-none pointer-events-none">{serialId}</span>
+                    <button onClick={() => handleDeleteItem(editingItemIndex)} className="text-sm font-medium text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 px-3 py-1.5 rounded-xs transition-colors">
+                        Delete Item
+                    </button>
                 </div>
-                <div className="grid grid-cols-1 gap-8 mx-auto">
+                <div className="mx-auto space-y-6 pb-12">
                     {schema.map((field: SchemaField) => (
-                        <div key={field.key} className="space-y-2 group">
-                            <label className="flex justify-between items-end text-[10px] font-mono uppercase tracking-widest text-muted-foreground/70 group-focus-within:text-primary transition-colors">
+                        <div key={field.key} className="space-y-2">
+                            <label className="flex justify-between items-center text-sm font-medium text-foreground">
                                 <span>{field.label}</span>
                                 {field.type === 'image' && WALINE_CONFIG.enableImgUpload && (
-                                    <span onClick={() => triggerUpload(`json____${editingItemIndex}___${field.key}`)} className="cursor-pointer text-xs hover:text-primary hover:underline decoration-dotted transition-colors">[UPLOAD_FILE]</span>
+                                    <button onClick={() => triggerUpload(`json____${editingItemIndex}___${field.key}`)} className="text-xs text-primary hover:text-primary/80 transition-colors bg-primary/10 px-2 py-1 rounded">Upload Image</button>
                                 )}
                             </label>
                             {field.type === 'textarea' || field.type === 'json' ? (
@@ -70,19 +71,19 @@ export default function JsonEditor() {
                                         handleUpdateItem(editingItemIndex, field.key, newValue);
                                       } catch (err) { if (field.type !== 'json') handleUpdateItem(editingItemIndex, field.key, e.target.value); }
                                     }}
-                                    className="w-full bg-muted/5 border border-border p-4 text-sm font-mono focus:border-primary focus:outline-none min-h-[120px] rounded-none transition-colors"
-                                    placeholder={`ENTER ${field.label}...`}
+                                    className="w-full bg-background border border-border/40 p-3 rounded-xs text-sm focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none min-h-[120px] transition-all"
+                                    placeholder={`Enter ${field.label.toLowerCase()}...`}
                                 />
                             ) : (
-                                <div className="flex gap-4">
+                                <div className="flex gap-4 items-center">
                                     <input 
                                         value={item[field.key] || ''} 
                                         onChange={e => handleUpdateItem(editingItemIndex, field.key, e.target.value)}
-                                        className="flex-1 bg-muted/5 border border-border p-3 text-sm font-mono focus:border-primary focus:outline-none rounded-none transition-colors"
-                                        placeholder={`ENTER ${field.label}...`}
+                                        className="flex-1 bg-background border border-border/40 p-3 rounded-xs text-sm focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                                        placeholder={`Enter ${field.label.toLowerCase()}...`}
                                     />
                                     {field.type === 'image' && item[field.key] && !item[field.key].startsWith('icon-') && (
-                                        <div className="size-11 shrink-0 border border-border bg-muted/10 p-0.5">
+                                        <div className="size-10 shrink-0 rounded-xs border border-border/40 overflow-hidden bg-muted/20">
                                             <img src={item[field.key]} className="size-full object-cover" alt="preview" onError={(e) => e.currentTarget.style.display = 'none'} />
                                         </div>
                                     )}
@@ -90,48 +91,41 @@ export default function JsonEditor() {
                             )}
                         </div>
                     ))}
-                    <div className="pt-8 border-t border-border/40 mt-4">
-                        <button onClick={() => handleDeleteItem(editingItemIndex)} className="w-full py-3 border border-red-500/50 text-red-500 hover:bg-red-500 hover:text-white transition-all text-xs font-mono font-bold tracking-widest uppercase rounded-none">DELETE_COMPONENT</button>
-                    </div>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 custom-scrollbar bg-muted/[0.02]">
-            <div className="flex justify-between items-end mb-6 pb-2 border-b border-border/60">
-                <span className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-wider">// COMPONENT_LIST ({parsedJson.length})</span>
-                <button onClick={handleAddItem} className="flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 text-xs font-mono font-bold hover:opacity-90 transition-opacity rounded-none uppercase tracking-wide">
-                    <span className="icon-[ph--plus-bold] size-3.5"></span> ADD_NEW
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 custom-scrollbar bg-background">
+            <div className="flex justify-between items-center mb-6">
+                <span className="text-sm font-semibold text-foreground">Items ({parsedJson.length})</span>
+                <button onClick={handleAddItem} className="flex items-center gap-1.5 bg-foreground text-background px-3 py-1.5 rounded-xs text-sm font-medium hover:bg-foreground/90 transition-colors shadow-xs">
+                    <span className="icon-[ph--plus] size-4"></span> Add Item
                 </button>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                 {parsedJson.map((item: any, idx: number) => {
                     const iconValue = item.avatar || item.icon;
-                    const serialId = `0${idx + 1}`.slice(-2);
                     let iconEl;
                     if (typeof iconValue === 'string') {
                         if (iconValue.startsWith('icon-') || iconValue.includes('icon-[')) {
-                            iconEl = <span className={cn(iconValue, "text-xl text-foreground/80")} />;
+                            iconEl = <span className={cn(iconValue, "text-2xl text-foreground/70")} />;
                         } else if (iconValue) {
-                            iconEl = <img src={iconValue} className="size-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" alt="icon" onError={(e) => (e.currentTarget.style.display = 'none')} />;
-                        } else { iconEl = <span className="icon-[ph--cube] text-muted-foreground"/>; }
+                            iconEl = <img src={iconValue} className="size-full object-cover" alt="icon" onError={(e) => (e.currentTarget.style.display = 'none')} />;
+                        } else { iconEl = <span className="icon-[ph--cube] text-muted-foreground/50 size-6"/>; }
                     } else if (typeof iconValue === 'object') { iconEl = <span className="text-xs font-mono">{iconValue.value}</span>;
-                    } else { iconEl = <span className="icon-[ph--cube] text-muted-foreground"/>; }
+                    } else { iconEl = <span className="icon-[ph--cube] text-muted-foreground/50 size-6"/>; }
 
                     return (
-                        <div key={idx} onClick={() => setEditingItemIndex(idx)} className="group relative bg-background border border-border p-4 cursor-pointer hover:border-primary/50 transition-all min-h-[140px] flex flex-col justify-between overflow-hidden">
-                            <span className="absolute right-2 top-0 text-5xl font-black text-muted-foreground/[0.04] group-hover:text-primary/[0.05] transition-colors pointer-events-none font-mono select-none">{serialId}</span>
-                            <div className="absolute top-0 left-0 w-1.5 h-1.5 border-t border-l border-primary/0 group-hover:border-primary/60 transition-colors"></div>
-                            <div className="absolute bottom-0 right-0 w-1.5 h-1.5 border-b border-r border-primary/0 group-hover:border-primary/60 transition-colors"></div>
-                            <div className="flex items-start justify-between relative z-10">
-                                <div className="size-10 bg-muted/10 border border-border/60 flex items-center justify-center rounded-none group-hover:border-primary/30 transition-colors">{iconEl}</div>
-                                <span className="icon-[ph--pencil-simple] size-4 text-muted-foreground/20 group-hover:text-primary transition-colors"></span>
+                        <div key={idx} onClick={() => setEditingItemIndex(idx)} className="group bg-background border border-border/40 rounded-md p-4 cursor-pointer hover:border-border hover:shadow-xs hover:bg-muted/10 transition-all flex flex-col justify-between">
+                            <div className="flex items-start justify-between mb-4">
+                                <div className="size-12 bg-muted/30 border border-border/40 rounded-xs flex items-center justify-center overflow-hidden">{iconEl}</div>
+                                <span className="icon-[ph--pencil-simple] size-4 text-muted-foreground/30 group-hover:text-foreground transition-colors"></span>
                             </div>
-                            <div className="relative z-10 pt-4">
-                                <div className="text-sm font-bold truncate font-sans tracking-tight">{item.name || item.title || 'UNTITLED_UNIT'}</div>
-                                <div className="text-[10px] text-muted-foreground truncate font-mono mt-1 opacity-70">{item.description || item.date || 'No data provided'}</div>
+                            <div>
+                                <div className="text-sm font-semibold truncate text-foreground mb-1">{item.name || item.title || 'Untitled Item'}</div>
+                                <div className="text-xs text-muted-foreground truncate">{item.description || item.date || 'No description'}</div>
                             </div>
                         </div>
                     );
@@ -144,12 +138,11 @@ export default function JsonEditor() {
   return (
     <>
         {editorMode === 'visual' ? renderVisualEditor() : (
-            <div className="flex-1 flex flex-col relative bg-[#1e1e1e]">
-                <div className="absolute top-0 right-0 bg-primary/20 text-primary text-[9px] font-mono font-bold px-2 py-1 pointer-events-none z-10 border-l border-b border-primary/30">RAW_JSON_MODE</div>
+            <div className="flex-1 flex flex-col relative bg-muted/10">
                 <textarea 
                     value={jsonContent} 
                     onChange={e => setJsonContent(e.target.value)} 
-                    className="flex-1 p-4 bg-transparent text-[#d4d4d4] text-xs font-mono leading-relaxed resize-none focus:outline-none custom-scrollbar" 
+                    className="flex-1 p-6 bg-transparent text-sm font-mono leading-relaxed resize-none focus:outline-none custom-scrollbar" 
                     spellCheck={false}
                 />
             </div>

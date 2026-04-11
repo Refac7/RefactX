@@ -4,55 +4,46 @@ import { PROJECTS_CONFIG } from '~/config'
 import Layout from '~/layouts/Layout.astro'
 import ProjectStats from '~/components/projects/ProjectStats'
 import rawProjectList from '~/content/data/projects.json'
-import TerminalBuffer from '~/components/base/TerminalBuffer.astro'
 
 interface Project { name: string; description: string; githubUrl: string | null; website: string | null; type: string; icon: string; imageClass?: string; star?: number; fork?: number; }
 const ProjectList = rawProjectList as Project[];
 const { title, description, introduce } = PROJECTS_CONFIG
 const totalCount = ProjectList.length.toString().padStart(2, '0');
 
-const SECTION_HEADER_CLASS = "flex items-end justify-between border-b pb-4 mb-8 select-none"
-const SECTION_TITLE_CLASS = "font-mono text-sm font-bold uppercase tracking-widest text-foreground/80"
-const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
+const SECTION_HEADER_CLASS = "flex items-center justify-between border-b border-border/40 pb-4 mb-8 select-none"
+const SECTION_TITLE_CLASS = "text-lg font-semibold tracking-tight text-foreground"
+const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full bg-muted/60 px-2.5 py-0.5 text-xs font-medium text-muted-foreground mr-3"
 ---
 
 <Layout {title} {description}>
   <div class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
-    <aside class="w-full lg:w-1/3 lg:sticky lg:top-0 lg:h-screen flex flex-col lg:border-r z-20 bg-background border-b border-border/60 lg:border-none">
+    <aside class="w-full lg:w-1/3 lg:sticky lg:top-0 lg:h-screen flex flex-col lg:border-r border-border/40 z-20 bg-background border-b lg:border-none">
       
       <div class="flex flex-1 lg:overflow-y-auto scrollbar-hide flex-col">
         <div class="p-6 lg:p-8 xl:p-12 pb-0 shrink-0 fade-up">
-          <div class="flex flex-row justify-between items-start text-[10px] font-mono uppercase tracking-widest text-muted-foreground/60 select-none">
-              <span>// SYSTEM_MANIFEST // {new Date().getFullYear()}</span>
-              <div class="flex items-center gap-2 text-primary">
-                  <span class="relative flex h-1.5 w-1.5"><span class="animate-ping absolute inline-flex h-full w-full bg-primary opacity-75"></span><span class="relative inline-flex h-1.5 w-1.5 bg-primary"></span></span>
-                  <span>SYS: ONLINE</span>
-              </div>
-          </div>
+          <span class="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary select-none">
+            Online
+          </span>
         </div>
         
         <div class="flex-1 flex flex-col justify-end lg:justify-center p-6 lg:p-8 xl:p-12 min-h-[300px] lg:min-h-[250px] fade-up animation-delay-100">
-           <h1 class="text-6xl sm:text-7xl xl:text-8xl font-black tracking-tighter text-foreground leading-[0.8] mb-6 -ml-1 select-none">{title.toUpperCase()}<span class="text-primary">.</span></h1>
-           <div class="h-px w-24 bg-foreground/20 mt-2 mb-4"></div>
-           <div class="flex items-center gap-2 text-xs font-mono text-muted-foreground/60 uppercase"><span class="icon-[ph--stack-bold] size-4"></span><span>Module Registry</span></div>
+           <h1 class="text-5xl sm:text-6xl xl:text-7xl font-bold tracking-tight text-foreground leading-[1.1] mb-6 select-none">{title}</h1>
+           <div class="flex items-center gap-2 text-sm text-muted-foreground"><span class="icon-[ph--stack] size-4"></span><span>Module Registry</span></div>
         </div>
         
-        <div class="shrink-0 p-6 lg:p-8 xl:p-12 bg-muted/5 border-t border-dashed border-border/40 fade-up animation-delay-150">
-           <span class="block text-[10px] uppercase text-muted-foreground/60 font-mono tracking-wider mb-4">// DEPLOY_LOGS</span>
-           <p class="text-sm text-muted-foreground leading-loose font-mono">{introduce}<br/><br/><span class="text-primary">> Initializing grid...</span></p>
+        <div class="shrink-0 p-6 lg:p-8 xl:p-12 fade-up animation-delay-150">
+           <p class="text-sm text-muted-foreground leading-relaxed">{introduce}</p>
         </div>
       </div>
       
-      <div class="grid grid-cols-2 bg-border/40 gap-px border-t border-border/40 shrink-0 fade-up animation-delay-200">
-          <div class="group relative flex flex-col items-center justify-center p-6 bg-background hover:bg-muted/10 transition-colors h-32 lg:h-28 xl:h-32">
-             <span class="text-3xl font-mono font-bold text-foreground tracking-tighter group-hover:text-primary transition-colors">{totalCount}</span>
-             <span class="text-[9px] font-mono uppercase tracking-widest text-muted-foreground mt-2">Total_Modules</span>
-             <div class="absolute top-0 right-0 p-1 opacity-0 group-hover:opacity-100 transition-opacity"><div class="w-1.5 h-1.5 bg-primary"></div></div>
+      <div class="flex border-t border-border/40 shrink-0 fade-up animation-delay-200">
+          <div class="flex-1 flex flex-col items-start lg:items-center justify-center p-6 lg:p-8 bg-background border-r border-border/40 hover:bg-muted/30 transition-colors">
+             <span class="text-2xl font-semibold text-foreground tracking-tight">{totalCount}</span>
+             <span class="text-xs text-muted-foreground mt-1">Total Modules</span>
           </div>
-          <div class="group relative flex flex-col items-center justify-center p-6 bg-background hover:bg-muted/10 transition-colors h-32 lg:h-28 xl:h-32">
-             <span class="text-lg font-mono font-bold text-foreground group-hover:text-primary transition-colors">{new Date().toLocaleDateString('en-US', {month: 'short', day: '2-digit'})}</span>
-             <span class="text-[9px] font-mono uppercase tracking-widest text-muted-foreground mt-2">Last_Update</span>
-             <div class="absolute bottom-0 left-0 p-1 opacity-0 group-hover:opacity-100 transition-opacity"><div class="w-1.5 h-1.5 bg-primary"></div></div>
+          <div class="flex-1 flex flex-col items-start lg:items-center justify-center p-6 lg:p-8 bg-background hover:bg-muted/30 transition-colors">
+             <span class="text-xl font-semibold text-foreground tracking-tight">{new Date().toLocaleDateString('en-US', {month: 'short', day: '2-digit'})}</span>
+             <span class="text-xs text-muted-foreground mt-1">Last Update</span>
           </div>
       </div>
     </aside>
@@ -60,46 +51,43 @@ const SECTION_NUM_CLASS = "font-mono text-xs text-primary mr-3"
     <main class="w-full lg:w-2/3 z-10 flex flex-col fade-up animation-delay-100">
       <div class="p-6 lg:p-10 xl:p-16 2xl:p-20 flex-1">
         <div class={SECTION_HEADER_CLASS}>
-            <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>Component_Sequence</h2></div>
-            <div class="hidden sm:block h-px flex-1 bg-border/40 ml-6 max-w-[200px]"></div>
+            <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>Component Sequence</h2></div>
         </div>
-        <TerminalBuffer layout="project" count={6} delay={500}>
-            <div class="grid grid-cols-1 gap-6">
-            {ProjectList.map((project, index) => {
-                const serialId = `0${index + 1}`.slice(-2);
-                return (
-                    <div 
-                      class="group relative flex flex-col bg-background border hover:border-primary/50 transition-all duration-300 min-h-[220px] fade-up"
-                      style={`animation-delay: ${index * 100}ms`}
-                    >
-                    <span class="absolute right-4 top-2 text-6xl font-black text-muted-foreground/[0.03] group-hover:text-primary/[0.04] transition-colors pointer-events-none select-none font-mono">{serialId}</span>
-                    <div class="p-6 pb-2 relative z-10 flex justify-between items-start">
-                        <div class="size-12 flex items-center justify-center bg-muted/5 border border-border/40 group-hover:border-primary/30 transition-colors">
-                            {project.type === 'icon' && <span class={cn('size-6 text-foreground/80 group-hover:text-primary transition-colors', project.icon)} />}
-                            {project.type === 'image' && <img src={project.icon} alt={project.name} class={cn('size-full object-cover opacity-80 group-hover:opacity-100 transition-opacity', project.imageClass)} />}
-                        </div>
-                        <div class="flex gap-2">
-                            {project.githubUrl && (<a href={project.githubUrl} target="_blank" class="flex items-center justify-center size-8 border border-transparent hover:bg-muted/10 text-muted-foreground hover:text-primary transition-all"><span class="icon-[mdi--github] size-4"></span></a>)}
-                            {project.website && (<a href={project.website} target="_blank" class="flex items-center justify-center size-8 border border-transparent hover:bg-muted/10 text-muted-foreground hover:text-primary transition-all"><span class="icon-[ph--arrow-up-right-bold] size-4"></span></a>)}
-                        </div>
+        
+        <div class="grid grid-cols-1 gap-6 mt-8">
+        {ProjectList.map((project, index) => {
+            return (
+                <div 
+                  class="group relative flex flex-col bg-background/50 border border-border/40 rounded-md hover:bg-muted/20 hover:shadow-xs transition-all duration-300 min-h-[220px] fade-up hover:-translate-y-0.5"
+                  style={`animation-delay: ${index * 100}ms`}
+                >
+                <div class="p-6 pb-2 relative z-10 flex justify-between items-start">
+                    <div class="size-12 flex items-center justify-center rounded-xs bg-background border border-border/40 shadow-xs">
+                        {project.type === 'icon' && <span class={cn('size-6 text-foreground/80', project.icon)} />}
+                        {project.type === 'image' && <img src={project.icon} alt={project.name} class={cn('size-full object-cover rounded-xs opacity-90 group-hover:opacity-100 transition-opacity', project.imageClass)} />}
                     </div>
-                    <div class="p-6 pt-2 flex-1 relative z-10">
-                        <a href={project.website || project.githubUrl} target="_blank" class="block group-hover:translate-x-1 transition-transform duration-300">
-                            <h3 class="text-xl font-bold text-foreground tracking-tight mb-3 group-hover:text-primary transition-colors font-sans">{project.name}</h3>
-                        </a>
-                        <p class="text-sm text-muted-foreground leading-relaxed line-clamp-3 font-mono">{project.description}</p>
+                    <div class="flex gap-2">
+                        {project.githubUrl && (<a href={project.githubUrl} target="_blank" class="flex items-center justify-center size-8 rounded-full bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground transition-all"><span class="icon-[mdi--github] size-4"></span></a>)}
+                        {project.website && (<a href={project.website} target="_blank" class="flex items-center justify-center size-8 rounded-full bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground transition-all"><span class="icon-[ph--arrow-up-right] size-4"></span></a>)}
                     </div>
-                    <div class="mt-auto border-t border-dashed border-border/40 p-3 bg-muted/[0.02] flex items-center justify-between">
-                        <span class="text-[9px] font-mono text-muted-foreground/60 uppercase tracking-wider">STATUS: <span class="text-emerald-500/80">STABLE</span></span>
-                        {project.githubUrl && (<div class="scale-90 origin-right"><ProjectStats client:visible repoUrl={project.githubUrl} initialStar={project.star} initialFork={project.fork} /></div>)}
-                    </div>
-                    <div class="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary/0 group-hover:border-primary/50 transition-colors"></div>
-                    <div class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-primary/0 group-hover:border-primary/50 transition-colors"></div>
-                    </div>
-                )
-            })}
-            </div>
-        </TerminalBuffer>
+                </div>
+                <div class="p-6 pt-2 flex-1 relative z-10">
+                    <a href={project.website || project.githubUrl} target="_blank" class="block mb-2">
+                        <h3 class="text-xl font-semibold text-foreground tracking-tight">{project.name}</h3>
+                    </a>
+                    <p class="text-sm text-muted-foreground leading-relaxed line-clamp-3">{project.description}</p>
+                </div>
+                <div class="mt-auto border-t border-border/40 p-4 bg-muted/10 rounded-b-xl flex items-center justify-between">
+                    <span class="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+                        <span class="size-1.5 rounded-full bg-emerald-500"></span>
+                        Stable
+                    </span>
+                    {project.githubUrl && (<div class="scale-95 origin-right"><ProjectStats client:visible repoUrl={project.githubUrl} initialStar={project.star} initialFork={project.fork} /></div>)}
+                </div>
+                </div>
+            )
+        })}
+        </div>
       </div>
     </main>
   </div>

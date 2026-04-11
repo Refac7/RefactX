@@ -1,5 +1,7 @@
 # RefactX 主题
 
+在此处查看预览：<https://refact-x-template.vercel.app/>
+
 > [!WARNING]
 >
 > 此项目可能有安全性漏洞，根据MIT许可证，由此造成的损失不由本模版负责，您在使用本博客的时候即视为接受该风险。你必须修改 `./src/config.ts` 中的相关内容，不得直接用于生产环境。完整配置教程请参考：<https://refact-x-template-git-galaxy-msrefs-projects.vercel.app/> 中的相关文章。

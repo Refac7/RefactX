@@ -2,7 +2,7 @@
 import '~/styles/global.css'
 import '~/styles/pro.css'
 import '~/styles/picture.css'
-import { SITE } from '~/config'
+import { SITE, Holiday_Effects } from '~/config'
 import Head from '~/components/base/Head.astro'
 import Header from './Header.astro'
 import Footer from './Footer.astro'
@@ -24,7 +24,7 @@ const { title, description, image }: Props = Astro.props
   </head>
   <body>
     
-    <HolidayTheme />
+    {Holiday_Effects.enableHolidayEffects && <HolidayTheme />}
 
     <div class="select-text selection:bg-foreground/20 selection:text-foreground">
       <div class="relative z-10 bg-background">

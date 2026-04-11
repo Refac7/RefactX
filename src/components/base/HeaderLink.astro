@@ -16,7 +16,7 @@ const isActive = Astro.url.pathname.startsWith(href)
   {href}
   class={cn(
     'text-sm px-4 py-2 font-medium',
-    background && 'transition-colors text-foreground/50 hover:bg-accent hover:text-foreground',
+    background && 'transition-colors rounded-full text-foreground/50 hover:bg-accent hover:text-foreground',
     isActive && 'text-foreground',
     className
   )}

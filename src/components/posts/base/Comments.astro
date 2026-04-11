@@ -7,23 +7,11 @@ const { class: className } = Astro.props;
 
 <div class={`waline-wrapper ${className || ''} relative z-10`}>
   
-  {/* 极简头部状态 */}
-  <div class="flex items-center justify-between mb-8 text-[10px] font-mono uppercase tracking-widest text-muted-foreground/50 select-none">
-    <span>// FEEDBACK_STREAM</span>
-    <div class="flex items-center gap-2 text-primary">
-       <span class="relative flex h-1.5 w-1.5">
-         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
-         <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-600"></span>
-       </span>
-       <span class="font-bold text-foreground">LIVE</span>
-    </div>
-  </div>
-
-  <div class="mb-10 group select-none">
-    <h2 class="text-2xl sm:text-3xl font-bold tracking-tighter text-foreground leading-none flex items-end">
-      Comments<span class="text-primary animate-pulse ml-1">_</span>
+  <div class="mb-10 group select-none flex flex-col gap-2">
+    <h2 class="text-2xl font-semibold tracking-tight text-foreground">
+      Comments
     </h2>
-    <div class="h-px w-full bg-gradient-to-r from-border/50 to-transparent mt-4"></div>
+    <p class="text-sm text-muted-foreground">Join the conversation below.</p>
   </div>
 
   {
@@ -31,14 +19,14 @@ const { class: className } = Astro.props;
       <div id="waline-container" class="waline-lazy relative min-h-[150px]">
         <div class="waline-loading absolute inset-0 flex flex-col items-center justify-center bg-transparent z-0">
             <span class="icon-[ph--spinner-gap] size-6 text-muted-foreground animate-spin mb-3"></span>
-            <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground/50">Loading_Module</span>
+            <span class="text-xs font-medium text-muted-foreground/60">Loading comments...</span>
         </div>
       </div>
     ) : (
-      <div class="border border-border/30 bg-muted/5 p-8 text-center rounded-none">
-        <span class="icon-[ph--chat-teardrop-slash] size-8 text-muted-foreground/40 mb-4 block mx-auto"></span>
-        <span class="font-mono text-xs uppercase tracking-widest text-muted-foreground/60 block mb-2">// SYS_DISABLED</span>
-        <p class="text-muted-foreground/50 text-xs">评论系统已离线，请联系管理员。</p>
+      <div class="rounded-xl border border-border/40 bg-muted/10 p-8 text-center flex flex-col items-center justify-center">
+        <span class="icon-[ph--chat-teardrop-slash] size-8 text-muted-foreground/40 mb-3 block mx-auto"></span>
+        <p class="text-foreground font-medium mb-1">Comments Disabled</p>
+        <p class="text-muted-foreground text-sm">The comment system is currently offline.</p>
       </div>
     )
   }
@@ -50,146 +38,123 @@ const { class: className } = Astro.props;
       <link rel="stylesheet" href="/css/waline.css" />
 
       <style is:global>
-        /* =========================================
-           Waline 核心样式重写 (极致干净)
-           ========================================= */
         #waline {
           --waline-font-size: 0.95rem !important;
-          --waline-line-height: 1.75 !important;
+          --waline-line-height: 1.6 !important;
           --waline-font-family: theme('fontFamily.sans') !important;
-          --waline-mono-font: theme('fontFamily.mono') !important;
           --waline-theme-color: hsl(var(--primary)) !important;
           --waline-active-color: hsl(var(--primary)) !important;
           --waline-bgcolor: hsl(var(--background)) !important;
-          --waline-bgcolor-light: hsl(var(--muted) / 0.3) !important;
-          --waline-bgcolor-hover: hsl(var(--muted) / 0.5) !important;
-          --waline-border-color: hsl(var(--border) / 0.6) !important;
+          --waline-bgcolor-light: hsl(var(--muted) / 0.5) !important;
+          --waline-bgcolor-hover: hsl(var(--muted) / 0.8) !important;
+          --waline-border-color: hsl(var(--border) / 0.4) !important;
           --waline-disable-bg-color: hsl(var(--muted)) !important;
           --waline-disable-color: hsl(var(--muted-foreground)) !important;
           --waline-color: hsl(var(--foreground)) !important;
           --waline-info-color: hsl(var(--muted-foreground)) !important;
-          --waline-code-bg-color: hsl(var(--muted) / 0.3) !important;
-          --waline-box-shadow: none !important;
-          --waline-avatar-radius: 0 !important; 
+          --waline-code-bg-color: hsl(var(--muted) / 0.5) !important;
+          --waline-box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05) !important;
+          --waline-avatar-radius: 50% !important; 
           --waline-border: 1px solid var(--waline-border-color) !important;
+          --waline-border-radius: 0.75rem !important;
         }
 
-        #waline * { border-radius: 0 !important; box-shadow: none !important; }
+        #waline .wl-panel { 
+            border: 1px solid hsl(var(--border) / 0.4) !important; 
+            background: hsl(var(--background) / 0.5) !important; 
+            border-radius: 1rem !important; 
+            margin: 0 !important; 
+            transition: all 0.3s ease; 
+            overflow: hidden;
+        }
+        #waline .wl-panel:focus-within { 
+            border-color: hsl(var(--border)) !important; 
+            background: hsl(var(--background)) !important; 
+            box-shadow: 0 4px 12px hsl(0 0% 0% / 0.05) !important;
+        }
 
-        /* 输入面板 */
-        #waline .wl-panel { border: 1px solid hsl(var(--border) / 0.6) !important; background: hsl(var(--card) / 0.3) !important; margin: 0 !important; transition: border-color 0.3s ease; }
-        #waline .wl-panel:focus-within { border-color: hsl(var(--primary) / 0.5) !important; background: hsl(var(--background)) !important; }
-
-        /* 头部信息区 */
-        #waline .wl-header { display: flex; border-bottom: 1px solid hsl(var(--border) / 0.4) !important; background: hsl(var(--muted) / 0.1) !important; }
+        #waline .wl-header { display: flex; border-bottom: 1px solid hsl(var(--border) / 0.4) !important; background: hsl(var(--muted) / 0.3) !important; }
         #waline .wl-header-item { flex: 1; padding: 0.75rem 1rem !important; display: flex !important; align-items: center !important; }
-        #waline .wl-header label { font-family: var(--waline-mono-font) !important; font-size: 0.65rem !important; font-weight: 700; color: hsl(var(--muted-foreground) / 0.6) !important; margin-right: 0.5rem !important; }
-        #waline .wl-input { font-family: var(--waline-mono-font) !important; background: transparent !important; color: hsl(var(--foreground)) !important; height: auto !important; }
+        #waline .wl-header label { font-size: 0.75rem !important; font-weight: 500; color: hsl(var(--muted-foreground)) !important; margin-right: 0.5rem !important; }
+        #waline .wl-input { background: transparent !important; color: hsl(var(--foreground)) !important; height: auto !important; font-size: 0.875rem !important; }
 
-        /* 编辑器及底部工具栏 */
-        #waline .wl-editor { padding: 1rem 1.25rem !important; min-height: 8rem; color: hsl(var(--foreground)) !important; background: transparent !important; resize: vertical; }
+        #waline .wl-editor { padding: 1rem 1.25rem !important; min-height: 8rem; color: hsl(var(--foreground)) !important; background: transparent !important; resize: vertical; font-size: 0.95rem !important; }
         
         #waline .wl-footer { 
           display: flex !important; 
           align-items: center !important; 
           border-top: 1px solid hsl(var(--border) / 0.4) !important; 
-          background: hsl(var(--muted) / 0.05) !important; 
-          padding: 0.6rem 1rem !important; 
+          background: hsl(var(--muted) / 0.2) !important; 
+          padding: 0.75rem 1rem !important; 
         }
 
-        #waline .wl-footer .wl-actions { 
-          display: flex !important; 
-          align-items: center !important; 
-          gap: 0.75rem !important; 
-          margin: 0 !important; 
-          position: relative !important; 
-        }
-        #waline .wl-footer .wl-actions button { display: inline-flex !important; align-items: center !important; cursor: pointer; }
-        #waline .wl-footer .wl-actions svg { width: 16px !important; height: 16px !important; color: hsl(var(--muted-foreground)) !important; transition: color 0.2s; }
-        #waline .wl-footer .wl-actions button:hover svg { color: hsl(var(--primary)) !important; }
+        #waline .wl-footer .wl-actions { display: flex !important; align-items: center !important; gap: 0.75rem !important; margin: 0 !important; position: relative !important; }
+        #waline .wl-footer .wl-actions button { display: inline-flex !important; align-items: center !important; cursor: pointer; border-radius: 0.5rem !important; padding: 0.25rem !important; transition: background 0.2s; }
+        #waline .wl-footer .wl-actions button:hover { background: hsl(var(--muted)) !important; }
+        #waline .wl-footer .wl-actions svg { width: 18px !important; height: 18px !important; color: hsl(var(--muted-foreground)) !important; transition: color 0.2s; }
+        #waline .wl-footer .wl-actions button:hover svg { color: hsl(var(--foreground)) !important; }
 
-        #waline .wl-info { 
-          margin-left: auto !important; /* 将自身与右侧按钮组推向右方 */
-          font-family: var(--waline-mono-font) !important; 
-          font-size: 0.75rem !important; 
-          color: hsl(var(--muted-foreground) / 0.6) !important; 
-        }
-
-        #waline .wl-btns { 
-          display: flex !important; 
-          align-items: center !important; 
-          gap: 0.5rem !important; 
-        }
+        #waline .wl-info { margin-left: auto !important; font-size: 0.75rem !important; color: hsl(var(--muted-foreground) / 0.8) !important; }
+        #waline .wl-btns { display: flex !important; align-items: center !important; gap: 0.5rem !important; }
 
         #waline .wl-btn { 
           background: hsl(var(--foreground)) !important; 
           color: hsl(var(--background)) !important; 
           border: none !important; 
-          font-family: var(--waline-mono-font) !important; 
-          font-size: 0.7rem !important; 
-          font-weight: 800 !important; 
-          letter-spacing: 0.15em; 
+          border-radius: 0.5rem !important;
+          font-size: 0.875rem !important; 
+          font-weight: 500 !important; 
           padding: 0.5rem 1.25rem !important; 
-          text-transform: uppercase; 
           transition: opacity 0.2s; 
           cursor: pointer;
         }
-        #waline .wl-btn:hover { opacity: 0.8; }
+        #waline .wl-btn:hover { opacity: 0.9; }
 
-        /* 评论列表 */
         #waline .wl-cards { margin-top: 2rem !important; }
         #waline .wl-card { border: none !important; border-bottom: 1px solid hsl(var(--border) / 0.3) !important; padding: 1.5rem 0 !important; margin: 0 !important; }
         #waline .wl-card:last-child { border-bottom: none !important; }
 
-        /* 用户信息 */
         #waline .wl-head { display: flex !important; align-items: center !important; gap: 0.75rem !important; margin-bottom: 0.5rem; }
-        #waline .wl-user-avatar { width: 2rem !important; height: 2rem !important; padding: 2px !important; border: 1px solid hsl(var(--border) / 0.5) !important; background: hsl(var(--muted) / 0.1) !important; display: flex !important; align-items: center !important; justify-content: center !important; }
-        #waline .wl-user-avatar img { width: 100% !important; height: 100% !important; object-fit: cover !important; }
-        #waline .wl-nick { font-size: 0.9rem !important; font-weight: 700 !important; color: hsl(var(--foreground)) !important; }
-        #waline .wl-badge { border: 1px solid hsl(var(--primary) / 0.5) !important; color: hsl(var(--primary)) !important; background: transparent !important; font-size: 0.6rem !important; padding: 1px 4px !important; margin-left: 0.5rem !important; }
+        #waline .wl-user-avatar { width: 2.25rem !important; height: 2.25rem !important; border-radius: 50% !important; overflow: hidden; background: hsl(var(--muted)) !important; }
+        #waline .wl-nick { font-size: 0.9rem !important; font-weight: 600 !important; color: hsl(var(--foreground)) !important; }
+        #waline .wl-badge { border: 1px solid hsl(var(--primary) / 0.5) !important; border-radius: 1rem !important; color: hsl(var(--primary)) !important; background: hsl(var(--primary)/0.05) !important; font-size: 0.65rem !important; padding: 0.1rem 0.4rem !important; margin-left: 0.5rem !important; }
 
-        /* 评论内容 */
-        #waline .wl-content { font-size: 0.95rem !important; color: hsl(var(--foreground) / 0.85) !important; line-height: 1.75 !important; word-break: break-word; }
-        #waline .wl-quote { border-left: 2px solid hsl(var(--primary) / 0.5) !important; background: hsl(var(--muted) / 0.1) !important; color: hsl(var(--muted-foreground)) !important; font-family: var(--waline-mono-font) !important; padding: 0.5rem 1rem !important; margin-bottom: 0.5rem !important; }
+        #waline .wl-content { font-size: 0.95rem !important; color: hsl(var(--foreground) / 0.9) !important; line-height: 1.6 !important; word-break: break-word; }
+        #waline .wl-quote { border-left: 3px solid hsl(var(--border)) !important; border-radius: 0 0.5rem 0.5rem 0 !important; background: hsl(var(--muted) / 0.3) !important; color: hsl(var(--muted-foreground)) !important; padding: 0.75rem 1rem !important; margin-bottom: 0.75rem !important; }
 
-        /* 评论区动作栏 (仅列表内有效) */
-        #waline .wl-meta { display: flex !important; align-items: center !important; margin-top: 0.5rem !important; }
-        #waline .wl-meta .wl-actions { display: flex !important; align-items: center !important; gap: 0.5rem !important; margin-left: auto !important; position: relative !important; }
-        #waline .wl-action, #waline .wl-reply, #waline .wl-like, #waline .wl-edit { display: inline-flex !important; align-items: center !important; gap: 0.2rem !important; font-family: var(--waline-mono-font) !important; font-size: 0.75rem !important; color: hsl(var(--muted-foreground)) !important; transition: color 0.2s; visibility: visible !important; cursor: pointer; }
+        #waline .wl-meta { display: flex !important; align-items: center !important; margin-top: 0.75rem !important; }
+        #waline .wl-meta .wl-actions { display: flex !important; align-items: center !important; gap: 0.75rem !important; margin-left: auto !important; position: relative !important; }
+        #waline .wl-action, #waline .wl-reply, #waline .wl-like, #waline .wl-edit { display: inline-flex !important; align-items: center !important; gap: 0.25rem !important; font-size: 0.75rem !important; color: hsl(var(--muted-foreground)) !important; transition: color 0.2s; visibility: visible !important; cursor: pointer; }
         #waline .wl-action svg, #waline .wl-reply svg, #waline .wl-like svg { width: 14px !important; height: 14px !important; }
-        #waline .wl-action:hover, #waline .wl-reply:hover, #waline .wl-like:hover { color: hsl(var(--primary)) !important; }
+        #waline .wl-action:hover, #waline .wl-reply:hover, #waline .wl-like:hover { color: hsl(var(--foreground)) !important; }
         #waline .wl-like.active { color: hsl(var(--primary)) !important; }
         .wl-gif-tab, .wl-power { display: none !important; }
 
-        /* Kaomoji 表情面板 */
-        .kaomoji-popup { display: none; background: hsl(var(--background)); border: 1px solid hsl(var(--border)); z-index: 50; user-select: none; }
+        .kaomoji-popup { display: none; background: hsl(var(--background)); border: 1px solid hsl(var(--border)); border-radius: 0.75rem; z-index: 50; user-select: none; overflow: hidden; box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.1); }
         .kaomoji-popup.active { display: flex; flex-direction: column; }
-        .kaomoji-header { background: hsl(var(--muted) / 0.2); border-bottom: 1px solid hsl(var(--border) / 0.5); padding: 8px 12px; font-family: var(--waline-mono-font); font-size: 10px; color: hsl(var(--muted-foreground)); display: flex; justify-content: space-between; align-items: center; }
+        .kaomoji-header { background: hsl(var(--muted) / 0.5); border-bottom: 1px solid hsl(var(--border) / 0.5); padding: 10px 14px; font-size: 0.75rem; font-weight: 500; color: hsl(var(--muted-foreground)); display: flex; justify-content: space-between; align-items: center; }
         .kaomoji-grid { padding: 8px; display: grid; overflow-y: auto; scrollbar-width: thin; scrollbar-color: hsl(var(--muted-foreground) / 0.3) transparent; }
-        .kaomoji-item { font-family: sans-serif; color: hsl(var(--foreground)); text-align: center; cursor: pointer; transition: background 0.2s; white-space: nowrap; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-        .kaomoji-item:hover { background: hsl(var(--muted) / 0.5); color: hsl(var(--primary)); }
+        .kaomoji-item { font-family: sans-serif; color: hsl(var(--foreground)); text-align: center; cursor: pointer; transition: all 0.2s; white-space: nowrap; overflow: hidden; display: flex; align-items: center; justify-content: center; border-radius: 0.5rem; }
+        .kaomoji-item:hover { background: hsl(var(--muted)); color: hsl(var(--foreground)); }
 
         @media (min-width: 641px) {
-          .kaomoji-popup { position: absolute; bottom: 100%; right: 0; width: 320px; margin-bottom: 8px; box-shadow: 0 4px 12px hsl(0 0% 0% / 0.05); }
+          .kaomoji-popup { position: absolute; bottom: calc(100% + 8px); left: 0; width: 320px; }
           .kaomoji-grid { grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 4px; max-height: 200px; }
-          .kaomoji-item { font-size: 12px; padding: 6px 4px; border: 1px solid transparent; }
+          .kaomoji-item { font-size: 13px; padding: 8px 4px; }
         }
 
-        /* 移动端排版修正 */
         @media (max-width: 640px) {
-          #waline input, #waline textarea { font-size: 16px !important; } /* 防缩放 */
+          #waline input, #waline textarea { font-size: 16px !important; } 
           #waline .wl-header { flex-direction: column; }
-          #waline .wl-header-item { border-bottom: 1px solid hsl(var(--border) / 0.4) !important; padding: 0.5rem !important; }
-          
-          /* 底部栏规整压缩 */
+          #waline .wl-header-item { border-bottom: 1px solid hsl(var(--border) / 0.4) !important; padding: 0.75rem !important; }
           #waline .wl-footer { flex-wrap: wrap !important; gap: 0.75rem !important; }
-          #waline .wl-info { display: none !important; } /* 移动端隐藏字数统计，节约空间 */
+          #waline .wl-info { display: none !important; } 
           #waline .wl-btns { flex: 1 !important; justify-content: flex-end !important; }
 
-          .kaomoji-popup { position: fixed; left: 0; right: 0; bottom: 0; width: 100vw; max-height: 40vh; margin: 0; border: none; border-top: 1px solid hsl(var(--border)); transform: translateY(100%); transition: transform 0.2s ease-out; }
+          .kaomoji-popup { position: fixed; left: 0; right: 0; bottom: 0; width: 100vw; max-height: 40vh; margin: 0; border: none; border-radius: 1rem 1rem 0 0; border-top: 1px solid hsl(var(--border)); transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1); }
           .kaomoji-popup.active { transform: translateY(0); }
-          .kaomoji-grid { grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 12px; padding-bottom: env(safe-area-inset-bottom, 20px); max-height: 35vh; }
-          .kaomoji-item { font-size: 14px; padding: 10px 0; border: 1px solid hsl(var(--border) / 0.3); }
+          .kaomoji-grid { grid-template-columns: repeat(4, 1fr); gap: 6px; padding: 16px; padding-bottom: env(safe-area-inset-bottom, 20px); max-height: 35vh; }
+          .kaomoji-item { font-size: 14px; padding: 12px 0; background: hsl(var(--muted) / 0.5); }
         }
       </style>
 
@@ -202,7 +167,6 @@ const { class: className } = Astro.props;
           "(╯°□°）╯︵ ┻━┻", "┬─┬ ノ( ゜-゜ノ)", "(ノへ￣、)", "(;´༎ຶД༎ຶ`)", "φ(゜▽゜*)♪", "( •̀ .̫ •́ )✧", "(⊙_⊙)？"
         ];
 
-        // 防止多重绑定引发内存泄漏
         if (!window.__kaomojiGlobalClick) {
           document.addEventListener('click', (e) => {
             if (!e.target.closest('.kaomoji-popup') && !e.target.closest('.hijacked-emoji')) {
@@ -217,7 +181,7 @@ const { class: className } = Astro.props;
           popup.className = 'kaomoji-popup';
           popup.innerHTML = `
             <div class="kaomoji-header">
-              <span>// EMOTION_PACK</span>
+              <span>Emoticons</span>
               <button class="close-kaomoji" style="padding:4px 8px;border:none;background:transparent;color:currentColor;cursor:pointer;">×</button>
             </div>
             <div class="kaomoji-grid">${KAOMOJI_LIST.map(k => `<div class="kaomoji-item">${k}</div>`).join('')}</div>
@@ -330,8 +294,8 @@ const { class: className } = Astro.props;
 
           try {
             window.__walineInstance = window.Waline.init({
-              el: walineEl, serverURL, lang: 'zh-CN', dark: 'html.dark', emoji:[], search: false,
-              imageUploader: enableImgUpload ? handleImageUpload : null, locale: { placeholder: 'System ready...' }
+              el: walineEl, serverURL, lang: 'en', dark: 'html.dark', emoji:[], search: false,
+              imageUploader: enableImgUpload ? handleImageUpload : null, locale: { placeholder: 'Write a comment...' }
             });
 
             const waitTimer = setInterval(() => {

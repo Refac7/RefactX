@@ -8,87 +8,61 @@ interface Props extends CardProps {}
 const { post }: Props = Astro.props
 ---
 
-<article class="group relative pl-8 sm:pl-12 py-5 w-full">
+<article class="group relative pl-8 sm:pl-10 py-4 w-full">
   
-  {/* ================= 左侧时间线 (Minimalist Node Line) ================= */}
-  <div class="absolute left-0 top-0 h-full w-8 sm:w-12 flex justify-center z-10">
-    {/* 贯穿的极细实线，去除虚线带来的杂乱感 */}
-    <div class="h-full w-px bg-border/40 group-hover:bg-primary/40 transition-colors duration-500"></div>
-    {/* 节点方块，对齐标题视觉中心 */}
-    <div class="absolute top-11 w-2 h-2 bg-background border border-border group-hover:border-primary group-hover:bg-primary/20 transition-colors duration-300"></div>
+  <div class="absolute left-0 top-0 h-full w-8 sm:w-10 flex justify-center z-10">
+    <div class="h-full w-px bg-border/40 group-hover:bg-primary/30 transition-colors duration-500"></div>
+    <div class="absolute top-[2.1rem] w-2.5 h-2.5 rounded-full bg-background border-2 border-border/80 group-hover:border-primary transition-colors duration-300"></div>
   </div>
 
-  {/* ================= 右侧文章卡片 (Data Row Style) ================= */}
-  <div class="relative bg-background border border-border/40 hover:border-primary/40 transition-all duration-300 p-6 sm:p-8 w-full flex flex-col gap-4">
-    
-    {/* 极简角落标识 */}
-    <div class="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary/0 group-hover:border-primary/50 transition-colors"></div>
-    <div class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-primary/0 group-hover:border-primary/50 transition-colors"></div>
+  <div class="relative bg-background/50 border border-border/40 rounded-md hover:border-border/80 hover:bg-muted/20 hover:shadow-xs transition-all duration-300 p-5 sm:p-6 w-full flex flex-col gap-3">
 
-    {/* 顶部元数据栏 (Meta Bar) - 用极简的方块分隔，取代杂乱的符号 */}
-    <div class="flex flex-wrap items-center gap-3 text-[10px] font-mono uppercase tracking-widest text-muted-foreground/50 select-none">
-      <div class="flex items-center gap-2">
-        <span class="text-primary/70">LOG_ENTRY</span>
-        <span class="w-1 h-1 bg-border/80"></span>
-        <time datetime={post.data.pubDate.toISOString()} class="text-muted-foreground/80">
-          {formatDate(post.data.pubDate)}
-        </time>
-      </div>
+    <div class="flex flex-wrap items-center gap-2 text-xs font-medium text-muted-foreground">
+      <time datetime={post.data.pubDate.toISOString()}>
+        {formatDate(post.data.pubDate)}
+      </time>
       
       {post.data.updatedDate && (
         <div class="flex items-center gap-2">
-          <span class="w-1 h-1 bg-border/80"></span>
-          <span class="text-primary/40">UPD</span>
-          <time class="text-muted-foreground/80">{formatDate(post.data.updatedDate)}</time>
+          <span class="text-border">•</span>
+          <span class="icon-[ph--clock-clockwise] size-3.5"></span>
+          <time>{formatDate(post.data.updatedDate)}</time>
         </div>
       )}
     </div>
 
-    {/* 标题与描述 - 强调留白与字体层级对比 */}
-    <div class="flex flex-col gap-3">
+    <div class="flex flex-col gap-2">
       <a href={`/posts/${post.id}`} class="block outline-none" target="_self">
-        <h2 class="text-xl sm:text-2xl font-bold text-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-300 tracking-tight leading-tight font-sans">
+        <h2 class="text-lg sm:text-xl font-semibold text-foreground group-hover:text-primary transition-colors tracking-tight leading-tight">
           {post.data.title}
         </h2>
         {post.data.description && (
-          /* 去掉左侧多余边框，使用更轻盈的颜色和行高 */
-          <p class="mt-3 text-sm text-muted-foreground/70 leading-relaxed line-clamp-2 font-sans pr-4 sm:pr-8">
+          <p class="mt-2 text-sm text-muted-foreground leading-relaxed line-clamp-2 pr-4">
             {post.data.description}
           </p>
         )}
       </a>
     </div>
 
-    {/* 底部交互栏 (Action & Tags Bar) - 规整的底栏设计 */}
-    <div class="mt-2 pt-4 flex flex-wrap items-center justify-between gap-4 border-t border-dashed border-border/30">
+    <div class="mt-2 pt-4 flex flex-wrap items-center justify-between gap-4 border-t border-border/40">
       
-      {/* 标签组 */}
       <div class="flex items-center gap-2">
-        <span class="icon-[ph--tag] size-3 text-muted-foreground/30"></span>
-        {post.data.tags?.length > 0 ? (
+        {post.data.tags?.length > 0 && (
           <div class="flex flex-wrap gap-2">
             {post.data.tags.slice(0, 3).map((tag) => (
               <PostTag 
                 tag={tag} 
                 size="sm" 
-                class="rounded-none border border-border/40 hover:border-primary/40 bg-muted/5 text-[10px] font-mono px-2 py-0.5 uppercase tracking-wider transition-colors" 
+                class="rounded-xs border-border/40 bg-muted/50 text-xs text-muted-foreground px-2.5 py-1 transition-colors" 
               />
             ))}
             {post.data.tags.length > 3 && (
-              <span class="text-[10px] font-mono px-1.5 py-0.5 text-muted-foreground/40 bg-muted/10 select-none">
+              <span class="text-xs text-muted-foreground/60 self-center">
                 +{post.data.tags.length - 3}
               </span>
             )}
           </div>
-        ) : (
-          <span class="text-[10px] font-mono text-muted-foreground/30 uppercase tracking-widest select-none">UNTAGGED</span>
         )}
-      </div>
-      
-      {/* 伪终端提示符 (Read More 指示器) */}
-      <div class="hidden sm:flex items-center gap-2 text-[10px] font-mono text-muted-foreground/40 uppercase tracking-widest group-hover:text-primary/80 transition-colors select-none">
-        <span>READ_FILE</span>
-        <span class="icon-[ph--arrow-right] size-3 group-hover:translate-x-1 transition-transform"></span>
       </div>
 
     </div>

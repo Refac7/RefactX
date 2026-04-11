@@ -1,25 +1,21 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
-import toast from 'react-hot-toast';
 import { 
     REPO_CONFIG, DEFAULT_META, DATA_FILES, UPLOAD_CONFIG, 
     type FileType, type MobileView, type EditorMode, type QueueItem, type RemoteFile, type MetaType 
 } from './types';
 
 interface AdminContextType {
-  // Auth
   isLoggedIn: boolean;
   performLogin: (pass: string) => Promise<void>;
   handleLogout: () => void;
   isValidating: boolean;
   loginError: boolean;
-  // Layout
   mobileView: MobileView;
   setMobileView: (v: MobileView) => void;
   showLeftPanel: boolean;
   setShowLeftPanel: (v: boolean) => void;
   showRightPanel: boolean;
   setShowRightPanel: (v: boolean) => void;
-  // Data & Queue
   remoteFiles: RemoteFile[];
   queue: QueueItem[];
   isLoadingFiles: boolean;
@@ -32,7 +28,6 @@ interface AdminContextType {
   processQueue: () => Promise<void>;
   handleNewPost: () => void;
   loadFromQueue: (item: QueueItem) => void;
-  // Editor State
   currentMode: FileType;
   setCurrentMode: (m: FileType) => void;
   editorMode: EditorMode;
@@ -50,7 +45,6 @@ interface AdminContextType {
   editingItemIndex: number | null;
   setEditingItemIndex: (n: number | null) => void;
   isFetchingContent: boolean;
-  // Upload
   fileInputRef: React.RefObject<HTMLInputElement | null>;
   uploadTargetRef: React.RefObject<string>;
   handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
@@ -60,24 +54,20 @@ interface AdminContextType {
 const AdminContext = createContext<AdminContextType | undefined>(undefined);
 
 const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // --- Auth State ---
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isValidating, setIsValidating] = useState(false);
   const [loginError, setLoginError] = useState(false);
 
-  // --- Layout State ---
   const [mobileView, setMobileView] = useState<MobileView>('editor');
   const [showLeftPanel, setShowLeftPanel] = useState(true);
   const [showRightPanel, setShowRightPanel] = useState(true);
 
-  // --- Data State ---
   const [remoteFiles, setRemoteFiles] = useState<RemoteFile[]>([]);
   const [queue, setQueue] = useState<QueueItem[]>([]);
   const [isLoadingFiles, setIsLoadingFiles] = useState(false);
   const [isProcessingQueue, setIsProcessingQueue] = useState(false);
   const [isFetchingContent, setIsFetchingContent] = useState(false);
 
-  // --- Editor State ---
   const [currentMode, setCurrentMode] = useState<FileType>('post');
   const [editorMode, setEditorMode] = useState<EditorMode>('visual');
   const [filename, setFilename] = useState('');
@@ -87,11 +77,9 @@ const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   const [parsedJson, setParsedJson] = useState<any[]>([]);
   const [editingItemIndex, setEditingItemIndex] = useState<number | null>(null);
 
-  // --- Refs ---
   const fileInputRef = useRef<HTMLInputElement>(null);
   const uploadTargetRef = useRef<string>('body');
 
-  // --- Helper: Auth & Token ---
   const getAuthHeaders = () => {
     const token = localStorage.getItem('admin_jwt_token');
     return { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) };
@@ -111,10 +99,8 @@ const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     localStorage.removeItem('admin_jwt_token');
     setIsLoggedIn(false);
     setRemoteFiles([]);
-    toast.success('SIGNED_OUT');
   };
 
-  // --- Helper: Parsers ---
   const parseContent = (raw: string) => {
     try {
         const regex = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/;
@@ -143,7 +129,6 @@ const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     } catch (e) { return { meta: DEFAULT_META, body: raw }; }
   };
 
-  // --- Actions ---
   const fetchRemoteFiles = async () => {
     setIsLoadingFiles(true);
     try {
@@ -152,8 +137,7 @@ const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       const data = await res.json();
       if (data.files) setRemoteFiles(data.files);
     } catch (e: any) { 
-        if (e.message === 'UNAUTHORIZED') { handleLogout(); toast.error('SESSION EXPIRED'); }
-        else { toast.error('SYNC FAILED'); }
+        if (e.message === 'UNAUTHORIZED') { handleLogout(); }
     } finally { setIsLoadingFiles(false); }
   };
 
@@ -161,7 +145,6 @@ const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     if (!pass) return;
     setIsValidating(true);
     setLoginError(false);
-    toast.dismiss();
     
     try {
       const res = await fetch('/api/auth', { 
@@ -174,30 +157,20 @@ const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
       if (res.status === 429) {
         setLoginError(true);
-        toast.error(data.error || 'RATE LIMIT EXCEEDED', { 
-            id: 'auth_ratelimit', 
-            duration: 5000,
-            icon: '🚫'
-        });
         return;
       }
 
       if (res.ok && data.token) {
         localStorage.setItem('admin_jwt_token', data.token);
         setIsLoggedIn(true);
-        toast.dismiss(); 
-        toast.success('ACCESS GRANTED', { id: 'auth_status', duration: 2000 });
         fetchRemoteFiles();
       } 
       else {
         setLoginError(true);
         localStorage.removeItem('admin_jwt_token');
-        const errorMsg = data.error === 'Wrong password' ? 'INVALID PASSKEY' : 'ACCESS DENIED';
-        toast.error(errorMsg, { id: 'auth_error', duration: 2000 });
       }
     } catch (error) { 
         setLoginError(true); 
-        toast.error('NETWORK ERROR', { id: 'net_error' }); 
     } finally { 
         setIsValidating(false); 
     }
@@ -206,7 +179,6 @@ const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   const loadFile = async (name: string, isData = false, path?: string) => {
     if ((isData ? jsonContent : body).length > 50 && !confirm("Override current workspace?")) return;
     setIsFetchingContent(true);
-    const toastId = toast.loading(`RETRIEVING ${name}...`);
     try {
       const res = await fetch('/api/get-content', { method: 'POST', headers: getAuthHeaders(), body: JSON.stringify(isData ? { config: REPO_CONFIG, absolutePath: path } : { config: REPO_CONFIG, filename: name }) });
       if (res.status === 401) throw new Error('UNAUTHORIZED');
@@ -214,7 +186,6 @@ const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       if (res.status === 404 && isData) {
         setFilename(name); setJsonContent('[]'); setParsedJson([]);
         setCurrentMode('data'); setEditorMode('visual'); setEditingItemIndex(null); setMobileView('editor');
-        toast('FILE_NOT_FOUND // CREATING NEW', { icon: '🆕', id: toastId });
         return;
       }
       if (!res.ok) throw new Error('Fetch failed');
@@ -231,7 +202,6 @@ const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         } catch(e) {
           setJsonContent(data.content);
           setEditorMode('raw');
-          toast.error('JSON_PARSE_ERROR');
         }
       } else {
         const { meta: parsedMeta, body: parsedBody } = parseContent(data.content);
@@ -239,10 +209,8 @@ const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         setCurrentMode('post');
       }
       setMobileView('editor');
-      toast.success('DATA_LOADED', { id: toastId });
     } catch (e: any) {
-        if (e.message === 'UNAUTHORIZED') { handleLogout(); toast.error('SESSION EXPIRED'); }
-        else { toast.error('FETCH_ERROR', { id: toastId }); }
+        if (e.message === 'UNAUTHORIZED') { handleLogout(); }
     } finally { setIsFetchingContent(false); }
   };
 
@@ -251,7 +219,7 @@ const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     let finalFilename = '';
     
     if (currentMode === 'post') {
-        if (!filename || !meta.title) return toast.error('MISSING META');
+        if (!filename || !meta.title) return;
         finalFilename = filename.endsWith('.md') ? filename : `${filename}.md`;
         content = `---
 title: '${meta.title.replace(/'/g, "''")}'
@@ -267,8 +235,8 @@ heroImageAspectRatio: '${meta.heroImageAspectRatio}'
 
 ${body}`;
     } else {
-        if (!filename) return toast.error('FILENAME ERROR');
-        try { JSON.parse(jsonContent); } catch (e) { return toast.error('INVALID JSON'); }
+        if (!filename) return;
+        try { JSON.parse(jsonContent); } catch (e) { return; }
         finalFilename = DATA_FILES.find(f => f.name === filename)?.path || filename;
         content = jsonContent;
     }
@@ -279,7 +247,6 @@ ${body}`;
         if (existingIndex !== -1) { const newQueue = [...prev]; newQueue[existingIndex] = newItem; return newQueue; }
         return [...prev, newItem];
     });
-    toast.success('STAGED TO BUFFER');
   };
 
   const stageForDelete = (file: RemoteFile) => {
@@ -290,25 +257,21 @@ ${body}`;
         if (existingIndex !== -1) { const newQueue = [...prev]; newQueue[existingIndex] = newItem; return newQueue; }
         return [...prev, newItem];
     });
-    toast.success('MARKED FOR DELETION');
   };
 
   const processQueue = async () => {
-    if (queue.length === 0) { toast.error('BUFFER EMPTY'); return; }
+    if (queue.length === 0) return;
     if (!confirm(`EXECUTE ${queue.length} OPERATIONS?`)) return;
     setIsProcessingQueue(true);
-    const toastId = toast.loading('PROCESSING BATCH...');
     try {
       const res = await fetch('/api/batch-commit', { method: 'POST', headers: getAuthHeaders(), body: JSON.stringify({ config: REPO_CONFIG, operations: queue }) });
       if (res.status === 401) throw new Error('UNAUTHORIZED');
       if (!res.ok) throw new Error('BATCH FAILED');
       setQueue([]);
       localStorage.removeItem('admin_queue_v1');
-      toast.success(`BATCH COMPLETE // ${queue.length} OPS`, { id: toastId });
       await fetchRemoteFiles();
     } catch (error: any) {
-      if (error.message === 'UNAUTHORIZED') { handleLogout(); toast.error('SESSION EXPIRED', { id: toastId }); }
-      else { toast.error(`ERROR: ${error.message}`, { id: toastId }); }
+      if (error.message === 'UNAUTHORIZED') { handleLogout(); }
     } finally { setIsProcessingQueue(false); }
   };
 
@@ -321,13 +284,12 @@ ${body}`;
       if (res.status === 401) throw new Error('UNAUTHORIZED');
       const d = await res.json();
       if(d.filename) setFilename(d.filename);
-    } catch(e: any) { if (e.message === 'UNAUTHORIZED') { handleLogout(); toast.error('SESSION EXPIRED'); } }
+    } catch(e: any) { if (e.message === 'UNAUTHORIZED') { handleLogout(); } }
     setMobileView('editor');
-    toast('WORKSPACE INITIALIZED', { icon: '✨' });
   };
 
   const loadFromQueue = (item: QueueItem) => {
-    if (item.type === 'delete') return toast('CANNOT EDIT DELETION', { icon: '🚫' });
+    if (item.type === 'delete') return;
     if ((body.length > 20 || jsonContent.length > 20) && !confirm("DISCARD CHANGES?")) return;
     try {
         let displayFilename = item.filename.includes('/') ? item.filename.split('/').pop() || item.filename : item.filename;
@@ -342,8 +304,7 @@ ${body}`;
             setMeta(m); setBody(b);
         }
         setMobileView('editor');
-        toast.success('RESTORED FROM BUFFER');
-    } catch (e) { toast.error('BUFFER_PARSE_ERROR'); }
+    } catch (e) {}
   };
 
   const triggerUpload = (target: string) => {
@@ -361,7 +322,6 @@ ${body}`;
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const toastId = toast.loading('UPLOADING...');
     try {
         const MAX_SIZE = 1024 * 1024;
         let fileToUpload = file;
@@ -392,24 +352,16 @@ ${body}`;
              const [_, indexStr, key] = target.split('___');
              handleUpdateItem(parseInt(indexStr), key, url);
         } else if (target === 'json_raw') {
-             // 简单的追加，因为 context 里不好拿到 textarea 的 cursor 位置，通常 visual 模式用得更多
-             // 如果需要精确插入，可以在 JsonEditor 里单独处理
              setJsonContent(prev => prev + url);
         } else if (target === 'body') {
-            // body 的插入需要光标位置，我们在 PostEditor 里处理，这里先把 url 存到剪贴板或者 update body
-            // 为了简化，这里直接追加，或者通过事件通知。
-            // 更好的做法：Context 暴露一个 "insertImageToBody(url)" 方法
-            // 暂时：追加到最后
             setBody(prev => prev + `![](${url})`);
         } else if (target === 'hero') setMeta({ ...meta, heroImage: url, ogImage: meta.ogImage ? meta.ogImage : url });
         else if (target === 'og') setMeta({ ...meta, ogImage: url });
         
-        toast.success('UPLOAD COMPLETE', { id: toastId });
-    } catch(e) { toast.error('UPLOAD FAILED', { id: toastId }); } 
+    } catch(e) {} 
     finally { if(fileInputRef.current) fileInputRef.current.value = ''; }
   };
 
-  // --- Effects ---
   useEffect(() => {
     const savedQueue = localStorage.getItem('admin_queue_v1');
     if (savedQueue) { try { setQueue(JSON.parse(savedQueue)); } catch {} }
@@ -424,11 +376,10 @@ ${body}`;
         else { handleLogout(); }
     }
   }, []);
-  // --- Queue Remove ---
+
   const removeFromQueue = (id: string, e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
     setQueue(prev => prev.filter(item => item.id !== id));
-    toast.success('REMOVED FROM BUFFER');
   };
 
   const value = {

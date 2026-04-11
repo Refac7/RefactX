@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { cn } from '~/lib/utils';
@@ -13,7 +13,6 @@ interface PostEditorProps {
 export default function PostEditor({ showPreview, showMetaConfig }: PostEditorProps) {
   const { body, setBody, meta, setMeta, triggerUpload, stageForWrite } = useAdmin();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [showToolbar, setShowToolbar] = useState(true);
 
   const insertText = (before: string, after: string = '') => {
     const textarea = textareaRef.current;
@@ -45,59 +44,75 @@ export default function PostEditor({ showPreview, showMetaConfig }: PostEditorPr
   };
 
   const TOOLBAR_ITEMS = [
-      { icon: 'icon-[ph--text-b]', label: 'Bold', action: () => insertText('**', '**'), shortcut: '⌘B' },
-      { icon: 'icon-[ph--text-italic]', label: 'Italic', action: () => insertText('*', '*'), shortcut: '⌘I' },
-      { icon: 'icon-[ph--text-strikethrough]', label: 'Strike', action: () => insertText('~~', '~~'), shortcut: '' },
-      { icon: 'icon-[ph--code]', label: 'Code', action: () => insertText('`', '`'), shortcut: '' },
-      { icon: 'icon-[ph--link]', label: 'Link', action: () => insertText('[', '](url)'), shortcut: '⌘K' },
-      { icon: 'icon-[ph--quotes]', label: 'Quote', action: () => insertText('> ', ''), shortcut: '' },
-      { icon: 'icon-[ph--list-bullets]', label: 'List', action: () => insertText('- ', ''), shortcut: '' },
-      { icon: 'icon-[ph--text-h-one]', label: 'H1', action: () => insertText('# ', ''), shortcut: '' },
-      { icon: 'icon-[ph--text-h-two]', label: 'H2', action: () => insertText('## ', ''), shortcut: '' },
+      { icon: 'icon-[ph--text-b]', label: 'Bold', action: () => insertText('**', '**') },
+      { icon: 'icon-[ph--text-italic]', label: 'Italic', action: () => insertText('*', '*') },
+      { icon: 'icon-[ph--text-strikethrough]', label: 'Strike', action: () => insertText('~~', '~~') },
+      { icon: 'icon-[ph--code]', label: 'Code', action: () => insertText('`', '`') },
+      { icon: 'icon-[ph--link]', label: 'Link', action: () => insertText('[', '](url)') },
+      { icon: 'icon-[ph--quotes]', label: 'Quote', action: () => insertText('> ', '') },
+      { icon: 'icon-[ph--list-bullets]', label: 'List', action: () => insertText('- ', '') },
+      { icon: 'icon-[ph--text-h-one]', label: 'H1', action: () => insertText('# ', '') },
+      { icon: 'icon-[ph--text-h-two]', label: 'H2', action: () => insertText('## ', '') },
       ...(WALINE_CONFIG.enableImgUpload ? [{ 
-        icon: 'icon-[ph--image]', label: 'Img', action: () => triggerUpload('body'), shortcut: '' 
+        icon: 'icon-[ph--image]', label: 'Img', action: () => triggerUpload('body') 
       }] : []),
   ];
 
   return (
     <>
         {showMetaConfig && !showPreview && (
-            <div className="grid grid-cols-1 sm:grid-cols-4 gap-px bg-border border-b border-border shadow-sm shrink-0">
-                <div className="sm:col-span-4 bg-background p-2">
-                  <label className="block text-[9px] font-mono text-muted-foreground/60 uppercase tracking-widest mb-1">Title</label>
-                  <input value={meta.title} onChange={e=>setMeta({...meta, title: e.target.value})} className="w-full bg-transparent text-sm font-bold focus:outline-none rounded-none placeholder:text-muted-foreground/20" placeholder="ENTER TITLE..." />
-                </div>
-                <div className="sm:col-span-4 bg-background p-2">
-                  <label className="block text-[9px] font-mono text-muted-foreground/60 uppercase tracking-widest mb-1">Description</label>
-                  <input value={meta.description} onChange={e=>setMeta({...meta, description: e.target.value})} className="w-full bg-transparent text-xs focus:outline-none rounded-none placeholder:text-muted-foreground/20" placeholder="Brief summary..." />
-                </div>
-                <div className="sm:col-span-1 bg-background p-2">
-                  <label className="block text-[9px] font-mono text-muted-foreground/60 uppercase tracking-widest mb-1">Date</label>
-                  <input type="date" value={meta.pubDate} onChange={e=>setMeta({...meta, pubDate: e.target.value})} className="w-full bg-transparent text-xs focus:outline-none rounded-none font-mono" />
-                </div>
-                <div className="sm:col-span-2 bg-background p-2">
-                  <label className="block text-[9px] font-mono text-muted-foreground/60 uppercase tracking-widest mb-1">Tags</label>
-                  <input value={meta.tags} onChange={e=>setMeta({...meta, tags: e.target.value})} className="w-full bg-transparent text-xs focus:outline-none rounded-none font-mono text-primary" placeholder="TAG1, TAG2" />
-                </div>
-                <div className="sm:col-span-1 bg-background p-2 flex items-center justify-center">
-                    <label className="flex items-center gap-2 cursor-pointer select-none">
-                        <input type="checkbox" checked={meta.recommend} onChange={e => setMeta({...meta, recommend: e.target.checked})} className="size-3 accent-primary rounded-none" />
-                        <span className={cn("text-[10px] font-mono font-bold uppercase", meta.recommend ? "text-primary" : "text-muted-foreground")}>Featured</span>
-                    </label>
-                </div>
-                <div className="sm:col-span-4 bg-background p-2 flex items-center gap-2">
-                  {WALINE_CONFIG.enableImgUpload ? (
-                    <span onClick={()=>triggerUpload('hero')} className="cursor-pointer text-[9px] font-mono text-primary border border-primary/30 px-1 hover:bg-primary/10 transition-colors uppercase">[Upload_Hero]</span>
-                  ) : <span className="text-[9px] font-mono text-muted-foreground/60 uppercase">[UPLOAD_DISABLED]</span>}
-                  <input value={meta.heroImage} onChange={e=>setMeta({...meta, heroImage: e.target.value})} className="flex-1 bg-transparent text-xs font-mono text-muted-foreground focus:outline-none rounded-none" placeholder="IMAGE_URL..." />
+            <div className="bg-muted/10 border-b border-border/40 p-4 shrink-0">
+                <div className="grid grid-cols-1 sm:grid-cols-12 gap-4">
+                    <div className="sm:col-span-8">
+                      <label className="block text-xs font-medium text-muted-foreground mb-1.5">Title</label>
+                      <input value={meta.title} onChange={e=>setMeta({...meta, title: e.target.value})} className="w-full bg-background border border-border/40 rounded-xs px-3 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all" placeholder="Post Title" />
+                    </div>
+                    <div className="sm:col-span-4">
+                      <label className="block text-xs font-medium text-muted-foreground mb-1.5">Date</label>
+                      <input type="date" value={meta.pubDate} onChange={e=>setMeta({...meta, pubDate: e.target.value})} className="w-full bg-background border border-border/40 rounded-xs px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all" />
+                    </div>
+                    <div className="sm:col-span-12">
+                      <label className="block text-xs font-medium text-muted-foreground mb-1.5">Description</label>
+                      <input value={meta.description} onChange={e=>setMeta({...meta, description: e.target.value})} className="w-full bg-background border border-border/40 rounded-xs px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all" placeholder="Brief summary of the post..." />
+                    </div>
+                    <div className="sm:col-span-6">
+                      <label className="block text-xs font-medium text-muted-foreground mb-1.5">Tags (comma separated)</label>
+                      <input value={meta.tags} onChange={e=>setMeta({...meta, tags: e.target.value})} className="w-full bg-background border border-border/40 rounded-xs px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all" placeholder="tech, life, code" />
+                    </div>
+                    <div className="sm:col-span-6">
+                      <label className="flex justify-between items-end text-xs font-medium text-muted-foreground mb-1.5">
+                        <span>Cover Image</span>
+                        {WALINE_CONFIG.enableImgUpload && <span onClick={()=>triggerUpload('hero')} className="cursor-pointer text-primary hover:underline">Upload</span>}
+                      </label>
+                      <input value={meta.heroImage} onChange={e=>setMeta({...meta, heroImage: e.target.value})} className="w-full bg-background border border-border/40 rounded-xs px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all" placeholder="https://..." />
+                    </div>
+                    <div className="sm:col-span-12 flex items-center mt-1">
+                        <label className="flex items-center gap-2 cursor-pointer select-none">
+                            <input type="checkbox" checked={meta.recommend} onChange={e => setMeta({...meta, recommend: e.target.checked})} className="size-4 rounded border-border/40 text-primary focus:ring-primary/20" />
+                            <span className="text-sm font-medium text-foreground">Featured Post</span>
+                        </label>
+                    </div>
                 </div>
             </div>
         )}
         
+        {/* 工具栏 */}
+        {!showPreview && (
+            <div className="border-b border-border/40 bg-background shrink-0 px-2 py-1.5 flex items-center gap-1 overflow-x-auto no-scrollbar">
+                {TOOLBAR_ITEMS.map((tool, i) => (
+                    <button key={i} onClick={tool.action} title={tool.label} className="p-2 rounded-xs hover:bg-muted text-muted-foreground hover:text-foreground transition-colors flex items-center justify-center">
+                        <span className={cn("size-4", tool.icon)}></span>
+                    </button>
+                ))}
+            </div>
+        )}
+
         <div className="flex-1 relative flex flex-col min-h-0 bg-background">
             {showPreview ? (
-                <div className="absolute inset-0 overflow-y-auto w-full p-8 bg-background text-foreground custom-scrollbar prose prose-sm max-w-none dark:prose-invert prose-pre:bg-muted/50 prose-pre:border prose-pre:border-border prose-headings:font-bold prose-headings:tracking-tight prose-p:leading-relaxed prose-a:text-primary prose-img:rounded-none break-words">
-                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{body}</ReactMarkdown>
+                <div className="absolute inset-0 overflow-y-auto w-full p-6 sm:p-10 custom-scrollbar">
+                  <div className="mx-auto prose prose-sm sm:prose-base dark:prose-invert prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-primary prose-img:rounded-md">
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>{body}</ReactMarkdown>
+                  </div>
                 </div>
             ) : (
                 <textarea 
@@ -105,32 +120,12 @@ export default function PostEditor({ showPreview, showMetaConfig }: PostEditorPr
                     value={body} 
                     onChange={e => setBody(e.target.value)} 
                     onKeyDown={handleKeyDown}
-                    className="flex-1 p-8 bg-transparent text-sm font-mono leading-relaxed resize-none focus:outline-none custom-scrollbar placeholder:text-muted-foreground/10 text-foreground" 
-                    placeholder="// START_ENTRY..." 
+                    className="flex-1 p-6 sm:p-10 bg-transparent text-sm sm:text-base leading-relaxed resize-none focus:outline-none custom-scrollbar placeholder:text-muted-foreground/30" 
+                    placeholder="Write your content here... (Markdown supported)" 
                     spellCheck={false}
                 />
             )}
         </div>
-
-        {!showPreview && (
-            <div className="border-t border-border bg-background shrink-0 transition-all duration-300">
-                <div className="flex items-center justify-between h-9 px-2">
-                    <button onClick={() => setShowToolbar(!showToolbar)} className="h-full px-2 text-muted-foreground hover:text-primary transition-colors flex items-center justify-center">
-                        <span className={cn("size-3.5 transition-transform icon-[ph--caret-right]", showToolbar ? "rotate-90" : "")}></span>
-                    </button>
-                    {showToolbar && (
-                        <div className="flex-1 flex items-center gap-1 overflow-x-auto custom-scrollbar px-2">
-                            {TOOLBAR_ITEMS.map((tool, i) => (
-                                <button key={i} onClick={tool.action} className="h-7 px-2 min-w-[32px] flex items-center justify-center gap-1.5 rounded-none hover:bg-primary/10 text-muted-foreground hover:text-primary transition-colors text-xs border border-transparent hover:border-primary/20 group">
-                                    <span className={cn("size-4", tool.icon)}></span>
-                                </button>
-                            ))}
-                        </div>
-                    )}
-                    <div className="text-[9px] font-mono text-muted-foreground/40 uppercase tracking-widest px-2 select-none">MD_MODE</div>
-                </div>
-            </div>
-        )}
     </>
   );
 }

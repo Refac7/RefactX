@@ -1,7 +1,6 @@
 ---
 import { formatDate } from '~/lib/utils'
 import Prose from '~/components/posts/base/Prose.astro'
-import TerminalBuffer from '~/components/base/TerminalBuffer.astro'
 import TableOfContent from '~/components/posts/toc/TableOfContents.astro'
 
 interface Props {
@@ -12,117 +11,68 @@ interface Props {
 }
 
 const { frontmatter, minutesRead, wordCount, headings } = Astro.props
-
-const serialCode = `FIG-${new Date(frontmatter.pubDate).getFullYear()}-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`
 ---
 
-<TerminalBuffer layout="article" delay={600}>
-  <article class="relative">
-    
-    <div class="px-6 md:px-8 py-12">
-      
-      <header class="mb-16 flex flex-col min-h-[60vh] lg:min-h-[30vh]">
-        
-        <div class="flex justify-between items-start shrink-0 select-none">
-          <span class="font-mono text-[10px] text-muted-foreground uppercase tracking-widest mt-2">
-            System: Blog_Engine_v2.0
-          </span>
-          <span class="font-mono text-xl md:text-2xl font-black text-border/40">
-            {serialCode}
-          </span>
-        </div>
+<article class="relative w-full">
+  
+  <header class="relative w-full min-h-[50vh] flex flex-col justify-center px-6 md:px-12 py-24 border-b border-border/40 bg-muted/5">
+     
+     <div class="absolute top-8 left-6 md:left-12 flex items-center gap-2 sm:flex">
+       <a href="/posts" class="inline-flex items-center justify-center size-8 rounded-full bg-background border border-border/40 shadow-sm text-muted-foreground hover:text-foreground transition-colors">
+         <span class="icon-[ph--arrow-left] size-4"></span>
+       </a>
+     </div>
 
-        <div class="flex-1 flex flex-col justify-end lg:justify-center pb-12 mt-12">
-          <h1 class="text-5xl sm:text-6xl md:text-7xl font-black tracking-tighter text-foreground mb-6 leading-[1.1]" data-pagefind-body>
-            {frontmatter.title}
-          </h1>
+     <div class="absolute top-8 right-6 md:right-12 text-xs font-medium text-muted-foreground">
+       {formatDate(frontmatter.pubDate)}
+     </div>
 
-          {frontmatter.description && (
-            <div class="flex gap-4 items-start max-w-3xl">
-              <span class="shrink-0 font-mono text-[10px] text-primary pt-1.5 hidden sm:block uppercase tracking-widest">NO.01_DESC &darr;</span>
-              <p class="text-sm md:text-base font-medium text-muted-foreground leading-relaxed">
-                {frontmatter.description}
-              </p>
-            </div>
-          )}
+     <div class="absolute bottom-8 left-6 md:left-12 flex flex-wrap gap-2 max-w-[50vw]">
+        {frontmatter.tags && frontmatter.tags.map((tag: string) => (
+          <a href={`/tags/${tag}`} class="text-xs font-medium bg-background border border-border/40 text-muted-foreground hover:text-foreground shadow-sm px-3 py-1 rounded-full transition-colors">
+            {tag}
+          </a>
+        ))}
+     </div>
+
+     <div class="absolute bottom-8 right-6 md:right-12 flex flex-col items-end gap-1 text-xs font-medium text-muted-foreground text-right sm:flex">
+       <span>{wordCount} Words</span>
+       <span>{minutesRead || 'Unknown'} Read</span>
+     </div>
+     
+     <div class="max-w-4xl mx-auto text-center z-10 w-full">
+       <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-foreground leading-tight sm:leading-[1.1]" data-pagefind-body>
+         {frontmatter.title}
+       </h1>
+       {frontmatter.description && (
+         <p class="mt-6 text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+           {frontmatter.description}
+         </p>
+       )}
+       {frontmatter.updatedDate && (
+         <p class="mt-6 text-xs font-medium text-muted-foreground/60 flex items-center justify-center gap-1.5">
+           <span class="icon-[ph--clock-clockwise]"></span>
+           Updated {formatDate(frontmatter.updatedDate)}
+         </p>
+       )}
+     </div>
+  </header>
+
+  <div class="relative bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:48px_48px]">
+    <div class="relative w-full max-w-[1920px] mx-auto px-6 md:px-12 py-12 md:py-20">
+      <div class="relative w-full flex flex-col xl:flex-row items-start justify-center gap-10 xl:gap-24">
+        
+        <div class="w-full mx-auto max-w-4xl shrink-0 relative">
+          <Prose>
+            <slot />
+          </Prose>
         </div>
         
-        <div class="shrink-0">
-          <div class="grid grid-cols-2 md:grid-cols-4 bg-border/40 gap-px border border-border/40">
-            <div class="bg-background p-4 flex flex-col justify-between h-24 hover:bg-muted/10 transition-colors">
-              <span class="font-mono text-[10px] uppercase text-muted-foreground tracking-widest">Date_Log</span>
-              <div class="flex items-end gap-2 text-foreground">
-                <span class="icon-[mdi--calendar-blank] size-5 text-primary"></span>
-                <span class="font-mono text-sm font-bold">{formatDate(frontmatter.pubDate)}</span>
-              </div>
-            </div>
-            <div class="bg-background p-4 flex flex-col justify-between h-24 hover:bg-muted/10 transition-colors">
-              <span class="font-mono text-[10px] uppercase text-muted-foreground tracking-widest">Data_Size</span>
-              <div class="flex items-end gap-2 text-foreground">
-                <span class="icon-[mdi--database-outline] size-5 text-primary"></span>
-                <span class="font-mono text-sm font-bold">{wordCount} <span class="text-[10px] text-muted-foreground/60 font-normal">WORDS</span></span>
-              </div>
-            </div>
-            <div class="bg-background p-4 flex flex-col justify-between h-24 hover:bg-muted/10 transition-colors">
-              <span class="font-mono text-[10px] uppercase text-muted-foreground tracking-widest">Est_Time</span>
-              <div class="flex items-end gap-2 text-foreground">
-                 <span class="icon-[mdi--timer-sand] size-5 text-primary"></span>
-                <span class="font-mono text-sm font-bold">{minutesRead || 'Unknown'}</span>
-              </div>
-            </div>
-            <div class="bg-background p-4 flex flex-col justify-between h-24 overflow-hidden relative group hover:bg-muted/10 transition-colors">
-               <span class="font-mono text-[10px] uppercase text-muted-foreground tracking-widest z-10">Categories</span>
-               <div class="flex flex-wrap gap-1 z-10 mt-auto">
-                  {frontmatter.tags && frontmatter.tags.slice(0, 2).map((tag: string) => (
-                    <span class="text-[10px] font-bold font-mono bg-foreground text-background px-1.5 py-0.5">#{tag}</span>
-                  ))}
-                  {(frontmatter.tags?.length > 2) && <span class="text-[10px] font-mono text-muted-foreground">...</span>}
-               </div>
-               <span class="absolute -bottom-2 -right-2 text-6xl text-muted-foreground/[0.03] icon-[mdi--tag] group-hover:text-primary/[0.05] transition-colors pointer-events-none select-none"></span>
-            </div>
-          </div>
-          
-          {frontmatter.updatedDate && (
-            <div class="border-b border-x border-border/40 bg-primary/5 p-3 px-4 flex justify-between items-center">
-              <span class="font-mono text-[10px] font-bold text-primary uppercase tracking-widest">
-                <span class="animate-pulse mr-2">⚠</span> Last Updated
-              </span>
-              <span class="font-mono text-[10px] text-muted-foreground">{formatDate(frontmatter.updatedDate)}</span>
-            </div>
-          )}
-        </div>
-        
-        {frontmatter.tags && frontmatter.tags.length > 0 && (
-           <div class="flex items-center gap-4 mt-6 shrink-0">
-              <div class="h-px bg-border/40 flex-1"></div>
-              <div class="flex flex-wrap gap-2">
-                {frontmatter.tags.map((tag: string) => (
-                  <a href={`/tags/${tag}`} class="font-mono text-[10px] font-bold uppercase tracking-wider border border-border/40 px-3 py-1 hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-200">
-                    {tag}
-                  </a>
-                ))}
-              </div>
-           </div>
+        {headings && headings.length > 0 && (
+          <TableOfContent headings={headings} />
         )}
-      </header>
 
-      <div class="relative bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:48px_48px]">
-        
-        <div class="relative w-full max-w-7xl mx-auto flex flex-col xl:flex-row items-start justify-center gap-10 xl:gap-20">
-          
-          <div class="w-full mx-auto max-w-4xl shrink-0 xl:mt-4 relative">
-            <Prose>
-              <slot />
-            </Prose>
-          </div>
-          
-          {headings && headings.length > 0 && (
-            <TableOfContent headings={headings} />
-          )}
-
-        </div>    
-      </div>   
-
-    </div>
-  </article>
-</TerminalBuffer>
+      </div>    
+    </div>   
+  </div>
+</article>

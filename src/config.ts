@@ -13,6 +13,8 @@ import type {
 export const SITE: Site = {
   title: 'RefactX Project',
   description: '如风般轻盈，如光般纯粹。',
+  indexIntro1: '你好，我是 Refact 。一名时空修剪者。',
+  indexIntro2: '记录技术与生活的点滴，保持简单与专注。',
   website: 'https://www.refact.cc/',
   base: '/',
   author: 'Refact',

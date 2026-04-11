@@ -2,108 +2,41 @@
 import Layout from '~/layouts/Layout.astro'
 ---
 
-<Layout title="System Failure" description="404 Page Not Found">
-  <div class="relative min-h-[80vh] flex flex-col items-center justify-center p-6 lg:p-8 xl:p-12 font-sans overflow-hidden fade-up">
-    <div class="w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+<Layout title="404 Not Found" description="The page could not be found.">
+  <div class="relative min-h-screen flex flex-col p-6 lg:p-12 font-sans overflow-hidden fade-up">
       
-      <div class="relative flex flex-col select-none">
-         <span class="font-mono text-xs font-bold text-primary uppercase tracking-[0.3em] mb-2">
-            // Critical_Error
-         </span>
-         <h1 class="text-[10rem] sm:text-[12rem] leading-[0.8] font-bold tracking-tighter text-foreground/5 mix-blend-overlay select-none absolute -top-10 -left-10 z-0">
+      <div class="absolute top-6 left-6 lg:top-12 lg:left-12 flex items-center gap-2">
+        <span class="size-2 rounded-full bg-red-500"></span>
+        <span class="text-xs font-medium text-foreground tracking-tight">System Status</span>
+      </div>
+
+      <div class="absolute top-6 right-6 lg:top-12 lg:right-12">
+        <span class="text-xs font-medium text-muted-foreground">Error Code: 404</span>
+      </div>
+
+      <div class="absolute bottom-6 left-6 lg:bottom-12 lg:left-12 z-20">
+        <button onclick="history.back()" class="inline-flex items-center justify-center rounded-full border border-border/40 bg-background px-5 py-2 text-xs font-semibold text-foreground shadow-sm hover:bg-muted/50 transition-colors">
+          Go Back
+        </button>
+      </div>
+
+      <div class="absolute bottom-6 right-6 lg:bottom-12 lg:right-12 z-20">
+        <a href="/" class="inline-flex items-center justify-center rounded-full bg-foreground px-5 py-2 text-xs font-semibold text-background shadow-sm hover:bg-foreground/90 transition-colors">
+          Return Home
+        </a>
+      </div>
+
+      <div class="flex-1 flex flex-col items-center justify-center max-w-2xl mx-auto z-10 w-full text-center">
+         <h1 class="text-[8rem] sm:text-[12rem] font-bold tracking-tighter text-foreground leading-none mb-4 select-none">
             404
          </h1>
-         <div class="relative z-10">
-            <h2 class="text-7xl sm:text-8xl font-bold tracking-tighter text-foreground mb-4">
-              404<span class="text-primary animate-pulse">_</span>
-            </h2>
-            <div class="h-1 w-24 bg-primary mb-6"></div>
-            <p class="text-lg sm:text-xl text-muted-foreground max-w-md leading-relaxed">
-              The requested module could not be located in the memory banks. It may have been moved, deleted, or never existed.
-            </p>
-         </div>
+         <h2 class="text-xl sm:text-2xl font-semibold tracking-tight text-foreground mb-4">
+            Page Not Found
+         </h2>
+         <p class="text-sm sm:text-base text-muted-foreground max-w-md mx-auto leading-relaxed">
+            The page you are looking for doesn't exist, has been moved, or is currently unavailable.
+         </p>
       </div>
 
-      <div class="w-full fade-up animation-delay-200">
-        <div class="border border-border/40 bg-background shadow-2xl relative overflow-hidden">
-           <div class="flex items-center justify-between px-4 py-2 bg-muted/20 border-b border-border/40">
-              <span class="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">sys_diagnostic.log</span>
-              <div class="flex gap-1.5">
-                 <div class="size-2 rounded-full bg-red-500/50"></div>
-                 <div class="size-2 rounded-full bg-yellow-500/50"></div>
-                 <div class="size-2 rounded-full bg-green-500/50"></div>
-              </div>
-           </div>
-           
-           <div class="p-6 font-mono text-sm min-h-[200px] flex flex-col justify-center bg-black/5 dark:bg-black/20">
-              <div class="flex items-center text-muted-foreground mb-2 animate-fade-in opacity-0">
-                <span class="text-emerald-500 mr-3 font-bold">➜</span>
-                <span class="animate-typing">initiating search_protocol...</span>
-              </div>
-              <div class="flex items-center text-muted-foreground mb-2 animate-fade-in opacity-0" style="animation-delay: 0.8s">
-                <span class="text-emerald-500 mr-3 font-bold">➜</span>
-                <span class="animate-typing">scanning directory /root/pages</span>
-              </div>
-              <div class="flex items-center text-red-500 mb-4 animate-fade-in opacity-0" style="animation-delay: 1.6s">
-                <span class="mr-3 font-bold">✗</span>
-                <span class="animate-typing bg-red-500/10 px-1">Error: Target not found</span>
-              </div>
-              
-              <div class="border-t border-dashed border-border/40 my-2 w-full animate-fade-in opacity-0" style="animation-delay: 2.2s"></div>
-
-              <div class="flex flex-col gap-2 mt-2 animate-fade-in opacity-0" style="animation-delay: 2.5s">
-                <span class="text-muted-foreground/60 text-xs uppercase tracking-wider mb-1">// Recovery Options:</span>
-                
-                <button onclick="history.back()" class="group flex items-center gap-2 text-foreground hover:text-primary transition-colors text-left w-fit">
-                    <span class="text-blue-500">›</span>
-                    <span class="border-b border-transparent group-hover:border-primary">cd ..</span>
-                    <span class="text-xs text-muted-foreground/40 ml-2">(Go Back)</span>
-                </button>
-                
-                <button onclick="window.location.href='/'" class="group flex items-center gap-2 text-foreground hover:text-primary transition-colors text-left w-fit">
-                    <span class="text-blue-500">›</span>
-                    <span class="border-b border-transparent group-hover:border-primary">cd /home</span>
-                    <span class="text-xs text-muted-foreground/40 ml-2">(Return Home)</span>
-                </button>
-              </div>
-           </div>
-        </div>
-
-        <div class="flex justify-between mt-4 font-mono text-[10px] text-muted-foreground/30 uppercase tracking-widest">
-           <span>ERR_CODE: 0x00F4</span>
-           <span>MEM_DUMP: EMPTY</span>
-        </div>
-      </div>
-
-    </div>
   </div>
 </Layout>
-
-<style>
-  .animate-typing {
-    display: inline-block;
-    overflow: hidden;
-    white-space: nowrap;
-    border-right: 2px solid transparent;
-    width: 0;
-    animation: typing 0.8s steps(30, end) forwards, blink 0.7s step-end infinite;
-  }
-  .animate-typing:last-child {
-      border-right-color: rgba(var(--primary), 0.5);
-  }
-  @keyframes typing {
-    from { width: 0 }
-    to { width: 100% }
-  }
-  @keyframes blink {
-    from, to { border-color: transparent }
-    50% { border-color: currentColor }
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(2px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .animate-fade-in {
-    animation: fadeIn 0.3s ease-out forwards;
-  }
-</style>

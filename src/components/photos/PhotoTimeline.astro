@@ -12,86 +12,49 @@ interface Props {
 const { photoData, class: className } = Astro.props
 ---
 
-<div class={cn("relative space-y-2", className)}>
+<div class={cn("relative space-y-6", className)}>
   
-  <div class="absolute left-[27px] top-0 bottom-0 w-px border-l border-dashed border-border/40 z-0 hidden sm:block"></div>
+  <div class="absolute left-[27px] top-0 bottom-0 w-px bg-border/40 z-0 hidden sm:block"></div>
 
   {
     photoData.map((timeline, index) => {
-      // 格式化序号，例如 00, 01, 02
-      const indexId = index.toString().padStart(2, '0');
-      
       return (
         <div 
           class="timeline-item relative group opacity-0 animate-slide-down" 
-          style={`animation-delay: ${index * 0.15}s`}
+          style={`animation-delay: ${index * 0.1}s`}
         >
-          {/* 修改点 1: 移动端 flex-col (上下结构)，桌面端 flex-row (左右结构) */}
           <div class="flex flex-col sm:flex-row sm:gap-x-6">
             
-            {/* 1. 图标区域 */}
-            {/* 修改点 2: 移动端 items-start (靠左)，桌面端 items-center (居中) */}
             <div class="relative z-10 flex flex-col items-start sm:items-center shrink-0">
-              
-              <div class="size-14 flex justify-center items-center bg-background border border-border/40 group-hover:border-primary/60 group-hover:bg-muted/10 transition-colors duration-300 relative z-20">
-                 
-                 <div class="absolute top-0 right-0 size-1 bg-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <div class="size-14 flex justify-center items-center rounded-full bg-background border border-border/60 shadow-xs group-hover:border-border group-hover:bg-muted/10 transition-colors duration-300 relative z-20">
                  <TimelineIcon icon={timeline.icon} index={index} />
               </div>
-              
-              
-              <div class="h-4 ml-7 w-px border-l border-dashed border-border/40 sm:hidden"></div>
-              
-              
-              <div class="hidden sm:block mt-2 font-mono text-[10px] text-muted-foreground/40 writing-vertical-lr tracking-widest">
-                LOG_{indexId}
-              </div>
+              <div class="h-4 ml-7 w-px bg-border/40 sm:hidden"></div>
             </div>
 
-            {/* 2. 右侧：档案内容卡片 */}
-            <div class="grow pb-12 relative min-w-0">
-              
-              <div class="absolute top-7 -left-6 w-6 h-px bg-border/60 hidden sm:block"></div>
+            <div class="grow pb-6 relative min-w-0">
+              <div class="absolute top-7 -left-6 w-6 h-px bg-border/40 hidden sm:block"></div>
 
-              <div class="border border-border/40 bg-background p-1 group-hover:border-border transition-colors duration-300">
-                <div class="relative p-5 sm:p-6 bg-muted/5 group-hover:bg-muted/10 transition-colors duration-300">
+              <div class="rounded-md border border-border/40 bg-background/50 group-hover:shadow-xs group-hover:border-border/60 transition-all duration-300 overflow-hidden">
+                <div class="p-6">
                   
-                  
-                  <div class="absolute top-0 left-0 size-2 border-t border-l border-primary/20 group-hover:border-primary transition-colors"></div>
-                  <div class="absolute bottom-0 right-0 size-2 border-b border-r border-primary/20 group-hover:border-primary transition-colors"></div>
-
-                  
-                  <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-4 border-b border-border/40 pb-3">
-                    <h2 class="font-sans text-lg font-bold uppercase tracking-tight text-foreground flex items-center gap-2">
-                      <span class="w-1.5 h-4 bg-primary/80 block"></span>
+                  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+                    <h2 class="font-sans text-xl font-semibold tracking-tight text-foreground">
                       {timeline.title}
                     </h2>
-                    <span class="font-mono text-xs text-muted-foreground bg-muted/50 px-2 py-0.5 border border-border/30">
+                    <span class="text-xs font-medium text-muted-foreground bg-muted/50 px-2.5 py-1 rounded-full">
                       {timeline.date}
                     </span>
                   </div>
 
-                  
                   {timeline.description && (
-                    <p class="text-sm text-muted-foreground leading-relaxed font-sans mb-6 max-w-prose">
+                    <p class="text-sm text-muted-foreground leading-relaxed font-sans mb-6">
                       {timeline.description}
                     </p>
                   )}
 
-                  
-                  <div class="mt-4 relative bg-background border border-border/40 p-4 sm:p-6 overflow-hidden">
-                    
-                    <div class="absolute inset-0 opacity-[0.03]" 
-                         style="background-image: radial-gradient(#000 1px, transparent 1px); background-size: 10px 10px;">
-                    </div>
-                    
-                    
-                    <div class="absolute top-2 left-2 text-[9px] font-mono text-muted-foreground/40 uppercase tracking-widest pointer-events-none z-0">
-                      Attachment_IMG_Set_{indexId}
-                    </div>
-
-                    
-                    <div class="relative z-10 transform translate-y-2">
+                  <div class="mt-4 relative bg-muted/10 rounded-md border border-border/40 p-6 overflow-hidden">
+                    <div class="relative z-10 transform sm:translate-y-2">
                        <PolaroidStack photos={timeline.photos} title={timeline.title} description={timeline.description} client:load />
                     </div>
                   </div>

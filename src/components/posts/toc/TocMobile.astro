@@ -38,56 +38,45 @@ const getRelativeIndentClass = (depth: number) => {
 
       <div 
         id="mobile-toc-container" 
-        class="sticky top-0 z-30 font-mono transition-all duration-500 block xl:hidden"
+        class="sticky top-4 mx-4 z-30 font-sans transition-all duration-300 block xl:hidden"
       >
         <div class="relative">
           <button
-            class="group flex w-full cursor-pointer items-center justify-between relative px-6 sm:px-8 py-3 select-none transition-all duration-500 bg-transparent"
+            class="group flex w-full cursor-pointer items-center justify-between relative px-5 py-3 select-none transition-all duration-300 bg-background/80 backdrop-blur-md border border-border/40 rounded-full shadow-xs"
             data-toc-toggle
             data-toc-header
           >
-            <div class="flex gap-4 items-center min-w-0 flex-1">
-              <SimpleProgressRing size={18} strokeWidth={2} class="text-primary" />
+            <div class="flex gap-3 items-center min-w-0 flex-1">
+              <SimpleProgressRing size={20} strokeWidth={2} class="text-primary" />
               <div class="flex flex-col items-start overflow-hidden">
-                  <span class="text-[10px] uppercase tracking-widest text-muted-foreground/60 leading-none mb-1">
-                      // Current_Loc
-                  </span>
-                  <span id="mobile-toc-current-section" class="text-xs font-bold text-foreground uppercase tracking-tight truncate w-full">
-                    INDEX_PROTOCOL
+                  <span id="mobile-toc-current-section" class="text-sm font-medium text-foreground tracking-tight truncate w-full">
+                    Table of Contents
                   </span>
               </div>
             </div>
 
-            <div class="flex items-center gap-2 pl-4 border-l border-dashed border-border/40 h-8">
-              <span class="text-[10px] text-muted-foreground/50 hidden sm:block">EXPAND</span>
-              <span class="icon-[ph--caret-down-bold] w-4 h-4 text-primary transition-transform duration-300" data-toc-arrow />
+            <div class="flex items-center justify-center pl-2 h-full">
+              <span class="icon-[ph--caret-down] w-4 h-4 text-muted-foreground transition-transform duration-300" data-toc-arrow />
             </div>
           </button>
 
           <div
-            class="absolute left-0 w-full top-full bg-background border-b border-border shadow-xl overflow-hidden max-h-0 transition-[max-height] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]"
+            class="absolute left-0 w-full top-[calc(100%+0.5rem)] bg-background/95 backdrop-blur-md rounded-xl shadow-lg overflow-hidden max-h-0 transition-[max-height] duration-300 ease-out"
             data-toc-content
           >
               <div class="relative">
-                <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-primary/0 via-primary/20 to-primary/0"></div>
-
-                <div class="max-h-[40vh] overflow-y-auto no-scrollbar py-2" data-toc-scroll-area>
-                  <ul class="px-6 sm:px-8 py-2 space-y-px" id="mobile-table-of-contents">
+                <div class="max-h-[50vh] overflow-y-auto no-scrollbar py-2" data-toc-scroll-area>
+                  <ul class="px-5 py-2 space-y-1" id="mobile-table-of-contents">
                     {filteredHeadings.map((heading: TocHeading) => {
                       const isMain = heading.depth === minDepth;
-                      const depthClass = isMain ? 'text-foreground font-bold' : 'text-muted-foreground hover:text-foreground';
+                      const depthClass = isMain ? 'text-foreground font-medium' : 'text-muted-foreground hover:text-foreground';
                       return (
-                        <li class={cn('group/item flex items-baseline gap-3 min-w-0 py-1.5 border-l border-dashed border-border/40 pl-4 hover:border-primary/50 transition-colors', getRelativeIndentClass(heading.depth) || '')}>
-                          <span class="text-[10px] text-muted-foreground/30 font-mono min-w-[1.5rem] group-hover/item:text-primary transition-colors mobile-toc-number" data-order={heading.order}>{heading.order.toString().padStart(2, '0')}</span>
-                          <a href={`#${heading.slug}`} class={cn("text-xs uppercase tracking-wide transition-all duration-200 leading-relaxed truncate mobile-toc-item hover:translate-x-1", depthClass)} data-heading-id={heading.slug} data-heading-text={heading.text}>{heading.text}</a>
+                        <li class={cn('group/item flex items-baseline gap-2 min-w-0 py-1.5 transition-colors', getRelativeIndentClass(heading.depth) || '')}>
+                          <a href={`#${heading.slug}`} class={cn("text-sm transition-colors duration-200 leading-relaxed truncate mobile-toc-item", depthClass)} data-heading-id={heading.slug} data-heading-text={heading.text}>{heading.text}</a>
                         </li>
                       )
                     })}
                   </ul>
-                  <div class="px-6 sm:px-8 py-2 mt-2 border-t border-border/40 flex justify-between items-center text-[9px] text-muted-foreground/40 uppercase tracking-widest">
-                      <span>Total_Nodes: {filteredHeadings.length}</span>
-                      <span>End_Of_List</span>
-                  </div>
                 </div>
               </div>
             </div>
@@ -98,7 +87,7 @@ const getRelativeIndentClass = (depth: number) => {
 }
 
 <script>
-  const INITIAL_OVERVIEW_TEXT = 'INDEX_PROTOCOL'
+  const INITIAL_OVERVIEW_TEXT = 'Table of Contents'
   class MobileTOC {
      private static tocHeader: HTMLElement | null = null
      private static tocContent: HTMLElement | null = null
@@ -123,7 +112,7 @@ const getRelativeIndentClass = (depth: number) => {
      static init(): void { this.cleanup(); this.initElements(); this.initHeadingObserver(); this.initStickyObserver(); this.initInteractions(); this.initScrollHandler(); }
      private static initElements(): void { this.tocHeader = document.querySelector('[data-toc-header]'); this.tocContent = document.querySelector('[data-toc-content]'); this.tocArrow = document.querySelector('[data-toc-arrow]'); this.currentSectionText = document.getElementById('mobile-toc-current-section'); this.listElement = document.getElementById('mobile-table-of-contents'); this.scrollArea = document.querySelector('[data-toc-scroll-area]'); this.headings = Array.from(document.querySelectorAll<HTMLElement>('h1[id], h2[id], h3[id], h4[id]')).filter((heading) => heading.id !== 'footnote-label'); this.lastScrollY = window.scrollY; this.isOpen = this.getOpenStateFromDOM(); }
      private static getOpenStateFromDOM(): boolean { if (!this.tocContent) return false; const maxHeight = this.tocContent.style.maxHeight; return maxHeight !== '0px' && maxHeight !== '' && maxHeight !== '0'; }
-     static setOpen(open: boolean): void { if (!this.tocContent || !this.tocArrow) return; this.isOpen = open; if (open) { this.tocContent.style.maxHeight = '45vh'; this.tocArrow.style.transform = 'rotate(180deg)'; this.updateHeaderStyle(true); } else { this.tocContent.style.maxHeight = '0'; this.tocArrow.style.transform = 'rotate(0deg)'; this.updateHeaderStyle(this.isStuck); } }
+     static setOpen(open: boolean): void { if (!this.tocContent || !this.tocArrow) return; this.isOpen = open; if (open) { this.tocContent.style.maxHeight = '50vh'; this.tocArrow.style.transform = 'rotate(180deg)'; this.updateHeaderStyle(true); } else { this.tocContent.style.maxHeight = '0'; this.tocArrow.style.transform = 'rotate(0deg)'; this.updateHeaderStyle(this.isStuck); } }
      static toggle(): void { this.setOpen(!this.isOpen); }
      private static initStickyObserver(): void { const sentinel = document.getElementById('toc-sentinel'); if (!sentinel) return; this.stickyObserver = new IntersectionObserver(([entry]) => { this.isStuck = !entry.isIntersecting; if (!this.isOpen) { this.updateHeaderStyle(this.isStuck); } }, { threshold: [0] }); this.stickyObserver.observe(sentinel); }
      private static updateHeaderStyle(solid: boolean): void { if (!this.tocHeader) return; if (solid) { this.tocHeader.classList.remove('bg-transparent', 'border-transparent'); this.tocHeader.classList.add('bg-background', 'border-border/40'); } else { this.tocHeader.classList.remove('bg-background', 'border-border/40'); this.tocHeader.classList.add('bg-transparent', 'border-transparent'); } }
@@ -133,7 +122,7 @@ const getRelativeIndentClass = (depth: number) => {
      private static initInteractions(): void { const toggleButton = document.querySelector('[data-toc-toggle]'); if (toggleButton) { if (this.toggleButtonHandler) { toggleButton.removeEventListener('click', this.toggleButtonHandler); } this.toggleButtonHandler = () => { if (!this.isOpen) { this.setRecentlyOpened(); } this.toggle(); }; toggleButton.addEventListener('click', this.toggleButtonHandler); } if (this.listElement) { if (this.listClickHandler) { this.listElement.removeEventListener('click', this.listClickHandler); } this.listClickHandler = (e: Event) => { const target = e.target as HTMLElement; const item = target.closest('.mobile-toc-item') as HTMLElement; if (!item) return; e.preventDefault(); if (!this.isOpen) { this.setRecentlyOpened(); this.setOpen(true); } else { this.setOpen(false); setTimeout(() => { const href = item.getAttribute('href'); if (href) { const target = document.querySelector(href); if (target) { const rect = target.getBoundingClientRect(); const documentTop = rect.top + window.scrollY; const scrollPosition = documentTop - 80; window.scrollTo({ top: Math.max(0, scrollPosition), behavior: 'smooth', }); } } }, 300); } }; this.listElement.addEventListener('click', this.listClickHandler); } }
      private static initScrollHandler(): void { let headingUpdateRAF: number | null = null; if (this.windowScrollHandler) { window.removeEventListener('scroll', this.windowScrollHandler); } this.windowScrollHandler = () => { if (this.scrollRAF) return; this.scrollRAF = requestAnimationFrame(() => { const currentScrollY = window.scrollY; const scrollDelta = currentScrollY - this.lastScrollY; const isScrollingDown = scrollDelta > 1; const timeSinceOpened = Date.now() - this.lastOpenTime; const isInImmunityPeriod = this.recentlyOpened && timeSinceOpened < 200; if (!this.isStuck && isScrollingDown && this.isOpen) { const shouldClose = !isInImmunityPeriod || Math.abs(scrollDelta) > 10; if (shouldClose) { this.setOpen(false); this.recentlyOpened = false; } } if (Math.abs(scrollDelta) > 20) { if (headingUpdateRAF) { cancelAnimationFrame(headingUpdateRAF); } headingUpdateRAF = requestAnimationFrame(() => { this.updateActiveHeadingByScroll(); headingUpdateRAF = null; }); } this.lastScrollY = currentScrollY; this.scrollRAF = null; }); }; window.addEventListener('scroll', this.windowScrollHandler, { passive: true }); }
      private static setRecentlyOpened(): void { this.recentlyOpened = true; this.lastOpenTime = Date.now(); setTimeout(() => { this.recentlyOpened = false; }, 800); }
-     private static updateActiveHeading(activeId: string): void { if (!this.listElement || !this.currentSectionText) return; const headingLinks = this.listElement.querySelectorAll('.mobile-toc-item'); const headingNumbers = this.listElement.querySelectorAll('.mobile-toc-number'); headingLinks.forEach((link) => { link.classList.remove('text-primary', 'font-black'); link.classList.add('text-muted-foreground'); }); headingNumbers.forEach((number) => { number.classList.remove('text-primary', 'opacity-100'); number.classList.add('text-muted-foreground/30'); }); let textToShow = INITIAL_OVERVIEW_TEXT; if (activeId) { const activeItem = this.listElement.querySelector(`[data-heading-id="${activeId}"]`) as HTMLElement; if (activeItem) { activeItem.classList.remove('text-muted-foreground'); activeItem.classList.add('text-primary', 'font-black'); textToShow = activeItem.dataset.headingText || textToShow; const parentLi = activeItem.closest('li'); const activeNumber = parentLi?.querySelector('.mobile-toc-number') as HTMLElement; if (activeNumber) { activeNumber.classList.remove('text-muted-foreground/30'); activeNumber.classList.add('text-primary', 'opacity-100'); } } this.scrollToActiveInTOC(activeId); } this.currentSectionText.textContent = textToShow; }
+     private static updateActiveHeading(activeId: string): void { if (!this.listElement || !this.currentSectionText) return; const headingLinks = this.listElement.querySelectorAll('.mobile-toc-item'); headingLinks.forEach((link) => { link.classList.remove('text-primary'); link.classList.add('text-muted-foreground'); }); let textToShow = INITIAL_OVERVIEW_TEXT; if (activeId) { const activeItem = this.listElement.querySelector(`[data-heading-id="${activeId}"]`) as HTMLElement; if (activeItem) { activeItem.classList.remove('text-muted-foreground'); activeItem.classList.add('text-primary'); textToShow = activeItem.dataset.headingText || textToShow; } this.scrollToActiveInTOC(activeId); } this.currentSectionText.textContent = textToShow; }
      private static scrollToActiveInTOC(activeHeadingId: string): void { if (!this.listElement || !this.scrollArea) return; const activeItem = this.listElement.querySelector(`[data-heading-id="${activeHeadingId}"]`); if (!activeItem) return; const containerRect = this.scrollArea.getBoundingClientRect(); const itemRect = activeItem.getBoundingClientRect(); const relativeTop = itemRect.top - containerRect.top + this.scrollArea.scrollTop; const targetScrollTop = relativeTop - containerRect.height / 2 + itemRect.height / 2; const targetScroll = Math.max(0, Math.min(targetScrollTop, this.scrollArea.scrollHeight - this.scrollArea.clientHeight)); if (Math.abs(targetScroll - this.scrollArea.scrollTop) > 5) { this.scrollArea.scrollTo({ top: targetScroll, behavior: 'smooth', }); } }
      static cleanup(): void { if (this.observer) { this.observer.disconnect(); this.observer = null; } if (this.stickyObserver) { this.stickyObserver.disconnect(); this.stickyObserver = null; } if (this.scrollRAF) { cancelAnimationFrame(this.scrollRAF); this.scrollRAF = null; } const toggleButton = document.querySelector('[data-toc-toggle]'); if (toggleButton && this.toggleButtonHandler) { toggleButton.removeEventListener('click', this.toggleButtonHandler); this.toggleButtonHandler = null; } if (this.listElement && this.listClickHandler) { this.listElement.removeEventListener('click', this.listClickHandler); this.listClickHandler = null; } if (this.scrollArea && this.scrollAreaHandler) { this.scrollArea.removeEventListener('scroll', this.scrollAreaHandler); this.scrollAreaHandler = null; } if (this.windowScrollHandler) { window.removeEventListener('scroll', this.windowScrollHandler); this.windowScrollHandler = null; } this.isOpen = false; this.isStuck = false; this.headings = []; }
   }
