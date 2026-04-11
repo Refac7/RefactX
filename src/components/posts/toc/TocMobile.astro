@@ -3,15 +3,8 @@ import type { CollectionEntry } from 'astro:content'
 import SimpleProgressRing from './SimpleProgressRing.astro'
 import { cn } from '~/lib/utils'
 
-type MarkdownHeading = {
-  depth: number
-  slug: string
-  text: string
-}
-
-type TocHeading = MarkdownHeading & {
-  order: number
-}
+type MarkdownHeading = { depth: number; slug: string; text: string }
+type TocHeading = MarkdownHeading & { order: number }
 
 interface Props {
   post: CollectionEntry<'posts'>
@@ -45,7 +38,7 @@ const getRelativeIndentClass = (depth: number) => {
 
       <div 
         id="mobile-toc-container" 
-        class="sticky top-0 z-30 font-mono transition-all duration-500 block"
+        class="sticky top-0 z-30 font-mono transition-all duration-500 block xl:hidden"
       >
         <div class="relative">
           <button
@@ -82,9 +75,7 @@ const getRelativeIndentClass = (depth: number) => {
                   <ul class="px-6 sm:px-8 py-2 space-y-px" id="mobile-table-of-contents">
                     {filteredHeadings.map((heading: TocHeading) => {
                       const isMain = heading.depth === minDepth;
-                      const depthClass = isMain 
-                        ? 'text-foreground font-bold' 
-                        : 'text-muted-foreground hover:text-foreground';
+                      const depthClass = isMain ? 'text-foreground font-bold' : 'text-muted-foreground hover:text-foreground';
                       return (
                         <li class={cn('group/item flex items-baseline gap-3 min-w-0 py-1.5 border-l border-dashed border-border/40 pl-4 hover:border-primary/50 transition-colors', getRelativeIndentClass(heading.depth) || '')}>
                           <span class="text-[10px] text-muted-foreground/30 font-mono min-w-[1.5rem] group-hover/item:text-primary transition-colors mobile-toc-number" data-order={heading.order}>{heading.order.toString().padStart(2, '0')}</span>
@@ -128,6 +119,7 @@ const getRelativeIndentClass = (depth: number) => {
      private static listClickHandler: ((e: Event) => void) | null = null
      private static scrollAreaHandler: ((e: Event) => void) | null = null
      private static windowScrollHandler: ((e: Event) => void) | null = null
+     
      static init(): void { this.cleanup(); this.initElements(); this.initHeadingObserver(); this.initStickyObserver(); this.initInteractions(); this.initScrollHandler(); }
      private static initElements(): void { this.tocHeader = document.querySelector('[data-toc-header]'); this.tocContent = document.querySelector('[data-toc-content]'); this.tocArrow = document.querySelector('[data-toc-arrow]'); this.currentSectionText = document.getElementById('mobile-toc-current-section'); this.listElement = document.getElementById('mobile-table-of-contents'); this.scrollArea = document.querySelector('[data-toc-scroll-area]'); this.headings = Array.from(document.querySelectorAll<HTMLElement>('h1[id], h2[id], h3[id], h4[id]')).filter((heading) => heading.id !== 'footnote-label'); this.lastScrollY = window.scrollY; this.isOpen = this.getOpenStateFromDOM(); }
      private static getOpenStateFromDOM(): boolean { if (!this.tocContent) return false; const maxHeight = this.tocContent.style.maxHeight; return maxHeight !== '0px' && maxHeight !== '' && maxHeight !== '0'; }
@@ -137,6 +129,7 @@ const getRelativeIndentClass = (depth: number) => {
      private static updateHeaderStyle(solid: boolean): void { if (!this.tocHeader) return; if (solid) { this.tocHeader.classList.remove('bg-transparent', 'border-transparent'); this.tocHeader.classList.add('bg-background', 'border-border/40'); } else { this.tocHeader.classList.remove('bg-background', 'border-border/40'); this.tocHeader.classList.add('bg-transparent', 'border-transparent'); } }
      private static initHeadingObserver(): void { if (this.headings.length === 0) return; this.observer = new IntersectionObserver((entries) => { const visibleHeadings = entries.filter((entry) => entry.intersectionRatio > 0).map((entry) => ({ id: entry.target.id, element: entry.target as HTMLElement, ratio: entry.intersectionRatio, rect: entry.target.getBoundingClientRect(), })); if (visibleHeadings.length > 0) { const bestHeading = visibleHeadings.reduce((best, current) => { const bestDistance = Math.abs(best.rect.top - 80); const currentDistance = Math.abs(current.rect.top - 80); return currentDistance < bestDistance ? current : best; }); this.updateActiveHeading(bestHeading.id); } else { this.updateActiveHeadingByScroll(); } }, { rootMargin: '-80px 0px -85% 0px', threshold: [0, 0.1, 0.25, 0.5, 0.75, 1], }); this.headings.forEach((heading) => this.observer?.observe(heading)); setTimeout(() => this.updateActiveHeadingByScroll(), 100); }
      private static updateActiveHeadingByScroll(): void { if (this.headings.length === 0) return; const scrollTop = window.scrollY; let activeHeading: HTMLElement | null = null; for (let i = this.headings.length - 1; i >= 0; i--) { const heading = this.headings[i]; const rect = heading.getBoundingClientRect(); if (rect.height === 0) continue; const headingTop = rect.top + scrollTop; if (headingTop <= scrollTop + 120) { activeHeading = heading; break; } } this.updateActiveHeading(activeHeading?.id || ''); }
+     public static triggerExternalUpdate(): void { this.updateActiveHeadingByScroll(); }
      private static initInteractions(): void { const toggleButton = document.querySelector('[data-toc-toggle]'); if (toggleButton) { if (this.toggleButtonHandler) { toggleButton.removeEventListener('click', this.toggleButtonHandler); } this.toggleButtonHandler = () => { if (!this.isOpen) { this.setRecentlyOpened(); } this.toggle(); }; toggleButton.addEventListener('click', this.toggleButtonHandler); } if (this.listElement) { if (this.listClickHandler) { this.listElement.removeEventListener('click', this.listClickHandler); } this.listClickHandler = (e: Event) => { const target = e.target as HTMLElement; const item = target.closest('.mobile-toc-item') as HTMLElement; if (!item) return; e.preventDefault(); if (!this.isOpen) { this.setRecentlyOpened(); this.setOpen(true); } else { this.setOpen(false); setTimeout(() => { const href = item.getAttribute('href'); if (href) { const target = document.querySelector(href); if (target) { const rect = target.getBoundingClientRect(); const documentTop = rect.top + window.scrollY; const scrollPosition = documentTop - 80; window.scrollTo({ top: Math.max(0, scrollPosition), behavior: 'smooth', }); } } }, 300); } }; this.listElement.addEventListener('click', this.listClickHandler); } }
      private static initScrollHandler(): void { let headingUpdateRAF: number | null = null; if (this.windowScrollHandler) { window.removeEventListener('scroll', this.windowScrollHandler); } this.windowScrollHandler = () => { if (this.scrollRAF) return; this.scrollRAF = requestAnimationFrame(() => { const currentScrollY = window.scrollY; const scrollDelta = currentScrollY - this.lastScrollY; const isScrollingDown = scrollDelta > 1; const timeSinceOpened = Date.now() - this.lastOpenTime; const isInImmunityPeriod = this.recentlyOpened && timeSinceOpened < 200; if (!this.isStuck && isScrollingDown && this.isOpen) { const shouldClose = !isInImmunityPeriod || Math.abs(scrollDelta) > 10; if (shouldClose) { this.setOpen(false); this.recentlyOpened = false; } } if (Math.abs(scrollDelta) > 20) { if (headingUpdateRAF) { cancelAnimationFrame(headingUpdateRAF); } headingUpdateRAF = requestAnimationFrame(() => { this.updateActiveHeadingByScroll(); headingUpdateRAF = null; }); } this.lastScrollY = currentScrollY; this.scrollRAF = null; }); }; window.addEventListener('scroll', this.windowScrollHandler, { passive: true }); }
      private static setRecentlyOpened(): void { this.recentlyOpened = true; this.lastOpenTime = Date.now(); setTimeout(() => { this.recentlyOpened = false; }, 800); }
@@ -144,13 +137,12 @@ const getRelativeIndentClass = (depth: number) => {
      private static scrollToActiveInTOC(activeHeadingId: string): void { if (!this.listElement || !this.scrollArea) return; const activeItem = this.listElement.querySelector(`[data-heading-id="${activeHeadingId}"]`); if (!activeItem) return; const containerRect = this.scrollArea.getBoundingClientRect(); const itemRect = activeItem.getBoundingClientRect(); const relativeTop = itemRect.top - containerRect.top + this.scrollArea.scrollTop; const targetScrollTop = relativeTop - containerRect.height / 2 + itemRect.height / 2; const targetScroll = Math.max(0, Math.min(targetScrollTop, this.scrollArea.scrollHeight - this.scrollArea.clientHeight)); if (Math.abs(targetScroll - this.scrollArea.scrollTop) > 5) { this.scrollArea.scrollTo({ top: targetScroll, behavior: 'smooth', }); } }
      static cleanup(): void { if (this.observer) { this.observer.disconnect(); this.observer = null; } if (this.stickyObserver) { this.stickyObserver.disconnect(); this.stickyObserver = null; } if (this.scrollRAF) { cancelAnimationFrame(this.scrollRAF); this.scrollRAF = null; } const toggleButton = document.querySelector('[data-toc-toggle]'); if (toggleButton && this.toggleButtonHandler) { toggleButton.removeEventListener('click', this.toggleButtonHandler); this.toggleButtonHandler = null; } if (this.listElement && this.listClickHandler) { this.listElement.removeEventListener('click', this.listClickHandler); this.listClickHandler = null; } if (this.scrollArea && this.scrollAreaHandler) { this.scrollArea.removeEventListener('scroll', this.scrollAreaHandler); this.scrollAreaHandler = null; } if (this.windowScrollHandler) { window.removeEventListener('scroll', this.windowScrollHandler); this.windowScrollHandler = null; } this.isOpen = false; this.isStuck = false; this.headings = []; }
   }
+  
   document.addEventListener('astro:page-load', () => MobileTOC.init())
   document.addEventListener('astro:after-swap', () => { MobileTOC.cleanup(); MobileTOC.init(); })
   document.addEventListener('astro:before-swap', () => MobileTOC.cleanup())
 
-    window.addEventListener('terminal-content-ready', () => {
-      if (MobileTOC['updateActiveHeadingByScroll']) {
-          MobileTOC['updateActiveHeadingByScroll']();
-      }
+  window.addEventListener('terminal-content-ready', () => {
+      MobileTOC.triggerExternalUpdate();
   });
 </script>

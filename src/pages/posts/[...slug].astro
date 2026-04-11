@@ -53,7 +53,26 @@ const PostLayout = layoutMap[layoutKey] || Jap
 
 <Layout title={frontmatter.title} description={frontmatter.description || frontmatter.title} image={frontmatter.ogImage}>
 
-  <div class="flex flex-col justify-between h-fit transition-all duration-500 ease-out fade-up">
+  <button
+    id="hud-btt-btn"
+    class="fixed bottom-6 left-6 md:bottom-10 md:left-10 z-[100] group flex items-center gap-3 bg-primary text-primary-foreground px-4 py-3 shadow-lg shadow-primary/20 hover:shadow-primary/40 opacity-0 translate-y-4 pointer-events-none hover:-translate-y-1 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+    aria-label="Back to top"
+  >
+    <div class="flex items-center justify-center">
+      <span class="icon-[ph--arrow-up-bold] w-5 h-5 group-hover:-translate-y-0.5 transition-transform duration-300"></span>
+    </div>
+    <div class="flex-col items-start overflow-hidden hidden sm:flex">
+      <span class="text-[9px] uppercase tracking-widest leading-none mb-0.5 font-mono opacity-70">
+        // Return
+      </span>
+      <span class="font-mono text-xs font-bold tracking-widest uppercase leading-none">
+        Top_
+      </span>
+    </div>
+  </button>
+
+  <div class="flex flex-col justify-between h-fit transition-all duration-500 ease-out fade-up relative">
+    
     <TocMobile {post} {posts} headings={filterHeadings} />
 
     <div class="fade-up animation-delay-100">
@@ -61,6 +80,7 @@ const PostLayout = layoutMap[layoutKey] || Jap
         {frontmatter} 
         minutesRead={remarkPluginFrontmatter.minutesRead}
         wordCount={wordCount}
+        headings={filterHeadings}
       >
         <Content />
       </PostLayout>
@@ -74,4 +94,38 @@ const PostLayout = layoutMap[layoutKey] || Jap
       <Comments />
     </div>
   </div>
+
 </Layout>
+
+<script>
+  let bttScrollHandler: (() => void) | null = null;
+
+  document.addEventListener('astro:page-load', () => {
+    const btn = document.getElementById('hud-btt-btn');
+    if (!btn) return;
+
+    bttScrollHandler = () => {
+      if (window.scrollY > 400) {
+        btn.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+        btn.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
+      } else {
+        btn.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+        btn.classList.remove('opacity-100', 'translate-y-0', 'pointer-events-auto');
+      }
+    };
+
+    btn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    window.addEventListener('scroll', bttScrollHandler, { passive: true });
+    bttScrollHandler();
+  });
+
+  document.addEventListener('astro:before-swap', () => {
+    if (bttScrollHandler) {
+      window.removeEventListener('scroll', bttScrollHandler);
+      bttScrollHandler = null;
+    }
+  });
+</script>
