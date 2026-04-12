@@ -44,7 +44,7 @@ const visiblePages = getVisiblePages(page.currentPage, page.lastPage)
           ) : (
             <a
               href={pageNum === 1 ? baseUrl : `${baseUrl}/${pageNum}`}
-              class={`inline-flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center text-xs sm:text-sm transition-colors ${
+              class={`inline-flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-md text-xs sm:text-sm transition-colors ${
                 page.currentPage === pageNum
                   ? 'text-primary font-medium border-primary/20 border'
                   : 'text-foreground/80 hover:text-foreground hover:bg-muted'

@@ -62,9 +62,9 @@ const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full 
                   style={`animation-delay: ${index * 100}ms`}
                 >
                 <div class="p-6 pb-2 relative z-10 flex justify-between items-start">
-                    <div class="size-12 flex items-center justify-center rounded-xs bg-background border border-border/40 shadow-xs">
+                    <div class="size-12 flex items-center justify-center rounded-md bg-muted/30 border border-border/40">
                         {project.type === 'icon' && <span class={cn('size-6 text-foreground/80', project.icon)} />}
-                        {project.type === 'image' && <img src={project.icon} alt={project.name} class={cn('size-full object-cover rounded-xs opacity-90 group-hover:opacity-100 transition-opacity', project.imageClass)} />}
+                        {project.type === 'image' && <img src={project.icon} alt={project.name} class={cn('size-full object-cover rounded-md opacity-90 group-hover:opacity-100 transition-opacity', project.imageClass)} />}
                     </div>
                     <div class="flex gap-2">
                         {project.githubUrl && (<a href={project.githubUrl} target="_blank" class="flex items-center justify-center size-8 rounded-full bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground transition-all"><span class="icon-[mdi--github] size-4"></span></a>)}
