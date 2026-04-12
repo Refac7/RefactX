@@ -40,15 +40,16 @@ const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full 
         </div>
       </div>
 
-      <div class="flex items-center gap-8 p-6 lg:p-8 xl:p-12 border-t border-border/40 shrink-0 fade-up animation-delay-200 bg-muted/10 lg:bg-transparent">
-          <div class="flex flex-col">
-             <span class="text-sm font-medium text-muted-foreground mb-1">Active Nodes</span>
-             <span class="text-3xl font-semibold text-foreground tracking-tight">{totalLinks}</span>
+      <div class="grid grid-cols-2 bg-border/40 gap-px border-t border-border/40 shrink-0 fade-up animation-delay-200">
+          <div class="group relative flex flex-col items-center justify-center p-6 bg-background hover:bg-muted/10 transition-colors h-32 lg:h-28 xl:h-32">
+             <span class="text-3xl font-mono font-bold text-foreground tracking-tighter group-hover:text-primary transition-colors">{totalLinks}</span>
+             <span class="text-[9px] font-mono uppercase tracking-widest text-muted-foreground mt-2">Active_Nodes</span>
+             <div class="absolute top-0 right-0 p-1 opacity-0 group-hover:opacity-100 transition-opacity"><div class="w-1.5 h-1.5 bg-primary"></div></div>
           </div>
-          <div class="w-px h-10 bg-border/60"></div>
-          <div class="flex flex-col">
-             <span class="text-sm font-medium text-muted-foreground mb-1">Protocol</span>
-             <span class="text-3xl font-semibold text-foreground tracking-tight">HTTPS</span>
+          <div class="group relative flex flex-col items-center justify-center p-6 bg-background hover:bg-muted/10 transition-colors h-32 lg:h-28 xl:h-32">
+             <span class="text-lg font-mono font-bold text-foreground group-hover:text-primary transition-colors">HTTPS/2</span>
+             <span class="text-[9px] font-mono uppercase tracking-widest text-muted-foreground mt-2">Protocol_Ver</span>
+             <div class="absolute bottom-0 left-0 p-1 opacity-0 group-hover:opacity-100 transition-opacity"><div class="w-1.5 h-1.5 bg-primary"></div></div>
           </div>
       </div>
     </aside>

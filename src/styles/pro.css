@@ -5,7 +5,6 @@
 
 /* ===== Color Variables | 颜色变量 ===== */
 .markdown {
-  /* Vercel Geist Light Palette */
   --text: #444444;          
   --text-deep: #000000;     
   --heading: #000000;       
@@ -25,7 +24,6 @@
 }
 
 .dark .markdown {
-  /* Vercel Geist Dark Palette */
   --text: #a0a0a0;          
   --text-deep: #ffffff;     
   --heading: #ffffff;       

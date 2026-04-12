@@ -46,12 +46,12 @@ export const FOOTER_LINKS: Link[] = [
 // 社交链接 (图标参考: https://icon-sets.iconify.design/)
 export const SOCIAL_LINKS: SocialLink[] = [
   {
-    name: 'github',
+    name: 'GitHub',
     url: 'https://github.com/Refac7',
     icon: 'icon-[ri--github-fill]',
   },
   {
-    name: 'bilibili',
+    name: 'BiliBili',
     url: 'https://space.bilibili.com/441325177',
     icon: 'icon-[ri--bilibili-fill]',
   },
