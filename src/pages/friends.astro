@@ -10,9 +10,9 @@ const { title, description, introduce, enableAdd } = FRIENDS_CONFIG
 const { sitename, email, author, sitelink, siteavatar, description: myDescription } = FRIENDS_CONTACT;
 const totalLinks = FRIENDS_LIST.length.toString().padStart(2, '0');
 
-const SECTION_HEADER_CLASS = "flex items-center justify-between border-b border-border/40 pb-4 mb-8 select-none"
+const SECTION_HEADER_CLASS = "flex items-center justify-between border-b border-border/40 pb-3 mb-6 select-none"
 const SECTION_TITLE_CLASS = "text-lg font-semibold tracking-tight text-foreground"
-const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full bg-muted/60 px-2.5 py-0.5 text-xs font-medium text-muted-foreground mr-3"
+const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full bg-muted/50 px-2.5 py-0.5 text-xs font-medium text-muted-foreground mr-3"
 ---
 
 <Layout title={title} description={description}>
@@ -21,29 +21,34 @@ const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full 
       
       <div class="flex flex-1 lg:overflow-y-auto scrollbar-hide flex-col">
         <div class="p-6 lg:p-8 xl:p-12 pb-0 shrink-0 fade-up">
-          <span class="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary select-none">
+          <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-600 select-none">
+            <span class="size-1.5 rounded-full bg-emerald-500"></span>
             Connected
           </span>
         </div>
         
         <div class="flex-1 flex flex-col justify-end lg:justify-center p-6 lg:p-8 xl:p-12 min-h-[300px] lg:min-h-[250px] fade-up animation-delay-100">
-           <h1 class="text-5xl sm:text-6xl xl:text-7xl font-bold tracking-tight text-foreground leading-[1.1] mb-6 select-none">{title}</h1>
-           <div class="flex items-center gap-2 text-sm text-muted-foreground"><span class="icon-[ph--planet] size-4"></span><span>Signal Exchange</span></div>
+           <h1 class="text-4xl sm:text-5xl xl:text-6xl font-bold tracking-tight text-foreground leading-[1.1] mb-4 select-none">{title}</h1>
+           <div class="flex items-center gap-2 text-sm text-muted-foreground">
+             <span class="icon-[ph--planet] size-4"></span>
+             <span>Network & Signals</span>
+           </div>
         </div>
         
         <div class="shrink-0 p-6 lg:p-8 xl:p-12 fade-up animation-delay-150">
-           <p class="text-sm text-muted-foreground leading-relaxed">{introduce}</p>
+           <p class="text-sm text-muted-foreground leading-relaxed max-w-sm">{introduce}</p>
         </div>
       </div>
 
-      <div class="flex border-t border-border/40 shrink-0 fade-up animation-delay-200">
-          <div class="flex-1 flex flex-col items-start lg:items-center justify-center p-6 lg:p-8 bg-background border-r border-border/40 hover:bg-muted/30 transition-colors">
-             <span class="text-2xl font-semibold text-foreground tracking-tight">{totalLinks}</span>
-             <span class="text-xs text-muted-foreground mt-1">Active Nodes</span>
+      <div class="flex items-center gap-8 p-6 lg:p-8 xl:p-12 border-t border-border/40 shrink-0 fade-up animation-delay-200 bg-muted/10 lg:bg-transparent">
+          <div class="flex flex-col">
+             <span class="text-sm font-medium text-muted-foreground mb-1">Active Nodes</span>
+             <span class="text-3xl font-semibold text-foreground tracking-tight">{totalLinks}</span>
           </div>
-          <div class="flex-1 flex flex-col items-start lg:items-center justify-center p-6 lg:p-8 bg-background hover:bg-muted/30 transition-colors">
-             <span class="text-xl font-semibold text-foreground tracking-tight">HTTPS</span>
-             <span class="text-xs text-muted-foreground mt-1">Protocol</span>
+          <div class="w-px h-10 bg-border/60"></div>
+          <div class="flex flex-col">
+             <span class="text-sm font-medium text-muted-foreground mb-1">Protocol</span>
+             <span class="text-3xl font-semibold text-foreground tracking-tight">HTTPS</span>
           </div>
       </div>
     </aside>
@@ -51,44 +56,47 @@ const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full 
     <main class="w-full lg:w-2/3 z-10 flex flex-col fade-up animation-delay-150">
       <div class="p-6 lg:p-10 xl:p-16 2xl:p-20 flex-1 flex flex-col">
         <div class={SECTION_HEADER_CLASS}>
-            <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>Node Sequence</h2></div>
+            <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>Directory</h2></div>
         </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mt-8 fade-up animation-delay-200">
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 mt-4 fade-up animation-delay-200">
           {FRIENDS_LIST.map((friend, index) => {
             return (
               <a 
                 href={friend.url} 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                class="friend-card group flex flex-col rounded-md border border-border/40 bg-background/50 p-6 hover:bg-muted/20 hover:shadow-xs hover:-translate-y-0.5 transition-all duration-300 min-h-[200px]"
+                class="friend-card group flex flex-col justify-between rounded-lg border border-border/40 bg-background/50 p-5 hover:bg-muted/20 hover:border-border hover:shadow-xs transition-all duration-300 min-h-[160px] hover:-translate-y-0.5"
                 style={`animation-delay: ${index * 50}ms`}
               >
-                <div class="friend-content flex flex-col flex-1 w-full relative z-10">
-                  <div class="flex gap-4 items-start">
-                    <div class="shrink-0">
-                        <img src={friend.avatar} alt={friend.name} class="size-12 rounded-full object-cover border border-border/50 shadow-xs opacity-90 group-hover:opacity-100 transition-opacity" loading="lazy" />
-                    </div>
-                    <div class="flex flex-col min-w-0 pt-1">
-                      <div class="flex items-center gap-2 mb-0.5"><h3 class="font-semibold text-base text-foreground truncate tracking-tight">{friend.name}</h3></div>
-                      <div class="text-xs text-muted-foreground truncate">{friend.author}</div>
-                    </div>
+                <div class="friend-content flex flex-col h-full w-full">
+                  <div class="flex items-start justify-between mb-3">
+                    <img src={friend.avatar} alt={friend.name} class="size-10 rounded-full object-cover ring-1 ring-border/50 bg-muted/30" loading="lazy" />
+                    <span class="icon-[ph--arrow-up-right] size-4 text-muted-foreground/30 group-hover:text-foreground transition-colors mt-1"></span>
                   </div>
-                  <div class="mt-4 pt-4 border-t border-border/40 flex-1"><p class="text-sm text-muted-foreground leading-relaxed line-clamp-3">{friend.description || "No description provided."}</p></div>
+                  <div class="flex flex-col flex-1">
+                    <h3 class="font-semibold text-base text-foreground tracking-tight line-clamp-1">{friend.name}</h3>
+                    <div class="text-xs font-medium text-muted-foreground line-clamp-1 mt-0.5 mb-3">{friend.author}</div>
+                    <p class="text-sm text-muted-foreground leading-relaxed line-clamp-2 mt-auto">{friend.description || "No description provided."}</p>
+                  </div>
                 </div>
               </a>
             )
           })}
             
           {enableAdd ? (
-            <a href="#exchange-section" class="group flex flex-col items-center justify-center p-6 rounded-md border border-dashed border-border/60 hover:border-border hover:bg-muted/20 transition-all duration-300 min-h-[200px]">
-                <div class="size-10 flex items-center justify-center rounded-full bg-muted/50 mb-4 group-hover:bg-foreground group-hover:text-background transition-colors"><span class="icon-[ph--plus] size-4 text-muted-foreground group-hover:text-background transition-colors"></span></div>
-                <span class="text-sm font-medium text-foreground">Add Connection</span>
+            <a href="#exchange-section" class="group flex flex-col items-center justify-center p-6 rounded-lg border border-dashed border-border/60 hover:border-border hover:bg-muted/20 transition-all duration-300 min-h-[160px]">
+                <div class="size-10 flex items-center justify-center rounded-full bg-muted/50 mb-3 group-hover:bg-foreground group-hover:text-background transition-colors">
+                  <span class="icon-[ph--plus] size-4 text-muted-foreground group-hover:text-background transition-colors"></span>
+                </div>
+                <span class="text-sm font-semibold text-foreground tracking-tight">Add Connection</span>
                 <span class="text-xs text-muted-foreground mt-1">Submit your node</span>
             </a>
           ) : (
-            <div class="flex flex-col items-center justify-center p-6 rounded-md border border-dashed border-border/40 bg-muted/10 min-h-[200px] select-none">
-                <div class="size-10 flex items-center justify-center rounded-full bg-background mb-4"><span class="icon-[ph--lock-key] size-4 text-muted-foreground/50"></span></div>
+            <div class="flex flex-col items-center justify-center p-6 rounded-lg border border-dashed border-border/40 bg-muted/10 min-h-[160px] select-none">
+                <div class="size-10 flex items-center justify-center rounded-full bg-background mb-3">
+                  <span class="icon-[ph--lock-key] size-4 text-muted-foreground/50"></span>
+                </div>
                 <span class="text-sm font-medium text-muted-foreground/60">Link Locked</span>
             </div>
           )}
@@ -96,53 +104,84 @@ const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full 
         
         {enableAdd ? (
           <>
-            <div id="exchange-section" class="mt-32 fade-up animation-delay-200">
+            <div id="exchange-section" class="mt-24 fade-up animation-delay-200">
               <div class={SECTION_HEADER_CLASS}>
                 <div class="flex items-center"><span class={SECTION_NUM_CLASS}>02</span><h2 class={SECTION_TITLE_CLASS}>Exchange Protocol</h2></div>
               </div>
-              <div class="grid xl:grid-cols-2 gap-12 mt-8">
+              <div class="grid xl:grid-cols-2 gap-10 mt-6">
+                  
+                  {/* 左侧：规则与联系方式 */}
                   <div class="flex flex-col">
                       <div>
-                          <h3 class="text-xl font-semibold tracking-tight mb-4">Transmission Rules</h3>
-                          <ul class="space-y-3 text-sm text-muted-foreground list-inside">
-                              <li class="flex items-start gap-2"><span class="text-primary mt-0.5">•</span> 确保内容符合行业法规。</li>
-                              <li class="flex items-start gap-2"><span class="text-primary mt-0.5">•</span> 在请求上行链接前添加本地链接。</li>
-                              <li class="flex items-start gap-2"><span class="text-primary mt-0.5">•</span> 优先考虑技术、设计和独立博客。</li>
-                              <li class="flex items-start gap-2"><span class="text-primary mt-0.5">•</span> 不活跃的节点将定期清理。</li>
+                          <h3 class="text-lg font-semibold tracking-tight mb-4 text-foreground">Requirements</h3>
+                          <ul class="space-y-3 text-sm text-muted-foreground">
+                              <li class="flex items-start gap-2.5">
+                                <span class="icon-[ph--check-circle-fill] size-4 text-primary shrink-0 mt-0.5"></span> 
+                                <span>Content must comply with industry regulations and be safe for work.</span>
+                              </li>
+                              <li class="flex items-start gap-2.5">
+                                <span class="icon-[ph--check-circle-fill] size-4 text-primary shrink-0 mt-0.5"></span> 
+                                <span>Please add our site to your links before requesting.</span>
+                              </li>
+                              <li class="flex items-start gap-2.5">
+                                <span class="icon-[ph--check-circle-fill] size-4 text-primary shrink-0 mt-0.5"></span> 
+                                <span>Prioritize tech, design, and independent blogs.</span>
+                              </li>
+                              <li class="flex items-start gap-2.5">
+                                <span class="icon-[ph--warning-circle-fill] size-4 text-amber-500 shrink-0 mt-0.5"></span> 
+                                <span>Inactive nodes will be periodically pruned.</span>
+                              </li>
                           </ul>
                       </div>
-                      <div class="mt-10 p-6 rounded-md border border-border/40 bg-background/50">
-                          <span class="text-xs font-semibold text-foreground uppercase tracking-wider block mb-3">Direct Line</span>
-                          <a href={`mailto:${email}`} class="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors"><span class="icon-[ph--envelope-simple] size-5"></span><span class="text-sm font-medium break-all">{email}</span></a>
+                      
+                      <div class="mt-8 p-5 rounded-lg border border-border/40 bg-muted/10">
+                          <span class="text-xs font-semibold text-foreground block mb-2">Direct Contact</span>
+                          <a href={`mailto:${email}`} class="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors group">
+                            <span class="icon-[ph--envelope-simple] size-4 group-hover:text-primary transition-colors"></span>
+                            <span class="font-medium">{email}</span>
+                          </a>
                       </div>
                   </div>
-                  <div class="relative mt-8 xl:mt-0">
-                      <div class="rounded-xl border border-border/40 bg-background/50 p-6 lg:p-8 shadow-xs">
-                          <div class="flex justify-between items-end mb-6 border-b border-border/40 pb-4">
-                              <span class="font-semibold text-base tracking-tight">Site Configuration</span>
-                              <span class="text-xs font-medium text-muted-foreground bg-muted/50 px-2.5 py-1 rounded-xs">JSON</span>
+                  
+                  {/* 右侧：站点配置信息 */}
+                  <div class="relative">
+                      <div class="rounded-lg border border-border/40 bg-background overflow-hidden flex flex-col h-full">
+                          <div class="px-5 py-4 border-b border-border/40 bg-muted/20 flex justify-between items-center">
+                              <span class="font-semibold text-sm tracking-tight">Site Configuration</span>
+                              <span class="text-xs font-medium text-muted-foreground bg-background border border-border/40 px-2 py-0.5 rounded-md">JSON</span>
                           </div>
-                          <div class="space-y-2">
-                              {[{ label: 'Name', value: sitename },{ label: 'Author', value: author },{ label: 'URL', value: sitelink },{ label: 'Avatar', value: siteavatar },{ label: 'Desc', value: myDescription }].map(item => (
-                                  <div class="grid grid-cols-[80px_1fr] gap-4 p-2 rounded-xs hover:bg-muted/30 transition-colors">
-                                      <span class="text-muted-foreground text-xs font-medium pt-0.5 select-none">{item.label}</span>
-                                      <span class="text-foreground text-sm break-all font-mono select-all">{item.value}</span>
+                          
+                          <div class="p-5 space-y-3 flex-1">
+                              {[
+                                { label: 'Name', value: sitename },
+                                { label: 'Author', value: author },
+                                { label: 'URL', value: sitelink },
+                                { label: 'Avatar', value: siteavatar },
+                                { label: 'Description', value: myDescription }
+                              ].map(item => (
+                                  <div class="flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-4 p-2 rounded-lg hover:bg-muted/30 transition-colors">
+                                      <span class="text-muted-foreground text-xs font-medium w-20 shrink-0 pt-0.5 select-none">{item.label}</span>
+                                      <span class="text-foreground text-sm font-mono break-all select-all">{item.value}</span>
                                   </div>
                               ))}
                           </div>
-                          <button id="copy-btn" class="copy-trigger mt-6 w-full py-3 bg-foreground text-background hover:bg-foreground/90 transition-all rounded-md text-sm font-medium flex items-center justify-center gap-2 shadow-xs" data-sitename={sitename} data-author={author} data-sitelink={sitelink} data-siteavatar={siteavatar} data-description={myDescription}>
-                            <span id="copy-icon" class="icon-[ph--copy] size-4"></span><span id="copy-text">Copy Configuration</span>
-                          </button>
+                          
+                          <div class="p-5 pt-0 mt-auto">
+                            <button id="copy-btn" class="copy-trigger w-full py-2.5 bg-foreground text-background hover:bg-foreground/90 transition-all rounded-md text-sm font-semibold flex items-center justify-center gap-2" data-sitename={sitename} data-author={author} data-sitelink={sitelink} data-siteavatar={siteavatar} data-description={myDescription}>
+                              <span id="copy-icon" class="icon-[ph--copy] size-4"></span>
+                              <span id="copy-text">Copy Configuration</span>
+                            </button>
+                          </div>
                       </div>
                   </div>
               </div>
             </div>
 
-            <div class="pb-12 mt-16 w-full fade-up"><Comments /></div>
+            <div class="pb-12 mt-20 w-full fade-up"><Comments /></div>
           </>
         ) : (
-          <div class="mt-32 pb-12 w-full fade-up">
-            <div class="rounded-xl border border-border/40 bg-muted/10 p-12 text-center flex flex-col items-center justify-center min-h-[250px]">
+          <div class="mt-24 pb-12 w-full fade-up">
+            <div class="rounded-lg border border-border/40 bg-muted/10 p-12 text-center flex flex-col items-center justify-center min-h-[250px]">
               <span class="icon-[ph--link-break] size-10 text-muted-foreground/40 mb-4 block mx-auto"></span>
               <p class="text-foreground font-medium mb-2">System Disabled</p>
               <p class="text-muted-foreground text-sm">友链申请通道已离线，如有需要请通过邮件联系站长。</p>
@@ -153,22 +192,36 @@ const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full 
     </main>
   </div>
 </Layout>
+
 <style>.scrollbar-hide::-webkit-scrollbar{display:none;}.scrollbar-hide{-ms-overflow-style:none;scrollbar-width:none;}</style>
+
 <script is:inline>
   function initCopy() {
     const btns = document.querySelectorAll(".copy-trigger");
     btns.forEach(btn => {
+        // Clone to remove existing event listeners if any
         const newBtn = btn.cloneNode(true);
         btn.parentNode.replaceChild(newBtn, btn);
+        
         newBtn.addEventListener("click", () => {
             const icon = newBtn.querySelector("#copy-icon");
             const text = newBtn.querySelector("#copy-text");
-            const myInfo = { name: newBtn.dataset.sitename, author: newBtn.dataset.author, url: newBtn.dataset.sitelink, avatar: newBtn.dataset.siteavatar, description: newBtn.dataset.description };
+            
+            const myInfo = { 
+              name: newBtn.dataset.sitename, 
+              author: newBtn.dataset.author, 
+              url: newBtn.dataset.sitelink, 
+              avatar: newBtn.dataset.siteavatar, 
+              description: newBtn.dataset.description 
+            };
+            
             navigator.clipboard.writeText(JSON.stringify(myInfo, null, 2)).then(() => {
-                if(icon) icon.className = "icon-[ph--check-circle] size-4";
+                if(icon) icon.className = "icon-[ph--check-circle-fill] size-4";
                 if(text) text.textContent = "Copied!";
+                
                 newBtn.classList.remove('bg-foreground', 'text-background');
                 newBtn.classList.add('bg-emerald-500', 'text-white');
+                
                 setTimeout(() => {
                     if(icon) icon.className = "icon-[ph--copy] size-4";
                     if(text) text.textContent = "Copy Configuration";
@@ -183,12 +236,35 @@ const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full 
   function shuffleFriends() {
     const cards = Array.from(document.querySelectorAll('.friend-card'));
     if(cards.length === 0) return;
-    const cardsData = cards.map(card => ({ href: card.getAttribute('href'), contentHtml: card.querySelector('.friend-content').innerHTML }));
-    for (let i = cardsData.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));[cardsData[i], cardsData[j]] = [cardsData[j], cardsData[i]]; }
-    cards.forEach((card, index) => { card.setAttribute('href', cardsData[index].href); card.querySelector('.friend-content').innerHTML = cardsData[index].contentHtml; });
+    
+    // Store href and innerHTML
+    const cardsData = cards.map(card => ({ 
+      href: card.getAttribute('href'), 
+      contentHtml: card.querySelector('.friend-content').innerHTML 
+    }));
+    
+    // Fisher-Yates shuffle
+    for (let i = cardsData.length - 1; i > 0; i--) { 
+      const j = Math.floor(Math.random() * (i + 1));
+      [cardsData[i], cardsData[j]] = [cardsData[j], cardsData[i]]; 
+    }
+    
+    // Apply shuffled data
+    cards.forEach((card, index) => { 
+      card.setAttribute('href', cardsData[index].href); 
+      card.querySelector('.friend-content').innerHTML = cardsData[index].contentHtml; 
+    });
   }
 
-  function initAll() { shuffleFriends(); initCopy(); }
+  function initAll() { 
+    shuffleFriends(); 
+    initCopy(); 
+  }
+
   document.addEventListener('astro:page-load', initAll);
-  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initAll); } else { initAll(); }
+  if (document.readyState === 'loading') { 
+    document.addEventListener('DOMContentLoaded', initAll); 
+  } else { 
+    initAll(); 
+  }
 </script>

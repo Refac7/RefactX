@@ -9,7 +9,7 @@ export default function QueuePanel() {
 
   return (
     <div className={cn(
-        "flex-col bg-background rounded-md border border-border/40 transition-all duration-300 relative overflow-hidden", 
+        "flex-col bg-background rounded-lg border border-border/40 transition-all duration-300 relative overflow-hidden", 
         mobileView === 'queue' ? 'flex h-[calc(100vh-12rem)] lg:h-auto' : 'hidden',
         showRightPanel ? 'lg:flex lg:col-span-3 xl:col-span-3' : 'lg:hidden'
     )}>

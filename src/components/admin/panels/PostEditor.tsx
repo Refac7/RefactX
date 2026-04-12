@@ -110,7 +110,7 @@ export default function PostEditor({ showPreview, showMetaConfig }: PostEditorPr
         <div className="flex-1 relative flex flex-col min-h-0 bg-background">
             {showPreview ? (
                 <div className="absolute inset-0 overflow-y-auto w-full p-6 sm:p-10 custom-scrollbar">
-                  <div className="mx-auto prose prose-sm sm:prose-base dark:prose-invert prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-primary prose-img:rounded-md">
+                  <div className="mx-auto prose prose-sm sm:prose-base dark:prose-invert prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-primary prose-img:rounded-lg">
                       <ReactMarkdown remarkPlugins={[remarkGfm]}>{body}</ReactMarkdown>
                   </div>
                 </div>

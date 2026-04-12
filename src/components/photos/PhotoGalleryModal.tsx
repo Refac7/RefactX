@@ -113,8 +113,8 @@ const PhotoGalleryModal: React.FC<Props> = ({ photos, title, description, isOpen
               </button>
             </div>
 
-            <div className="relative bg-background rounded-md overflow-hidden" ref={containerRef}>
-              <div className="relative overflow-hidden rounded-md" style={{ width: containerWidth }}>
+            <div className="relative bg-background rounded-lg overflow-hidden" ref={containerRef}>
+              <div className="relative overflow-hidden rounded-lg" style={{ width: containerWidth }}>
                 <motion.div
                   className="flex gap-4"
                   style={{ x, width: photos.length * (containerWidth + gap) - gap }}
@@ -125,12 +125,12 @@ const PhotoGalleryModal: React.FC<Props> = ({ photos, title, description, isOpen
                   transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                 >
                   {photos.map((photo) => (
-                    <div key={photo.src} className="flex items-center justify-center shrink-0 rounded-md overflow-hidden" style={{ width: containerWidth }}>
+                    <div key={photo.src} className="flex items-center justify-center shrink-0 rounded-lg overflow-hidden" style={{ width: containerWidth }}>
                       <img
                         draggable={false}
                         src={photo.src}
                         alt={photo.alt}
-                        className="max-w-full max-h-[65vh] object-contain select-none pointer-events-none rounded-md"
+                        className="max-w-full max-h-[65vh] object-contain select-none pointer-events-none rounded-lg"
                       />
                     </div>
                   ))}
