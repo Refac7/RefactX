@@ -47,12 +47,12 @@ export const FOOTER_LINKS: Link[] = [
 export const SOCIAL_LINKS: SocialLink[] = [
   {
     name: 'github',
-    url: 'https://github.com/Refac7',
+    url: '/',
     icon: 'icon-[ri--github-fill]',
   },
   {
     name: 'bilibili',
-    url: 'https://space.bilibili.com/441325177',
+    url: '/',
     icon: 'icon-[ri--bilibili-fill]',
   },
 ]
