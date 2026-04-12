@@ -154,7 +154,7 @@ export default function GithubContributions({ username, tooltipEnabled }: Props)
                     <Tooltip key={dayIndex} content={tooltipText} disabled={!tooltipEnabled || error}>
                       <div
                         className={cn(
-                          'size-3 xl:size-4 rounded-[3px] border transition-colors duration-300',
+                          'size-3 xl:size-4.5 rounded-[3px] border transition-colors duration-300',
                           getLevelClass(count)
                         )}
                       />

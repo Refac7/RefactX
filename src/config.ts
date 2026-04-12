@@ -20,6 +20,8 @@ export const SITE: Site = {
   author: 'Refact',
   ogImage: '/og-image.webp',
   version: '1.8',
+  footerText: 'Designed and engineered for the digital void.',
+  footerText2: 'Minimalist layout, maximum focus. Data persistence guaranteed.',
 }
 
 // 顶部导航菜单

@@ -18,7 +18,7 @@ const DashboardLayout = () => {
       <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
       
       {/* 现代化的 Header */}
-      <header className="bg-background border-b border-border/40 sticky top-0 z-20 shadow-xs">
+      <header className="bg-background border-b border-border/40 sticky top-0 z-20">
         <div className="max-w-[1920px] mx-auto p-6 lg:p-8 xl:p-12 h-16 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <h1 className="text-lg font-bold tracking-tight">RefactX CMS</h1>
@@ -47,7 +47,7 @@ const DashboardLayout = () => {
         
         {/* 指标状态区 (仅桌面端显示) */}
         <div className="hidden lg:grid grid-cols-3 gap-6 mb-6 shrink-0">
-          <div className="bg-background rounded-md border border-border/40 p-5 flex items-center justify-between">
+          <div className="bg-background rounded-lg border border-border/40 p-5 flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-muted-foreground mb-1">Total Files</p>
               <h3 className="text-2xl font-bold">{remoteFiles.length}</h3>
@@ -56,7 +56,7 @@ const DashboardLayout = () => {
               <span className="icon-[ph--files] size-5 text-muted-foreground"></span>
             </div>
           </div>
-          <div className="bg-background rounded-md border border-border/40 p-5 flex items-center justify-between cursor-pointer hover:border-primary/50 transition-colors" onClick={() => setMobileView('queue')}>
+          <div className="bg-background rounded-lg border border-border/40 p-5 flex items-center justify-between cursor-pointer hover:border-primary/50 transition-colors" onClick={() => setMobileView('queue')}>
             <div>
               <p className="text-sm font-medium text-muted-foreground mb-1">Pending Changes</p>
               <h3 className={cn("text-2xl font-bold", queue.length > 0 ? "text-primary" : "text-foreground")}>{queue.length}</h3>
@@ -65,7 +65,7 @@ const DashboardLayout = () => {
               <span className="icon-[ph--queue] size-5 text-muted-foreground"></span>
             </div>
           </div>
-          <div className="bg-background rounded-md border border-border/40 p-5 flex items-center justify-between">
+          <div className="bg-background rounded-lg border border-border/40 p-5 flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-muted-foreground mb-1">Repository</p>
               <h3 className="text-sm font-bold truncate max-w-[200px]">{REPO_CONFIG.repo}</h3>

@@ -31,7 +31,7 @@ export default function LoginScreen() {
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-center w-full z-10">
-        <div className="w-full max-w-[340px] bg-background rounded-md border border-border/40 shadow-xl p-8 sm:p-10 relative">
+        <div className="w-full max-w-[340px] bg-background rounded-lg border border-border/40 p-8 sm:p-10 relative">
           
           <div className="text-center mb-8">
             <h1 className="text-2xl font-bold tracking-tight text-foreground mb-1">Authenticate</h1>
@@ -50,7 +50,7 @@ export default function LoginScreen() {
                 placeholder="••••••••" 
                 autoFocus 
                 className={cn(
-                  "w-full px-4 py-2.5 rounded-md border bg-background text-sm transition-all focus:outline-none focus:ring-2 focus:ring-offset-0", 
+                  "w-full px-4 py-2.5 rounded-lg border bg-background text-sm transition-all focus:outline-none focus:ring-2 focus:ring-offset-0", 
                   loginError 
                     ? "border-red-500/50 focus:ring-red-500/20 text-red-500" 
                     : "border-border/60 focus:border-primary/50 focus:ring-primary/20"
@@ -62,7 +62,7 @@ export default function LoginScreen() {
               onClick={() => performLogin(password)} 
               disabled={isValidating} 
               className={cn(
-                "w-full py-2.5 rounded-md text-sm font-semibold transition-all flex items-center justify-center gap-2", 
+                "w-full py-2.5 rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-2", 
                 loginError 
                   ? "bg-red-50 text-red-600 border border-red-200 cursor-not-allowed dark:bg-red-500/10 dark:border-red-500/30 dark:text-red-400" 
                   : "bg-foreground text-background hover:bg-foreground/90 shadow-sm"

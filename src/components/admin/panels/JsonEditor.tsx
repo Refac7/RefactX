@@ -118,7 +118,7 @@ export default function JsonEditor() {
                     } else { iconEl = <span className="icon-[ph--cube] text-muted-foreground/50 size-6"/>; }
 
                     return (
-                        <div key={idx} onClick={() => setEditingItemIndex(idx)} className="group bg-background border border-border/40 rounded-md p-4 cursor-pointer hover:border-border hover:shadow-xs hover:bg-muted/10 transition-all flex flex-col justify-between">
+                        <div key={idx} onClick={() => setEditingItemIndex(idx)} className="group bg-background border border-border/40 rounded-lg p-4 cursor-pointer hover:border-border hover:shadow-xs hover:bg-muted/10 transition-all flex flex-col justify-between">
                             <div className="flex items-start justify-between mb-4">
                                 <div className="size-12 bg-muted/30 border border-border/40 rounded-xs flex items-center justify-center overflow-hidden">{iconEl}</div>
                                 <span className="icon-[ph--pencil-simple] size-4 text-muted-foreground/30 group-hover:text-foreground transition-colors"></span>

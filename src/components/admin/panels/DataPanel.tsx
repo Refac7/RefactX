@@ -10,18 +10,18 @@ export default function DataPanel() {
 
   return (
     <div className={cn(
-        "flex-col bg-background rounded-md border border-border/40 transition-all duration-300 relative overflow-hidden", 
+        "flex-col bg-background rounded-lg border border-border/40 transition-all duration-300 relative overflow-hidden", 
         mobileView === 'files' ? 'flex h-[calc(100vh-12rem)] lg:h-auto' : 'hidden',
         showLeftPanel ? 'lg:flex lg:col-span-3 xl:col-span-2' : 'lg:hidden'
     )}>
       <div className="h-12 px-4 border-b border-border/40 flex justify-between items-center bg-muted/20">
           <span className="text-sm font-semibold text-foreground">Content</span>
           <div className="flex gap-1">
-              <button onClick={handleNewPost} className="p-1.5 rounded-xs hover:bg-muted text-muted-foreground hover:text-foreground transition-colors" title="New Post">
-                <span className="icon-[ph--plus] size-4"></span>
+              <button onClick={handleNewPost} className="px-2 py-0.5 rounded-xs hover:bg-muted text-muted-foreground hover:text-foreground transition-colors" title="New Post">
+                <span className="icon-[ph--plus] size-3.5"></span>
               </button>
-              <button onClick={() => fetchRemoteFiles()} className="p-1.5 rounded-xs hover:bg-muted text-muted-foreground hover:text-foreground transition-colors" title="Refresh">
-                <span className="icon-[ph--arrows-clockwise] size-4"></span>
+              <button onClick={() => fetchRemoteFiles()} className="px-2 py-0.5 rounded-xs hover:bg-muted text-muted-foreground hover:text-foreground transition-colors" title="Refresh">
+                <span className="icon-[ph--arrows-clockwise] size-3.5"></span>
               </button>
           </div>
       </div>

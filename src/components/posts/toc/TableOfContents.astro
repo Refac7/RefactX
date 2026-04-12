@@ -25,76 +25,66 @@ const filteredHeadings = headings.reduce(
 )
 
 const minDepth = filteredHeadings.length > 0 ? Math.min(...filteredHeadings.map((h) => h.depth)) : 2
+
+// 缩进不再使用 margin，改用 padding，这样侧边指示线可以统一在最左侧对齐
 const getRelativeIndentClass = (depth: number) => {
   const relativeDepth = depth - minDepth
-  const indentMap = ['ml-0', 'ml-3', 'ml-6', 'ml-9']
-  return indentMap[relativeDepth] || 'ml-9'
+  const indentMap = ['pl-4', 'pl-7', 'pl-10', 'pl-12']
+  return indentMap[relativeDepth] || 'pl-12'
 }
 ---
 
 <aside 
   id="desktop-toc-aside" 
   class={cn(
-    "hidden xl:block sticky top-32 w-[15rem] shrink-0 z-40 transition-opacity duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]", 
-    "opacity-60 hover:opacity-100 group", 
+    "hidden xl:block sticky top-32 w-[15rem] shrink-0 z-40 transition-opacity duration-300 ease-out", 
+    "opacity-80 hover:opacity-100 group", 
     className
   )}
 >
-  <div class="relative w-full h-full">
+  <div class="relative w-full h-full font-sans">
+
+    <h3 class="text-sm font-semibold text-foreground tracking-tight mb-4 pl-4">
+      {POSTS_CONFIG.tocText || 'On this page'}
+    </h3>
     
-    <div class="flex gap-2 mb-4 items-center pl-4 select-none">
-      <div class="h-1.5 w-1.5 bg-primary animate-pulse shadow-[0_0_8px_var(--theme-primary)]"></div>
-      <div class="h-px flex-1 bg-border/40 border-dashed border-t"></div>
-    </div>
+    <nav 
+      id="desktop-toc-scroll-area" 
+      class="relative h-[calc(100vh-16rem)] overflow-y-auto toc-scrollbar"
+    >
+      {/* Vercel 风格：整洁的最左侧背景实线 */}
+      <div class="absolute left-0 top-0 bottom-0 w-px bg-border/40 z-0"></div>
 
-    <nav id="desktop-toc-card" class="w-[15rem] border-l border-dashed border-border/40 pl-4 relative">
-      <div class="flex flex-col mb-4 select-none">
-        <span class="text-[9px] text-primary/60 uppercase tracking-widest mb-1 font-mono">// Protocol_TOC</span>
-        <h3 class="font-mono text-xs font-bold text-foreground uppercase tracking-widest">
-          {POSTS_CONFIG.tocText || 'Index'}
-        </h3>
-      </div>
-      
-      <div 
-        id="desktop-toc-scroll-area" 
-        class="relative h-[calc(100vh-22rem)] overflow-y-auto toc-scrollbar"
+      <ul
+        class="relative w-full pb-12 z-10 flex flex-col"
+        data-desktop-toc-list
       >
-        <ul
-          class="space-y-1.5 w-full pb-12 pt-2"
-          data-desktop-toc-list
-        >
-          {
-            filteredHeadings.map((heading) => {
-              const isMain = heading.depth === minDepth;
-              const depthClass = isMain 
-                ? 'text-foreground font-bold' 
-                : 'text-muted-foreground hover:text-foreground';
+        {
+          filteredHeadings.map((heading) => {
+            const isMain = heading.depth === minDepth;
+            const depthClass = isMain 
+              ? 'text-foreground font-medium' 
+              : 'text-muted-foreground hover:text-foreground';
 
-              return (
-                <li class={cn("relative py-1", getRelativeIndentClass(heading.depth) || '')}>
-                  <a
-                    href={`#${heading.slug}`}
-                    data-desktop-heading-link
-                    class={cn(
-                      'group/link flex items-baseline gap-3 min-w-0 transition-all duration-200 w-full hover:translate-x-1'
-                    )}
-                  >
-                    <span class="absolute -left-[17px] top-1/2 -translate-y-1/2 w-0.5 h-3 bg-primary rounded-r-sm opacity-0 scale-y-50 transition-all duration-300 group-data-[active]/link:opacity-100 group-data-[active]/link:scale-y-100"></span>
-                    
-                    <span class="text-[10px] text-muted-foreground/30 font-mono min-w-[1.2rem] transition-colors group-data-[active]/link:text-primary group-data-[active]/link:opacity-100">
-                      {heading.order.toString().padStart(2, '0')}
-                    </span>
-
-                    <span class={cn("text-xs uppercase tracking-wide leading-relaxed truncate group-data-[active]/link:text-primary", depthClass)} title={heading.text}>
-                      {heading.text}
-                    </span>
-                  </a>
-                </li>
-              )
-            })
-          }
-        </ul>
-      </div>
+            return (
+              <li class="relative flex">
+                <a
+                  href={`#${heading.slug}`}
+                  data-desktop-heading-link
+                  class="group/link relative flex items-center w-full py-1.5 transition-colors duration-200"
+                >
+                  {/* 当前激活的粗线指示器，覆盖在背景细线上 */}
+                  <span class="absolute left-[-0.5px] top-1/2 -translate-y-1/2 w-[2px] h-[calc(100%-8px)] bg-primary opacity-0 transition-opacity duration-200 group-data-[active]/link:opacity-100"></span>
+                  
+                  <span class={cn("text-sm truncate transition-colors group-data-[active]/link:text-primary group-data-[active]/link:font-medium", depthClass, getRelativeIndentClass(heading.depth))} title={heading.text}>
+                    {heading.text}
+                  </span>
+                </a>
+              </li>
+            )
+          })
+        }
+      </ul>
     </nav>
   </div>
 </aside>

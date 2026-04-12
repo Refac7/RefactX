@@ -1,5 +1,6 @@
 ---
 import Layout from '~/layouts/Layout.astro'
+import { Image } from 'astro:assets'
 import { ABOUT_CONFIG } from '~/config'
 
 const { title, description, introduce, profile, skills, equipment, games, courseSchedule, todos } = ABOUT_CONFIG
@@ -54,9 +55,9 @@ const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full 
                     <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>The Operator</h2></div>
                 </div>
                 
-                <div class="flex flex-col md:flex-row gap-8 lg:gap-12 items-start bg-background/50 border border-border/40 rounded-md p-6 lg:p-8 shadow-sm">
+                <div class="flex flex-col md:flex-row gap-8 lg:gap-12 items-start bg-background/50 border border-border/40 rounded-lg p-6 lg:p-8">
                     <div class="shrink-0 relative group">
-                        <img src={profile.avatar} alt={profile.name} class="w-28 h-28 sm:w-32 sm:h-32 rounded-full object-cover shadow-sm border border-border/50 group-hover:scale-105 transition-transform duration-500 ease-out" />
+                        <img src={profile.avatar} alt={profile.name} class="w-28 h-28 sm:w-32 sm:h-32 rounded-full object-cover border border-border/50 group-hover:scale-105 transition-transform duration-500 ease-out" />
                     </div>
 
                     <div class="flex-1">
@@ -76,13 +77,13 @@ const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full 
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                     {skills.map((skillGroup) => (
-                        <div class="p-6 rounded-md border border-border/40 bg-background/50 hover:bg-muted/20 hover:shadow-md transition-all shadow-sm group hover:-translate-y-0.5">
+                        <div class="p-6 rounded-lg border border-border/40 bg-background/50 hover:bg-muted/20 hover:shadow-xs transition-all group hover:-translate-y-0.5">
                             <h4 class="text-sm font-semibold text-foreground tracking-tight mb-4 flex items-center gap-2">
                                 {skillGroup.category}
                             </h4>
                             <div class="flex flex-wrap gap-2">
                                 {skillGroup.items.map(item => (
-                                    <span class="inline-flex items-center rounded-md bg-muted/50 px-2.5 py-1 text-xs font-medium text-muted-foreground border border-border/40 group-hover:bg-background group-hover:text-foreground transition-colors cursor-default">
+                                    <span class="inline-flex items-center rounded-lg bg-muted/50 px-2.5 py-1 text-xs font-medium text-muted-foreground border border-border/40 group-hover:bg-background group-hover:text-foreground transition-colors cursor-default">
                                         {item}
                                     </span>
                                 ))}
@@ -96,7 +97,7 @@ const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full 
                 <div class={SECTION_HEADER_CLASS}>
                     <div class="flex items-center"><span class={SECTION_NUM_CLASS}>03</span><h2 class={SECTION_TITLE_CLASS}>Hardware Loadout</h2></div>
                 </div>
-                <div class="border border-border/40 bg-background/50 rounded-md overflow-hidden shadow-sm">
+                <div class="border border-border/40 bg-background/50 rounded-lg overflow-hidden">
                     {equipment.map((item, index) => (
                         <div class={`flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 hover:bg-muted/30 transition-all ${index !== equipment.length - 1 ? 'border-b border-border/40' : ''}`}>
                             <div class="flex items-center gap-4 mb-2 sm:mb-0 shrink-0">
@@ -118,7 +119,7 @@ const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full 
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {games.map(game => (
-                        <div class="p-5 rounded-md border border-border/40 bg-background/50 hover:bg-muted/20 hover:shadow-md transition-all flex flex-col justify-between min-h-[120px] shadow-sm hover:-translate-y-0.5">
+                        <div class="p-5 rounded-lg border border-border/40 bg-background/50 hover:bg-muted/20 hover:shadow-xs transition-all flex flex-col justify-between min-h-[120px] hover:-translate-y-0.5">
                             <div class="flex justify-between items-start mb-4">
                                 <span class="text-base font-semibold text-foreground tracking-tight">{game.title}</span>
                                 <span class="text-xs font-medium text-muted-foreground bg-muted/60 px-2 py-0.5 rounded-full">{game.hours}</span>
@@ -141,7 +142,7 @@ const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full 
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5 gap-4">
                     {courseSchedule.map((dayData) => (
-                        <div class="flex flex-col rounded-md border border-border/40 bg-background/50 hover:shadow-md transition-all shadow-sm overflow-hidden hover:-translate-y-0.5">
+                        <div class="flex flex-col rounded-lg border border-border/40 bg-background/50 hover:shadow-xs transition-all overflow-hidden hover:-translate-y-0.5">
                             <div class="flex justify-between items-center px-4 py-3 bg-muted/30 border-b border-border/40">
                                 <span class="text-sm font-semibold text-foreground">{dayData.day}</span>
                                 <span class="text-xs font-medium text-muted-foreground">{dayData.label}</span>
@@ -171,7 +172,7 @@ const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full 
                 <div class={SECTION_HEADER_CLASS}>
                     <div class="flex items-center"><span class={SECTION_NUM_CLASS}>06</span><h2 class={SECTION_TITLE_CLASS}>Active Threads</h2></div>
                 </div>
-                <div class="rounded-md border border-border/40 bg-background/50 p-6 shadow-sm">
+                <div class="rounded-lg border border-border/40 bg-background/50 p-6">
                     <div class="space-y-1">
                         {todos.map(todo => (
                             <div class="flex items-center justify-between group/todo hover:bg-muted/30 p-3 rounded-lg transition-colors">

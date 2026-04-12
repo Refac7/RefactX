@@ -55,14 +55,14 @@ export default function EditorPanel() {
                         disabled={showPreview}
                         onClick={() => setShowMetaConfig(!showMetaConfig)} 
                         className={cn(
-                            "p-1.5 rounded-xs transition-colors",
+                            "px-2 py-0.5 rounded-xs transition-colors",
                             showPreview 
                                 ? "opacity-30 cursor-not-allowed text-muted-foreground" 
                                 : cn("text-muted-foreground hover:bg-muted hover:text-foreground", showMetaConfig && "bg-muted text-foreground")
                         )}
                         title="Meta Settings"
                     >
-                        <span className="icon-[ph--sliders-horizontal] size-4"></span>
+                        <span className="icon-[ph--sliders-horizontal] size-3.5"></span>
                     </button>
                   </>
               ) : (

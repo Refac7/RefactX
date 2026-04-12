@@ -18,6 +18,8 @@ export type Site = {
   website: string
   ogImage: string
   version: string
+  footerText: string
+  footerText2?: string
 }
 
 /**

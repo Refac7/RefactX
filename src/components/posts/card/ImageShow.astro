@@ -15,12 +15,12 @@ const defaultHeroImage = POSTS_CONFIG.defaultHeroImage
 const sideWidthClass = "md:w-[280px] lg:w-[320px]" 
 ---
 
-<article class="group relative flex flex-col md:flex-row bg-background/50 border border-border/40 hover:shadow-xs transition-all duration-300 rounded-md overflow-hidden mb-8 h-full hover:-translate-y-0.5">
+<article class="group relative flex flex-col md:flex-row bg-background/50 border border-border/40 hover:shadow-xs transition-all duration-300 rounded-lg overflow-hidden mb-8 h-full hover:-translate-y-0.5">
   
   {hasImage && (
     <div 
       class={`
-        hidden md:flex flex-col relative shrink-0 h-auto min-h-[240px]
+        hidden md:flex flex-col relative shrink-0 h-auto min-h-[160px]
         ${sideWidthClass}
         ${isReverse ? 'md:order-2 border-l border-border/40' : 'md:order-1 border-r border-border/40'}
       `}
