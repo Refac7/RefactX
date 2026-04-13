@@ -41,7 +41,7 @@ const { class: className } = Astro.props;
           --waline-theme-color: hsl(var(--primary)) !important;
           --waline-active-color: hsl(var(--primary)) !important;
           --waline-color: hsl(var(--foreground)) !important;
-          --waline-bgcolor: hsl(var(--background) / 0.5) !important;
+          --waline-bgcolor: hsl(var(--background)) !important;
           --waline-bgcolor-light: hsl(var(--muted) / 0.1) !important;
           --waline-bgcolor-hover: hsl(var(--muted) / 0.3) !important;
           --waline-border-color: hsl(var(--border) / 0.4) !important;
@@ -60,6 +60,8 @@ const { class: className } = Astro.props;
 
         .wl-panel {
           margin: 0rem !important;
+          background-color: var(--waline-bgcolor);
+          border-color: var(--waline-border-color);
         }
 
         .wl-editor {
