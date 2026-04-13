@@ -48,12 +48,12 @@ export const SOCIAL_LINKS: SocialLink[] = [
   {
     name: 'GitHub',
     url: 'https://github.com/Refac7',
-    icon: 'icon-[ri--github-fill]',
+    icon: 'icon-[ri--arrow-left-up-line]',
   },
   {
     name: 'BiliBili',
     url: 'https://space.bilibili.com/441325177',
-    icon: 'icon-[ri--bilibili-fill]',
+    icon: 'icon-[ri--arrow-left-up-line]',
   },
 ]
 

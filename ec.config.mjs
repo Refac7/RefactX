@@ -13,23 +13,32 @@ export default defineEcConfig({
   minSyntaxHighlightingColorContrast: 0,
 
   styleOverrides: {
-    uiFontFamily: 'GeistMono, Input Mono, Fira Code, ShangguSansSCVF, monospace',
-    uiFontSize: '1em',
-    codeFontFamily: 'GeistMono, Input Mono, Fira Code, ShangguSansSCVF, monospace',
-    codeFontSize: '14px',
-    codeLineHeight: '1.4',
-    borderRadius: '0',
-    codePaddingBlock: '0.8571429em',
-    codePaddingInline: '1.1428571em',
-    borderColor: ({ theme }) => (theme.type === 'dark' ? '#24273a' : '#e6e9ef'),
+    uiFontFamily: "'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+    uiFontSize: '0.875rem',
+    codeFontFamily: "'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+    codeFontSize: '0.875rem',
+    codeLineHeight: '1.6',
+    
+    borderRadius: '0.5rem',
+    
+    codePaddingBlock: '1rem',
+    codePaddingInline: '1.25rem',
+    
+    borderColor: ({ theme }) => (theme.type === 'dark' ? '#333333' : '#eaeaea'),
 
     frames: {
-      frameBoxShadowCssValue: false,
-      inlineButtonBackgroundActiveOpacity: '0.2',
-      inlineButtonBackgroundHoverOrFocusOpacity: '0.1',
+      frameBoxShadowCssValue: 'none',
+      inlineButtonBackgroundActiveOpacity: '0.1',
+      inlineButtonBackgroundHoverOrFocusOpacity: '0.05',
+      
+      editorBackground: ({ theme }) => (theme.type === 'dark' ? '#000000' : '#fafafa'),
+      terminalBackground: ({ theme }) => (theme.type === 'dark' ? '#000000' : '#fafafa'),
+      
+      terminalTitlebarBackground: ({ theme }) => (theme.type === 'dark' ? '#111111' : '#f5f5f5'),
     },
+    
     textMarkers: {
-      backgroundOpacity: '0.2',
+      backgroundOpacity: '0.15',
       borderOpacity: '0.4',
     },
   },
@@ -41,8 +50,9 @@ export default defineEcConfig({
     pluginLineNumbers(),
   ],
 
-  themes: ['catppuccin-macchiato', 'catppuccin-latte'],
-  themeCssSelector: (theme) => (theme.name === 'catppuccin-macchiato' ? '.dark' : ':root:not(.dark)'),
+  themes: ['github-dark', 'github-light'],
+  themeCssSelector: (theme) => (theme.name === 'github-dark' ? '.dark' : ':root:not(.dark)'),
+  
   useDarkModeMediaQuery: false,
   useStyleReset: false,
 })

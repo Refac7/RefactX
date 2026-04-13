@@ -5,6 +5,7 @@
 
 /* ===== Color Variables | 颜色变量 ===== */
 .markdown {
+  /* Vercel Geist Light Palette */
   --text: #444444;          
   --text-deep: #000000;     
   --heading: #000000;       
@@ -24,6 +25,7 @@
 }
 
 .dark .markdown {
+  /* Vercel Geist Dark Palette */
   --text: #a0a0a0;          
   --text-deep: #ffffff;     
   --heading: #ffffff;       
@@ -293,36 +295,64 @@
   padding-left: 0;
 }
 
-/* ===== Media | 媒体 ===== */
-.markdown img {
-  margin: 2em auto;
+/* ===== Media & Figures | 媒体与带注释图片 ===== */
+
+/* 1. 不带注释的单张图片 Fallback */
+.markdown > img,
+.markdown p > img {
+  display: block;
+  max-width: 100%;
+  margin: 2.5em auto;
   border-radius: 0.5rem;
   border: 1px solid var(--hr-color);
   will-change: transform, filter;
 }
 
-.markdown figure img {
-  margin: 0;
-}
-.markdown video,
+/* 2. 带有注释的完整图片容器强制全宽 */
 .markdown figure {
+  display: block;
+  width: 100%;
+  margin: 2.5em 0;
+  border: 1px solid var(--hr-color);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background-color: var(--bg);
+}
+
+/* 去除 figure 内图片的默认外边距和边框，并在全宽容器中居中 */
+.markdown figure img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  border: none;
+  border-radius: 0;
+}
+
+/* 图注区卡片化样式 */
+.markdown figure figcaption {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0.75rem 1rem;
+  background-color: var(--inline-code-bg); /* 轻微背景底色与图片区划界 */
+  border-top: 1px solid var(--hr-color); /* 顶部精细横线 */
+  color: var(--muted);
+  font-size: 0.875rem;
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* 视频同样适用全宽卡片 */
+.markdown video {
+  display: block;
+  width: 100%;
   margin: 2em 0;
   border-radius: 0.5rem;
   overflow: hidden;
   border: 1px solid var(--hr-color);
 }
-.markdown figure > * {
-  margin: 0;
-}
 
-.markdown figure figcaption {
-  color: var(--muted);
-  font-size: 0.875em;
-  line-height: 1.4;
-  margin-top: 0.75em;
-  text-align: center;
-}
-
+/* 深色模式下的滤镜平滑过渡 */
 .dark .markdown img.noDarken {
   filter: none !important;
 }
