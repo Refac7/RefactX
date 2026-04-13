@@ -45,7 +45,7 @@ const getRelativeIndentClass = (depth: number) => {
           
           {/* 收起时的浮动按钮 (TOC Button) */}
           <button
-            class="group flex w-full cursor-pointer items-center justify-between relative px-5 py-3 select-none transition-all duration-300 bg-background/80 backdrop-blur-md border border-border/40 rounded-full shadow-sm hover:bg-muted/50"
+            class="group flex w-full cursor-pointer items-center justify-between relative px-5 py-3 select-none transition-all duration-300 bg-background/80 backdrop-blur-md border border-border/40 rounded-full hover:bg-muted/50"
             data-toc-toggle
             data-toc-header
           >
@@ -63,16 +63,11 @@ const getRelativeIndentClass = (depth: number) => {
             </div>
           </button>
 
-          {/* 展开时的下拉面板 (TOC Panel) 
-              增加 opacity-0 和 pointer-events-none 初始化属性 */}
           <div
-            class="absolute left-0 w-full top-[calc(100%+0.5rem)] bg-background/95 backdrop-blur-md border border-border/40 rounded-xl shadow-lg overflow-hidden max-h-0 opacity-0 pointer-events-none transition-all duration-300 ease-out z-40"
+            class="absolute left-0 w-full top-[calc(100%+0.5rem)] bg-background/95 backdrop-blur-md border border-border/40 rounded-xl overflow-hidden max-h-0 opacity-0 pointer-events-none transition-all duration-300 ease-out z-40"
             data-toc-content
           >
               <div class="relative">
-                {/* 顶部细微渐变分割线 */}
-                <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-border/60 to-transparent"></div>
-
                 <div class="max-h-[50vh] overflow-y-auto no-scrollbar py-2" data-toc-scroll-area>
                   <ul class="px-2 py-1 space-y-px" id="mobile-table-of-contents">
                     {filteredHeadings.map((heading: TocHeading) => {
