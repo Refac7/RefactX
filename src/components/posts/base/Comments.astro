@@ -62,6 +62,10 @@ const { class: className } = Astro.props;
           margin: 0rem !important;
         }
 
+        .wl-editor {
+          padding: .75em .75em !important;
+        }
+
         .wl-action {
           font-size: 12px !important;
         }
@@ -72,6 +76,7 @@ const { class: className } = Astro.props;
 
         .wl-header-item {
           border-bottom: 1px dashed var(--waline-border-color) !important;
+          padding: .5rem 0rem !important;
         }
 
         .wl-header {
@@ -110,10 +115,18 @@ const { class: className } = Astro.props;
           opacity: 0.8;
         }
 
+        #waline .wl-content,
+        #waline .wl-content p,
+        #waline .wl-content a {
+          word-break: break-word !important;
+          overflow-wrap: anywhere !important;
+          white-space: normal !important;
+        }
+
         @media screen and (max-width: 768px) {
           #waline .wl-input,
           #waline .wl-editor {
-            font-size: 16px !important;
+            font-size: 12px !important;
           }
         }
       </style>
@@ -192,7 +205,7 @@ const { class: className } = Astro.props;
             window.__walineInstance = window.Waline.init({
               el: walineEl,
               serverURL,
-              lang: 'en',
+              lang: 'zh',
               dark: 'html.dark',
               emoji: false,
               search: false,
