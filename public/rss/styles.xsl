@@ -281,12 +281,8 @@
               </p>
             </div>
             
-            <a>
-              <xsl:attribute name="href">
-                <xsl:value-of select="/rss/channel/link"/>
-              </xsl:attribute>
-              <xsl:attribute name="class">btn-back</xsl:attribute>
-              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <a href="{/rss/channel/link}" class="btn-back">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="19" y1="12" x2="5" y2="12"></line>
                 <polyline points="12 19 5 12 12 5"></polyline>
               </svg>
@@ -296,15 +292,11 @@
 
           <main class="grid">
             <xsl:for-each select="/rss/channel/item">
-              <!-- 强制使用 xsl:attribute 绑定超链接，杜绝 undefined -->
-              <a class="card" target="_blank">
-                <xsl:attribute name="href">
-                  <xsl:value-of select="link"/>
-                </xsl:attribute>
+              <a class="card" target="_blank" href="{link}">
                 
                 <div class="card-top">
                   <div class="card-icon">
-                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                       <polyline points="14 2 14 8 20 8"></polyline>
                       <line x1="16" y1="13" x2="8" y2="13"></line>
@@ -313,7 +305,7 @@
                     </svg>
                   </div>
                   <div class="card-arrow">
-                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
                       <line x1="7" y1="17" x2="17" y2="7"></line>
                       <polyline points="7 7 17 7 17 17"></polyline>
                     </svg>
