@@ -62,6 +62,7 @@ const { class: className } = Astro.props;
           margin: 0rem !important;
           background-color: var(--waline-bgcolor);
           border-color: var(--waline-border-color);
+          border-radius: var(--waline-border-radius);
         }
 
         .wl-editor {
@@ -70,6 +71,10 @@ const { class: className } = Astro.props;
 
         .wl-action {
           font-size: 12px !important;
+        }
+
+        .wl-btn {
+          border-radius: .25em !important;
         }
 
         .wl-actions {

@@ -171,7 +171,7 @@ const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full 
                 <div class={SECTION_HEADER_CLASS}>
                     <div class="flex items-center"><span class={SECTION_NUM_CLASS}>06</span><h2 class={SECTION_TITLE_CLASS}>Active Threads</h2></div>
                 </div>
-                <div class="rounded-lg border border-border/40 bg-background/50 p-6">
+                <div class="rounded-lg border border-border/40 bg-background/50 p-4">
                     <div class="space-y-1">
                         {todos.map(todo => (
                             <div class="flex items-center justify-between group/todo hover:bg-muted/30 p-3 rounded-lg transition-colors">
@@ -185,11 +185,6 @@ const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full 
                     </div>
                 </div>
             </div>
-
-            <div class="mt-20 pt-8 border-t border-border/40 flex justify-center">
-                <span class="text-xs text-muted-foreground/40 select-none">End of Profile</span>
-            </div>
-            
       </div>
     </main>
   </div>

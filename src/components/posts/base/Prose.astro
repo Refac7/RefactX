@@ -14,11 +14,8 @@ const { class: className } = Astro.props
 </div>
 
 <script>
-  /* medium-zoom */
   import mediumZoom from 'medium-zoom/dist/pure'
-  const zoom = mediumZoom({
-    background: 'rgb(0 0 0 / 0.8)',
-  })
+  const zoom = mediumZoom({ background: 'hsl(var(--background) / 0.9)' })
 
   document.addEventListener('astro:page-load', () => {
     zoom.detach()
@@ -28,7 +25,6 @@ const { class: className } = Astro.props
     lqipImages.forEach((img) => {
       const imageEl = img as HTMLImageElement
 
-      // 去除占位符，避免闪烁
       function handleImageLoad() {
         imageEl.style.removeProperty('--lqip')
       }
@@ -41,18 +37,15 @@ const { class: className } = Astro.props
       }
     })
 
-    // 为 lazy-image 类的图片添加加载完成处理
     const lazyImages = document.querySelectorAll('.lazy-image')
     lazyImages.forEach((img) => {
       const imageEl = img as HTMLImageElement
 
       function handleLazyImageLoad() {
         imageEl.classList.add('lazy-image-loaded')
-        // 加载完成后，触发暗色模式处理更新
         window.dispatchEvent(new CustomEvent('lazyImageLoaded'))
       }
 
-      // 检查图片是否已加载
       if (imageEl.complete && imageEl.naturalHeight !== 0) {
         handleLazyImageLoad()
       } else {
@@ -67,27 +60,21 @@ const { class: className } = Astro.props
   if (enabled) {
     const darkModeHandler = () => {
       const isDark = document.documentElement.classList.contains('dark')
-      // 获取所有需要处理的图片：非 hover、非放大、非 noDarken 的图片
-      // 但排除加载中的 lazy-image（没有 lazy-image-loaded 类的 lazy-image）
+      
       document.querySelectorAll('.markdown img:not(:hover):not(.medium-zoom-image--opened):not(.noDarken)').forEach((img) => {
-        // 跳过加载中的 lazy-image
         if (img.classList.contains('lazy-image') && !img.classList.contains('lazy-image-loaded')) {
           return
         }
         
         if (isDark) {
-          // 使用 !important 来覆盖 CSS 中的 filter: none !important
-          img.style.setProperty('filter', 'brightness(0.75) contrast(1.1)', 'important')
+          img.style.setProperty('filter', 'brightness(0.8) contrast(1.1)', 'important')
         } else {
           img.style.removeProperty('filter')
         }
       })
     }
 
-    // 监听暗色模式变化
-    const observer = new MutationObserver(() => {
-      darkModeHandler()
-    })
+    const observer = new MutationObserver(darkModeHandler)
 
     document.addEventListener('astro:page-load', () => {
       observer.observe(document.documentElement, {
@@ -96,36 +83,22 @@ const { class: className } = Astro.props
       })
       darkModeHandler()
 
-      // 监听 hover 事件
       document.querySelectorAll('.markdown img').forEach((img) => {
         img.addEventListener('mouseenter', () => {
-          // 跳过 noDarken 类的图片
           if (img.classList.contains('noDarken')) return
-          
-          // 移除滤镜
           img.style.removeProperty('filter')
         })
         img.addEventListener('mouseleave', () => {
-          // 跳过 noDarken 类的图片
           if (img.classList.contains('noDarken')) return
+          if (img.classList.contains('lazy-image') && !img.classList.contains('lazy-image-loaded')) return
           
-          // 跳过加载中的 lazy-image
-          if (img.classList.contains('lazy-image') && !img.classList.contains('lazy-image-loaded')) {
-            return
-          }
-          
-          // 重新应用暗化效果
           if (document.documentElement.classList.contains('dark')) {
-            // 使用 !important 来覆盖 CSS 中的 filter: none !important
-            img.style.setProperty('filter', 'brightness(0.75) contrast(1.1)', 'important')
+            img.style.setProperty('filter', 'brightness(0.8) contrast(1.1)', 'important')
           }
         })
       })
     })
 
-    // 监听 lazy-image 加载完成事件，重新应用暗色模式处理
-    window.addEventListener('lazyImageLoaded', () => {
-      darkModeHandler()
-    })
+    window.addEventListener('lazyImageLoaded', darkModeHandler)
   }
 </script>

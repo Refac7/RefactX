@@ -75,7 +75,7 @@ const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full 
               </div>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mt-4">
                   {NAV_CARDS.map((card, i) => (
-                      <a href={card.href} class="group relative flex flex-col justify-between rounded-lg border border-border/40 bg-background/50 p-5 hover:bg-muted/20 hover:border-border hover:shadow-xs transition-all duration-300 min-h-[160px] hover:-translate-y-0.5" style={`animation-delay: ${i * 50}ms`}>
+                      <a href={card.href} class="group relative flex flex-col justify-between rounded-lg border border-border/40 bg-background/50 p-6 hover:bg-muted/20 hover:border-border hover:shadow-xs transition-all duration-300 min-h-[180px] hover:-translate-y-0.5" style={`animation-delay: ${i * 50}ms`}>
                           <div class="relative z-10 flex flex-col h-full">
                               <div class="flex justify-between items-start mb-auto">
                                 <div class="size-10 flex items-center justify-center rounded-md bg-muted/30 border border-border/40 group-hover:border-border/60 transition-colors">
@@ -113,7 +113,7 @@ const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full 
           )}
 
           {SKILLS_ENABLED && SKILLS_DATA.length > 0 && (
-            <div class="mb-12 fade-up" style="animation-delay: 400ms">
+            <div class="fade-up" style="animation-delay: 400ms">
               <div class={SECTION_HEADER_CLASS}>
                 <div class="flex items-center"><span class={SECTION_NUM_CLASS}>04</span><h2 class={SECTION_TITLE_CLASS}>Tech Stack</h2></div>
               </div>
@@ -122,11 +122,6 @@ const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full 
               </div>
             </div>
           )}
-          
-          <div class="mt-20 pt-8 border-t border-border/40 flex justify-center">
-              <span class="text-xs text-muted-foreground/30 select-none">End of Page</span>
-          </div>
-
       </div>
     </main>
   </div>

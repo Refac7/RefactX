@@ -11,10 +11,11 @@ export default function DataPanel() {
   return (
     <div className={cn(
         "flex-col bg-background rounded-lg border border-border/40 transition-all duration-300 relative overflow-hidden", 
-        mobileView === 'files' ? 'flex h-[calc(100vh-12rem)] lg:h-auto' : 'hidden',
-        showLeftPanel ? 'lg:flex lg:col-span-3 xl:col-span-2' : 'lg:hidden'
+        mobileView === 'files' ? 'flex h-[calc(100vh-12rem)]' : 'hidden',
+        showLeftPanel ? 'lg:flex lg:col-span-3 xl:col-span-2' : 'lg:hidden',
+        "lg:h-auto lg:min-h-[400px] lg:max-h-[calc(100vh-8rem)]"
     )}>
-      <div className="h-12 px-4 border-b border-border/40 flex justify-between items-center bg-muted/20">
+      <div className="h-12 px-4 border-b border-border/40 flex justify-between items-center bg-muted/20 shrink-0">
           <span className="text-sm font-semibold text-foreground">Content</span>
           <div className="flex gap-1">
               <button onClick={handleNewPost} className="px-2 py-0.5 rounded-xs hover:bg-muted text-muted-foreground hover:text-foreground transition-colors" title="New Post">
@@ -26,7 +27,7 @@ export default function DataPanel() {
           </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto custom-scrollbar p-2">
+      <div className="flex-1 overflow-y-auto custom-scrollbar p-2 min-h-0">
           
           <div className="px-2 py-2 text-xs font-semibold text-muted-foreground">Config Data</div>
           <div className="space-y-0.5 mb-4">

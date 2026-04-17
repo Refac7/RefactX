@@ -11,7 +11,7 @@ export default function LoginScreen() {
   };
 
   return (
-    <div className="relative min-h-[70vh] flex flex-col p-6 lg:p-12 font-sans bg-muted/5 overflow-hidden">
+    <div className="relative min-h-[80vh] flex flex-col p-6 lg:p-12 font-sans overflow-hidden">
       
       <div className="absolute top-6 left-6 lg:top-12 lg:left-12 flex items-center gap-2 select-none">
         <span className={cn("size-2 rounded-full", loginError ? "bg-red-500 animate-pulse" : "bg-primary")}></span>
