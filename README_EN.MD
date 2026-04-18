@@ -21,6 +21,10 @@ A modern, elegant Astro theme designed specifically for content creators and dev
 >
 > Developers have no mandatory obligation to maintain open-source software. If you wish to implement specific features, please first attempt to resolve them independently. Pull Requests (PRs) are welcome if feasible.
 
+Preview：
+
+![Preview](./src/assets/2.png)  
+
 ## Core Features
 
 ### Content Management System (CMS)
@@ -31,7 +35,6 @@ A modern, elegant Astro theme designed specifically for content creators and dev
 
 ### Built-in Customized Waline Comment System
 
-- Custom emoji picker for enhanced comment interaction
 - Image upload functionality compatible with S3 object storage
 
 ### Responsive Design
