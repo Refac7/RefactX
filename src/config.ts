@@ -107,7 +107,7 @@ export const POSTS_CONFIG: PostConfig = {
   introduce: '不定时更新维护文章，可订阅 RSS 获取最新更新状态。',
   author: 'Refact',
   homePageConfig: { size: 3, type: 'compact' },
-  postPageConfig: { size: 5, type: 'image' },
+  postPageConfig: { size: 8, type: 'image' },
   tagsPageConfig: { size: 5, type: 'time-line' },
   defaultHeroImage: '/og-image.webp',
   defaultHeroImageAspectRatio: '16/9',

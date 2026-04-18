@@ -24,10 +24,12 @@ const filteredHeadings: TocHeading[] = headings
   }))
 
 const minDepth = filteredHeadings.length > 0 ? Math.min(...filteredHeadings.map((h: MarkdownHeading) => h.depth)) : 2
+
+// 缩进优化：使用更舒适的左侧内边距
 const getRelativeIndentClass = (depth: number) => {
   const relativeDepth = depth - minDepth
-  const indentMap = ['pl-4', 'pl-7', 'pl-10', 'pl-12'] 
-  return indentMap[relativeDepth] || 'pl-12'
+  const indentMap = ['pl-6', 'pl-10', 'pl-14', 'pl-16'] 
+  return indentMap[relativeDepth] || 'pl-16'
 }
 ---
 
@@ -39,46 +41,47 @@ const getRelativeIndentClass = (depth: number) => {
 
       <div 
         id="mobile-toc-container" 
-        class="sticky top-0 z-30 font-sans transition-all duration-300 block xl:hidden"
+        class="sticky top-0 z-40 w-full font-sans transition-all duration-300 block xl:hidden"
       >
-        <div class="relative mx-auto">
+        <div class="relative w-full">
           
-          {/* 收起时的浮动按钮 (TOC Button) */}
+          {/* 顶部吸附栏 (Vercel Sub-nav Style) */}
           <button
-            class="group flex w-full cursor-pointer items-center justify-between relative px-8 md:px-12 py-3 select-none transition-all duration-300 bg-background/80 backdrop-blur-md border-b border-border/40 hover:bg-muted/50"
+            class="group flex w-full cursor-pointer items-center justify-between px-6 py-3.5 select-none transition-colors duration-200 bg-background/85 backdrop-blur-md border-b border-border/40 hover:bg-muted/30"
             data-toc-toggle
             data-toc-header
           >
             <div class="flex gap-3 items-center min-w-0 flex-1">
-              <SimpleProgressRing size={20} strokeWidth={2} class="text-primary shrink-0" />
-              <div class="flex flex-col items-start overflow-hidden">
-                  <span id="mobile-toc-current-section" class="text-sm font-medium text-foreground tracking-tight truncate w-full">
+              <SimpleProgressRing size={18} strokeWidth={2} class="text-primary shrink-0" />
+              <div class="flex flex-col items-start overflow-hidden w-full">
+                  <span id="mobile-toc-current-section" class="text-sm font-medium text-foreground tracking-tight truncate w-full text-left">
                     Table of Contents
                   </span>
               </div>
             </div>
 
-            <div class="flex items-center justify-center pl-2 shrink-0">
+            <div class="flex items-center justify-center pl-4 shrink-0">
               <span class="icon-[ph--caret-down] w-4 h-4 text-muted-foreground transition-transform duration-300" data-toc-arrow />
             </div>
           </button>
 
+          {/* 下拉面板 (Dropdown Panel) */}
           <div
-            class="absolute left-0 w-full top-[calc(100%+0.5rem)] bg-background/95 backdrop-blur-md border-b border-border/40 overflow-hidden max-h-0 opacity-0 pointer-events-none transition-all duration-300 ease-out z-40"
+            class="absolute left-0 w-full top-full bg-background/95 backdrop-blur-md border-b border-border/40 overflow-hidden max-h-0 opacity-0 pointer-events-none transition-all duration-300 ease-out z-40 shadow-lg"
             data-toc-content
           >
-              <div class="relative">
-                <div class="max-h-[50vh] overflow-y-auto no-scrollbar py-2" data-toc-scroll-area>
-                  <ul class="px-2 py-1 space-y-px" id="mobile-table-of-contents">
+              <div class="relative w-full">
+                <div class="max-h-[60vh] overflow-y-auto no-scrollbar py-2" data-toc-scroll-area>
+                  <ul class="py-1 space-y-px w-full" id="mobile-table-of-contents">
                     {filteredHeadings.map((heading: TocHeading) => {
                       const isMain = heading.depth === minDepth;
                       const depthClass = isMain ? 'text-foreground font-medium' : 'text-muted-foreground hover:text-foreground';
                       return (
-                        <li class="relative">
+                        <li class="relative w-full">
                           <a 
                             href={`#${heading.slug}`} 
                             class={cn(
-                              "block w-full py-2 transition-colors duration-200 text-sm leading-relaxed truncate mobile-toc-item rounded-lg hover:bg-muted/50",
+                              "block w-full py-2.5 transition-colors duration-200 text-sm leading-relaxed truncate mobile-toc-item pr-6 hover:bg-muted/40",
                               depthClass,
                               getRelativeIndentClass(heading.depth) || ''
                             )} 
@@ -131,19 +134,15 @@ const getRelativeIndentClass = (depth: number) => {
        if (!this.tocContent || !this.tocArrow) return; 
        this.isOpen = open; 
        if (open) { 
-         // 展开时：同步修改高度与透明度
-         this.tocContent.style.maxHeight = '50vh'; 
+         this.tocContent.style.maxHeight = '60vh'; 
          this.tocContent.style.opacity = '1';
          this.tocContent.style.pointerEvents = 'auto';
          this.tocArrow.style.transform = 'rotate(180deg)'; 
-         this.updateHeaderStyle(true); 
        } else { 
-         // 收起时：透明度归零，移除点击事件，边框彻底隐形
          this.tocContent.style.maxHeight = '0'; 
          this.tocContent.style.opacity = '0';
          this.tocContent.style.pointerEvents = 'none';
          this.tocArrow.style.transform = 'rotate(0deg)'; 
-         this.updateHeaderStyle(this.isStuck); 
        } 
      }
      
@@ -154,13 +153,9 @@ const getRelativeIndentClass = (depth: number) => {
        if (!sentinel) return; 
        this.stickyObserver = new IntersectionObserver(([entry]) => { 
          this.isStuck = !entry.isIntersecting; 
-         if (!this.isOpen) { this.updateHeaderStyle(this.isStuck); } 
+         // 去除了背景变化的逻辑，保持 Vercel 一贯的磨砂玻璃质感
        }, { threshold: [0] }); 
        this.stickyObserver.observe(sentinel); 
-     }
-     
-     private static updateHeaderStyle(_solid: boolean): void { 
-       if (!this.tocHeader) return; 
      }
      
      private static initHeadingObserver(): void { 
@@ -235,7 +230,7 @@ const getRelativeIndentClass = (depth: number) => {
                  if (targetDom) { 
                    const rect = targetDom.getBoundingClientRect(); 
                    const documentTop = rect.top + window.scrollY; 
-                   const scrollPosition = documentTop - 80; 
+                   const scrollPosition = documentTop - 60; // 减去头部高度
                    window.scrollTo({ top: Math.max(0, scrollPosition), behavior: 'smooth', }); 
                  } 
                } 
@@ -291,7 +286,7 @@ const getRelativeIndentClass = (depth: number) => {
        const headingLinks = this.listElement.querySelectorAll('.mobile-toc-item'); 
        
        headingLinks.forEach((link) => { 
-         link.classList.remove('text-primary', 'font-medium'); 
+         link.classList.remove('text-foreground', 'text-primary', 'font-medium'); 
          link.classList.add('text-muted-foreground'); 
        }); 
        
@@ -301,7 +296,7 @@ const getRelativeIndentClass = (depth: number) => {
          const activeItem = this.listElement.querySelector(`[data-heading-id="${activeId}"]`) as HTMLElement; 
          if (activeItem) { 
            activeItem.classList.remove('text-muted-foreground'); 
-           activeItem.classList.add('text-primary', 'font-medium'); 
+           activeItem.classList.add('text-foreground', 'font-medium'); // Vercel使用深色/亮色反差高亮
            textToShow = activeItem.dataset.headingText || textToShow; 
          } 
          this.scrollToActiveInTOC(activeId); 

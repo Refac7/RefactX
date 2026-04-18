@@ -14,7 +14,12 @@
       const todayStr = `${date.getFullYear()}-${month}-${day}`;
       
       const isMourning = (month === 4 && day >= 4 && day <= 6) || (month === 12 && day === 13);
-      const isRedFestival = (month === 10 && day <= 7) || (month === 1 && day === 1);
+      // 新年、国庆
+      const isRedFestival = (month === 10 && day <= 7) || (month === 1 && day === 1) || (month === 2 && day <= 15);
+      // 端午 (公历6月初)
+      const isGreenFestival = (month === 6 && day >= 5 && day <= 10);
+      // 中秋 (公历9月中下旬)
+      const isGoldFestival = (month === 9 && day >= 15 && day <= 20);
 
       let activeTheme = null;
       let themeMsg = '';
@@ -25,23 +30,26 @@
       } else if (isRedFestival) {
         activeTheme = 'theme-red';
         themeMsg = '欢度佳节，全站已切换至节日主题。';
+      } else if (isGreenFestival) {
+        activeTheme = 'theme-green';
+        themeMsg = '端午安康，全站已切换至粽叶绿主题。';
+      } else if (isGoldFestival) {
+        activeTheme = 'theme-gold';
+        themeMsg = '中秋快乐，全站已切换至月华金主题。';
       }
 
       const overrideDate = localStorage.getItem('disable-holiday-theme');
       
-      if (activeTheme) {
-        if (overrideDate !== todayStr) {
-          document.documentElement.classList.add(activeTheme);
-          window.__HOLIDAY_ACTIVE__ = true;
-          window.__HOLIDAY_MSG__ = themeMsg;
-          window.__HOLIDAY_CLASS__ = activeTheme;
-          window.__TODAY_STR__ = todayStr;
-        } else {
-          document.documentElement.classList.remove(activeTheme);
-          window.__HOLIDAY_ACTIVE__ = false;
-        }
+      // 清理所有可能存在的节日类名
+      document.documentElement.classList.remove('theme-mourning', 'theme-red', 'theme-green', 'theme-gold');
+
+      if (activeTheme && overrideDate !== todayStr) {
+        document.documentElement.classList.add(activeTheme);
+        window.__HOLIDAY_ACTIVE__ = true;
+        window.__HOLIDAY_MSG__ = themeMsg;
+        window.__HOLIDAY_CLASS__ = activeTheme;
+        window.__TODAY_STR__ = todayStr;
       } else {
-        document.documentElement.classList.remove('theme-mourning', 'theme-red');
         window.__HOLIDAY_ACTIVE__ = false;
       }
     }
