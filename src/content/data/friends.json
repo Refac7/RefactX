@@ -96,5 +96,12 @@
     "url": "https://sakurain.net/",
     "avatar": "https://sakurain.net/image/logo.webp",
     "description": "用代码构建未来"
+  },
+  {
+    "name": "单项式的笔记本",
+    "author": "BCMonomial",
+    "url": "https://bcmonomial.xyz",
+    "avatar": "https://bcmonomial.xyz/images/xyy_current.png",
+    "description": "“你想在这里看到什么呢？”"
   }
 ]
