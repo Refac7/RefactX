@@ -104,8 +104,8 @@ const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full 
                                 <span class="text-sm font-medium text-foreground w-24">{item.type}</span>
                             </div>
                             <div class="flex flex-col sm:items-end sm:text-right pl-10 sm:pl-0 shrink-0">
-                                <span class="text-base font-semibold text-foreground tracking-tight">{item.name}</span>
-                                <span class="text-sm text-muted-foreground">{item.desc}</span>
+                                <span class="text-sm font-semibold text-foreground tracking-tight">{item.name}</span>
+                                <span class="text-xs text-muted-foreground">{item.desc}</span>
                             </div>
                         </div>
                     ))}
@@ -175,8 +175,8 @@ const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full 
                     <div class="space-y-1">
                         {todos.map(todo => (
                             <div class="flex items-center justify-between group/todo hover:bg-muted/30 p-2 rounded-lg transition-colors">
-                                <div class="flex items-start gap-3">
-                                    <div class="mt-0.5 shrink-0 text-muted-foreground group-hover/todo:text-foreground transition-colors">{todo.completed ? (<span class="icon-[ph--check-circle-fill] size-5 text-primary"></span>) : (<span class="icon-[ph--circle] size-5 text-muted-foreground/40"></span>)}</div>
+                                <div class="flex items-center gap-3">
+                                    <div class="flex items-center justify-center w-5 shrink-0 text-muted-foreground group-hover/todo:text-foreground transition-colors">{todo.completed ? (<span class="icon-[ph--check-circle-fill] size-5 text-primary"></span>) : (<span class="icon-[ph--circle] size-5 text-muted-foreground/40"></span>)}</div>
                                     <span class={`text-sm ${todo.completed ? 'text-muted-foreground/50 line-through' : 'text-foreground font-medium'} transition-colors`}>{todo.task}</span>
                                 </div>
                                 <div class="ml-4 text-xs hidden sm:block shrink-0">{todo.completed ? (<span class="text-muted-foreground/50">Done</span>) : (<span class="text-primary/80 font-medium">Pending</span>)}</div>

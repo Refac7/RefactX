@@ -58,7 +58,7 @@ const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full 
         {ProjectList.map((project, index) => {
             return (
                 <div 
-                  class="group relative flex flex-col bg-background/50 border border-border/40 rounded-lg hover:bg-muted/20 hover:shadow-xs transition-all duration-300 min-h-[220px] fade-up hover:-translate-y-0.5"
+                  class="group relative flex flex-col bg-background/50 border border-border/40 rounded-lg hover:bg-muted/20 hover:shadow-xs transition-all duration-300 fade-up hover:-translate-y-0.5"
                   style={`animation-delay: ${index * 100}ms`}
                 >
                 <div class="p-6 pb-2 relative z-10 flex justify-between items-start">
@@ -72,10 +72,10 @@ const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full 
                     </div>
                 </div>
                 <div class="p-6 pt-2 flex-1 relative z-10">
-                    <a href={project.website || project.githubUrl} target="_blank" class="block mb-2">
+                    <a href={project.website || project.githubUrl} target="_blank" class="block">
                         <h3 class="text-base font-semibold text-foreground tracking-tight">{project.name}</h3>
                     </a>
-                    <p class="text-sm text-muted-foreground leading-relaxed line-clamp-3">{project.description}</p>
+                    <p class="text-xs text-muted-foreground leading-relaxed line-clamp-3">{project.description}</p>
                 </div>
                 <div class="mt-auto border-t border-border/40 px-6 py-2 bg-muted/10 rounded-b-xl flex items-center justify-between">
                     <span class="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
