@@ -38,8 +38,8 @@ const { photoData, class: className } = Astro.props
               <div class="rounded-lg border border-border/40 bg-background/50 group-hover:shadow-xs group-hover:border-border/60 transition-all duration-300 overflow-hidden">
                 <div class="p-6">
                   
-                  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
-                    <h2 class="font-sans text-xl font-semibold tracking-tight text-foreground">
+                  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
+                    <h2 class="font-sans text-base font-semibold tracking-tight text-foreground">
                       {timeline.title}
                     </h2>
                     <span class="text-xs font-medium text-muted-foreground bg-muted/50 px-2.5 py-1 rounded-full">
@@ -48,12 +48,12 @@ const { photoData, class: className } = Astro.props
                   </div>
 
                   {timeline.description && (
-                    <p class="text-sm text-muted-foreground leading-relaxed font-sans mb-6">
+                    <p class="text-xs text-muted-foreground leading-relaxed font-sans mb-6">
                       {timeline.description}
                     </p>
                   )}
 
-                  <div class="mt-4 relative bg-muted/10 rounded-lg border border-border/40 p-6 overflow-hidden">
+                  <div class="mt-4 relative bg-muted/10 rounded-md border border-border/40 p-6 overflow-hidden">
                     <div class="relative z-10 transform sm:translate-y-2">
                        <PolaroidStack photos={timeline.photos} title={timeline.title} description={timeline.description} client:load />
                     </div>

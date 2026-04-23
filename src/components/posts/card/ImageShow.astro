@@ -76,11 +76,11 @@ const sideWidthClass = "md:w-[280px] lg:w-[320px]"
     </div>
 
     <a href={`/posts/${post.id}`} class="group/title block mb-4 outline-none">
-      <h2 class="text-xl md:text-2xl font-bold leading-tight text-foreground transition-colors group-hover/title:text-primary tracking-tight">
+      <h2 class="text-xl font-bold leading-tight text-foreground transition-colors group-hover/title:text-primary tracking-tight">
         {post.data.title}
       </h2>
       {post.data.description && (
-        <p class="mt-3 text-sm text-muted-foreground leading-relaxed line-clamp-2 max-w-[65ch]">
+        <p class="mt-3 text-xs text-muted-foreground leading-relaxed line-clamp-2 max-w-[65ch]">
           {post.data.description}
         </p>
       )}
