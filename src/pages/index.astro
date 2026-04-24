@@ -145,7 +145,10 @@ const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full 
       });
     };
 
-    updateUI(isEnabled);
+    // 这里必须包裹在 RAF 里，防止首次执行导致布局抖动阻塞 LCP
+    requestAnimationFrame(() => {
+      updateUI(isEnabled);
+    });
 
     btns.forEach(oldBtn => {
       const newBtn = oldBtn.cloneNode(true);
@@ -154,16 +157,26 @@ const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full 
         e.preventDefault();
         const currentState = localStorage.getItem('snowfall_enabled') === 'true';
         const newState = !currentState;
-        updateUI(newState);
+        
+        requestAnimationFrame(() => {
+            updateUI(newState);
+        });
         localStorage.setItem('snowfall_enabled', String(newState));
       });
     });
   }
 
-  document.addEventListener('astro:page-load', initSnowToggle);
+  // 利用 requestAnimationFrame 进一步推迟初始化逻辑，不抢占主线程首屏渲染资源
+  const delayInit = () => {
+      requestAnimationFrame(() => {
+          initSnowToggle();
+      });
+  }
+
+  document.addEventListener('astro:page-load', delayInit);
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initSnowToggle);
+    document.addEventListener('DOMContentLoaded', delayInit);
   } else {
-    initSnowToggle();
+    delayInit();
   }
 </script>
