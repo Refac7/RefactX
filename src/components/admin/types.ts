@@ -16,7 +16,6 @@ export const UPLOAD_CONFIG = {
 export const DATA_FILES = [
   { name: 'projects.json', path: 'src/content/data/projects.json', label: 'PROJECTS' },
   { name: 'friends.json', path: 'src/content/data/friends.json', label: 'FRIENDS' },
-  { name: 'photos.json', path: 'src/content/data/photos.json', label: 'PHOTOS' }
 ];
 
 export type SchemaField = { 
@@ -42,13 +41,6 @@ export const SCHEMAS: Record<string, SchemaField[]> = {
     { key: 'icon', label: 'Icon Class / Image URL', type: 'text' },
     { key: 'star', label: 'Stars', type: 'text' },
     { key: 'fork', label: 'Forks', type: 'text' },
-  ],
-  'photos.json': [
-    { key: 'title', label: 'Album Title', type: 'text' },
-    { key: 'date', label: 'Date', type: 'text' },
-    { key: 'description', label: 'Description', type: 'text' },
-    { key: 'icon', label: 'Icon (JSON Object)', type: 'json' },
-    { key: 'photos', label: 'Photos List (JSON)', type: 'json' },
   ]
 };
 

@@ -27,8 +27,8 @@ export const SITE: Site = {
 // 顶部导航菜单
 export const HEADER_LINKS: Link[] = [
   { name: '文章', url: '/posts' },
+  { name: '动态', url: '/dynamic' },
   { name: '项目', url: '/projects' },
-  { name: '图库', url: '/photos' },
   { name: '关于', url: '/about' },
 ]
 
@@ -36,9 +36,9 @@ export const HEADER_LINKS: Link[] = [
 export const FOOTER_LINKS: Link[] = [
   { name: '主页', url: '/' },
   { name: '文章', url: '/posts' },
+  { name: '动态', url: '/dynamic' },
   { name: '项目', url: '/projects' },
   { name: '标签', url: '/tags' },
-  { name: '图库', url: '/photos' },
   { name: '友链', url: '/friends' },
   { name: '关于', url: '/about' },
 ]

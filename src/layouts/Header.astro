@@ -25,6 +25,26 @@ import { CMS_CONFIG } from '~/config'
             </HeaderLink>
           ))
         }
+
+        {/* 超过 2 个链接时，生成下拉菜单折叠按钮 */}
+        {
+          HEADER_LINKS.length > 2 && (
+            <div class="relative flex items-center h-full -ml-1">
+              <button id="mobile-menu-btn" class="flex items-center justify-center gap-1.5 px-3 h-9 rounded-md bg-transparent border border-transparent hover:border-border/40 hover:bg-muted/10 text-muted-foreground hover:text-primary transition-colors focus:outline-none">
+                <span class="icon-[ph--caret-down-bold] size-3 transition-transform duration-300" id="mobile-menu-icon"></span>
+              </button>
+              
+              {/* 下拉悬浮面板 */}
+              <div id="mobile-menu-dropdown" class="absolute top-full left-0 mt-3 w-30 rounded-md bg-background/95 backdrop-blur-md border border-border/60 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] opacity-0 invisible translate-y-[-10px] transition-all duration-300 flex flex-col p-1.5 z-[100]">
+                {HEADER_LINKS.slice(2).map((link) => (
+                  <a href={link.url} class="px-4 py-3 rounded-xs text-xs font-mono font-bold uppercase tracking-widest text-muted-foreground hover:text-primary hover:bg-muted/40 hover:border-primary transition-all">
+                    {link.name}
+                  </a>
+                ))}
+              </div>
+            </div>
+          )
+        }
       </div>
 
       <div class="hidden gap-1 md:flex">
@@ -69,3 +89,50 @@ import { CMS_CONFIG } from '~/config'
   </div>
 </header>
 
+<script is:inline>
+  // 封装下拉菜单交互逻辑，完美兼容 Astro 的 ViewTransitions
+  function initMobileNav() {
+    const btn = document.getElementById('mobile-menu-btn');
+    const dropdown = document.getElementById('mobile-menu-dropdown');
+    const icon = document.getElementById('mobile-menu-icon');
+    
+    if (!btn || !dropdown) return;
+
+    // 清理可能由于 ViewTransitions 残留的旧监听器
+    const newBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(newBtn, btn);
+    
+    const openMenu = () => {
+      dropdown.classList.remove('opacity-0', 'invisible', 'translate-y-[-10px]');
+      dropdown.classList.add('opacity-100', 'visible', 'translate-y-0');
+      icon?.classList.add('rotate-180');
+    };
+
+    const closeMenu = () => {
+      dropdown.classList.add('opacity-0', 'invisible', 'translate-y-[-10px]');
+      dropdown.classList.remove('opacity-100', 'visible', 'translate-y-0');
+      icon?.classList.remove('rotate-180');
+    };
+
+    newBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isExpanded = dropdown.classList.contains('opacity-100');
+      isExpanded ? closeMenu() : openMenu();
+    });
+
+    // 点击页面空白处关闭菜单
+    document.addEventListener('click', (e) => {
+      if (!newBtn.contains(e.target) && !dropdown.contains(e.target)) {
+        closeMenu();
+      }
+    });
+  }
+
+  // 监听 Astro 的页面加载事件
+  document.addEventListener('astro:page-load', initMobileNav);
+  if (document.readyState === 'loading') { 
+    document.addEventListener('DOMContentLoaded', initMobileNav); 
+  } else { 
+    initMobileNav(); 
+  }
+</script>

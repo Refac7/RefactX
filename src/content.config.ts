@@ -79,19 +79,6 @@ const friends = defineCollection({
   }),
 })
 
-const photos = defineCollection({
-  loader: createJsonLoader('./src/content/data/photos.json'),
-  schema: z.object({
-    title: z.string(),
-    icon: z.object({ type: z.string(), value: z.string() }),
-    description: z.string(),
-    date: z.string(),
-    photos: z.array(z.object({
-      src: z.string(), width: z.number(), height: z.number(), variant: z.string().optional(),
-    })),
-  }),
-})
-
 const projects = defineCollection({
   loader: createJsonLoader('./src/content/data/projects.json'),
   schema: z.object({
@@ -106,4 +93,4 @@ const projects = defineCollection({
   }),
 })
 
-export const collections = { posts, friends, photos, projects }
+export const collections = { posts, friends, projects }

@@ -6,7 +6,8 @@ import {
 
 interface AdminContextType {
   isLoggedIn: boolean;
-  performLogin: (pass: string) => Promise<void>;
+  // 修改：增加 captchaToken 参数
+  performLogin: (pass: string, captchaToken: string) => Promise<void>;
   handleLogout: () => void;
   isValidating: boolean;
   loginError: boolean;
@@ -141,8 +142,9 @@ const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     } finally { setIsLoadingFiles(false); }
   };
 
-  const performLogin = async (pass: string) => {
-    if (!pass) return;
+  // 修改：将 captchaToken 发送至后端验证
+  const performLogin = async (pass: string, captchaToken: string) => {
+    if (!pass || !captchaToken) return;
     setIsValidating(true);
     setLoginError(false);
     
@@ -150,12 +152,12 @@ const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       const res = await fetch('/api/auth', { 
         method: 'POST', 
         headers: { 'Content-Type': 'application/json' }, 
-        body: JSON.stringify({ password: pass }) 
+        body: JSON.stringify({ password: pass, captchaToken }) 
       });
 
       const data = await res.json();
 
-      if (res.status === 429) {
+      if (res.status === 429 || res.status === 403) {
         setLoginError(true);
         return;
       }
@@ -164,8 +166,7 @@ const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         localStorage.setItem('admin_jwt_token', data.token);
         setIsLoggedIn(true);
         fetchRemoteFiles();
-      } 
-      else {
+      } else {
         setLoginError(true);
         localStorage.removeItem('admin_jwt_token');
       }

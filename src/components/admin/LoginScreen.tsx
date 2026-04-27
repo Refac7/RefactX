@@ -1,13 +1,18 @@
 import { useState } from 'react';
 import { cn } from '~/lib/utils';
 import { useAdmin } from './AdminContext';
+import Captcha from '~/components/captcha/Captcha'; 
 
 export default function LoginScreen() {
   const { performLogin, isValidating, loginError } = useAdmin();
   const [password, setPassword] = useState('');
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') performLogin(password);
+    // 修复：同时传入 password 和 captchaToken
+    if (e.key === 'Enter' && captchaToken) {
+      performLogin(password, captchaToken);
+    }
   };
 
   return (
@@ -58,13 +63,16 @@ export default function LoginScreen() {
               />
             </div>
             
+            <Captcha onVerify={setCaptchaToken} />
+            
             <button 
-              onClick={() => performLogin(password)} 
-              disabled={isValidating} 
+              // 修复：点击按钮时，同时传入 password 和 captchaToken
+              onClick={() => captchaToken && performLogin(password, captchaToken)} 
+              disabled={isValidating || !captchaToken} 
               className={cn(
                 "w-full py-2.5 rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-2", 
-                loginError 
-                  ? "bg-red-50 text-red-600 border border-red-200 cursor-not-allowed dark:bg-red-500/10 dark:border-red-500/30 dark:text-red-400" 
+                (!captchaToken || loginError)
+                  ? "bg-muted text-muted-foreground border border-border/50 cursor-not-allowed" 
                   : "bg-foreground text-background hover:bg-foreground/90 shadow-sm"
               )}
             >

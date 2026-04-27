@@ -186,7 +186,7 @@
         
         const resultItem = document.createElement('a')
         resultItem.href = data.url
-        resultItem.className = 'block p-4 mb-2 bg-background hover:bg-muted/40 border border-transparent hover:border-border/60 rounded-xl transition-all group'
+        resultItem.className = 'block p-4 mb-2 bg-background hover:bg-muted/40 border border-transparent hover:border-border/60 rounded-md transition-all group'
         resultItem.innerHTML = `
           <h3 class="text-base font-semibold text-foreground group-hover:text-primary transition-colors tracking-tight mb-2">${data.meta.title}</h3>
           <p class="text-sm text-muted-foreground leading-relaxed line-clamp-2">${data.excerpt}</p>
@@ -202,7 +202,7 @@
 
             const subItem = document.createElement('a')
             subItem.href = subResult.url
-            subItem.className = 'block p-3 ml-6 mb-2 bg-muted/20 hover:bg-muted/50 border-l-[3px] border-border/60 hover:border-primary rounded-r-xl transition-all group'
+            subItem.className = 'block p-3 ml-6 mb-2 bg-muted/20 hover:bg-muted/50 border-l-[3px] border-border/60 hover:border-primary rounded-r-md transition-all group'
             subItem.innerHTML = `
               <h4 class="text-sm font-medium text-foreground opacity-90 group-hover:text-primary transition-colors mb-1 tracking-tight">${cleanTitle}</h4>
               <p class="text-xs text-muted-foreground/80 line-clamp-1">${subResult.excerpt}</p>
