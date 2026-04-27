@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { cn } from '~/lib/utils';
 
 interface FeedItem {
   id: string; content: string; date: string; mood: string; link: string | null;
