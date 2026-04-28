@@ -7,7 +7,7 @@ import type {
   SkillsShowcaseConfig,
   SocialLink,
   TagsConfig,
-} from '~/types'
+} from '~/types';
 
 // 站点全局配置
 export const SITE: Site = {
@@ -43,7 +43,7 @@ export const FOOTER_LINKS: Link[] = [
   { name: '关于', url: '/about' },
 ]
 
-// 社交链接 (图标参考: https://icon-sets.iconify.design/)
+// 社交链接，图标参考 https://icon-sets.iconify.design/
 export const SOCIAL_LINKS: SocialLink[] = [
   {
     name: 'GitHub',
@@ -95,10 +95,10 @@ export const SKILLSSHOWCASE_CONFIG: SkillsShowcaseConfig = {
 
 // GitHub 贡献图配置
 export const GITHUB_CONFIG: GithubConfig = {
-  ENABLED: true,           // 是否启用贡献图
-  GITHUB_USERNAME: 'Refac7', // GitHub 用户名
-  TOOLTIP_ENABLED: true    // 是否开启悬浮提示
-}
+  ENABLED: true,
+  GITHUB_USERNAME: 'Refac7',
+  TOOLTIP_ENABLED: true,
+};
 
 // 文章页面配置
 export const POSTS_CONFIG: PostConfig = {
@@ -212,7 +212,7 @@ export const ABOUT_CONFIG = {
       courses: [
         { time: '08:00-09:30 | 2-17周', name: '面向对象程序设计', location: '土楼334机房' },
         { time: '09:50-11:20 | 2-17周', name: '大学英语2(非艺体)', location: 'B3-202' },
-        { time: '14:30-16:00 | 2-17周', name: '离散数学', location: 'E-404' },
+        { time: '14:30-16:00 | 2-17周', name: '离散数��', location: 'E-404' },
         { time: '16:10-17:50 | 3-06周', name: '形势与政策(二)', location: 'E-304' }
       ]
     },
@@ -259,25 +259,22 @@ export const FRIENDS_CONTACT = {
 // Waline 评论系统配置
 export const WALINE_CONFIG = {
   enableComment: true,
-  serverURL: import.meta.env.PUBLIC_WALINE_SERVER_URL || "https://waline.refact.cc",
+  serverURL: import.meta.env.PUBLIC_WALINE_SERVER_URL || 'https://waline.refact.cc',
   uploadToken: import.meta.env.PUBLIC_UPLOAD_TOKEN,
-  imgbedURL: import.meta.env.PUBLIC_IMG_BED_URL || "https://img.refact.cc/upload",
-  enableImgUpload: true, // true: 上传至图片服务器 / false: 存入数据库(限 128KiB)
+  imgbedURL: import.meta.env.PUBLIC_IMG_BED_URL || 'https://img.refact.cc/upload',
+  enableImgUpload: true,
 };
 
 // CMS 内容管理配置
-// 需在部署平台设置环境变量: PUBLIC_UPLOAD_TOKEN (如需管理后台则添加 GITHUB_TOKEN, ADMIN_PASSWORD)
-// 数据源提醒: v1.6.1 及之后版本，友链/项目/照片数据须转为 JSON 存放在 content/data 目录下
 export const CMS_CONFIG = {
   enableCMS: true,
-  owner: 'Refac7',   // GitHub 仓库所有者
-  repo: 'RefactX',   // GitHub 仓库名称
-  branch: 'main',    // 目标分支
-  pathPrefix: 'src/content/posts/' // 相对路径前缀
+  owner: 'Refac7',
+  repo: 'RefactX',
+  branch: 'main',
+  pathPrefix: 'src/content/posts/',
 };
 
 // 节日特效配置
-// 样式修改: src/components/base/HolidayTheme.astro & global.css
 export const Holiday_Effects = {
   enableHolidayEffects: true,
-}
+};
