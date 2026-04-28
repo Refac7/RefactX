@@ -16,7 +16,6 @@ const { class: className } = Astro.props;
   {
     WALINE_CONFIG.enableComment ? (
       <div class="relative min-h-[200px] w-full">
-        <!-- 核心！利用 client:visible 懒加载统一的 React 组件 -->
         <Waline path={Astro.url.pathname} client:visible />
       </div>
     ) : (

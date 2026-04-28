@@ -74,7 +74,7 @@ export default function DynamicFeed() {
     <div className="flex flex-col relative min-h-[400px]">
       
       {!isVerified && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center p-2 animate-in fade-in duration-500">
+        <div className="absolute flex items-center justify-center p-2 animate-in fade-in duration-500">
           <div className="flex flex-col items-start text-start mx-auto">
             <span className="icon-[ph--shield-check-bold] size-10 mb-4 text-primary animate-pulse"></span>
             <h3 className="text-lg font-bold tracking-tight text-foreground mb-2">Attentions</h3>
