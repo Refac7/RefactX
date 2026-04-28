@@ -8,13 +8,8 @@ interface Props extends CardProps {}
 const { post }: Props = Astro.props
 ---
 
-<article class="group relative pl-8 sm:pl-10 py-4 w-full">
+<article class="group relative py-4 w-full">
   
-  <div class="absolute left-0 top-0 h-full w-8 sm:w-10 flex justify-center z-10">
-    <div class="h-full w-px bg-border/40 group-hover:bg-primary/30 transition-colors duration-500"></div>
-    <div class="absolute top-[2.1rem] w-2.5 h-2.5 rounded-full bg-background border-2 border-border/80 group-hover:border-primary transition-colors duration-300"></div>
-  </div>
-
   <div class="relative bg-background/50 border border-border/40 rounded-lg hover:border-border/80 hover:bg-muted/20 hover:shadow-xs transition-all duration-300 p-5 sm:p-6 w-full flex flex-col gap-3">
 
     <div class="flex flex-wrap items-center gap-2 text-xs font-medium text-muted-foreground">

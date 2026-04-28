@@ -23,7 +23,7 @@ const { page, tag } = Astro.props
 const description = `Archive filtered by tag: #${tag}`
 const progressPercent = Math.round((page.currentPage / page.lastPage) * 100)
 
-const SECTION_HEADER_CLASS = "flex items-center justify-between border-b border-border/40 pb-4 mb-8 select-none"
+const SECTION_HEADER_CLASS = "flex items-center justify-between border-b border-border/40 pb-4 mb-4 select-none"
 const SECTION_TITLE_CLASS = "text-lg font-semibold tracking-tight text-foreground"
 const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full bg-muted/60 px-2.5 py-0.5 text-xs font-medium text-muted-foreground mr-3"
 ---
@@ -75,16 +75,14 @@ const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full 
           <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>Filtered Results</h2></div>
         </div>
         
-        <div class="space-y-8 min-h-[40vh] mt-8 flex-1 fade-up animation-delay-200">
+        <div class="space-y-8 min-h-[40vh] flex-1 fade-up animation-delay-200">
           <List posts={page.data} type={POSTS_CONFIG.tagsPageConfig.type} heroImageLayout={POSTS_CONFIG.tagsPageConfig?.heroImageLayout} />
         </div>
 
-        <div class="mt-20 pt-8 border-t border-border/40">
-          <div class="mb-8">
-              <div class="flex justify-between text-xs text-muted-foreground mb-3"><span>Reading Progress</span><span>{progressPercent}%</span></div>
-              <div class="w-full h-1.5 bg-muted/50 rounded-full overflow-hidden">
-                <div class="h-full bg-primary transition-all duration-700 ease-out rounded-full" style={`width: ${progressPercent}%`}></div>
-              </div>
+        <div class="pt-8 border-t border-border/40">
+          <div class="flex justify-between text-xs text-muted-foreground mb-3"><span>Reading Progress</span><span>{progressPercent}%</span></div>
+          <div class="w-full h-1.5 bg-muted/50 rounded-full overflow-hidden">
+            <div class="h-full bg-primary transition-all duration-700 ease-out rounded-full" style={`width: ${progressPercent}%`}></div>
           </div>
           <div class="flex flex-col md:flex-row items-center justify-between gap-6">
               <div class="hidden md:flex flex-col gap-1"><span class="text-sm font-medium text-foreground">Navigation</span><span class="text-xs text-muted-foreground">Select a page to continue.</span></div>

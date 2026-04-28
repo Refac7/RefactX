@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { WALINE_CONFIG } from '~/config';
 
 interface WalineProps {

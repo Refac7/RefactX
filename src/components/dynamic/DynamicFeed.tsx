@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { cn } from '~/lib/utils';
 import Captcha from '~/components/ui/Captcha';
 import Waline from '~/components/ui/Waline';
