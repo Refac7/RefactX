@@ -20,7 +20,7 @@ export default function DynamicFeed() {
   const [isVerified, setIsVerified] = useState(false);
   const [expandedComments, setExpandedComments] = useState<Set<string>>(new Set());
 
-  // 1. 初始化检查 24小时 验证状态
+  // 初始化检查 24小时 验证状态
   useEffect(() => {
     const verifiedData = localStorage.getItem(VERIFY_KEY);
     if (verifiedData && Date.now() - JSON.parse(verifiedData).timestamp < VERIFY_TIME_MS) {
@@ -31,7 +31,7 @@ export default function DynamicFeed() {
     }
   }, []);
 
-  // 2. 真实数据拉取逻辑
+  // 真实数据拉取逻辑
   const fetchFeed = async () => {
     setLoading(true);
     const cached = localStorage.getItem(CACHE_KEY);
@@ -52,7 +52,7 @@ export default function DynamicFeed() {
     } finally { setLoading(false); }
   };
 
-  // 3. 处理人机验证通过
+  // 处理人机验证通过
   const handleVerifySuccess = (token: string) => {
     setIsVerified(true);
     localStorage.setItem(VERIFY_KEY, JSON.stringify({ timestamp: Date.now(), token }));
@@ -94,7 +94,6 @@ export default function DynamicFeed() {
         !isVerified && "blur-[8px] pointer-events-none select-none opacity-80 grayscale-[0.5]"
       )}>
         {loading || !isVerified ? (
-          // 骨架屏
           <div className="grid grid-cols-1 gap-6">
             {[1, 2, 3].map((i) => (
               <div key={i} className="flex flex-col bg-background/50 border border-border/40 rounded-lg p-6 min-h-[140px] animate-pulse">
@@ -110,7 +109,7 @@ export default function DynamicFeed() {
               {visibleFeed.map((item, index) => {
                 const isCommentOpen = expandedComments.has(item.id);
                 return (
-                  <div key={item.id} className="group relative flex flex-col bg-background border border-border/40 rounded-lg hover:bg-muted/20 hover:border-border hover:shadow-xs transition-all duration-300 fade-up hover:-translate-y-0.5" style={{ animationDelay: `${(index % ITEMS_PER_PAGE) * 50}ms` }}>
+                  <div key={item.id} className="group relative flex flex-col bg-background border border-border/40 rounded-lg transition-all duration-300 fade-up" style={{ animationDelay: `${(index % ITEMS_PER_PAGE) * 50}ms` }}>
                     <div className="p-5 pb-3 flex justify-between items-start gap-4">
                       <span className="inline-flex items-center rounded-full bg-muted/40 px-2.5 py-0.5 text-[11px] font-medium text-foreground tracking-tight select-none">{item.mood}</span>
                       <span className="text-xs text-muted-foreground whitespace-nowrap">{new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>

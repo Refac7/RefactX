@@ -7,7 +7,7 @@ export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json().catch(() => null);
 
-    // 第一阶段：获取挑战
+    // 获取挑战
     if (!body || typeof body.nonce !== 'number') {
       return new Response(JSON.stringify({ challenge: crypto.randomUUID(), difficulty: DIFFICULTY }), {
         status: 200,
@@ -15,7 +15,7 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    // 第二阶段：验证 PoW 计算结果
+    // 验证 PoW 计算结果
     const { challenge, nonce } = body;
     const encoder = new TextEncoder();
     const hashBuffer = await crypto.subtle.digest('SHA-256', encoder.encode(`${challenge}:${nonce}`));

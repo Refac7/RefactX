@@ -9,7 +9,6 @@ export default function LoginScreen() {
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    // 修复：同时传入 password 和 captchaToken
     if (e.key === 'Enter' && captchaToken) {
       performLogin(password, captchaToken);
     }
@@ -66,7 +65,6 @@ export default function LoginScreen() {
             <Captcha onVerify={setCaptchaToken} />
             
             <button 
-              // 修复：点击按钮时，同时传入 password 和 captchaToken
               onClick={() => captchaToken && performLogin(password, captchaToken)} 
               disabled={isValidating || !captchaToken} 
               className={cn(

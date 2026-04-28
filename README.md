@@ -6,7 +6,7 @@
 >
 > 此项目可能有安全性漏洞，根据MIT许可证，由此造成的损失不由本模版负责，您在使用本博客的时候即视为接受该风险。你必须修改 `./src/config.ts` 中的相关内容，不得直接用于生产环境。完整配置教程请参考：<https://refact-x-template-git-galaxy-msrefs-projects.vercel.app/> 中的相关文章。
 
-![预览](./src/assets/2.png)  
+![RefactX 封面](./src/assets/cover@2x.png)  
 [English version](./README_EN.MD)
 
 ![License](https://img.shields.io/github/license/Refac7/RefactX_Template?color=blue&style=flat-square)

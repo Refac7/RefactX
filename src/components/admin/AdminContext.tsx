@@ -6,7 +6,6 @@ import {
 
 interface AdminContextType {
   isLoggedIn: boolean;
-  // 修改：增加 captchaToken 参数
   performLogin: (pass: string, captchaToken: string) => Promise<void>;
   handleLogout: () => void;
   isValidating: boolean;
@@ -142,7 +141,7 @@ const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     } finally { setIsLoadingFiles(false); }
   };
 
-  // 修改：将 captchaToken 发送至后端验证
+  // 将 captchaToken 发送至后端验证
   const performLogin = async (pass: string, captchaToken: string) => {
     if (!pass || !captchaToken) return;
     setIsValidating(true);

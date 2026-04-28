@@ -7,7 +7,6 @@ import DataPanel from './panels/DataPanel';
 import EditorPanel from './panels/EditorPanel';
 import QueuePanel from './panels/QueuePanel';
 
-// 内部组件：仪表盘布局
 const DashboardLayout = () => {
   const { isLoggedIn, fileInputRef, handleFileChange, mobileView, setMobileView, queue, remoteFiles, handleLogout } = useAdmin();
 
@@ -17,7 +16,6 @@ const DashboardLayout = () => {
     <div className="text-foreground font-sans min-h-screen bg-muted/10 flex flex-col relative">
       <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
       
-      {/* 现代化的 Header */}
       <header className="bg-background border-b border-border/40 sticky top-0 z-20">
         <div className="max-w-[1920px] mx-auto p-6 lg:p-8 xl:p-12 h-16 flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -45,7 +43,6 @@ const DashboardLayout = () => {
       {/* 主工作区 */}
       <main className="flex-1 max-w-[1920px] w-full mx-auto p-6 lg:p-8 xl:p-12 flex flex-col h-[calc(100vh-4rem)]">
         
-        {/* 指标状态区 (仅桌面端显示) */}
         <div className="hidden lg:grid grid-cols-3 gap-6 mb-6 shrink-0">
           <div className="bg-background rounded-lg border border-border/40 p-5 flex items-center justify-between">
             <div>

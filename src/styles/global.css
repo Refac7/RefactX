@@ -82,7 +82,7 @@
     --scrollbar-bg: 240 10% 15%;
   }
 
-  /* 🏮 新年/国庆节 (中国红) */
+  /* 新年/国庆节 */
   html.theme-red {
     --primary: 350 85% 45%;
     --primary-foreground: 0 0% 100%;
@@ -106,7 +106,7 @@
     --tag-text: 350 85% 75%;
   }
 
-  /* 🐉 端午节 (粽叶绿) */
+  /* 端午节 */
   html.theme-green {
     --primary: 150 70% 35%;
     --primary-foreground: 0 0% 100%;
@@ -130,7 +130,7 @@
     --tag-text: 150 60% 70%;
   }
 
-  /* 🥮 中秋节 (月华金) */
+  /* 中秋节 */
   html.theme-gold {
     --primary: 35 90% 45%;
     --primary-foreground: 0 0% 100%;
@@ -155,7 +155,7 @@
   }
 }
 
-/* 🕊️ 清明/公祭日 */
+/* 清明/公祭日 */
 html.theme-mourning { filter: grayscale(100%) !important; }
 
 /* ===== 基础样式 ===== */

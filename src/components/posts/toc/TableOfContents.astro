@@ -26,7 +26,6 @@ const filteredHeadings = headings.reduce(
 
 const minDepth = filteredHeadings.length > 0 ? Math.min(...filteredHeadings.map((h) => h.depth)) : 2
 
-// 缩进不再使用 margin，改用 padding，这样侧边指示线可以统一在最左侧对齐
 const getRelativeIndentClass = (depth: number) => {
   const relativeDepth = depth - minDepth
   const indentMap = ['pl-4', 'pl-7', 'pl-10', 'pl-12']

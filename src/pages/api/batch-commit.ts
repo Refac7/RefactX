@@ -27,7 +27,6 @@ export const POST: APIRoute = async ({ request }) => {
     const body = await request.json();
     const { config, operations } = body; // operations 是原始的操作数组
 
-    // --- JWT 修复 (保持原有逻辑) ---
     const authHeader = request.headers.get('authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return new Response(JSON.stringify({ error: 'Missing token' }), { status: 401 });
@@ -43,7 +42,6 @@ export const POST: APIRoute = async ({ request }) => {
     } catch {
       return new Response(JSON.stringify({ error: 'Invalid token' }), { status: 401 });
     }
-    // ----------------
 
     const octokit = new Octokit({ auth: import.meta.env.GITHUB_TOKEN });
     const { owner, repo, branch, pathPrefix } = config;
@@ -67,18 +65,18 @@ export const POST: APIRoute = async ({ request }) => {
     // 将 Map 转回数组，用于后续处理
     const distinctOperations = Array.from(uniqueOpsMap.values());
 
-    // 如果合并后没有操作，直接返回（可选）
+    // 如果合并后没有操作，直接返回
     if (distinctOperations.length === 0) {
         return new Response(JSON.stringify({ success: true, message: 'No changes to commit' }), { status: 200 });
     }
 
-    // 2. 获取 Base Tree
+    // 获取 Base Tree
     const { data: refData } = await octokit.git.getRef({
       owner, repo, ref: `heads/${branch}`,
     });
     const baseTreeSha = refData.object.sha;
 
-    // 3. 构建 Tree (使用去重后的 distinctOperations)
+    // 构建 Tree (使用去重后的 distinctOperations)
     const tree = await Promise.all(
       distinctOperations.map(async (item: any) => {
         // 注意：这里直接使用我们上面计算好的 finalPath
@@ -105,18 +103,18 @@ export const POST: APIRoute = async ({ request }) => {
       })
     );
 
-    // 4. 创建 Tree
+    // 创建 Tree
     const { data: newTree } = await octokit.git.createTree({
       owner, repo, base_tree: baseTreeSha, tree: tree as any,
     });
 
-    // 5. 创建 Commit
+    // 创建 Commit
     const commitMessage = `chore(batch): update ${distinctOperations.length} files`;
     const { data: commit } = await octokit.git.createCommit({
       owner, repo, message: commitMessage, tree: newTree.sha, parents: [baseTreeSha],
     });
 
-    // 6. 更新 Ref
+    // 更新 Ref
     await octokit.git.updateRef({
       owner, repo, ref: `heads/${branch}`, sha: commit.sha, force: false,
     });

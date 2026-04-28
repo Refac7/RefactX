@@ -20,7 +20,6 @@ export const POST: APIRoute = async ({ request }) => {
     const body = await request.json();
     const { config } = body;
 
-    // --- JWT 验证修复开始 ---
     const authHeader = request.headers.get('authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return new Response(JSON.stringify({ error: 'Missing token' }), { status: 401 });
@@ -29,7 +28,6 @@ export const POST: APIRoute = async ({ request }) => {
     
     // 动态导入 jsonwebtoken 并处理 default 导出
     const jwtImport = await import('jsonwebtoken');
-    // @ts-ignore - 处理 ESM/CJS 互操作性
     const jwt = jwtImport.default || jwtImport;
     const SECRET = import.meta.env.ADMIN_JWT_SECRET || 'default_secret';
     
@@ -38,7 +36,6 @@ export const POST: APIRoute = async ({ request }) => {
     } catch (e) {
       return new Response(JSON.stringify({ error: 'Invalid or expired token' }), { status: 401 });
     }
-    // --- JWT 验证修复结束 ---
 
     const GITHUB_TOKEN = import.meta.env.GITHUB_TOKEN;
     if (!GITHUB_TOKEN) {

@@ -19,7 +19,6 @@ export const POST: APIRoute = async ({ request }) => {
     const body = await request.json();
     const { config } = body;
 
-    // --- JWT 修复开始 ---
     const authHeader = request.headers.get('authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return new Response(JSON.stringify({ error: 'Missing token' }), { status: 401 });
@@ -35,7 +34,6 @@ export const POST: APIRoute = async ({ request }) => {
     } catch (e) {
       return new Response(JSON.stringify({ error: 'Invalid token' }), { status: 401 });
     }
-    // --- JWT 修复结束 ---
 
     const GITHUB_TOKEN = import.meta.env.GITHUB_TOKEN;
     if (!GITHUB_TOKEN) return new Response(JSON.stringify({ error: 'Token missing' }), { status: 500 });

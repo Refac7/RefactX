@@ -6,7 +6,6 @@ import Layout from '~/layouts/Layout.astro'
 import GithubContributions from '~/components/base/GithubContributions.tsx'
 import List from '~/components/posts/card/List.astro'
 import SkillsShowcase from '~/components/base/SkillsShowcase.astro'
-import Snowfall from '~/components/base/Snowfall.astro'
 
 const { ENABLED, GITHUB_USERNAME, TOOLTIP_ENABLED } = GITHUB_CONFIG
 const { size, type, heroImageLayout } = POSTS_CONFIG.homePageConfig
@@ -27,10 +26,6 @@ const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full 
 ---
 
 <Layout title="Home" description={SITE.description}>
-  <div id="snowfall-container" class="fixed inset-0 pointer-events-none z-[1] transition-opacity duration-700 ease-in-out opacity-0">
-    <Snowfall />
-  </div>
-
   <div class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
     <aside class="w-full lg:w-1/3 lg:sticky lg:top-0 lg:h-screen flex flex-col xl:border-r border-border/40 z-20">
       <div class="flex flex-1 lg:overflow-y-auto scrollbar-hide flex-col">

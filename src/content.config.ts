@@ -1,4 +1,3 @@
-// src/content.config.ts
 import { defineCollection } from 'astro:content'
 import { glob } from 'astro/loaders'
 import { z } from 'astro/zod'
@@ -6,10 +5,6 @@ import { POSTS_CONFIG } from './config'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 
-/**
- * 方案二：自定义 JSON 加载器助手
- * 功能：读取 JSON 文件，并自动为数组中的每一项注入一个 id
- */
 function createJsonLoader(filePath: string) {
   return {
     name: "auto-json-id-loader",
@@ -21,12 +16,9 @@ function createJsonLoader(filePath: string) {
 
       if (Array.isArray(json)) {
         for (const [index, item] of json.entries()) {
-          // 注入 ID：优先使用原有的 id/name/title，如果没有则使用 索引
           const entryId = String(item.id || item.name || item.title || index);
-          
           // 使用 collection 的 schema 校验数据
           const data = await parseData({ id: entryId, data: item });
-          
           // 存入 Astro 的内容仓库
           store.set({ id: entryId, data });
         }
@@ -37,9 +29,6 @@ function createJsonLoader(filePath: string) {
   };
 }
 
-// =========================================
-// 1. Posts 集合 (保持不变)
-// =========================================
 const posts = defineCollection({
   loader: glob({ pattern: '**/[^_]*.md', base: './src/content/posts' }),
   schema: z.object({
@@ -63,10 +52,6 @@ const posts = defineCollection({
     postType: z.string().optional(),
   }),
 })
-
-// =========================================
-// 2. 数据集合 - 使用自定义 loader 逃避 ID 检查
-// =========================================
 
 const friends = defineCollection({
   loader: createJsonLoader('./src/content/data/friends.json'),

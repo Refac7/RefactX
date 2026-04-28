@@ -12,7 +12,6 @@ import {
 
 async function getJwt() {
   const imported = await import('jsonwebtoken');
-  // @ts-ignore
   return imported.default || imported; 
 }
 
@@ -29,12 +28,12 @@ export const POST: APIRoute = async ({ request }) => {
     const body = await request.json();
     const { password, captchaToken } = body;
 
-    // 1. CAPTCHA 令牌非空检查
+    // CAPTCHA 令牌非空检查
     if (!captchaToken) {
       return new Response(JSON.stringify({ error: 'Missing CAPTCHA verification' }), { status: 403 });
     }
 
-    // 2. 验证 CAPTCHA 令牌合法性与时效性
+    // 验证 CAPTCHA 令牌合法性与时效性
     try {
       const [signatureBase64, timestampStr] = captchaToken.split('.');
       const timestamp = parseInt(timestampStr, 10);
@@ -57,7 +56,7 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ error: 'Invalid or expired CAPTCHA' }), { status: 403 });
     }
 
-    // 3. 验证密码
+    // 验证密码
     const HASHED_PASSWORD = import.meta.env.ADMIN_PASSWORD;
     if (!HASHED_PASSWORD) {
       return new Response(JSON.stringify({ error: 'Server misconfiguration: ADMIN_PASSWORD missing' }), { status: 500 });
