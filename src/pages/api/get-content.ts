@@ -12,7 +12,7 @@ export const POST: APIRoute = async ({ request }): Promise<Response> => {
     // 速率限制检查
     const limitResult = rateLimitMiddleware(request);
     if (!limitResult.allowed) {
-      return limitResult.response;
+      return limitResult.response!;
     }
 
     const body = await request.json();
