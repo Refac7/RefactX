@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { cn } from '~/lib/utils';
 import { useAdmin } from './AdminContext';
-import Captcha from '~/components/captcha/Captcha'; 
+import Captcha from '~/components/ui/Captcha'; 
 
 export default function LoginScreen() {
   const { performLogin, isValidating, loginError } = useAdmin();
