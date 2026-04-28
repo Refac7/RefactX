@@ -71,7 +71,7 @@ export async function verifyJWTMiddleware(request: Request, secret: string) {
  * @param request - 请求对象
  * @returns 如果允许返回 { allowed: true }，否则返回 { allowed: false, response: Response }
  */
-export function rateLimitMiddleware(request: Request) {
+export function rateLimitMiddleware(request: Request): { allowed: boolean; response?: Response; clientIP: string } {
   const clientIP = getClientIP(request);
   const limitCheck = checkRateLimit(clientIP);
 
@@ -82,7 +82,7 @@ export function rateLimitMiddleware(request: Request) {
         limitCheck.message || 'Rate limit exceeded',
         429
       ),
-      clientIP
+      clientIP,
     };
   }
 
