@@ -21,7 +21,7 @@ async function importJWT() {
  */
 export async function signJWT(payload: JWTPayload, secret: string, expiresIn: string = '2h'): Promise<string> {
   const jwt = await importJWT();
-  return jwt.sign(payload, secret, { expiresIn });
+  return jwt.sign(payload, secret, { expiresIn } as any);
 }
 
 /**

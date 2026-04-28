@@ -2,7 +2,7 @@ export const prerender = false;
 
 import type { APIRoute } from 'astro';
 import { Octokit } from '@octokit/rest';
-import { cleanupExpiredRecords, checkRateLimit } from '~/lib/rateLimit';
+import { cleanupExpiredRecords } from '~/lib/rateLimit';
 import { createErrorResponse, createSuccessResponse, verifyJWTMiddleware, rateLimitMiddleware } from '~/lib/api-utils';
 
 interface FileOperation {
@@ -72,7 +72,7 @@ async function buildGitTree(
   );
 }
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request }): Promise<Response> => {
   try {
     cleanupExpiredRecords();
 

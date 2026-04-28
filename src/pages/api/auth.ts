@@ -2,7 +2,7 @@ export const prerender = false;
 
 import type { APIRoute } from 'astro';
 import bcrypt from 'bcryptjs';
-import { cleanupExpiredRecords, getClientIP, checkRateLimit, recordFailedAttempt, clearRecord } from '~/lib/rateLimit';
+import { cleanupExpiredRecords, recordFailedAttempt, clearRecord } from '~/lib/rateLimit';
 import { createErrorResponse, createSuccessResponse, rateLimitMiddleware } from '~/lib/api-utils';
 import { signJWT } from '~/lib/jwt-handler';
 
@@ -38,7 +38,7 @@ async function verifyCaptchaToken(token: string, secret: string): Promise<boolea
   }
 }
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request }): Promise<Response> => {
   try {
     cleanupExpiredRecords();
 
