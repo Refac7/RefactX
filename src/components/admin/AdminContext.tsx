@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect } from 'react';
-import { REPO_CONFIG, DEFAULT_META, DATA_FILES, type QueueItem, type RemoteFile } from './types';
+import { DATA_FILES, type QueueItem, type RemoteFile, type FileType, type EditorMode, type MobileView } from './types';
 import {
   useAuthState,
   useEditorState,
@@ -28,10 +28,10 @@ interface AdminContextType {
   processQueue: () => Promise<void>;
 
   // 编辑器
-  currentMode: string;
-  setCurrentMode: (m: string) => void;
-  editorMode: string;
-  setEditorMode: (m: string) => void;
+  currentMode: FileType;
+  setCurrentMode: (m: FileType) => void;
+  editorMode: EditorMode;
+  setEditorMode: (m: EditorMode) => void;
   filename: string;
   setFilename: (s: string) => void;
   body: string;
@@ -46,15 +46,15 @@ interface AdminContextType {
   setEditingItemIndex: (n: number | null) => void;
   isFetchingContent: boolean;
   buildMarkdownContent: () => string;
-  resetEditor: (mode: string) => void;
+  resetEditor: (mode?: FileType) => void;
   handleNewPost: () => void;
   loadFromQueue: (item: QueueItem) => void;
   stageForWrite: () => void;
   stageForDelete: (file: RemoteFile) => void;
 
   // UI
-  mobileView: string;
-  setMobileView: (v: string) => void;
+  mobileView: MobileView;
+  setMobileView: (v: MobileView) => void;
   showLeftPanel: boolean;
   setShowLeftPanel: (v: boolean) => void;
   showRightPanel: boolean;

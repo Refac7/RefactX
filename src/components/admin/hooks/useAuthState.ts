@@ -1,5 +1,4 @@
 import { useState, useCallback } from 'react';
-import { recordFailedAttempt, clearRecord } from '~/lib/rateLimit';
 import { isTokenValid } from '~/lib/jwt-handler';
 
 /**

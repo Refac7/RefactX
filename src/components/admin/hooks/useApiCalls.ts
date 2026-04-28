@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { REPO_CONFIG, UPLOAD_CONFIG, type RemoteFile } from '../types';
+import { REPO_CONFIG, UPLOAD_CONFIG } from '../types';
 
 /**
  * 管理所有 API 调用相关的逻辑

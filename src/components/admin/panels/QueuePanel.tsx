@@ -41,7 +41,7 @@ export default function QueuePanel() {
                             </button>
                         )}
                         {item.status === 'pending' && (
-                            <button onClick={(e)=>removeFromQueue(item.id, e)} className="p-1 rounded hover:bg-red-50 text-muted-foreground hover:text-red-500 dark:hover:bg-red-500/10 transition-colors" title="Remove">
+                            <button onClick={() => removeFromQueue(item.id)} className="p-1 rounded hover:bg-red-50 text-muted-foreground hover:text-red-500 dark:hover:bg-red-500/10 transition-colors" title="Remove">
                               <span className="icon-[ph--x] size-3.5"></span>
                             </button>
                         )}

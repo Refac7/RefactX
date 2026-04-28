@@ -1,5 +1,4 @@
 import { useCallback } from 'react';
-import { uploadFile as uploadFileAPI } from '~/lib/file-upload';
 
 const MAX_FILE_SIZE = 1024 * 1024;
 
