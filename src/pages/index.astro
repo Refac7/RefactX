@@ -33,10 +33,6 @@ const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full 
             <span class="inline-flex items-center rounded-full bg-blue-300/50 dark:bg-blue-500/50 px-3 py-1 text-xs font-medium text-blue-500 dark:text-blue-300 select-none">
               V{SITE.version} - Astro v6
             </span>
-            <button class="snow-toggle-btn group hidden sm:flex items-center gap-1.5 hover:bg-muted/50 px-3 py-1 rounded-full transition-colors cursor-pointer focus:outline-none">
-                <span class="icon-[ph--snowflake] size-3.5 text-muted-foreground group-hover:text-foreground transition-colors"></span>
-                <span class="text-xs font-medium text-muted-foreground group-hover:text-foreground transition-colors">Snow <span class="snow-status-text">On</span></span>
-            </button>
         </div>
         
         <div class="flex-1 flex flex-col justify-end lg:justify-center p-6 lg:p-8 xl:p-12 min-h-[300px] lg:min-h-[250px] fade-up animation-delay-100">
@@ -123,55 +119,3 @@ const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full 
 </Layout>
 
 <style>.scrollbar-hide::-webkit-scrollbar{display:none;}.scrollbar-hide{-ms-overflow-style:none;scrollbar-width:none;}</style>
-
-<script is:inline>
-  function initSnowToggle() {
-    const btns = document.querySelectorAll('.snow-toggle-btn');
-    const snowContainer = document.getElementById('snowfall-container');
-    if (!btns.length || !snowContainer) return;
-
-    const isEnabled = localStorage.getItem('snowfall_enabled') === 'true';
-    
-    const updateUI = (active) => {
-      snowContainer.style.opacity = active ? '1' : '0';
-      document.querySelectorAll('.snow-status-text').forEach(span => {
-        span.innerText = active ? 'On' : 'Off';
-        active ? span.classList.add('text-foreground') : span.classList.remove('text-foreground');
-      });
-    };
-
-    // 这里必须包裹在 RAF 里，防止首次执行导致布局抖动阻塞 LCP
-    requestAnimationFrame(() => {
-      updateUI(isEnabled);
-    });
-
-    btns.forEach(oldBtn => {
-      const newBtn = oldBtn.cloneNode(true);
-      oldBtn.parentNode.replaceChild(newBtn, oldBtn);
-      newBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const currentState = localStorage.getItem('snowfall_enabled') === 'true';
-        const newState = !currentState;
-        
-        requestAnimationFrame(() => {
-            updateUI(newState);
-        });
-        localStorage.setItem('snowfall_enabled', String(newState));
-      });
-    });
-  }
-
-  // 利用 requestAnimationFrame 进一步推迟初始化逻辑，不抢占主线程首屏渲染资源
-  const delayInit = () => {
-      requestAnimationFrame(() => {
-          initSnowToggle();
-      });
-  }
-
-  document.addEventListener('astro:page-load', delayInit);
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', delayInit);
-  } else {
-    delayInit();
-  }
-</script>
