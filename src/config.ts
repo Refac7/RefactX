@@ -243,7 +243,7 @@ export const FRIENDS_CONFIG = {
   title: 'Friends',
   description: '我的朋友们都在这里，欢迎互访～',
   introduce: '已获取星图定位，正在前往友链星系的路上……',
-  enableAdd: true,
+  enableAdd: false,
 }
 
 // 博主专属友链卡片信息
@@ -258,7 +258,7 @@ export const FRIENDS_CONTACT = {
 
 // Waline 评论系统配置
 export const WALINE_CONFIG = {
-  enableComment: true,
+  enableComment: false,
   serverURL: import.meta.env.PUBLIC_WALINE_SERVER_URL || "https://waline.refact.cc",
   uploadToken: import.meta.env.PUBLIC_UPLOAD_TOKEN,
   imgbedURL: import.meta.env.PUBLIC_IMG_BED_URL || "https://img.refact.cc/upload",
