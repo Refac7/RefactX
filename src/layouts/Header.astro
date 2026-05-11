@@ -91,16 +91,13 @@ import { CMS_CONFIG } from '~/config'
 
 <script is:inline>
   // 封装下拉菜单交互逻辑，完美兼容 Astro 的 ViewTransitions
-  (() => {
-    let currentBtn: Element | null = null;
-    let currentDropdown: HTMLElement | null = null;
-    let currentIcon: Element | null = null;
-    let clickHandler: ((e: Event) => void) | null = null;
+  (function() {
+    var clickHandler = null;
 
     function initMobileNav() {
-      const btn = document.getElementById('mobile-menu-btn');
-      const dropdown = document.getElementById('mobile-menu-dropdown');
-      const icon = document.getElementById('mobile-menu-icon');
+      var btn = document.getElementById('mobile-menu-btn');
+      var dropdown = document.getElementById('mobile-menu-dropdown');
+      var icon = document.getElementById('mobile-menu-icon');
       
       if (!btn || !dropdown) return;
 
@@ -108,37 +105,32 @@ import { CMS_CONFIG } from '~/config'
       if (clickHandler) {
         document.removeEventListener('click', clickHandler);
       }
-
-      currentBtn = btn;
-      currentDropdown = dropdown;
-      currentIcon = icon;
       
-      const openMenu = () => {
+      var openMenu = function() {
         dropdown.classList.remove('opacity-0', 'invisible', 'translate-y-[-10px]');
         dropdown.classList.add('opacity-100', 'visible', 'translate-y-0');
-        icon?.classList.add('rotate-180');
+        if (icon) icon.classList.add('rotate-180');
       };
 
-      const closeMenu = () => {
+      var closeMenu = function() {
         dropdown.classList.add('opacity-0', 'invisible', 'translate-y-[-10px]');
         dropdown.classList.remove('opacity-100', 'visible', 'translate-y-0');
-        icon?.classList.remove('rotate-180');
+        if (icon) icon.classList.remove('rotate-180');
       };
 
       // 移除旧的按钮监听器（使用事件委托）
-      const newBtn = btn.cloneNode(true) as HTMLElement;
-      btn.parentNode?.replaceChild(newBtn, btn);
+      var newBtn = btn.cloneNode(true);
+      btn.parentNode.replaceChild(newBtn, btn);
 
-      newBtn.addEventListener('click', (e) => {
+      newBtn.addEventListener('click', function(e) {
         e.stopPropagation();
-        const isExpanded = dropdown.classList.contains('opacity-100');
+        var isExpanded = dropdown.classList.contains('opacity-100');
         isExpanded ? closeMenu() : openMenu();
       });
 
       // 使用事件委托替代重复的监听器
-      clickHandler = (e: Event) => {
-        const target = e.target as Node;
-        if (!newBtn.contains(target) && !dropdown.contains(target)) {
+      clickHandler = function(e) {
+        if (!newBtn.contains(e.target) && !dropdown.contains(e.target)) {
           closeMenu();
         }
       };
