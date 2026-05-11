@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { cn } from '~/lib/utils';
 import Captcha from '~/components/ui/Captcha';
-import Waline from '~/components/ui/Waline';
 
 interface FeedItem {
   id: string; content: string; date: string; mood: string; link: string | null;
@@ -137,18 +136,7 @@ export default function DynamicFeed() {
                           <span className="icon-[ph--link-bold] size-3.5"></span> Attachment Link
                         </a>
                       )}
-                      <button onClick={() => toggleComment(item.id)} className={cn("inline-flex items-center gap-1.5 text-xs font-medium transition-colors ml-auto", isCommentOpen ? "text-foreground" : "text-muted-foreground hover:text-foreground")}>
-                        <span className={cn("size-3.5", isCommentOpen ? "icon-[ph--chat-teardrop-text-fill]" : "icon-[ph--chat-teardrop-text]")}></span>
-                        {isCommentOpen ? "Close Discussion" : "Discuss"}
-                      </button>
                     </div>
-
-                    {/* 评论区调用 */}
-                    {isCommentOpen && (
-                      <div className="p-5 bg-muted/5 rounded-b-lg border-t border-border/40 animate-in fade-in slide-in-from-top-2">
-                        <Waline path={`/dynamic/?id=${item.id}`} />
-                      </div>
-                    )}
                   </div>
                 );
               })}
