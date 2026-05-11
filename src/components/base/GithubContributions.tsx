@@ -77,7 +77,12 @@ export default function GithubContributions({ username, tooltipEnabled }: Props)
 
   const scrollToRight = useCallback(() => {
     if (containerRef.current) {
-      containerRef.current.scrollLeft = containerRef.current.scrollWidth
+      // 推迟滚动到下一帧，避免与布局计算冲突
+      requestAnimationFrame(() => {
+        if (containerRef.current) {
+          containerRef.current.scrollLeft = containerRef.current.scrollWidth
+        }
+      })
     }
   }, [])
 

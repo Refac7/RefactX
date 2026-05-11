@@ -476,15 +476,19 @@ const getRelativeIndentClass = (depth: number) => {
       const activeItem = this.listElement.querySelector(`[data-heading-id="${activeHeadingId}"]`)
       if (!activeItem) return
 
+      // 批量读取 DOM 属性，避免读写交替导致的强制重排
       const containerRect = this.scrollArea.getBoundingClientRect()
       const itemRect = activeItem.getBoundingClientRect()
+      const scrollTop = this.scrollArea.scrollTop
+      const scrollHeight = this.scrollArea.scrollHeight
+      const clientHeight = this.scrollArea.clientHeight
 
-      const relativeTop = itemRect.top - containerRect.top + this.scrollArea.scrollTop
+      const relativeTop = itemRect.top - containerRect.top + scrollTop
       const targetScrollTop = relativeTop - containerRect.height / 2 + itemRect.height / 2
 
-      const targetScroll = Math.max(0, Math.min(targetScrollTop, this.scrollArea.scrollHeight - this.scrollArea.clientHeight))
+      const targetScroll = Math.max(0, Math.min(targetScrollTop, scrollHeight - clientHeight))
 
-      if (Math.abs(targetScroll - this.scrollArea.scrollTop) > 5) {
+      if (Math.abs(targetScroll - scrollTop) > 5) {
         this.scrollArea.scrollTo({
           top: targetScroll,
           behavior: 'smooth',

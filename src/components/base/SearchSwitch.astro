@@ -106,11 +106,14 @@
   }
 
   const openSearch = () => {
+    // 批量修改 CSS 类，避免多次重排
     searchMask?.classList.remove('hidden')
-    searchMask?.offsetHeight 
-    searchMask?.classList.remove('opacity-0')
-    searchPanelShow?.classList.remove('-translate-y-4')
-    searchPanelShow?.classList.add('translate-y-0')
+    // 使用 requestAnimationFrame 将样式变化和重排分离
+    requestAnimationFrame(() => {
+      searchMask?.classList.remove('opacity-0')
+      searchPanelShow?.classList.remove('-translate-y-4')
+      searchPanelShow?.classList.add('translate-y-0')
+    })
     searchInput?.focus()
     
     // 打开面板的瞬间去加载庞大的 WASM
