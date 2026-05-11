@@ -106,11 +106,14 @@
   }
 
   const openSearch = () => {
+    // 批量修改 CSS 类，避免多次重排
     searchMask?.classList.remove('hidden')
-    searchMask?.offsetHeight 
-    searchMask?.classList.remove('opacity-0')
-    searchPanelShow?.classList.remove('-translate-y-4')
-    searchPanelShow?.classList.add('translate-y-0')
+    // 使用 requestAnimationFrame 将样式变化和重排分离
+    requestAnimationFrame(() => {
+      searchMask?.classList.remove('opacity-0')
+      searchPanelShow?.classList.remove('-translate-y-4')
+      searchPanelShow?.classList.add('translate-y-0')
+    })
     searchInput?.focus()
     
     // 打开面板的瞬间去加载庞大的 WASM
@@ -133,7 +136,7 @@
     if (e.target === searchMask) closeSearch()
   })
 
-  document.addEventListener('keydown', (e) => {
+  const handleKeydown = (e: KeyboardEvent) => {
     if (e.key === 'Escape' && !searchMask?.classList.contains('hidden')) {
       closeSearch()
     }
@@ -145,7 +148,21 @@
         closeSearch()
       }
     }
+  }
+
+  // 使用 astro:after-swap 确保正确的事件绑定
+  if (document.readyState === 'loading') {
+    document.addEventListener('keydown', handleKeydown)
+  }
+
+  document.addEventListener('astro:after-swap', () => {
+    // 移除旧的监听器
+    document.removeEventListener('keydown', handleKeydown)
+    // 重新添加以确保正确的作用域
+    document.addEventListener('keydown', handleKeydown)
   })
+
+  document.addEventListener('keydown', handleKeydown)
 
   const handleInput = async (e: Event) => {
     if (searchResults) searchResults.innerHTML = ''

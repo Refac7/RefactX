@@ -126,16 +126,20 @@ const getRelativeIndentClass = (depth: number) => {
                 scrollTimeout = window.requestAnimationFrame(() => {
                   const activeLinkElement = link as HTMLElement
                   if (activeLinkElement && scrollArea) {
+                    // 批量读取 DOM 属性，避免重排
                     const containerRect = scrollArea.getBoundingClientRect()
                     const linkRect = activeLinkElement.getBoundingClientRect()
+                    const scrollTop = scrollArea.scrollTop
+                    const scrollHeight = scrollArea.scrollHeight
+                    const clientHeight = scrollArea.clientHeight
                     
-                    const relativeTop = linkRect.top - containerRect.top + scrollArea.scrollTop
+                    const relativeTop = linkRect.top - containerRect.top + scrollTop
                     const targetScrollTop = relativeTop - containerRect.height / 2 + linkRect.height / 2
                     
-                    const maxScroll = scrollArea.scrollHeight - scrollArea.clientHeight
+                    const maxScroll = scrollHeight - clientHeight
                     const targetScroll = Math.max(0, Math.min(targetScrollTop, maxScroll))
 
-                    if (Math.abs(targetScroll - scrollArea.scrollTop) > 5) {
+                    if (Math.abs(targetScroll - scrollTop) > 5) {
                       scrollArea.scrollTo({
                         top: targetScroll,
                         behavior: 'smooth'

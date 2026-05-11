@@ -22,7 +22,7 @@ export default defineConfig({
 
   prefetch: {
     prefetchAll: true,
-    defaultStrategy: 'viewport',
+    defaultStrategy: 'load', // 改为 'load' 提前加载预获取资源
   },
   vite: {
     // @ts-ignore
