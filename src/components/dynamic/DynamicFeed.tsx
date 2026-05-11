@@ -17,7 +17,6 @@ export default function DynamicFeed() {
   const [loading, setLoading] = useState(true);
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
   const [isVerified, setIsVerified] = useState(false);
-  const [expandedComments, setExpandedComments] = useState<Set<string>>(new Set());
 
   // 初始化检查 24小时 验证状态
   useEffect(() => {
@@ -72,14 +71,6 @@ export default function DynamicFeed() {
     fetchFeed(); // 验证通过后，立刻拉取真实数据
   };
 
-  const toggleComment = (id: string) => {
-    setExpandedComments(prev => {
-      const newSet = new Set(prev);
-      newSet.has(id) ? newSet.delete(id) : newSet.add(id);
-      return newSet;
-    });
-  };
-
   const visibleFeed = feed.slice(0, visibleCount);
   const hasMore = visibleCount < feed.length;
 
@@ -120,7 +111,6 @@ export default function DynamicFeed() {
             {/* 真实数据渲染 */}
             <div className="grid grid-cols-1 gap-6 relative">
               {visibleFeed.map((item, index) => {
-                const isCommentOpen = expandedComments.has(item.id);
                 return (
                   <div key={item.id} className="group relative flex flex-col bg-background border border-border/40 rounded-lg transition-all duration-300 fade-up" style={{ animationDelay: `${(index % ITEMS_PER_PAGE) * 50}ms` }}>
                     <div className="p-5 pb-3 flex justify-between items-start gap-4">
