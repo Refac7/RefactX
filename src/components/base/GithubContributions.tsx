@@ -87,6 +87,9 @@ export default function GithubContributions({ username, tooltipEnabled }: Props)
   }, [])
 
   const fetchData = useCallback(() => {
+    // 避免在页面转换时重复加载
+    if (data !== null && data.contributions.length > 0) return
+    
     setLoading(true)
     setError(false)
     fetchContributions(username)
@@ -95,15 +98,20 @@ export default function GithubContributions({ username, tooltipEnabled }: Props)
         const total = res.total?.lastYear ?? res.contributions.reduce((acc, curr) => acc + curr.count, 0) ?? 0
         setTotalCount(total)
         setLoading(false)
+        // 使用 requestIdleCallback 推迟非关键操作
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(() => scrollToRight())
+        } else {
+          scrollToRight()
+        }
       })
-      .then(scrollToRight)
       .catch(() => {
         setData(generateErrorContributions())
         setTotalCount(0)
         setError(true)
         setLoading(false)
       })
-  }, [username, scrollToRight])
+  }, [username, scrollToRight, data])
 
   useEffect(fetchData, [fetchData])
 

@@ -22,12 +22,26 @@ export default function DynamicFeed() {
 
   // 初始化检查 24小时 验证状态
   useEffect(() => {
-    const verifiedData = localStorage.getItem(VERIFY_KEY);
-    if (verifiedData && Date.now() - JSON.parse(verifiedData).timestamp < VERIFY_TIME_MS) {
-      setIsVerified(true);
-      fetchFeed();
+    // 使用 requestIdleCallback 避免阻塞主线程
+    const checkVerification = () => {
+      try {
+        const verifiedData = localStorage.getItem(VERIFY_KEY);
+        if (verifiedData && Date.now() - JSON.parse(verifiedData).timestamp < VERIFY_TIME_MS) {
+          setIsVerified(true);
+          fetchFeed();
+        } else {
+          setLoading(true); // 未验证时保持加载状态，展示底层骨架屏
+        }
+      } catch (e) {
+        console.error('Failed to check verification status:', e);
+        setLoading(true);
+      }
+    };
+
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(checkVerification);
     } else {
-      setLoading(true); // 未验证时保持加载状态，展示底层骨架屏
+      checkVerification();
     }
   }, []);
 

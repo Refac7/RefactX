@@ -91,48 +91,66 @@ import { CMS_CONFIG } from '~/config'
 
 <script is:inline>
   // 封装下拉菜单交互逻辑，完美兼容 Astro 的 ViewTransitions
-  function initMobileNav() {
-    const btn = document.getElementById('mobile-menu-btn');
-    const dropdown = document.getElementById('mobile-menu-dropdown');
-    const icon = document.getElementById('mobile-menu-icon');
-    
-    if (!btn || !dropdown) return;
+  (() => {
+    let currentBtn: Element | null = null;
+    let currentDropdown: HTMLElement | null = null;
+    let currentIcon: Element | null = null;
+    let clickHandler: ((e: Event) => void) | null = null;
 
-    // 清理可能由于 ViewTransitions 残留的旧监听器
-    const newBtn = btn.cloneNode(true);
-    btn.parentNode.replaceChild(newBtn, btn);
-    
-    const openMenu = () => {
-      dropdown.classList.remove('opacity-0', 'invisible', 'translate-y-[-10px]');
-      dropdown.classList.add('opacity-100', 'visible', 'translate-y-0');
-      icon?.classList.add('rotate-180');
-    };
+    function initMobileNav() {
+      const btn = document.getElementById('mobile-menu-btn');
+      const dropdown = document.getElementById('mobile-menu-dropdown');
+      const icon = document.getElementById('mobile-menu-icon');
+      
+      if (!btn || !dropdown) return;
 
-    const closeMenu = () => {
-      dropdown.classList.add('opacity-0', 'invisible', 'translate-y-[-10px]');
-      dropdown.classList.remove('opacity-100', 'visible', 'translate-y-0');
-      icon?.classList.remove('rotate-180');
-    };
-
-    newBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const isExpanded = dropdown.classList.contains('opacity-100');
-      isExpanded ? closeMenu() : openMenu();
-    });
-
-    // 点击页面空白处关闭菜单
-    document.addEventListener('click', (e) => {
-      if (!newBtn.contains(e.target) && !dropdown.contains(e.target)) {
-        closeMenu();
+      // 移除旧的全局点击监听器
+      if (clickHandler) {
+        document.removeEventListener('click', clickHandler);
       }
-    });
-  }
 
-  // 监听 Astro 的页面加载事件
-  document.addEventListener('astro:page-load', initMobileNav);
-  if (document.readyState === 'loading') { 
-    document.addEventListener('DOMContentLoaded', initMobileNav); 
-  } else { 
-    initMobileNav(); 
-  }
+      currentBtn = btn;
+      currentDropdown = dropdown;
+      currentIcon = icon;
+      
+      const openMenu = () => {
+        dropdown.classList.remove('opacity-0', 'invisible', 'translate-y-[-10px]');
+        dropdown.classList.add('opacity-100', 'visible', 'translate-y-0');
+        icon?.classList.add('rotate-180');
+      };
+
+      const closeMenu = () => {
+        dropdown.classList.add('opacity-0', 'invisible', 'translate-y-[-10px]');
+        dropdown.classList.remove('opacity-100', 'visible', 'translate-y-0');
+        icon?.classList.remove('rotate-180');
+      };
+
+      // 移除旧的按钮监听器（使用事件委托）
+      const newBtn = btn.cloneNode(true) as HTMLElement;
+      btn.parentNode?.replaceChild(newBtn, btn);
+
+      newBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isExpanded = dropdown.classList.contains('opacity-100');
+        isExpanded ? closeMenu() : openMenu();
+      });
+
+      // 使用事件委托替代重复的监听器
+      clickHandler = (e: Event) => {
+        const target = e.target as Node;
+        if (!newBtn.contains(target) && !dropdown.contains(target)) {
+          closeMenu();
+        }
+      };
+      document.addEventListener('click', clickHandler);
+    }
+
+    // 监听 Astro 的页面加载事件和 ViewTransition 事件
+    document.addEventListener('astro:after-swap', initMobileNav);
+    if (document.readyState === 'loading') { 
+      document.addEventListener('DOMContentLoaded', initMobileNav); 
+    } else { 
+      initMobileNav(); 
+    }
+  })();
 </script>
