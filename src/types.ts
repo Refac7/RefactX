@@ -12,8 +12,6 @@ export type Site = {
   title: string
   base: string
   description: string
-  indexIntro1: string
-  indexIntro2?: string
   author: string
   website: string
   ogImage: string

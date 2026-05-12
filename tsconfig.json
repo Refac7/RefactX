@@ -3,9 +3,7 @@
   "include": [".astro/types.d.ts", "**/*"],
   "exclude": ["dist", "node_modules","public/js"],
   "compilerOptions": {
-    "ignoreDeprecations": "6.0",
     "strictNullChecks": true,
-    "baseUrl": ".",
     "paths": {
       "~/*": ["./src/*"]
     },

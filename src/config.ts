@@ -13,8 +13,6 @@ import type {
 export const SITE: Site = {
   title: 'RefactX Project',
   description: '如风般轻盈，如光般纯粹。',
-  indexIntro1: '你好，我是 Refact',
-  indexIntro2: '在数字世界中追求纯粹的创意开发者',
   website: 'https://www.refact.cc/',
   base: '/',
   author: 'Refact',
@@ -258,7 +256,7 @@ export const FRIENDS_CONTACT = {
 
 // Waline 评论系统配置
 export const WALINE_CONFIG = {
-  enableComment: false,
+  enableComment: true,
   serverURL: import.meta.env.PUBLIC_WALINE_SERVER_URL || "https://waline.refact.cc",
   uploadToken: import.meta.env.PUBLIC_UPLOAD_TOKEN,
   imgbedURL: import.meta.env.PUBLIC_IMG_BED_URL || "https://img.refact.cc/upload",
