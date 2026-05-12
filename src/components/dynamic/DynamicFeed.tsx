@@ -134,7 +134,7 @@ export default function DynamicFeed() {
 
             {/* 加载更多按钮 */}
             {hasMore && (
-              <div className="mt-10 mb-4 flex justify-center ml-12 fade-up" style={{ animationDelay: '100ms' }}>
+              <div className="mt-10 mb-4 flex justify-center fade-up" style={{ animationDelay: '100ms' }}>
                 <button onClick={() => setVisibleCount(prev => prev + ITEMS_PER_PAGE)} className="group flex items-center justify-center gap-2 px-6 py-2.5 rounded-full border border-border/60 bg-background text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted/30 hover:border-primary/40 transition-all select-none">
                   <span>Load More</span><span className="icon-[ph--arrow-down] size-3.5 group-hover:translate-y-0.5 transition-transform"></span>
                 </button>
@@ -142,7 +142,7 @@ export default function DynamicFeed() {
             )}
             
             {!hasMore && feed.length > 0 && (
-              <div className="mt-10 mb-4 flex justify-center ml-12 fade-up"><span className="text-[11px] font-medium text-muted-foreground/50 select-none">— End of signals —</span></div>
+              <div className="mt-10 mb-4 flex justify-center fade-up"><span className="text-[11px] font-medium text-muted-foreground/50 select-none">— End of signals —</span></div>
             )}
           </>
         )}
