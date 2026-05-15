@@ -1,15 +1,13 @@
 # RefactX 主题
 
-在此处查看预览：<https://refact-x-template.vercel.app/>
-
 > [!WARNING]
 >
-> 此项目可能有安全性漏洞，根据MIT许可证，由此造成的损失不由本模版负责，您在使用本博客的时候即视为接受该风险。你必须修改 `./src/config.ts` 中的相关内容，不得直接用于生产环境。完整配置教程请参考：<https://refact-x-template-git-galaxy-msrefs-projects.vercel.app/> 中的相关文章。
+> 此项目可能有安全性漏洞，根据MIT许可证，由此造成的损失不由本模版负责，您在使用本博客的时候即视为接受该风险。你必须修改 `./src/config.ts` 中的相关内容，不得直接用于生产环境。
 
 ![RefactX 封面](./src/assets/cover@2x.png)  
 [English version](./README_EN.MD)
 
-![License](https://img.shields.io/github/license/Refac7/RefactX_Template?color=blue&style=flat-square)
+![License](https://img.shields.io/github/license/Refac7/RefactX?color=blue&style=flat-square)
 ![Astro](https://img.shields.io/badge/Astro-v6.0-orange?style=flat-square&logo=astro)
 ![React](https://img.shields.io/badge/React-v19.0-blue?style=flat-square&logo=react)
 ![Tailwind](https://img.shields.io/badge/TailwindCSS-v4.0-38b2ac?style=flat-square&logo=tailwindcss)
