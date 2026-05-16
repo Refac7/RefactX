@@ -4,6 +4,14 @@ import {
     type FileType, type MobileView, type EditorMode, type QueueItem, type RemoteFile, type MetaType 
 } from './types';
 
+// 定义 Toast 类型
+type ToastType = 'success' | 'error' | 'info';
+interface ToastMsg {
+  id: string;
+  msg: string;
+  type: ToastType;
+}
+
 interface AdminContextType {
   isLoggedIn: boolean;
   performLogin: (pass: string, captchaToken: string) => Promise<void>;
@@ -49,6 +57,7 @@ interface AdminContextType {
   uploadTargetRef: React.RefObject<string>;
   handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
   triggerUpload: (target: string) => void;
+  showToast: (msg: string, type?: ToastType) => void;
 }
 
 const AdminContext = createContext<AdminContextType | undefined>(undefined);
@@ -77,8 +86,18 @@ const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   const [parsedJson, setParsedJson] = useState<any[]>([]);
   const [editingItemIndex, setEditingItemIndex] = useState<number | null>(null);
 
+  const [toasts, setToasts] = useState<ToastMsg[]>([]);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const uploadTargetRef = useRef<string>('body');
+
+  const showToast = (msg: string, type: ToastType = 'info') => {
+    const id = Date.now().toString() + Math.random().toString();
+    setToasts(prev => [...prev, { id, msg, type }]);
+    setTimeout(() => {
+      setToasts(prev => prev.filter(t => t.id !== id));
+    }, 3000);
+  };
 
   const getAuthHeaders = () => {
     const token = localStorage.getItem('admin_jwt_token');
@@ -99,6 +118,7 @@ const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     localStorage.removeItem('admin_jwt_token');
     setIsLoggedIn(false);
     setRemoteFiles([]);
+    showToast('Logged out', 'info');
   };
 
   const parseContent = (raw: string) => {
@@ -138,12 +158,15 @@ const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       if (data.files) setRemoteFiles(data.files);
     } catch (e: any) { 
         if (e.message === 'UNAUTHORIZED') { handleLogout(); }
+        else { showToast('Failed to fetch files', 'error'); }
     } finally { setIsLoadingFiles(false); }
   };
 
-  // 将 captchaToken 发送至后端验证
   const performLogin = async (pass: string, captchaToken: string) => {
-    if (!pass || !captchaToken) return;
+    if (!pass || !captchaToken) {
+        showToast('Password and CAPTCHA required', 'error');
+        return;
+    }
     setIsValidating(true);
     setLoginError(false);
     
@@ -158,19 +181,23 @@ const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
       if (res.status === 429 || res.status === 403) {
         setLoginError(true);
+        showToast('Access denied or rate limited', 'error');
         return;
       }
 
       if (res.ok && data.token) {
         localStorage.setItem('admin_jwt_token', data.token);
         setIsLoggedIn(true);
+        showToast('Login successful', 'success');
         fetchRemoteFiles();
       } else {
         setLoginError(true);
         localStorage.removeItem('admin_jwt_token');
+        showToast('Invalid credentials', 'error');
       }
     } catch (error) { 
         setLoginError(true); 
+        showToast('Network error during login', 'error');
     } finally { 
         setIsValidating(false); 
     }
@@ -186,6 +213,7 @@ const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       if (res.status === 404 && isData) {
         setFilename(name); setJsonContent('[]'); setParsedJson([]);
         setCurrentMode('data'); setEditorMode('visual'); setEditingItemIndex(null); setMobileView('editor');
+        showToast('New data file initialized', 'info');
         return;
       }
       if (!res.ok) throw new Error('Fetch failed');
@@ -209,8 +237,10 @@ const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         setCurrentMode('post');
       }
       setMobileView('editor');
+      showToast(`Loaded ${name}`, 'success');
     } catch (e: any) {
         if (e.message === 'UNAUTHORIZED') { handleLogout(); }
+        else { showToast('Failed to load file', 'error'); }
     } finally { setIsFetchingContent(false); }
   };
 
@@ -219,7 +249,10 @@ const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     let finalFilename = '';
     
     if (currentMode === 'post') {
-        if (!filename || !meta.title) return;
+        if (!filename || !meta.title) {
+            showToast('Filename and Title are required', 'error');
+            return;
+        }
         finalFilename = filename.endsWith('.md') ? filename : `${filename}.md`;
         content = `---
 title: '${meta.title.replace(/'/g, "''")}'
@@ -235,8 +268,14 @@ heroImageAspectRatio: '${meta.heroImageAspectRatio}'
 
 ${body}`;
     } else {
-        if (!filename) return;
-        try { JSON.parse(jsonContent); } catch (e) { return; }
+        if (!filename) {
+            showToast('Filename is required', 'error');
+            return;
+        }
+        try { JSON.parse(jsonContent); } catch (e) { 
+            showToast('Invalid JSON format', 'error');
+            return; 
+        }
         finalFilename = DATA_FILES.find(f => f.name === filename)?.path || filename;
         content = jsonContent;
     }
@@ -247,6 +286,7 @@ ${body}`;
         if (existingIndex !== -1) { const newQueue = [...prev]; newQueue[existingIndex] = newItem; return newQueue; }
         return [...prev, newItem];
     });
+    showToast('Staged for commit', 'success');
   };
 
   const stageForDelete = (file: RemoteFile) => {
@@ -257,6 +297,7 @@ ${body}`;
         if (existingIndex !== -1) { const newQueue = [...prev]; newQueue[existingIndex] = newItem; return newQueue; }
         return [...prev, newItem];
     });
+    showToast('Staged for deletion', 'success');
   };
 
   const processQueue = async () => {
@@ -269,9 +310,11 @@ ${body}`;
       if (!res.ok) throw new Error('BATCH FAILED');
       setQueue([]);
       localStorage.removeItem('admin_queue_v1');
+      showToast('Operations committed successfully', 'success');
       await fetchRemoteFiles();
     } catch (error: any) {
       if (error.message === 'UNAUTHORIZED') { handleLogout(); }
+      else { showToast('Batch commit failed', 'error'); }
     } finally { setIsProcessingQueue(false); }
   };
 
@@ -279,6 +322,7 @@ ${body}`;
     if ((body+jsonContent).length > 20 && !confirm("CLEAR WORKSPACE?")) return;
     setCurrentMode('post');
     setFilename(''); setBody(''); setMeta(DEFAULT_META);
+    showToast('Workspace cleared', 'info');
     try {
       const res = await fetch('/api/next-filename', { method: 'POST', headers: getAuthHeaders(), body: JSON.stringify({ config: REPO_CONFIG }) });
       if (res.status === 401) throw new Error('UNAUTHORIZED');
@@ -304,6 +348,7 @@ ${body}`;
             setMeta(m); setBody(b);
         }
         setMobileView('editor');
+        showToast('Loaded from queue', 'info');
     } catch (e) {}
   };
 
@@ -322,6 +367,7 @@ ${body}`;
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    showToast('Uploading file...', 'info');
     try {
         const MAX_SIZE = 1024 * 1024;
         let fileToUpload = file;
@@ -358,7 +404,10 @@ ${body}`;
         } else if (target === 'hero') setMeta({ ...meta, heroImage: url, ogImage: meta.ogImage ? meta.ogImage : url });
         else if (target === 'og') setMeta({ ...meta, ogImage: url });
         
-    } catch(e) {} 
+        showToast('Upload successful', 'success');
+    } catch(e) { 
+        showToast('Upload failed', 'error');
+    } 
     finally { if(fileInputRef.current) fileInputRef.current.value = ''; }
   };
 
@@ -380,6 +429,7 @@ ${body}`;
   const removeFromQueue = (id: string, e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
     setQueue(prev => prev.filter(item => item.id !== id));
+    showToast('Removed from queue', 'info');
   };
 
   const value = {
@@ -390,10 +440,37 @@ ${body}`;
     currentMode, setCurrentMode, editorMode, setEditorMode, filename, setFilename,
     body, setBody, meta, setMeta, jsonContent, setJsonContent, parsedJson, setParsedJson,
     editingItemIndex, setEditingItemIndex, isFetchingContent,
-    fileInputRef, uploadTargetRef, handleFileChange, triggerUpload
+    fileInputRef, uploadTargetRef, handleFileChange, triggerUpload, showToast
   };
 
-  return <AdminContext.Provider value={value}>{children}</AdminContext.Provider>;
+  return (
+    <AdminContext.Provider value={value}>
+      {children}
+      {/* 极简 Toast 提示 */}
+      <style>{`
+        @keyframes geist-toast-slide {
+          from { transform: translateY(100%); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
+        }
+      `}</style>
+      <div className="fixed bottom-12 right-6 z-[9999] flex flex-col gap-3 pointer-events-none">
+        {toasts.map(toast => (
+          <div 
+            key={toast.id} 
+            className="bg-background border border-border/40 px-4 py-3 rounded-lg text-sm font-medium shadow-lg flex items-center gap-3 pointer-events-auto"
+            style={{ animation: 'geist-toast-slide 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards' }}
+          >
+            <span className={`flex size-2 rounded-full shrink-0 ${
+              toast.type === 'error' ? 'bg-red-500' : 
+              toast.type === 'success' ? 'bg-emerald-500' : 
+              'bg-muted-foreground'
+            }`}></span>
+            <span className="text-foreground">{toast.msg}</span>
+          </div>
+        ))}
+      </div>
+    </AdminContext.Provider>
+  );
 };
 
 export const useAdmin = () => {
