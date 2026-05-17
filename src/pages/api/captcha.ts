@@ -24,7 +24,7 @@ export const POST: APIRoute = async ({ request }) => {
     if (hashHex.startsWith('0'.repeat(DIFFICULTY))) {
       // 验证通过，签发具有时效性的 HMAC 令牌： signature.timestamp
       const timestamp = Date.now();
-      const secret = encoder.encode(import.meta.env.CAPTCHA_SECRET || 'refactx-edge-secret');
+      const secret = encoder.encode(import.meta.env.CAPTCHA_SECRET);
       const tokenData = encoder.encode(`verified:${timestamp}`);
       const key = await crypto.subtle.importKey('raw', secret, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
       
