@@ -24,7 +24,7 @@ const getVisiblePages = (current: number, total: number) => {
 const visiblePages = getVisiblePages(page.currentPage, page.lastPage)
 ---
 
-<nav aria-label="Pagination" class={cn('mt-8 sm:mt-16 flex flex-col items-center gap-4', className)}>
+<nav aria-label="Pagination" class={cn('flex flex-col items-center gap-4', className)}>
   <div class="flex items-center gap-1 sm:gap-2">
     <a
       href={page.url.prev}
