@@ -12,6 +12,62 @@ const CACHE_TIME_MS = 30 * 60 * 1000;       // 数据缓存 30 分钟
 const VERIFY_TIME_MS = 24 * 60 * 60 * 1000; // 人机验证记忆 24 小时
 const ITEMS_PER_PAGE = 8;
 
+// 抽离单条动态组件，以便独立管理其展开/折叠状态
+function FeedItemCard({ item, animationDelay }: { item: FeedItem; animationDelay: string }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  // 判断是否需要折叠：字符数大于 180 或 换行数大于 4
+  const lineCount = (item.content.match(/\n/g) || []).length + 1;
+  const needsCollapse = item.content.length > 180 || lineCount > 4;
+
+  return (
+    <div 
+      className="group relative flex flex-col bg-background border border-border/40 rounded-lg transition-all duration-300 fade-up" 
+      style={{ animationDelay }}
+    >
+      <div className="p-5 pb-3 flex justify-between items-start gap-4">
+        <span className="inline-flex items-center rounded-full bg-muted/40 px-2.5 py-0.5 text-[11px] font-medium text-foreground tracking-tight select-none">
+          {item.mood}
+        </span>
+        <span className="text-xs text-muted-foreground whitespace-nowrap">
+          {new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+        </span>
+      </div>
+      
+      <div className="px-5 pt-1 flex-1">
+        <p className={cn(
+          "text-sm text-foreground/90 leading-relaxed whitespace-pre-wrap transition-all",
+          !isExpanded && needsCollapse && "line-clamp-4" // 未展开且需要折叠时，限制为4行并显示省略号
+        )}>
+          {item.content}
+        </p>
+        
+        {/* 展开/折叠 按钮 */}
+        {needsCollapse && (
+          <button 
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="mt-2 flex items-center gap-1 text-[13px] font-medium text-muted-foreground hover:text-foreground transition-colors select-none"
+          >
+            {isExpanded ? (
+              <><span className="icon-[ph--caret-up-bold] size-3.5"></span> Show less</>
+            ) : (
+              <><span className="icon-[ph--caret-down-bold] size-3.5"></span> Read more</>
+            )}
+          </button>
+        )}
+      </div>
+
+      <div className="px-5 pb-4 mt-4 flex items-center gap-4">
+        {item.link && (
+          <a href={item.link} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:text-primary/80 transition-colors">
+            <span className="icon-[ph--link-bold] size-3.5"></span> Attachment Link
+          </a>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function DynamicFeed() {
   const [feed, setFeed] = useState<FeedItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -110,26 +166,13 @@ export default function DynamicFeed() {
           <>
             {/* 真实数据渲染 */}
             <div className="grid grid-cols-1 gap-6 relative">
-              {visibleFeed.map((item, index) => {
-                return (
-                  <div key={item.id} className="group relative flex flex-col bg-background border border-border/40 rounded-lg transition-all duration-300 fade-up" style={{ animationDelay: `${(index % ITEMS_PER_PAGE) * 50}ms` }}>
-                    <div className="p-5 pb-3 flex justify-between items-start gap-4">
-                      <span className="inline-flex items-center rounded-full bg-muted/40 px-2.5 py-0.5 text-[11px] font-medium text-foreground tracking-tight select-none">{item.mood}</span>
-                      <span className="text-xs text-muted-foreground whitespace-nowrap">{new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
-                    </div>
-                    <div className="px-5 pt-1 flex-1">
-                      <p className="text-sm text-foreground/90 leading-relaxed whitespace-pre-wrap">{item.content}</p>
-                    </div>
-                    <div className="px-5 pb-4 mt-4 flex items-center gap-4">
-                      {item.link && (
-                        <a href={item.link} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:text-primary/80 transition-colors">
-                          <span className="icon-[ph--link-bold] size-3.5"></span> Attachment Link
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
+              {visibleFeed.map((item, index) => (
+                <FeedItemCard 
+                  key={item.id} 
+                  item={item} 
+                  animationDelay={`${(index % ITEMS_PER_PAGE) * 50}ms`} 
+                />
+              ))}
             </div>
 
             {/* 加载更多按钮 */}
