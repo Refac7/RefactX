@@ -170,7 +170,7 @@ export const ABOUT_CONFIG = {
 
   // 游戏日志
   games: [
-    { title: 'Rhythm Doctor', platform: 'PC / Steam', status: 'Playing', hours: '80h+', color: 'text-yellow-500' },
+    { title: 'Rhythm Doctor', platform: 'PC / Steam', status: 'Playing', hours: '100h+', color: 'text-yellow-500' },
     { title: 'Muse Dash', platform: 'PC / Steam', status: 'Paused', hours: '20h+', color: 'text-green-500' },
   ],
 

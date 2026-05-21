@@ -7,6 +7,17 @@ const { title, description, introduce, profile, skills, equipment, games, course
 const SECTION_HEADER_CLASS = "flex items-center justify-between border-b border-border/40 pb-4 mb-8 select-none"
 const SECTION_TITLE_CLASS = "text-lg font-semibold tracking-tight text-foreground"
 const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full bg-muted/60 px-2.5 py-0.5 text-xs font-medium text-muted-foreground mr-3"
+
+const physicalAttributes = [
+    { label: 'Height', value: '175 cm', icon: 'icon-[ph--ruler]' },
+    { label: 'Weight', value: '65 kg', icon: 'icon-[ph--barbell]' },
+    { label: 'Blood Type', value: 'A+', icon: 'icon-[ph--drop]' },
+    { label: 'MBTI', value: 'INTJ', icon: 'icon-[ph--brain]' },
+    { label: 'Birthdate', value: '2007-03-31', icon: 'icon-[ph--cake]' },
+    { label: 'Gender', value: 'Male', icon: 'icon-[ph--gender-male]' },
+    { label: 'Location', value: 'Luoyang, China', icon: 'icon-[ph--map-pin]' },
+    { label: 'status', value: 'Single', icon: 'icon-[ph--heart]' },
+];
 ---
 
 <Layout title={title} description={description}>
@@ -59,13 +70,24 @@ const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full 
                         <img src={profile.avatar} alt={profile.name} class="w-24 h-24 rounded-full object-cover border border-border/50 group-hover:scale-105 transition-transform duration-500 ease-out" />
                     </div>
 
-                    <div class="flex-1">
+                    <div class="flex-1 w-full">
                         <div class="flex items-center gap-3 mb-1">
                             <h3 class="text-2xl font-bold tracking-tight text-foreground">{profile.name}</h3>
                             <span class="items-center rounded-full bg-muted/60 px-2.5 py-0.5 text-xs font-medium text-muted-foreground hidden sm:inline-flex">Admin</span>
                         </div>
                         <p class="text-sm font-medium text-primary mb-4">{profile.role}</p>
                         <div class="prose prose-sm dark:prose-invert prose-p:leading-relaxed prose-p:text-muted-foreground max-w-none font-sans whitespace-pre-wrap">{profile.bio}</div>
+
+                        <div class="mt-8 pt-6 border-t border-border/40 grid grid-cols-2 sm:grid-cols-4 gap-3">
+                            {physicalAttributes.map(attr => (
+                                <div class="flex flex-col p-3 rounded-lg bg-background border border-border/40 hover:bg-muted/30 transition-colors">
+                                    <span class="flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground mb-1.5 uppercase tracking-wider select-none">
+                                        <span class={`${attr.icon} size-3.5`}></span>{attr.label}
+                                    </span>
+                                    <span class="text-sm font-semibold text-foreground">{attr.value}</span>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>
