@@ -7,17 +7,6 @@ const { title, description, introduce, profile, skills, equipment, games, course
 const SECTION_HEADER_CLASS = "flex items-center justify-between border-b border-border/40 pb-4 mb-8 select-none"
 const SECTION_TITLE_CLASS = "text-lg font-semibold tracking-tight text-foreground"
 const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full bg-muted/60 px-2.5 py-0.5 text-xs font-medium text-muted-foreground mr-3"
-
-const physicalAttributes = [
-    { label: 'Height', value: '175 cm', icon: 'icon-[ph--ruler]' },
-    { label: 'Weight', value: '65 kg', icon: 'icon-[ph--barbell]' },
-    { label: 'Blood Type', value: 'A+', icon: 'icon-[ph--drop]' },
-    { label: 'MBTI', value: 'INTJ', icon: 'icon-[ph--brain]' },
-    { label: 'Birthdate', value: '2007-03-31', icon: 'icon-[ph--cake]' },
-    { label: 'Gender', value: 'Male', icon: 'icon-[ph--gender-male]' },
-    { label: 'Location', value: 'Luoyang, China', icon: 'icon-[ph--map-pin]' },
-    { label: 'status', value: 'Single', icon: 'icon-[ph--heart]' },
-];
 ---
 
 <Layout title={title} description={description}>
@@ -79,7 +68,7 @@ const physicalAttributes = [
                         <div class="prose prose-sm dark:prose-invert prose-p:leading-relaxed prose-p:text-muted-foreground max-w-none font-sans whitespace-pre-wrap">{profile.bio}</div>
 
                         <div class="mt-8 pt-6 border-t border-border/40 grid grid-cols-2 sm:grid-cols-4 gap-3">
-                            {physicalAttributes.map(attr => (
+                            {ABOUT_CONFIG.physicalAttributes.map(attr => (
                                 <div class="flex flex-col p-3 rounded-lg bg-background border border-border/40 hover:bg-muted/30 transition-colors">
                                     <span class="flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground mb-1.5 uppercase tracking-wider select-none">
                                         <span class={`${attr.icon} size-3.5`}></span>{attr.label}
@@ -196,7 +185,7 @@ const physicalAttributes = [
                 <div class="rounded-lg border border-border/40 bg-background/50 p-4">
                     <div class="space-y-1">
                         {todos.map(todo => (
-                            <div class="flex items-center justify-between group/todo hover:bg-muted/30 p-2 rounded-lg transition-colors">
+                            <div class="flex items-center justify-between group/todo hover:bg-muted/30 p-2 rounded-xs transition-colors">
                                 <div class="flex items-center gap-3">
                                     <div class="flex items-center justify-center w-5 shrink-0 text-muted-foreground group-hover/todo:text-foreground transition-colors">{todo.completed ? (<span class="icon-[ph--check-circle-fill] size-5 text-primary"></span>) : (<span class="icon-[ph--circle] size-5 text-muted-foreground/40"></span>)}</div>
                                     <span class={`text-sm ${todo.completed ? 'text-muted-foreground/50 line-through' : 'text-foreground font-medium'} transition-colors`}>{todo.task}</span>

@@ -3,6 +3,7 @@ import type {
   Link,
   PostConfig,
   ProjectConfig,
+  DynamicConfig,
   Site,
   SkillsShowcaseConfig,
   SocialLink,
@@ -12,7 +13,7 @@ import type {
 // 站点全局配置
 export const SITE: Site = {
   title: 'RefactX Project',
-  description: '如风般轻盈，如光般纯粹。',
+  description: '又是又是……又是借口 / Another another... Another excuse.',
   website: 'https://www.refact.cc/',
   base: '/',
   author: 'Refact',
@@ -134,6 +135,13 @@ export const PROJECTS_CONFIG: ProjectConfig = {
   introduce: '以下是我的项目案例展示，不定期维护项目。'
 }
 
+// 动态页面配置
+export const DYNAMIC_CONFIG: DynamicConfig = {
+  title: 'Dynamic',
+  description: '我的动态',
+  introduce: '实时信号、简短想法和开发更新，直接从 Notion 工作区同步。'
+}
+
 // 关于页面配置
 export const ABOUT_CONFIG = {
   title: 'About',
@@ -147,6 +155,18 @@ export const ABOUT_CONFIG = {
     role: 'Creative Developer / UI Designer',
     bio: '又是又是……又是借口 / Another another... Another excuse. \n\n某计科专业在读，高数苦手。喜欢电子音乐，熟悉以下所有技术栈的拼写，熟练使用剪贴板和cmd c和cmd v. 如果你和我有共同爱好，欢迎随时使用你能找到的所有渠道联系我哦～',
   },
+
+  // 附加信息
+  physicalAttributes: [
+    { label: 'Height', value: '175 cm', icon: 'icon-[ph--ruler]' },
+    { label: 'Weight', value: '65 kg', icon: 'icon-[ph--barbell]' },
+    { label: 'Blood Type', value: 'A+', icon: 'icon-[ph--drop]' },
+    { label: 'MBTI', value: 'INTJ', icon: 'icon-[ph--brain]' },
+    { label: 'Birthdate', value: '2007-03-31', icon: 'icon-[ph--cake]' },
+    { label: 'Gender', value: 'Male', icon: 'icon-[ph--gender-male]' },
+    { label: 'Location', value: 'Luoyang, China', icon: 'icon-[ph--map-pin]' },
+    { label: 'status', value: 'Single', icon: 'icon-[ph--heart]' },
+  ],
   
   // 技能矩阵
   skills: [

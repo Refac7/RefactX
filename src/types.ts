@@ -51,7 +51,7 @@ export interface PostCardPageConfig {
   heroImageLayout?: HeroImageLayout
 }
 
-export type PostType = 'no-image' | 'vertical' | 'horizontal' | 'jap'
+export type PostType = 'jap'
 
 /**
  * 文章配置接口 / Post configuration interface
@@ -102,6 +102,12 @@ export interface PostConfig {
  * @property {string} introduce - 标签页介绍 / Tags page introduce
  */
 export interface TagsConfig {
+  title: string
+  description: string
+  introduce: string
+}
+
+export interface DynamicConfig {
   title: string
   description: string
   introduce: string
