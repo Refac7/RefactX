@@ -1,4 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { cn } from '~/lib/utils';
 import Captcha from '~/components/ui/Captcha';
 
@@ -8,17 +10,22 @@ interface FeedItem {
 
 const CACHE_KEY = 'refactx_dynamic_cache';
 const VERIFY_KEY = 'refactx_dynamic_verified';
-const CACHE_TIME_MS = 30 * 60 * 1000;       // 数据缓存 30 分钟
-const VERIFY_TIME_MS = 24 * 60 * 60 * 1000; // 人机验证记忆 24 小时
+const CACHE_TIME_MS = 30 * 60 * 1000;
+const VERIFY_TIME_MS = 24 * 60 * 60 * 1000;
 const ITEMS_PER_PAGE = 8;
+const COLLAPSE_HEIGHT = 160; // 超过此高度(px)显示折叠
 
-// 抽离单条动态组件，以便独立管理其展开/折叠状态
 function FeedItemCard({ item, animationDelay }: { item: FeedItem; animationDelay: string }) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [needsCollapse, setNeedsCollapse] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null);
 
-  // 判断是否需要折叠：字符数大于 180 或 换行数大于 4
-  const lineCount = (item.content.match(/\n/g) || []).length + 1;
-  const needsCollapse = item.content.length > 180 || lineCount > 4;
+  // 渲染后检测实际高度决定是否需要折叠
+  useEffect(() => {
+    if (contentRef.current && contentRef.current.scrollHeight > COLLAPSE_HEIGHT) {
+      setNeedsCollapse(true);
+    }
+  }, [item.content]);
 
   return (
     <div 
@@ -34,19 +41,33 @@ function FeedItemCard({ item, animationDelay }: { item: FeedItem; animationDelay
         </span>
       </div>
       
-      <div className="px-5 pt-1 flex-1">
-        <p className={cn(
-          "text-sm text-foreground/90 leading-relaxed whitespace-pre-wrap transition-all",
-          !isExpanded && needsCollapse && "line-clamp-4" // 未展开且需要折叠时，限制为4行并显示省略号
-        )}>
-          {item.content}
-        </p>
+      <div className="px-5 pt-1 flex-1 flex flex-col">
+        {/* Markdown 富文本渲染区 */}
+        <div 
+          ref={contentRef}
+          className={cn(
+            "relative transition-all duration-300",
+            !isExpanded && needsCollapse ? "max-h-[160px] overflow-hidden" : ""
+          )}
+        >
+          <div className="prose prose-sm dark:prose-invert max-w-none prose-img:rounded-lg prose-img:border prose-img:border-border/40 prose-a:text-primary prose-p:leading-relaxed">
+            <ReactMarkdown 
+              remarkPlugins={[remarkGfm]} 
+            >
+              {item.content}
+            </ReactMarkdown>
+          </div>
+
+          {/* 底部渐变遮罩 */}
+          {!isExpanded && needsCollapse && (
+            <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background to-transparent pointer-events-none" />
+          )}
+        </div>
         
-        {/* 展开/折叠 按钮 */}
         {needsCollapse && (
           <button 
             onClick={() => setIsExpanded(!isExpanded)}
-            className="mt-2 flex items-center gap-1 text-[13px] font-medium text-muted-foreground hover:text-foreground transition-colors select-none"
+            className="mt-3 inline-flex items-center gap-1 text-[13px] font-medium text-muted-foreground hover:text-foreground transition-colors select-none self-start"
           >
             {isExpanded ? (
               <><span className="icon-[ph--caret-up-bold] size-3.5"></span> Show less</>
@@ -74,9 +95,7 @@ export default function DynamicFeed() {
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
   const [isVerified, setIsVerified] = useState(false);
 
-  // 初始化检查 24小时 验证状态
   useEffect(() => {
-    // 使用 requestIdleCallback 避免阻塞主线程
     const checkVerification = () => {
       try {
         const verifiedData = localStorage.getItem(VERIFY_KEY);
@@ -84,14 +103,12 @@ export default function DynamicFeed() {
           setIsVerified(true);
           fetchFeed();
         } else {
-          setLoading(true); // 未验证时保持加载状态，展示底层骨架屏
+          setLoading(true);
         }
       } catch (e) {
-        console.error('Failed to check verification status:', e);
         setLoading(true);
       }
     };
-
     if ('requestIdleCallback' in window) {
       requestIdleCallback(checkVerification);
     } else {
@@ -99,7 +116,6 @@ export default function DynamicFeed() {
     }
   }, []);
 
-  // 真实数据拉取逻辑
   const fetchFeed = async () => {
     setLoading(true);
     const cached = localStorage.getItem(CACHE_KEY);
@@ -120,11 +136,10 @@ export default function DynamicFeed() {
     } finally { setLoading(false); }
   };
 
-  // 处理人机验证通过
   const handleVerifySuccess = (token: string) => {
     setIsVerified(true);
     localStorage.setItem(VERIFY_KEY, JSON.stringify({ timestamp: Date.now(), token }));
-    fetchFeed(); // 验证通过后，立刻拉取真实数据
+    fetchFeed();
   };
 
   const visibleFeed = feed.slice(0, visibleCount);
@@ -132,9 +147,8 @@ export default function DynamicFeed() {
 
   return (
     <div className="flex flex-col relative min-h-[400px]">
-      
       {!isVerified && (
-        <div className="absolute flex items-center justify-center p-2 animate-in fade-in duration-500">
+        <div className="absolute flex items-center justify-center p-2 animate-in fade-in duration-500 z-10">
           <div className="flex flex-col items-start text-start mx-auto">
             <span className="icon-[ph--shield-check-bold] size-10 mb-4 text-primary animate-pulse"></span>
             <h3 className="text-lg font-bold tracking-tight text-foreground mb-2">Attentions</h3>
@@ -143,7 +157,6 @@ export default function DynamicFeed() {
               请确认你已经做好心理准备，并且理解这些内容可能会引起不适。如果你觉得自己准备好了，请点击下面的按钮进行人机验证，证明你不是机器人。<br />
               你的确认将在24小时内有效，之后你可能需要再次验证。谢谢你的理解和配合。
             </p>
-            {/* 调用 PoW 验证组件 */}
             <Captcha onVerify={handleVerifySuccess} className="w-full shadow-sm" />
           </div>
         </div>
@@ -164,7 +177,6 @@ export default function DynamicFeed() {
           </div>
         ) : (
           <>
-            {/* 真实数据渲染 */}
             <div className="grid grid-cols-1 gap-6 relative">
               {visibleFeed.map((item, index) => (
                 <FeedItemCard 
@@ -175,7 +187,6 @@ export default function DynamicFeed() {
               ))}
             </div>
 
-            {/* 加载更多按钮 */}
             {hasMore && (
               <div className="mt-10 mb-4 flex justify-center fade-up" style={{ animationDelay: '100ms' }}>
                 <button onClick={() => setVisibleCount(prev => prev + ITEMS_PER_PAGE)} className="group flex items-center justify-center gap-2 px-6 py-2.5 rounded-full border border-border/60 bg-background text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted/30 hover:border-primary/40 transition-all select-none">
