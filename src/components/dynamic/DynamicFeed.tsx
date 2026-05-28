@@ -13,23 +13,31 @@ const VERIFY_KEY = 'refactx_dynamic_verified';
 const CACHE_TIME_MS = 30 * 60 * 1000;
 const VERIFY_TIME_MS = 24 * 60 * 60 * 1000;
 const ITEMS_PER_PAGE = 8;
-const COLLAPSE_HEIGHT = 160; // 超过此高度(px)显示折叠
+const COLLAPSE_HEIGHT = 160;
 
 function FeedItemCard({ item, animationDelay }: { item: FeedItem; animationDelay: string }) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [needsCollapse, setNeedsCollapse] = useState(false);
+  const [hasOverflow, setHasOverflow] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  // 渲染后检测实际高度决定是否需要折叠
   useEffect(() => {
-    if (contentRef.current && contentRef.current.scrollHeight > COLLAPSE_HEIGHT) {
-      setNeedsCollapse(true);
-    }
+    const el = contentRef.current;
+    if (!el) return;
+
+    const checkOverflow = () => {
+      setHasOverflow(el.scrollHeight > COLLAPSE_HEIGHT);
+    };
+
+    checkOverflow();
+
+    const observer = new ResizeObserver(checkOverflow);
+    observer.observe(el);
+    return () => observer.disconnect();
   }, [item.content]);
 
   return (
     <div 
-      className="group relative flex flex-col bg-background border border-border/40 rounded-lg transition-all duration-300 fade-up" 
+      className="group relative flex flex-col bg-background border border-border/40 rounded-lg fade-up" 
       style={{ animationDelay }}
     >
       <div className="p-5 pb-3 flex justify-between items-start gap-4">
@@ -42,29 +50,27 @@ function FeedItemCard({ item, animationDelay }: { item: FeedItem; animationDelay
       </div>
       
       <div className="px-5 pt-1 flex-1 flex flex-col">
-        {/* Markdown 富文本渲染区 */}
         <div 
-          ref={contentRef}
           className={cn(
-            "relative transition-all duration-300",
-            !isExpanded && needsCollapse ? "max-h-[160px] overflow-hidden" : ""
+            "relative transition-[max-height] duration-500 ease-in-out overflow-hidden",
+            isExpanded ? "max-h-[3000px]" : "max-h-[160px]"
           )}
         >
-          <div className="prose prose-sm dark:prose-invert max-w-none prose-img:rounded-lg prose-img:border prose-img:border-border/40 prose-a:text-primary prose-p:leading-relaxed">
-            <ReactMarkdown 
-              remarkPlugins={[remarkGfm]} 
-            >
+          <div
+            ref={contentRef}
+            className="prose prose-sm dark:prose-invert max-w-none prose-img:rounded-lg prose-img:border prose-img:border-border/40 prose-a:text-primary prose-p:leading-relaxed"
+          >
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
               {item.content}
             </ReactMarkdown>
           </div>
 
-          {/* 底部渐变遮罩 */}
-          {!isExpanded && needsCollapse && (
+          {!isExpanded && hasOverflow && (
             <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background to-transparent pointer-events-none" />
           )}
         </div>
         
-        {needsCollapse && (
+        {hasOverflow && (
           <button 
             onClick={() => setIsExpanded(!isExpanded)}
             className="mt-3 inline-flex items-center gap-1 text-[13px] font-medium text-muted-foreground hover:text-foreground transition-colors select-none self-start"

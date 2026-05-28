@@ -1,7 +1,6 @@
 export const prerender = false;
 import type { APIRoute } from 'astro';
 
-// 辅助函数：解析 Notion 的 Rich Text 为 Markdown
 const parseRichText = (richTextArr: any[]) => {
   if (!richTextArr || richTextArr.length === 0) return '';
   return richTextArr.map((t: any) => {
@@ -15,7 +14,6 @@ const parseRichText = (richTextArr: any[]) => {
   }).join('');
 };
 
-// 辅助函数：拉取 Notion Page 内部的 Blocks 并转为 Markdown
 async function getPageBlocksAsMarkdown(pageId: string, apiKey: string) {
   try {
     const res = await fetch(`https://api.notion.com/v1/blocks/${pageId}/children?page_size=100`, {
@@ -46,7 +44,7 @@ async function getPageBlocksAsMarkdown(pageId: string, apiKey: string) {
           const caption = parseRichText(blockData.caption || []);
           return url ? `![${caption}](${url})\n\n` : '';
         case 'divider': return `---\n\n`;
-        default: return ''; // 暂不支持的块忽略
+        default: return '';
       }
     }).join('');
   } catch (e) {
@@ -73,7 +71,7 @@ export const GET: APIRoute = async () => {
       body: JSON.stringify({
         filter: { property: 'Status', select: { equals: 'Published' } },
         sorts: [{ property: 'Date', direction: 'descending' }],
-        page_size: 20, // 适度限制并发量，防止 API 超时
+        page_size: 20,
       })
     });
 
@@ -81,14 +79,13 @@ export const GET: APIRoute = async () => {
 
     const data = await response.json();
 
-    // 并发请求解析所有文章内的 Block 内容
     const feed = await Promise.all(data.results.map(async (page: any) => {
       const props = page.properties;
       const content = await getPageBlocksAsMarkdown(page.id, apiKey);
       
       return {
         id: page.id,
-        content: content.trim() || '*(No content)*', // 替换为读取 Block 转换出的 Markdown
+        content: content.trim() || '*(No content)*',
         date: props.Date?.date?.start || page.created_time,
         mood: props.Mood?.select?.name || 'Update',
         link: props.Link?.url || null,
