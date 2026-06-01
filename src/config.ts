@@ -163,7 +163,7 @@ export const ABOUT_CONFIG = {
     { label: 'Blood Type', value: 'A+', icon: 'icon-[ph--drop]' },
     { label: 'MBTI', value: 'INTJ', icon: 'icon-[ph--brain]' },
     { label: 'Birthdate', value: '2007-03-31', icon: 'icon-[ph--cake]' },
-    { label: 'Gender', value: 'Male', icon: 'icon-[ph--gender-male]' },
+    { label: 'Gender', value: 'Non-binary', icon: 'icon-[ph--gender-nonbinary]' },
     { label: 'Location', value: 'Luoyang, China', icon: 'icon-[ph--map-pin]' },
     { label: 'status', value: 'Single', icon: 'icon-[ph--heart]' },
   ],
