@@ -83,10 +83,15 @@ export const GET: APIRoute = async () => {
       const props = page.properties;
       const content = await getPageBlocksAsMarkdown(page.id, apiKey);
       
+      const dateProp = props.Date?.date?.start;
+      const exactDate = (dateProp && dateProp.includes('T')) 
+        ? dateProp 
+        : (props.Created?.created_time || page.created_time);
+
       return {
         id: page.id,
         content: content.trim() || '*(No content)*',
-        date: props.Date?.date?.start || page.created_time,
+        date: exactDate,
         mood: props.Mood?.select?.name || 'Update',
         link: props.Link?.url || null,
       };

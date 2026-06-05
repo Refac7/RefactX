@@ -44,8 +44,15 @@ function FeedItemCard({ item, animationDelay }: { item: FeedItem; animationDelay
         <span className="inline-flex items-center rounded-full bg-muted/40 px-2.5 py-0.5 text-[11px] font-medium text-foreground tracking-tight select-none">
           {item.mood}
         </span>
-        <span className="text-xs text-muted-foreground whitespace-nowrap">
-          {new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+        <span className="text-xs text-muted-foreground whitespace-nowrap flex items-center gap-1">
+          {new Date(item.date).toLocaleString('zh-CN', { 
+            month: 'short', 
+            day: 'numeric', 
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false // 如果你想用AM/PM制，可以改成 true
+          })}
         </span>
       </div>
       
