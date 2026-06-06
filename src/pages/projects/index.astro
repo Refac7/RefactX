@@ -5,91 +5,156 @@ import Layout from '~/layouts/Layout.astro'
 import ProjectStats from '~/components/projects/ProjectStats'
 import rawProjectList from '~/content/data/projects.json'
 
-interface Project { name: string; description: string; githubUrl: string | null; website: string | null; type: string; icon: string; imageClass?: string; star?: number; fork?: number; }
-const ProjectList = rawProjectList as Project[];
+interface Project {
+  name: string
+  description: string
+  githubUrl: string | null
+  website: string | null
+  type: string
+  icon: string
+  imageClass?: string
+  star?: number
+  fork?: number
+}
+const ProjectList = rawProjectList as Project[]
 const { title, description, introduce } = PROJECTS_CONFIG
-const totalCount = ProjectList.length.toString().padStart(2, '0');
+const totalCount = ProjectList.length.toString().padStart(2, '0')
 
-const SECTION_HEADER_CLASS = "flex items-center justify-between border-b border-border/40 pb-4 mb-8 select-none"
-const SECTION_TITLE_CLASS = "text-lg font-semibold tracking-tight text-foreground"
-const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full bg-muted/60 px-2.5 py-0.5 text-xs font-medium text-muted-foreground mr-3"
+const SECTION_HEADER_CLASS = 'flex items-center justify-between border-b border-border/40 pb-4 mb-8 select-none'
+const SECTION_TITLE_CLASS = 'text-lg font-semibold tracking-tight text-foreground'
+const SECTION_NUM_CLASS =
+  'inline-flex items-center justify-center rounded-full bg-muted/60 px-2.5 py-0.5 text-xs font-medium text-muted-foreground mr-3'
 ---
 
 <Layout {title} {description}>
   <div class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
     <aside class="w-full lg:w-1/3 lg:sticky lg:top-0 lg:h-screen flex flex-col xl:border-r border-border/40 z-20 bg-background">
-      
       <div class="flex flex-1 lg:overflow-y-auto scrollbar-hide flex-col">
         <div class="p-6 lg:p-8 xl:p-12 pb-0 shrink-0 fade-up">
-          <span class="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary select-none">
+          <span
+            class="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-600 select-none"
+          >
+            <span class="relative flex h-1.5 w-1.5">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+            </span>
             Online
           </span>
         </div>
-        
-        <div class="flex-1 flex flex-col justify-end lg:justify-center p-6 lg:p-8 xl:p-12 min-h-[300px] lg:min-h-[250px] fade-up animation-delay-100">
-           <h1 class="text-5xl sm:text-6xl xl:text-7xl font-bold tracking-tight text-foreground leading-[1.1] mb-6 select-none">{title}</h1>
-           <div class="flex items-center gap-2 text-sm text-muted-foreground"><span class="icon-[ph--stack] size-4"></span><span>Module Registry</span></div>
+
+        <div
+          class="flex-1 flex flex-col justify-end lg:justify-center p-6 lg:p-8 xl:p-12 min-h-[300px] lg:min-h-[250px] fade-up animation-delay-100"
+        >
+          <h1 class="text-5xl sm:text-6xl xl:text-7xl font-bold tracking-tight text-foreground leading-[1.1] mb-6 select-none">{title}</h1>
+          <div class="flex items-center gap-2 text-sm text-muted-foreground">
+            <span class="icon-[ph--stack] size-4"></span><span>Module Registry</span>
+          </div>
         </div>
-        
+
         <div class="shrink-0 p-6 lg:p-8 xl:p-12 fade-up animation-delay-150">
-           <p class="text-sm text-muted-foreground leading-relaxed">{introduce}</p>
+          <p class="text-sm text-muted-foreground leading-relaxed">{introduce}</p>
         </div>
       </div>
-      
+
       <div class="flex border-t border-border/40 shrink-0 fade-up animation-delay-200">
-          <div class="flex-1 flex flex-col items-start justify-center p-8 lg:p-10 xl:p-14 bg-background border-r border-border/40 hover:bg-muted/30 transition-colors">
-             <span class="text-2xl font-semibold text-foreground tracking-tight">{totalCount}</span>
-             <span class="text-xs text-muted-foreground mt-1">Total Modules</span>
-          </div>
-          <div class="flex-1 flex flex-col items-start justify-center p-8 lg:p-10 xl:p-14 bg-background hover:bg-muted/30 transition-colors">
-             <span class="text-xl font-semibold text-foreground tracking-tight">{new Date().toLocaleDateString('en-US', {month: 'short', day: '2-digit'})}</span>
-             <span class="text-xs text-muted-foreground mt-1">Last Update</span>
-          </div>
+        <div
+          class="flex-1 flex flex-col items-start justify-center p-8 lg:p-10 xl:p-14 bg-background border-r border-border/40 hover:bg-muted/30 transition-colors"
+        >
+          <span class="text-2xl font-semibold text-foreground tracking-tight">{totalCount}</span>
+          <span class="text-xs text-muted-foreground mt-1">Total Modules</span>
+        </div>
+        <div class="flex-1 flex flex-col items-start justify-center p-8 lg:p-10 xl:p-14 bg-background hover:bg-muted/30 transition-colors">
+          <span class="text-xl font-semibold text-foreground tracking-tight"
+            >{new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit' })}</span
+          >
+          <span class="text-xs text-muted-foreground mt-1">Last Update</span>
+        </div>
       </div>
     </aside>
 
     <main class="w-full lg:w-2/3 z-10 flex flex-col fade-up animation-delay-100">
       <div class="p-6 lg:p-10 xl:p-16 2xl:p-20 flex-1">
         <div class={SECTION_HEADER_CLASS}>
-            <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>Component Sequence</h2></div>
+          <div class="flex items-center">
+            <span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>Component Sequence</h2>
+          </div>
         </div>
-        
+
         <div class="grid grid-cols-1 gap-6 mt-8">
-        {ProjectList.map((project, index) => {
-            return (
-                <div 
+          {
+            ProjectList.map((project, index) => {
+              return (
+                <div
                   class="group relative flex flex-col bg-background/50 border border-border/40 rounded-lg hover:bg-muted/20 hover:shadow-xs transition-all duration-300 fade-up hover:-translate-y-0.5"
                   style={`animation-delay: ${index * 100}ms`}
                 >
-                <div class="p-6 pb-2 relative z-10 flex justify-between items-start">
+                  <div class="p-6 pb-2 relative z-10 flex justify-between items-start">
                     <div class="size-12 flex items-center justify-center rounded-md bg-muted/30 border border-border/40">
-                        {project.type === 'icon' && <span class={cn('size-6 text-foreground/80', project.icon)} />}
-                        {project.type === 'image' && <img src={project.icon} alt={project.name} class={cn('size-full object-cover rounded-md opacity-90 group-hover:opacity-100 transition-opacity', project.imageClass)} />}
+                      {project.type === 'icon' && <span class={cn('size-6 text-foreground/80', project.icon)} />}
+                      {project.type === 'image' && (
+                        <img
+                          src={project.icon}
+                          alt={project.name}
+                          class={cn(
+                            'size-full object-cover rounded-md opacity-90 group-hover:opacity-100 transition-opacity',
+                            project.imageClass
+                          )}
+                        />
+                      )}
                     </div>
                     <div class="flex gap-2">
-                        {project.githubUrl && (<a href={project.githubUrl} target="_blank" class="flex items-center justify-center size-8 rounded-full bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground transition-all"><span class="icon-[mdi--github] size-4"></span></a>)}
-                        {project.website && (<a href={project.website} target="_blank" class="flex items-center justify-center size-8 rounded-full bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground transition-all"><span class="icon-[ph--arrow-up-right] size-4"></span></a>)}
+                      {project.githubUrl && (
+                        <a
+                          href={project.githubUrl}
+                          target="_blank"
+                          class="flex items-center justify-center size-8 rounded-full bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground transition-all"
+                        >
+                          <span class="icon-[mdi--github] size-4" />
+                        </a>
+                      )}
+                      {project.website && (
+                        <a
+                          href={project.website}
+                          target="_blank"
+                          class="flex items-center justify-center size-8 rounded-full bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground transition-all"
+                        >
+                          <span class="icon-[ph--arrow-up-right] size-4" />
+                        </a>
+                      )}
                     </div>
-                </div>
-                <div class="p-6 pt-2 flex-1 relative z-10">
+                  </div>
+                  <div class="p-6 pt-2 flex-1 relative z-10">
                     <a href={project.website || project.githubUrl} target="_blank" class="block">
-                        <h3 class="text-base font-semibold text-foreground tracking-tight">{project.name}</h3>
+                      <h3 class="text-base font-semibold text-foreground tracking-tight">{project.name}</h3>
                     </a>
                     <p class="text-xs text-muted-foreground leading-relaxed line-clamp-3">{project.description}</p>
-                </div>
-                <div class="mt-auto border-t border-border/40 px-6 py-2 bg-muted/10 rounded-b-xl flex items-center justify-between">
+                  </div>
+                  <div class="mt-auto border-t border-border/40 px-6 py-2 bg-muted/10 rounded-b-xl flex items-center justify-between">
                     <span class="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
-                        <span class="size-1.5 rounded-full bg-emerald-500"></span>
-                        Stable
+                      <span class="size-1.5 rounded-full bg-emerald-500" />
+                      Stable
                     </span>
-                    {project.githubUrl && (<div class="scale-95 origin-right"><ProjectStats client:visible repoUrl={project.githubUrl} initialStar={project.star} initialFork={project.fork} /></div>)}
+                    {project.githubUrl && (
+                      <div class="scale-95 origin-right">
+                        <ProjectStats client:visible repoUrl={project.githubUrl} initialStar={project.star} initialFork={project.fork} />
+                      </div>
+                    )}
+                  </div>
                 </div>
-                </div>
-            )
-        })}
+              )
+            })
+          }
         </div>
       </div>
     </main>
   </div>
 </Layout>
-<style>.scrollbar-hide::-webkit-scrollbar{display:none;}.scrollbar-hide{-ms-overflow-style:none;scrollbar-width:none;}</style>
+<style>
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+</style>
