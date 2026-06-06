@@ -5,34 +5,34 @@
 
 /* ===== Color Variables | 颜色变量 ===== */
 .markdown {
-  --text: #3f3f46;          /* zinc-700 */
-  --text-deep: #09090b;     /* zinc-950 */
-  --heading: #09090b;       /* zinc-950 */
-  --links: #09090b;         /* zinc-950 */
-  --links-border: #e4e4e7;  /* zinc-200 */
+  --text: #3f3f46; /* zinc-700 */
+  --text-deep: #09090b; /* zinc-950 */
+  --heading: #09090b; /* zinc-950 */
+  --links: #09090b; /* zinc-950 */
+  --links-border: #e4e4e7; /* zinc-200 */
   --links-hover-border: #a1a1aa; /* zinc-400 */
-  --anchor: #3b82f6;        /* blue-500 */
-  --hr-color: #e4e4e7;      /* zinc-200 */
+  --anchor: var(--color-primary); /* blue-500 */
+  --hr-color: #e4e4e7; /* zinc-200 */
   --blockquote-border: #e4e4e7; /* zinc-200 */
   --blockquote-bg: #fafafa; /* zinc-50 */
-  --table-text: #18181b;    /* zinc-900 */
+  --table-text: #18181b; /* zinc-900 */
   --inline-code-bg: #f4f4f5; /* zinc-100 */
   --inline-code-text: #18181b; /* zinc-900 */
   --inline-code-border: #e4e4e7; /* zinc-200 */
 }
 
 .dark .markdown {
-  --text: #a1a1aa;          /* zinc-400 */
-  --text-deep: #fafafa;     /* zinc-50 */
-  --heading: #fafafa;       /* zinc-50 */
-  --links: #fafafa;         /* zinc-50 */
-  --links-border: #3f3f46;  /* zinc-700 */
+  --text: #a1a1aa; /* zinc-400 */
+  --text-deep: #fafafa; /* zinc-50 */
+  --heading: #fafafa; /* zinc-50 */
+  --links: #fafafa; /* zinc-50 */
+  --links-border: #3f3f46; /* zinc-700 */
   --links-hover-border: #a1a1aa; /* zinc-400 */
-  --anchor: #60a5fa;        /* blue-400 */
-  --hr-color: #27272a;      /* zinc-800 */
+  --anchor: var(--color-primary); /* blue-400 */
+  --hr-color: #27272a; /* zinc-800 */
   --blockquote-border: #3f3f46; /* zinc-700 */
   --blockquote-bg: #18181b; /* zinc-900 */
-  --table-text: #fafafa;    /* zinc-50 */
+  --table-text: #fafafa; /* zinc-50 */
   --inline-code-bg: #27272a; /* zinc-800 */
   --inline-code-text: #e4e4e7; /* zinc-200 */
   --inline-code-border: #3f3f46; /* zinc-700 */
@@ -115,7 +115,9 @@
   text-decoration: none;
   font-weight: 500;
   border-bottom: 1px solid var(--links-border);
-  transition: border-color 0.2s ease, color 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease;
 }
 .markdown a:hover {
   border-bottom-color: var(--links-hover-border);
@@ -330,7 +332,9 @@
 .dark .markdown img.medium-zoom-image,
 .dark .markdown a img,
 .dark .markdown figure img {
-  transition: filter 0.2s ease, transform 0.2s cubic-bezier(0.2, 0, 0.2, 1) !important;
+  transition:
+    filter 0.2s ease,
+    transform 0.2s cubic-bezier(0.2, 0, 0.2, 1) !important;
 }
 
 /* ===== Spacing | 间距 ===== */
@@ -507,8 +511,12 @@
   padding-right: 4px;
 }
 
-.dark .img-light { display: none; }
-html:not(.dark) .img-dark { display: none; }
+.dark .img-light {
+  display: none;
+}
+html:not(.dark) .img-dark {
+  display: none;
+}
 
 .rds-video {
   z-index: 150;
@@ -578,14 +586,38 @@ html:not(.dark) .img-dark { display: none; }
 
 /* ===== Mobile Adaptation | 移动端适配 ===== */
 @media (max-width: 768px) {
-  .markdown { font-size: 0.9375rem; }
-  .markdown h1 { font-size: 1.875em; margin-bottom: 0.75em; }
-  .markdown h2 { font-size: 1.375em; margin-top: 1.75em; margin-bottom: 0.875em; }
-  .markdown h3 { font-size: 1.125em; margin-top: 1.5em; margin-bottom: 0.5em; }
-  .markdown pre { padding: 1em; border-radius: 0.5rem; }
-  .markdown blockquote { padding: 0.75em 1em; }
-  .markdown table { display: block; overflow-x: auto; }
-  .markdown a.header-anchor { margin-left: -1.1em; font-size: 0.75em; }
+  .markdown {
+    font-size: 0.9375rem;
+  }
+  .markdown h1 {
+    font-size: 1.875em;
+    margin-bottom: 0.75em;
+  }
+  .markdown h2 {
+    font-size: 1.375em;
+    margin-top: 1.75em;
+    margin-bottom: 0.875em;
+  }
+  .markdown h3 {
+    font-size: 1.125em;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+  }
+  .markdown pre {
+    padding: 1em;
+    border-radius: 0.5rem;
+  }
+  .markdown blockquote {
+    padding: 0.75em 1em;
+  }
+  .markdown table {
+    display: block;
+    overflow-x: auto;
+  }
+  .markdown a.header-anchor {
+    margin-left: -1.1em;
+    font-size: 0.75em;
+  }
 }
 
 /* ===== LQIP Styles | LQIP 样式 (不做修改) ===== */
