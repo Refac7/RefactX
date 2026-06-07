@@ -4,18 +4,20 @@ import { ABOUT_CONFIG } from '~/config'
 
 const { title, description, introduce, profile, skills, equipment, games, courseSchedule, todos } = ABOUT_CONFIG
 
-const SECTION_HEADER_CLASS = "flex items-center justify-between border-b border-border/40 pb-4 mb-8 select-none"
-const SECTION_TITLE_CLASS = "text-lg font-semibold tracking-tight text-foreground"
-const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full bg-muted/60 px-2.5 py-0.5 text-xs font-medium text-muted-foreground mr-3"
+const SECTION_HEADER_CLASS = 'flex items-center justify-between border-b border-border/40 pb-4 mb-8 select-none'
+const SECTION_TITLE_CLASS = 'text-lg font-semibold tracking-tight text-foreground'
+const SECTION_NUM_CLASS =
+  'inline-flex items-center justify-center rounded-full bg-muted/60 px-2.5 py-0.5 text-xs font-medium text-muted-foreground mr-3'
 ---
 
-<Layout title={title} description={description}>
+<Layout {title} {description}>
   <div class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
-    
     <aside class="w-full lg:w-1/3 lg:sticky lg:top-0 lg:h-screen flex flex-col xl:border-r border-border/40 z-20 bg-background">
       <div class="flex flex-1 lg:overflow-y-auto scrollbar-hide flex-col">
         <div class="p-6 lg:p-8 xl:p-12 pb-0 shrink-0 fade-up">
-          <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-600 select-none">
+          <span
+            class="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-600 select-none"
+          >
             <span class="relative flex h-1.5 w-1.5">
               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
@@ -23,181 +25,241 @@ const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full 
             Alive
           </span>
         </div>
-        
-        <div class="flex-1 flex flex-col justify-end lg:justify-center p-6 lg:p-8 xl:p-12 min-h-[300px] lg:min-h-[250px] fade-up animation-delay-100">
-           <h1 class="text-5xl sm:text-6xl xl:text-7xl font-bold tracking-tight text-foreground leading-[1.1] mb-6 select-none">{title}</h1>
-           <div class="flex items-center gap-2 text-sm text-muted-foreground"><span class="icon-[ph--user] size-4"></span><span>Profile Overview</span></div>
+
+        <div
+          class="flex-1 flex flex-col justify-end lg:justify-center p-6 lg:p-8 xl:p-12 min-h-[300px] lg:min-h-[250px] fade-up animation-delay-100"
+        >
+          <h1 class="text-5xl sm:text-6xl xl:text-7xl font-bold tracking-tight text-foreground leading-[1.1] mb-6 select-none">{title}</h1>
+          <div class="flex items-center gap-2 text-sm text-muted-foreground">
+            <span class="icon-[ph--user] size-4"></span><span>Profile Overview</span>
+          </div>
         </div>
-        
+
         <div class="shrink-0 p-6 lg:p-8 xl:p-12 fade-up animation-delay-150">
-           <p class="text-sm text-muted-foreground leading-relaxed">{introduce}</p>
+          <p class="text-sm text-muted-foreground leading-relaxed">{introduce}</p>
         </div>
       </div>
 
       <div class="flex border-t border-border/40 shrink-0 fade-up animation-delay-200">
-          <div class="flex-1 flex flex-col items-start justify-center p-8 lg:p-10 xl:p-14 bg-background border-r border-border/40 hover:bg-muted/30 transition-colors">
-             <span class="text-lg font-semibold text-foreground tracking-tight">Carbon-based</span>
-             <span class="text-xs text-muted-foreground mt-1">Form</span>
-          </div>
-          <div class="flex-1 flex flex-col items-start justify-center p-8 lg:p-10 xl:p-14 bg-background hover:bg-muted/30 transition-colors">
-             <span class="text-lg font-semibold text-foreground tracking-tight">Earth / UTC+8</span>
-             <span class="text-xs text-muted-foreground mt-1">Location</span>
-          </div>
+        <div
+          class="flex-1 flex flex-col items-start justify-center p-8 lg:p-10 xl:p-14 bg-background border-r border-border/40 hover:bg-muted/30 transition-colors"
+        >
+          <span class="text-lg font-semibold text-foreground tracking-tight">Carbon-based</span>
+          <span class="text-xs text-muted-foreground mt-1">Form</span>
+        </div>
+        <div class="flex-1 flex flex-col items-start justify-center p-8 lg:p-10 xl:p-14 bg-background hover:bg-muted/30 transition-colors">
+          <span class="text-lg font-semibold text-foreground tracking-tight">Earth / UTC+8</span>
+          <span class="text-xs text-muted-foreground mt-1">Location</span>
+        </div>
       </div>
     </aside>
 
     <main class="w-full lg:w-2/3 z-10 flex flex-col fade-up animation-delay-100">
       <div class="p-6 lg:p-10 xl:p-16 2xl:p-20 flex-1 flex flex-col">
-            
-            <div class="mb-20 fade-up animation-delay-150 mt-4">
-                <div class={SECTION_HEADER_CLASS}>
-                    <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>The Operator</h2></div>
-                </div>
-                
-                <div class="flex flex-col md:flex-row gap-8 lg:gap-12 items-start bg-background/50 border border-border/40 rounded-lg p-6 lg:p-8">
-                    <div class="shrink-0 relative group">
-                        <img src={profile.avatar} alt={profile.name} class="w-24 h-24 rounded-full object-cover border border-border/50 group-hover:scale-105 transition-transform duration-500 ease-out" />
+        <div class="mb-20 fade-up animation-delay-150 mt-4">
+          <div class={SECTION_HEADER_CLASS}>
+            <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>The Operator</h2></div>
+          </div>
+
+          <div class="flex flex-col md:flex-row gap-8 lg:gap-12 items-start bg-background/50 border border-border/40 rounded-lg p-6 lg:p-8">
+            <div class="shrink-0 relative group">
+              <img
+                src={profile.avatar}
+                alt={profile.name}
+                class="w-24 h-24 rounded-full object-cover border border-border/50 group-hover:scale-105 transition-transform duration-500 ease-out"
+              />
+            </div>
+
+            <div class="flex-1 w-full">
+              <div class="flex items-center gap-3 mb-1">
+                <h3 class="text-2xl font-bold tracking-tight text-foreground">{profile.name}</h3>
+                <span
+                  class="items-center rounded-full bg-muted/60 px-2.5 py-0.5 text-xs font-medium text-muted-foreground hidden sm:inline-flex"
+                  >Admin</span
+                >
+              </div>
+              <p class="text-sm font-medium text-foreground/60 mb-4">{profile.role}</p>
+              <div
+                class="prose prose-sm dark:prose-invert prose-p:leading-relaxed prose-p:text-muted-foreground max-w-none font-sans whitespace-pre-wrap"
+              >
+                {profile.bio}
+              </div>
+
+              <div class="mt-8 pt-6 border-t border-border/40 grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {
+                  ABOUT_CONFIG.physicalAttributes.map((attr) => (
+                    <div class="flex flex-col p-3 rounded-lg bg-background border border-border/40 hover:bg-muted/30 transition-colors">
+                      <span class="flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground mb-1.5 uppercase tracking-wider select-none">
+                        <span class={`${attr.icon} size-3.5`} />
+                        {attr.label}
+                      </span>
+                      <span class="text-sm font-semibold text-foreground">{attr.value}</span>
                     </div>
+                  ))
+                }
+              </div>
+            </div>
+          </div>
+        </div>
 
-                    <div class="flex-1 w-full">
-                        <div class="flex items-center gap-3 mb-1">
-                            <h3 class="text-2xl font-bold tracking-tight text-foreground">{profile.name}</h3>
-                            <span class="items-center rounded-full bg-muted/60 px-2.5 py-0.5 text-xs font-medium text-muted-foreground hidden sm:inline-flex">Admin</span>
-                        </div>
-                        <p class="text-sm font-medium text-primary mb-4">{profile.role}</p>
-                        <div class="prose prose-sm dark:prose-invert prose-p:leading-relaxed prose-p:text-muted-foreground max-w-none font-sans whitespace-pre-wrap">{profile.bio}</div>
+        <div class="mb-20 fade-up animation-delay-200">
+          <div class={SECTION_HEADER_CLASS}>
+            <div class="flex items-center"><span class={SECTION_NUM_CLASS}>02</span><h2 class={SECTION_TITLE_CLASS}>Skill Matrix</h2></div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+            {
+              skills.map((skillGroup) => (
+                <div class="p-6 rounded-lg border border-border/40 bg-background/50 hover:bg-muted/20 hover:shadow-xs transition-all group hover:-translate-y-0.5">
+                  <h4 class="text-sm font-semibold text-foreground tracking-tight mb-4 flex items-center gap-2">{skillGroup.category}</h4>
+                  <div class="flex flex-wrap gap-2">
+                    {skillGroup.items.map((item) => (
+                      <span class="inline-flex items-center rounded-lg bg-muted/50 px-2.5 py-1 text-xs font-medium text-muted-foreground border border-border/40 group-hover:bg-background group-hover:text-foreground transition-colors cursor-default">
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </div>
 
-                        <div class="mt-8 pt-6 border-t border-border/40 grid grid-cols-2 sm:grid-cols-4 gap-3">
-                            {ABOUT_CONFIG.physicalAttributes.map(attr => (
-                                <div class="flex flex-col p-3 rounded-lg bg-background border border-border/40 hover:bg-muted/30 transition-colors">
-                                    <span class="flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground mb-1.5 uppercase tracking-wider select-none">
-                                        <span class={`${attr.icon} size-3.5`}></span>{attr.label}
-                                    </span>
-                                    <span class="text-sm font-semibold text-foreground">{attr.value}</span>
-                                </div>
-                            ))}
-                        </div>
+        <div class="mb-20 fade-up" style="animation-delay: 250ms">
+          <div class={SECTION_HEADER_CLASS}>
+            <div class="flex items-center">
+              <span class={SECTION_NUM_CLASS}>03</span><h2 class={SECTION_TITLE_CLASS}>Hardware Loadout</h2>
+            </div>
+          </div>
+          <div class="border border-border/40 bg-background/50 rounded-lg overflow-hidden">
+            {
+              equipment.map((item, index) => (
+                <div
+                  class={`flex flex-col sm:flex-row sm:items-center justify-between px-4 py-3  hover:bg-muted/30 transition-all ${index !== equipment.length - 1 ? 'border-b border-border/40' : ''}`}
+                >
+                  <div class="flex items-center gap-4 mb-2 sm:mb-0 shrink-0">
+                    <span class="text-sm font-medium text-muted-foreground/40 w-6">{(index + 1).toString().padStart(2, '0')}</span>
+                    <span class="text-sm font-medium text-foreground w-24">{item.type}</span>
+                  </div>
+                  <div class="flex flex-col sm:items-end sm:text-right pl-10 sm:pl-0 shrink-0">
+                    <span class="text-sm font-semibold text-foreground tracking-tight">{item.name}</span>
+                    <span class="text-xs text-muted-foreground">{item.desc}</span>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+
+        <div class="mb-20 fade-up" style="animation-delay: 300ms">
+          <div class={SECTION_HEADER_CLASS}>
+            <div class="flex items-center"><span class={SECTION_NUM_CLASS}>04</span><h2 class={SECTION_TITLE_CLASS}>Gaming Log</h2></div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {
+              games.map((game) => (
+                <div class="p-5 rounded-lg border border-border/40 bg-background/50 hover:bg-muted/20 hover:shadow-xs transition-all flex flex-col justify-between min-h-[120px] hover:-translate-y-0.5">
+                  <div class="flex justify-between items-start mb-4">
+                    <span class="text-base font-semibold text-foreground tracking-tight">{game.title}</span>
+                    <span class="text-xs font-medium text-muted-foreground bg-muted/60 px-2 py-0.5 rounded-full">{game.hours}</span>
+                  </div>
+                  <div class="flex items-center justify-between mt-auto">
+                    <span class="text-sm text-muted-foreground">{game.platform}</span>
+                    <div class="flex items-center gap-1.5">
+                      <div class={`size-2 rounded-full ${game.color} ${game.status === 'Playing' ? 'animate-pulse' : ''}`} />
+                      <span class="text-xs font-medium text-muted-foreground">{game.status}</span>
                     </div>
+                  </div>
                 </div>
-            </div>
+              ))
+            }
+          </div>
+        </div>
 
-            <div class="mb-20 fade-up animation-delay-200">
-                <div class={SECTION_HEADER_CLASS}>
-                    <div class="flex items-center"><span class={SECTION_NUM_CLASS}>02</span><h2 class={SECTION_TITLE_CLASS}>Skill Matrix</h2></div>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-                    {skills.map((skillGroup) => (
-                        <div class="p-6 rounded-lg border border-border/40 bg-background/50 hover:bg-muted/20 hover:shadow-xs transition-all group hover:-translate-y-0.5">
-                            <h4 class="text-sm font-semibold text-foreground tracking-tight mb-4 flex items-center gap-2">
-                                {skillGroup.category}
-                            </h4>
-                            <div class="flex flex-wrap gap-2">
-                                {skillGroup.items.map(item => (
-                                    <span class="inline-flex items-center rounded-lg bg-muted/50 px-2.5 py-1 text-xs font-medium text-muted-foreground border border-border/40 group-hover:bg-background group-hover:text-foreground transition-colors cursor-default">
-                                        {item}
-                                    </span>
-                                ))}
-                            </div>
+        <div class="mb-20 fade-up" style="animation-delay: 350ms">
+          <div class={SECTION_HEADER_CLASS}>
+            <div class="flex items-center"><span class={SECTION_NUM_CLASS}>05</span><h2 class={SECTION_TITLE_CLASS}>Schedule</h2></div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5 gap-4">
+            {
+              courseSchedule.map((dayData) => (
+                <div class="flex flex-col rounded-lg border border-border/40 bg-background/50 hover:shadow-xs transition-all overflow-hidden hover:-translate-y-0.5">
+                  <div class="flex justify-between items-center px-4 py-3 bg-muted/30 border-b border-border/40">
+                    <span class="text-sm font-semibold text-foreground">{dayData.day}</span>
+                    <span class="text-xs font-medium text-muted-foreground">{dayData.label}</span>
+                  </div>
+                  <div class="p-4 flex flex-col gap-4 flex-1">
+                    {dayData.courses.length > 0 ? (
+                      dayData.courses.map((course) => (
+                        <div class="relative pl-3 border-l-2 border-muted-foreground/20 hover:border-primary transition-colors">
+                          <span class="inline-block text-xs font-medium text-muted-foreground mb-1">{course.time}</span>
+                          <span class="block text-sm font-semibold text-foreground leading-tight mb-1">{course.name}</span>
+                          <span class="flex items-center gap-1 text-xs text-muted-foreground">
+                            <span class="icon-[ph--map-pin] size-3" />
+                            {course.location}
+                          </span>
                         </div>
-                    ))}
+                      ))
+                    ) : (
+                      <div class="flex-1 flex flex-col items-center justify-center py-6 select-none">
+                        <span class="icon-[ph--coffee] size-5 mb-2 text-muted-foreground/40" />
+                        <span class="text-xs font-medium text-muted-foreground">Free Time</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
-            </div>
+              ))
+            }
+          </div>
+        </div>
 
-            <div class="mb-20 fade-up" style="animation-delay: 250ms">
-                <div class={SECTION_HEADER_CLASS}>
-                    <div class="flex items-center"><span class={SECTION_NUM_CLASS}>03</span><h2 class={SECTION_TITLE_CLASS}>Hardware Loadout</h2></div>
-                </div>
-                <div class="border border-border/40 bg-background/50 rounded-lg overflow-hidden">
-                    {equipment.map((item, index) => (
-                        <div class={`flex flex-col sm:flex-row sm:items-center justify-between px-4 py-3  hover:bg-muted/30 transition-all ${index !== equipment.length - 1 ? 'border-b border-border/40' : ''}`}>
-                            <div class="flex items-center gap-4 mb-2 sm:mb-0 shrink-0">
-                                <span class="text-sm font-medium text-muted-foreground/40 w-6">{(index + 1).toString().padStart(2, '0')}</span>
-                                <span class="text-sm font-medium text-foreground w-24">{item.type}</span>
-                            </div>
-                            <div class="flex flex-col sm:items-end sm:text-right pl-10 sm:pl-0 shrink-0">
-                                <span class="text-sm font-semibold text-foreground tracking-tight">{item.name}</span>
-                                <span class="text-xs text-muted-foreground">{item.desc}</span>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+        <div class="mb-12 fade-up" style="animation-delay: 400ms">
+          <div class={SECTION_HEADER_CLASS}>
+            <div class="flex items-center">
+              <span class={SECTION_NUM_CLASS}>06</span><h2 class={SECTION_TITLE_CLASS}>Active Threads</h2>
             </div>
-
-            <div class="mb-20 fade-up" style="animation-delay: 300ms">
-                <div class={SECTION_HEADER_CLASS}>
-                    <div class="flex items-center"><span class={SECTION_NUM_CLASS}>04</span><h2 class={SECTION_TITLE_CLASS}>Gaming Log</h2></div>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {games.map(game => (
-                        <div class="p-5 rounded-lg border border-border/40 bg-background/50 hover:bg-muted/20 hover:shadow-xs transition-all flex flex-col justify-between min-h-[120px] hover:-translate-y-0.5">
-                            <div class="flex justify-between items-start mb-4">
-                                <span class="text-base font-semibold text-foreground tracking-tight">{game.title}</span>
-                                <span class="text-xs font-medium text-muted-foreground bg-muted/60 px-2 py-0.5 rounded-full">{game.hours}</span>
-                            </div>
-                            <div class="flex items-center justify-between mt-auto">
-                                <span class="text-sm text-muted-foreground">{game.platform}</span>
-                                <div class="flex items-center gap-1.5">
-                                    <div class={`size-2 rounded-full ${game.color} ${game.status === 'Playing' ? 'animate-pulse' : ''}`}></div>
-                                    <span class="text-xs font-medium text-muted-foreground">{game.status}</span>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-
-            <div class="mb-20 fade-up" style="animation-delay: 350ms">
-                <div class={SECTION_HEADER_CLASS}>
-                    <div class="flex items-center"><span class={SECTION_NUM_CLASS}>05</span><h2 class={SECTION_TITLE_CLASS}>Schedule</h2></div>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5 gap-4">
-                    {courseSchedule.map((dayData) => (
-                        <div class="flex flex-col rounded-lg border border-border/40 bg-background/50 hover:shadow-xs transition-all overflow-hidden hover:-translate-y-0.5">
-                            <div class="flex justify-between items-center px-4 py-3 bg-muted/30 border-b border-border/40">
-                                <span class="text-sm font-semibold text-foreground">{dayData.day}</span>
-                                <span class="text-xs font-medium text-muted-foreground">{dayData.label}</span>
-                            </div>
-                            <div class="p-4 flex flex-col gap-4 flex-1">
-                                {dayData.courses.length > 0 ? (
-                                    dayData.courses.map(course => (
-                                        <div class="relative pl-3 border-l-2 border-primary/30 hover:border-primary transition-colors">
-                                            <span class="inline-block text-xs font-medium text-muted-foreground mb-1">{course.time}</span>
-                                            <span class="block text-sm font-semibold text-foreground leading-tight mb-1">{course.name}</span>
-                                            <span class="flex items-center gap-1 text-xs text-muted-foreground"><span class="icon-[ph--map-pin] size-3"></span>{course.location}</span>
-                                        </div>
-                                    ))
-                                ) : (
-                                    <div class="flex-1 flex flex-col items-center justify-center py-6 select-none">
-                                        <span class="icon-[ph--coffee] size-5 mb-2 text-muted-foreground/40"></span>
-                                        <span class="text-xs font-medium text-muted-foreground">Free Time</span>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-
-            <div class="mb-12 fade-up" style="animation-delay: 400ms">
-                <div class={SECTION_HEADER_CLASS}>
-                    <div class="flex items-center"><span class={SECTION_NUM_CLASS}>06</span><h2 class={SECTION_TITLE_CLASS}>Active Threads</h2></div>
-                </div>
-                <div class="rounded-lg border border-border/40 bg-background/50 p-4">
-                    <div class="space-y-1">
-                        {todos.map(todo => (
-                            <div class="flex items-center justify-between group/todo hover:bg-muted/30 p-2 rounded-xs transition-colors">
-                                <div class="flex items-center gap-3">
-                                    <div class="flex items-center justify-center w-5 shrink-0 text-muted-foreground group-hover/todo:text-foreground transition-colors">{todo.completed ? (<span class="icon-[ph--check-circle-fill] size-5 text-primary"></span>) : (<span class="icon-[ph--circle] size-5 text-muted-foreground/40"></span>)}</div>
-                                    <span class={`text-sm ${todo.completed ? 'text-muted-foreground/50 line-through' : 'text-foreground font-medium'} transition-colors`}>{todo.task}</span>
-                                </div>
-                                <div class="ml-4 text-xs hidden sm:block shrink-0">{todo.completed ? (<span class="text-muted-foreground/50">Done</span>) : (<span class="text-primary/80 font-medium">Pending</span>)}</div>
-                            </div>
-                        ))}
+          </div>
+          <div class="rounded-lg border border-border/40 bg-background/50 p-4">
+            <div class="space-y-1">
+              {
+                todos.map((todo) => (
+                  <div class="flex items-center justify-between group/todo hover:bg-muted/30 p-2 rounded-xs transition-colors">
+                    <div class="flex items-center gap-3">
+                      <div class="flex items-center justify-center w-5 shrink-0 text-muted-foreground group-hover/todo:text-foreground transition-colors">
+                        {todo.completed ? (
+                          <span class="icon-[ph--check-circle-fill] size-5 text-primary" />
+                        ) : (
+                          <span class="icon-[ph--circle] size-5 text-muted-foreground/40" />
+                        )}
+                      </div>
+                      <span
+                        class={`text-sm ${todo.completed ? 'text-muted-foreground/50 line-through' : 'text-foreground font-medium'} transition-colors`}
+                      >
+                        {todo.task}
+                      </span>
                     </div>
-                </div>
+                    <div class="ml-4 text-xs hidden sm:block shrink-0">
+                      {todo.completed ? (
+                        <span class="text-muted-foreground/50">Done</span>
+                      ) : (
+                        <span class="text-primary/80 font-medium">Pending</span>
+                      )}
+                    </div>
+                  </div>
+                ))
+              }
             </div>
+          </div>
+        </div>
       </div>
     </main>
   </div>
 </Layout>
-<style>.scrollbar-hide::-webkit-scrollbar{display:none;}.scrollbar-hide{-ms-overflow-style:none;scrollbar-width:none;}</style>
+<style>
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+</style>
