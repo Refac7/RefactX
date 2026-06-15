@@ -300,3 +300,190 @@ export const CMS_CONFIG = {
 export const Holiday_Effects = {
   enableHolidayEffects: true,
 }
+
+// src/config.ts
+
+export const HOLIDAY_THEMES = {
+  // ====== 哀悼日 ======
+  '2026-04-04': {
+    theme: 'theme-mourning',
+    message: '今日是特殊纪念日，全站已开启哀悼模式。',
+  },
+  '2026-04-05': {
+    theme: 'theme-mourning',
+    message: '今日是特殊纪念日，全站已开启哀悼模式。',
+  },
+  '2026-04-06': {
+    theme: 'theme-mourning',
+    message: '今日是特殊纪念日，全站已开启哀悼模式。',
+  },
+  '2026-12-13': {
+    theme: 'theme-mourning',
+    message: '国家公祭日，全站已开启哀悼模式。',
+  },
+
+  '2027-04-04': {
+    theme: 'theme-mourning',
+    message: '今日是特殊纪念日，全站已开启哀悼模式。',
+  },
+  '2027-04-05': {
+    theme: 'theme-mourning',
+    message: '今日是特殊纪念日，全站已开启哀悼模式。',
+  },
+  '2027-04-06': {
+    theme: 'theme-mourning',
+    message: '今日是特殊纪念日，全站已开启哀悼模式。',
+  },
+  '2027-12-13': {
+    theme: 'theme-mourning',
+    message: '国家公祭日，全站已开启哀悼模式。',
+  },
+
+  // ====== 元旦 ======
+  '2026-01-01': {
+    theme: 'theme-red',
+    message: '新年快乐，全站已切换至节日主题。',
+  },
+  '2027-01-01': {
+    theme: 'theme-red',
+    message: '新年快乐，全站已切换至节日主题。',
+  },
+  '2028-01-01': {
+    theme: 'theme-red',
+    message: '新年快乐，全站已切换至节日主题。',
+  },
+
+  // ====== 春节 ======
+  '2026-02-17': {
+    theme: 'theme-red',
+    message: '春节快乐，全站已切换至节日主题。',
+  },
+  '2026-02-18': {
+    theme: 'theme-red',
+    message: '春节快乐，全站已切换至节日主题。',
+  },
+  '2026-02-19': {
+    theme: 'theme-red',
+    message: '春节快乐，全站已切换至节日主题。',
+  },
+
+  '2027-02-06': {
+    theme: 'theme-red',
+    message: '春节快乐，全站已切换至节日主题。',
+  },
+  '2027-02-07': {
+    theme: 'theme-red',
+    message: '春节快乐，全站已切换至节日主题。',
+  },
+  '2027-02-08': {
+    theme: 'theme-red',
+    message: '春节快乐，全站已切换至节日主题。',
+  },
+
+  '2028-01-26': {
+    theme: 'theme-red',
+    message: '春节快乐，全站已切换至节日主题。',
+  },
+  '2028-01-27': {
+    theme: 'theme-red',
+    message: '春节快乐，全站已切换至节日主题。',
+  },
+  '2028-01-28': {
+    theme: 'theme-red',
+    message: '春节快乐，全站已切换至节日主题。',
+  },
+
+  // ====== 端午 ======
+  '2026-06-19': {
+    theme: 'theme-green',
+    message: '端午安康，全站已切换至粽叶绿主题。',
+  },
+  '2026-06-20': {
+    theme: 'theme-green',
+    message: '端午安康，全站已切换至粽叶绿主题。',
+  },
+  '2026-06-21': {
+    theme: 'theme-green',
+    message: '端午安康，全站已切换至粽叶绿主题。',
+  },
+
+  '2027-06-09': {
+    theme: 'theme-green',
+    message: '端午安康，全站已切换至粽叶绿主题。',
+  },
+  '2027-06-10': {
+    theme: 'theme-green',
+    message: '端午安康，全站已切换至粽叶绿主题。',
+  },
+  '2027-06-11': {
+    theme: 'theme-green',
+    message: '端午安康，全站已切换至粽叶绿主题。',
+  },
+
+  // ====== 中秋 ======
+  '2026-09-25': {
+    theme: 'theme-gold',
+    message: '中秋快乐，全站已切换至月华金主题。',
+  },
+  '2026-09-26': {
+    theme: 'theme-gold',
+    message: '中秋快乐，全站已切换至月华金主题。',
+  },
+  '2026-09-27': {
+    theme: 'theme-gold',
+    message: '中秋快乐，全站已切换至月华金主题。',
+  },
+
+  '2027-09-15': {
+    theme: 'theme-gold',
+    message: '中秋快乐，全站已切换至月华金主题。',
+  },
+  '2027-09-16': {
+    theme: 'theme-gold',
+    message: '中秋快乐，全站已切换至月华金主题。',
+  },
+  '2027-09-17': {
+    theme: 'theme-gold',
+    message: '中秋快乐，全站已切换至月华金主题。',
+  },
+
+  // ====== 国庆 ======
+  '2026-10-01': {
+    theme: 'theme-red',
+    message: '欢度国庆，全站已切换至节日主题。',
+  },
+  '2026-10-02': {
+    theme: 'theme-red',
+    message: '欢度国庆，全站已切换至节日主题。',
+  },
+  '2026-10-03': {
+    theme: 'theme-red',
+    message: '欢度国庆，全站已切换至节日主题。',
+  },
+
+  '2027-10-01': {
+    theme: 'theme-red',
+    message: '欢度国庆，全站已切换至节日主题。',
+  },
+  '2027-10-02': {
+    theme: 'theme-red',
+    message: '欢度国庆，全站已切换至节日主题。',
+  },
+  '2027-10-03': {
+    theme: 'theme-red',
+    message: '欢度国庆，全站已切换至节日主题。',
+  },
+
+  '2028-10-01': {
+    theme: 'theme-red',
+    message: '欢度国庆，全站已切换至节日主题。',
+  },
+  '2028-10-02': {
+    theme: 'theme-red',
+    message: '欢度国庆，全站已切换至节日主题。',
+  },
+  '2028-10-03': {
+    theme: 'theme-red',
+    message: '欢度国庆，全站已切换至节日主题。',
+  },
+} as const;
