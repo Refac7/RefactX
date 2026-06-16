@@ -180,7 +180,7 @@ export const ABOUT_CONFIG = {
   // 硬件清单
   equipment: [
     { type: 'Workstation', name: 'Desktop', desc: 'Xeon E5 2660v2 / NVIDIA Geforce GTX 1060 / 32GB DDR3' },
-    { type: 'Laptop', name: 'DELL Inspiron 3576', desc: 'Intel Core i5-8250U / AMD Radeon R5 M435 / 8GB DDR4' },
+    { type: 'Laptop', name: 'DELL Inspiron 3576', desc: 'Intel Core i5-8250U / AMD Radeon R5 M435 / 16GB DDR4' },
     { type: 'Phone', name: 'iPhone 12 mini', desc: 'A14 / 128GB' },
     { type: 'Pad', name: 'iPad', desc: 'A16 / 256GB' },
     { type: 'Monitor', name: 'HKC T2755U', desc: '27" / 4K / Standard Glass' },
