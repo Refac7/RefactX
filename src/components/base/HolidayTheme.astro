@@ -1,5 +1,5 @@
 ---
-import { HOLIDAY_THEMES } from "~/config";
+import { HOLIDAY_THEMES } from '~/config'
 ---
 
 <style is:global>
@@ -10,55 +10,41 @@ import { HOLIDAY_THEMES } from "~/config";
 </style>
 
 <script define:vars={{ HOLIDAY_THEMES }} is:inline>
-  (function () {
+  ;(function () {
     function applyHolidayTheme() {
-      const date = new Date();
+      const date = new Date()
 
-      const todayStr =
-        `${date.getFullYear()}-${
-          String(date.getMonth() + 1).padStart(2, '0')
-        }-${
-          String(date.getDate()).padStart(2, '0')
-        }`;
+      const todayStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
 
-      const holiday = HOLIDAY_THEMES[todayStr];
+      const holiday = HOLIDAY_THEMES[todayStr]
 
-      let activeTheme = null;
-      let themeMsg = '';
+      let activeTheme = null
+      let themeMsg = ''
 
       if (holiday) {
-        activeTheme = holiday.theme;
-        themeMsg = holiday.message;
+        activeTheme = holiday.theme
+        themeMsg = holiday.message
       }
 
-      const overrideDate =
-        localStorage.getItem('disable-holiday-theme');
+      const overrideDate = localStorage.getItem('disable-holiday-theme')
 
-      document.documentElement.classList.remove(
-        'theme-mourning',
-        'theme-red',
-        'theme-green',
-        'theme-gold'
-      );
+      document.documentElement.classList.remove('theme-mourning', 'theme-red', 'theme-green', 'theme-gold')
 
       if (activeTheme && overrideDate !== todayStr) {
-        document.documentElement.classList.add(activeTheme);
+        document.documentElement.classList.add(activeTheme)
 
-        window.__HOLIDAY_ACTIVE__ = true;
-        window.__HOLIDAY_MSG__ = themeMsg;
-        window.__HOLIDAY_CLASS__ = activeTheme;
-        window.__TODAY_STR__ = todayStr;
+        window.__HOLIDAY_ACTIVE__ = true
+        window.__HOLIDAY_MSG__ = themeMsg
+        window.__HOLIDAY_CLASS__ = activeTheme
+        window.__TODAY_STR__ = todayStr
       } else {
-        window.__HOLIDAY_ACTIVE__ = false;
+        window.__HOLIDAY_ACTIVE__ = false
       }
     }
 
-    applyHolidayTheme();
-    document.addEventListener(
-      'astro:after-swap',
-      applyHolidayTheme
-    );
-  })();
+    applyHolidayTheme()
+    document.addEventListener('astro:after-swap', applyHolidayTheme)
+  })()
 </script>
 
 <div
@@ -67,10 +53,7 @@ import { HOLIDAY_THEMES } from "~/config";
 >
   <div class="flex items-center gap-2 overflow-hidden">
     <span class="icon-[mdi--information-outline] text-base shrink-0"></span>
-    <span
-      id="holiday-msg"
-      class="truncate font-medium"
-    ></span>
+    <span id="holiday-msg" class="truncate font-medium"></span>
   </div>
 
   <button
@@ -82,61 +65,42 @@ import { HOLIDAY_THEMES } from "~/config";
 </div>
 
 <script is:inline>
-  (function () {
+  ;(function () {
     function initHolidayBanner() {
-      const banner =
-        document.getElementById('holiday-banner');
+      const banner = document.getElementById('holiday-banner')
 
-      const msgEl =
-        document.getElementById('holiday-msg');
+      const msgEl = document.getElementById('holiday-msg')
 
-      const closeBtn =
-        document.getElementById('close-holiday-btn');
+      const closeBtn = document.getElementById('close-holiday-btn')
 
-      if (
-        window.__HOLIDAY_ACTIVE__ &&
-        banner &&
-        msgEl
-      ) {
-        msgEl.textContent =
-          window.__HOLIDAY_MSG__;
+      if (window.__HOLIDAY_ACTIVE__ && banner && msgEl) {
+        msgEl.textContent = window.__HOLIDAY_MSG__
 
-        banner.classList.remove('hidden');
-        banner.classList.add('flex');
+        banner.classList.remove('hidden')
+        banner.classList.add('flex')
 
         closeBtn.onclick = () => {
-          document.documentElement.classList.remove(
-            window.__HOLIDAY_CLASS__
-          );
+          document.documentElement.classList.remove(window.__HOLIDAY_CLASS__)
 
-          banner.classList.add('hidden');
-          banner.classList.remove('flex');
+          banner.classList.add('hidden')
+          banner.classList.remove('flex')
 
-          localStorage.setItem(
-            'disable-holiday-theme',
-            window.__TODAY_STR__
-          );
+          localStorage.setItem('disable-holiday-theme', window.__TODAY_STR__)
 
-          window.__HOLIDAY_ACTIVE__ = false;
-        };
+          window.__HOLIDAY_ACTIVE__ = false
+        }
       } else if (banner) {
-        banner.classList.add('hidden');
-        banner.classList.remove('flex');
+        banner.classList.add('hidden')
+        banner.classList.remove('flex')
       }
     }
 
     if (document.readyState === 'loading') {
-      document.addEventListener(
-        'DOMContentLoaded',
-        initHolidayBanner
-      );
+      document.addEventListener('DOMContentLoaded', initHolidayBanner)
     } else {
-      initHolidayBanner();
+      initHolidayBanner()
     }
 
-    document.addEventListener(
-      'astro:after-swap',
-      initHolidayBanner
-    );
-  })();
+    document.addEventListener('astro:after-swap', initHolidayBanner)
+  })()
 </script>

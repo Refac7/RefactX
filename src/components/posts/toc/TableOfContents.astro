@@ -33,35 +33,25 @@ const getRelativeIndentClass = (depth: number) => {
 }
 ---
 
-<aside 
-  id="desktop-toc-aside" 
+<aside
+  id="desktop-toc-aside"
   class={cn(
-    "hidden xl:block sticky top-32 w-[15rem] shrink-0 z-40 transition-opacity duration-300 ease-out", 
-    "opacity-80 hover:opacity-100 group", 
+    'hidden xl:block sticky top-32 w-[15rem] shrink-0 z-40 transition-opacity duration-300 ease-out',
+    'opacity-80 hover:opacity-100 group',
     className
   )}
 >
   <div class="relative w-full h-full font-sans">
-
     <h3 class="text-sm font-semibold text-foreground tracking-tight mb-4 pl-4">
       {POSTS_CONFIG.tocText || 'On this page'}
     </h3>
-    
-    <nav 
-      id="desktop-toc-scroll-area" 
-      class="relative h-[calc(100vh-16rem)] overflow-y-auto toc-scrollbar"
-    >
 
-      <ul
-        class="relative w-full pb-12 z-10 flex flex-col"
-        data-desktop-toc-list
-      >
+    <nav id="desktop-toc-scroll-area" class="relative h-[calc(100vh-16rem)] overflow-y-auto toc-scrollbar">
+      <ul class="relative w-full pb-12 z-10 flex flex-col" data-desktop-toc-list>
         {
           filteredHeadings.map((heading) => {
-            const isMain = heading.depth === minDepth;
-            const depthClass = isMain 
-              ? 'text-foreground font-medium' 
-              : 'text-muted-foreground hover:text-foreground';
+            const isMain = heading.depth === minDepth
+            const depthClass = isMain ? 'text-foreground font-medium' : 'text-muted-foreground hover:text-foreground'
 
             return (
               <li class="relative flex">
@@ -71,9 +61,16 @@ const getRelativeIndentClass = (depth: number) => {
                   class="group/link relative flex items-center w-full py-1.5 transition-colors duration-200"
                 >
                   {/* 当前激活的粗线指示器，覆盖在背景细线上 */}
-                  <span class="absolute left-[-0.5px] top-1/2 -translate-y-1/2 w-[2px] h-[calc(100%-8px)] bg-primary opacity-0 transition-opacity duration-200 group-data-[active]/link:opacity-100"></span>
-                  
-                  <span class={cn("text-sm truncate transition-colors group-data-[active]/link:text-primary group-data-[active]/link:font-medium", depthClass, getRelativeIndentClass(heading.depth))} title={heading.text}>
+                  <span class="absolute left-[-0.5px] top-1/2 -translate-y-1/2 w-[2px] h-[calc(100%-8px)] bg-primary opacity-0 transition-opacity duration-200 group-data-[active]/link:opacity-100" />
+
+                  <span
+                    class={cn(
+                      'text-sm truncate transition-colors group-data-[active]/link:text-primary group-data-[active]/link:font-medium',
+                      depthClass,
+                      getRelativeIndentClass(heading.depth)
+                    )}
+                    title={heading.text}
+                  >
                     {heading.text}
                   </span>
                 </a>
@@ -98,18 +95,18 @@ const getRelativeIndentClass = (depth: number) => {
 
 <script>
   function initDesktopTOC() {
-    const headingElements = Array.from(document.querySelectorAll('h1[id], h2[id], h3[id], h4[id]')).filter(h => h.id !== 'footnote-label')
+    const headingElements = Array.from(document.querySelectorAll('h1[id], h2[id], h3[id], h4[id]')).filter((h) => h.id !== 'footnote-label')
     const headingLinks = document.querySelectorAll('[data-desktop-heading-link]')
     const scrollArea = document.getElementById('desktop-toc-scroll-area')
-    
-    if (!headingLinks.length || !scrollArea) return null;
+
+    if (!headingLinks.length || !scrollArea) return null
 
     let currentActiveHeading: string | null = null
     let scrollTimeout: number | null = null
 
     const observer = new IntersectionObserver(
       (entries) => {
-        if (scrollArea.offsetHeight === 0) return;
+        if (scrollArea.offsetHeight === 0) return
 
         entries.forEach((entry) => {
           if (entry.intersectionRatio > 0) {
@@ -131,17 +128,17 @@ const getRelativeIndentClass = (depth: number) => {
                     const scrollTop = scrollArea.scrollTop
                     const scrollHeight = scrollArea.scrollHeight
                     const clientHeight = scrollArea.clientHeight
-                    
+
                     const relativeTop = linkRect.top - containerRect.top + scrollTop
                     const targetScrollTop = relativeTop - containerRect.height / 2 + linkRect.height / 2
-                    
+
                     const maxScroll = scrollHeight - clientHeight
                     const targetScroll = Math.max(0, Math.min(targetScrollTop, maxScroll))
 
                     if (Math.abs(targetScroll - scrollTop) > 5) {
                       scrollArea.scrollTo({
                         top: targetScroll,
-                        behavior: 'smooth'
+                        behavior: 'smooth',
                       })
                     }
                   }
@@ -159,7 +156,7 @@ const getRelativeIndentClass = (depth: number) => {
     headingElements.forEach((heading) => observer.observe(heading))
 
     setTimeout(() => {
-      if (scrollArea.offsetHeight === 0) return;
+      if (scrollArea.offsetHeight === 0) return
       const visibleHeading = Array.from(headingElements).find((heading) => {
         const rect = heading.getBoundingClientRect()
         return rect.top > 10 && rect.top < window.innerHeight * 0.33
@@ -174,13 +171,16 @@ const getRelativeIndentClass = (depth: number) => {
     return () => observer.disconnect()
   }
 
-  let cleanupDesktopTOC: (() => void) | null = null;
+  let cleanupDesktopTOC: (() => void) | null = null
   document.addEventListener('astro:page-load', () => {
-    if (cleanupDesktopTOC) cleanupDesktopTOC();
-    const cleanup = initDesktopTOC();
-    cleanupDesktopTOC = cleanup || null;
+    if (cleanupDesktopTOC) cleanupDesktopTOC()
+    const cleanup = initDesktopTOC()
+    cleanupDesktopTOC = cleanup || null
   })
   document.addEventListener('astro:before-swap', () => {
-    if (cleanupDesktopTOC) { cleanupDesktopTOC(); cleanupDesktopTOC = null; }
+    if (cleanupDesktopTOC) {
+      cleanupDesktopTOC()
+      cleanupDesktopTOC = null
+    }
   })
 </script>

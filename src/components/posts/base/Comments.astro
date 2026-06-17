@@ -1,14 +1,15 @@
 ---
-import { WALINE_CONFIG } from "~/config";
+import { WALINE_CONFIG } from '~/config'
 
-interface Props { class?: string; }
-const { class: className } = Astro.props;
+interface Props {
+  class?: string
+}
+const { class: className } = Astro.props
 ---
+
 <div class={`waline-wrapper ${className || ''} relative z-10 w-full`}>
   <div class="mb-10 flex flex-col gap-1.5 select-none">
-    <h2 class="text-2xl font-bold tracking-tight text-foreground">
-      Comments
-    </h2>
+    <h2 class="text-2xl font-bold tracking-tight text-foreground">Comments</h2>
     <p class="text-sm text-muted-foreground">Join the conversation below.</p>
   </div>
 
@@ -16,13 +17,13 @@ const { class: className } = Astro.props;
     WALINE_CONFIG.enableComment ? (
       <div id="waline-container" class="waline-lazy relative min-h-[200px] w-full">
         <div class="waline-loading absolute inset-0 flex flex-col items-center justify-center bg-transparent z-0">
-            <span class="icon-[ph--spinner-gap] size-6 text-muted-foreground animate-spin mb-3"></span>
-            <span class="text-xs font-medium text-muted-foreground/60">Loading comments...</span>
+          <span class="icon-[ph--spinner-gap] size-6 text-muted-foreground animate-spin mb-3" />
+          <span class="text-xs font-medium text-muted-foreground/60">Loading comments...</span>
         </div>
       </div>
     ) : (
       <div class="rounded-xl border border-border/40 bg-muted/10 p-10 text-center flex flex-col items-center justify-center">
-        <span class="icon-[ph--chat-teardrop-slash] size-8 text-muted-foreground/40 mb-3 block mx-auto"></span>
+        <span class="icon-[ph--chat-teardrop-slash] size-8 text-muted-foreground/40 mb-3 block mx-auto" />
         <p class="text-foreground font-medium mb-1">Comments Disabled</p>
         <p class="text-muted-foreground text-sm">The comment system is currently offline.</p>
       </div>
@@ -34,229 +35,20 @@ const { class: className } = Astro.props;
   WALINE_CONFIG.enableComment && (
     <>
       <link rel="stylesheet" href="/css/waline.css" />
-
-      <style is:global>
-        #waline {
-          --waline-font-family: inherit !important;
-          --waline-theme-color: hsl(var(--primary)) !important;
-          --waline-active-color: hsl(var(--primary)) !important;
-          --waline-color: hsl(var(--foreground)) !important;
-          --waline-bgcolor: hsl(var(--background)) !important;
-          --waline-bgcolor-light: hsl(var(--muted) / 0.1) !important;
-          --waline-bgcolor-hover: hsl(var(--muted) / 0.3) !important;
-          --waline-border-color: hsl(var(--border) / 0.4) !important;
-          --waline-disable-bg-color: hsl(var(--muted) / 0.2) !important;
-          --waline-disable-color: hsl(var(--muted-foreground) / 0.5) !important;
-          --waline-info-color: hsl(var(--muted-foreground)) !important;
-          --waline-code-bg-color: hsl(var(--muted) / 0.4) !important;
-          --waline-border-radius: 0.5rem !important;
-          --waline-avatar-radius: 50% !important;
-        }
-
-        #waline .wl-panel:focus-within {
-          background-color: var(--waline-bgcolor) !important;
-          border-color: var(--waline-border-color) !important;
-        }
-
-        .wl-panel {
-          margin: 0rem !important;
-          background-color: var(--waline-bgcolor);
-          border-color: var(--waline-border-color);
-          border-radius: var(--waline-border-radius);
-        }
-
-        .wl-login-info {
-          margin-right: 0.75rem !important;
-        }
-
-        .wl-editor {
-          padding: .75em .75em !important;
-        }
-
-        .wl-action {
-          font-size: 12px !important;
-        }
-
-        .wl-btn {
-          border-radius: .25em !important;
-        }
-
-        .wl-actions {
-          gap: 0.25rem !important;
-        }
-
-        .wl-header-item {
-          border-bottom: 1px dashed var(--waline-border-color) !important;
-          padding: .5rem 0rem !important;
-        }
-
-        .wl-header {
-          border: none !important;
-        }
-
-        .wl-cards {
-          padding: 0rem !important;
-        }
-
-        .wl-card-item {
-          padding: 0rem !important;
-          padding-bottom: 1.5rem !important;
-          padding-top: 1.5rem !important;
-        }
-
-        .wl-meta-head {
-          display: none !important;
-        }
-
-        .wl-quote {
-          border: none !important;
-        }
-        
-        #waline .wl-editor:focus,
-        #waline .wl-input:focus {
-          background-color: transparent !important;
-        }
-
-        #waline .wl-btn {
-          font-weight: 500;
-          transition: opacity 0.2s;
-        }
-
-        #waline .wl-btn:hover {
-          opacity: 0.8;
-        }
-
-        #waline .wl-content,
-        #waline .wl-content p,
-        #waline .wl-content a {
-          word-break: break-word !important;
-          overflow-wrap: anywhere !important;
-          white-space: normal !important;
-        }
-
-        @media screen and (max-width: 768px) {
-          #waline .wl-input,
-          #waline .wl-editor {
-            font-size: 12px !important;
-          }
-        }
-      </style>
-
-      <script is:inline src="/js/waline.umd.js" defer></script>
-      <script is:inline define:vars={{ serverURL: WALINE_CONFIG.serverURL, uploadToken: WALINE_CONFIG.uploadToken, imgbedURL: WALINE_CONFIG.imgbedURL, enableImgUpload: WALINE_CONFIG.enableImgUpload }}>
-        
-        async function handleImageUpload(file) {
-          try {
-            const MAX_SIZE = 1024 * 1024;
-            let fileToUpload = file.size > MAX_SIZE ? await compressImage(file, MAX_SIZE) : file;
-            const formData = new FormData();
-            formData.append('file', fileToUpload);
-
-            const response = await fetch(imgbedURL, {
-              method: 'POST',
-              headers: { Authorization: `Bearer ${uploadToken}` },
-              body: formData
-            });
-            if (!response.ok) throw new Error(`Upload failed: ${response.status}`);
-            return (await response.json()).url;
-          } catch (error) {
-            console.error('[Waline] Upload error:', error);
-            alert('Upload Failed. Check console.');
-            throw error;
-          }
-        }
-
-        function compressImage(file, maxSize) {
-          return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = (e) => {
-              const img = new Image();
-              img.src = e.target.result;
-              img.onload = () => {
-                const canvas = document.createElement('canvas');
-                let { width, height } = img;
-                if (width > 1920 || height > 1920) {
-                  const ratio = Math.min(1920 / width, 1920 / height);
-                  width = Math.round(width * ratio);
-                  height = Math.round(height * ratio);
-                }
-                canvas.width = width;
-                canvas.height = height;
-                canvas.getContext('2d').drawImage(img, 0, 0, width, height);
-                
-                let quality = 0.8;
-                const attempt = () => canvas.toBlob(blob => {
-                  if(!blob) return reject(new Error('Canvas error'));
-                  if(blob.size <= maxSize || quality <= 0.2) {
-                    resolve(new File([blob], file.name, { type: 'image/jpeg' }));
-                  } else {
-                    quality -= 0.15;
-                    attempt();
-                  }
-                }, 'image/jpeg', quality);
-                attempt();
-              };
-              img.onerror = () => reject(new Error('Image load failed'));
-            };
-            reader.onerror = () => reject(new Error('File read failed'));
-          });
-        }
-
-        function initWaline() {
-          const container = document.querySelector('#waline-container');
-          if (!container || window.__walineInstance) return;
-          
-          container.innerHTML = '';
-          const walineEl = document.createElement('div');
-          walineEl.id = 'waline';
-          container.appendChild(walineEl);
-
-          try {
-            window.__walineInstance = window.Waline.init({
-              el: walineEl,
-              serverURL,
-              lang: 'zh',
-              dark: 'html.dark',
-              emoji: false,
-              search: false,
-              imageUploader: enableImgUpload ? handleImageUpload : null,
-              locale: { placeholder: 'Write a comment...' }
-            });
-          } catch (e) {
-            console.error('[Waline Init Error]:', e);
-          }
-        }
-
-        function setupObserver() {
-          const container = document.querySelector('#waline-container');
-          if (!container) return;
-          if (window.__walineObserver) window.__walineObserver.disconnect();
-          
-          window.__walineObserver = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting) {
-              const check = setInterval(() => {
-                if (window.Waline) {
-                  clearInterval(check);
-                  initWaline();
-                }
-              }, 100);
-              window.__walineObserver.disconnect();
-            }
-          }, { rootMargin: '200px' });
-          
-          window.__walineObserver.observe(container);
-        }
-
-        setupObserver();
-        document.addEventListener('astro:page-load', () => setTimeout(setupObserver, 0));
-        document.addEventListener('astro:before-swap', () => {
-          if (window.__walineObserver) window.__walineObserver.disconnect();
-          if (window.__walineInstance) {
-            try { window.__walineInstance.destroy(); } catch(e) {}
-          }
-          window.__walineInstance = null;
-        });
+      <link rel="stylesheet" href="/css/waline-custom.css" />
+      <script is:inline src="/js/waline.umd.js" defer />
+      <script is:inline src="/js/waline-init.js" defer />
+      <script
+        is:inline
+        define:vars={{
+          serverURL: WALINE_CONFIG.serverURL,
+          uploadToken: WALINE_CONFIG.uploadToken,
+          imgbedURL: WALINE_CONFIG.imgbedURL,
+          enableImgUpload: WALINE_CONFIG.enableImgUpload,
+        }}
+      >
+        window.__walineServerUrl = serverURL; window.__walineUploadToken = uploadToken; window.__walineImgBedUrl = imgbedURL;
+        window.__walineEnableImgUpload = enableImgUpload;
       </script>
     </>
   )

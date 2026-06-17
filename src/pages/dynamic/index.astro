@@ -2,11 +2,7 @@
 import Layout from '~/layouts/Layout.astro'
 import DynamicFeed from '~/components/dynamic/DynamicFeed'
 import { DYNAMIC_CONFIG } from '~/config'
-
-const SECTION_HEADER_CLASS = 'flex items-center justify-between border-b border-border/40 pb-4 mb-8 select-none'
-const SECTION_TITLE_CLASS = 'text-lg font-semibold tracking-tight text-foreground'
-const SECTION_NUM_CLASS =
-  'inline-flex items-center justify-center rounded-full bg-muted/60 px-2.5 py-0.5 text-xs font-medium text-muted-foreground mr-3'
+import { SECTION_HEADER_CLASS, SECTION_TITLE_CLASS, SECTION_NUM_CLASS } from '~/lib/ui'
 ---
 
 <Layout title={DYNAMIC_CONFIG.title} description={DYNAMIC_CONFIG.introduce}>
@@ -70,13 +66,3 @@ const SECTION_NUM_CLASS =
     </main>
   </div>
 </Layout>
-
-<style>
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-</style>

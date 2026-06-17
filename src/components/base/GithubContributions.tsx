@@ -13,7 +13,7 @@ interface Contribution {
 interface Response {
   total: {
     [year: number]: number
-    [year: string]: number 
+    [year: string]: number
   }
   contributions: Array<Contribution>
 }
@@ -53,11 +53,14 @@ function generateErrorContributions(): Response {
 }
 
 function generatePlaceholderContributions(): Response {
-  const contributions = Array.from({ length: 371 }, (_, index): Contribution => ({
-    date: new Date(Date.now() - (371 - index) * 86400000).toISOString().split('T')[0],
-    count: 0,
-    level: 0,
-  }))
+  const contributions = Array.from(
+    { length: 371 },
+    (_, index): Contribution => ({
+      date: new Date(Date.now() - (371 - index) * 86400000).toISOString().split('T')[0],
+      count: 0,
+      level: 0,
+    })
+  )
   return { contributions, total: { lastYear: 0 } }
 }
 
@@ -102,15 +105,16 @@ export default function GithubContributions({ username, tooltipEnabled }: Props)
 
   useEffect(fetchData, [fetchData])
 
-  const weeks = data?.contributions.reduce<Contribution[][]>((acc, day, index) => {
-    const weekIndex = Math.floor(index / 7)
-    if (!acc[weekIndex]) acc[weekIndex] = []
-    acc[weekIndex].push(day)
-    return acc
-  }, []) || []
+  const weeks =
+    data?.contributions.reduce<Contribution[][]>((acc, day, index) => {
+      const weekIndex = Math.floor(index / 7)
+      if (!acc[weekIndex]) acc[weekIndex] = []
+      acc[weekIndex].push(day)
+      return acc
+    }, []) || []
 
   const getLevelClass = (count: number) => {
-    if (count === 0) return 'bg-muted/30 border-border/40' 
+    if (count === 0) return 'bg-muted/30 border-border/40'
     if (count < 5) return 'bg-primary/30 border-primary/20'
     if (count < 10) return 'bg-primary/50 border-primary/30'
     if (count < 20) return 'bg-primary/70 border-primary/50'
@@ -120,44 +124,39 @@ export default function GithubContributions({ username, tooltipEnabled }: Props)
   return (
     <TooltipProvider>
       <div className="w-full flex flex-col items-center select-none font-sans mt-2">
-        
         <div className="flex justify-between items-end w-full px-1 mb-4 opacity-80 hover:opacity-100 transition-opacity duration-300">
           <div className="flex items-center gap-3">
-             <div className="flex flex-col">
-               <span className="text-xs text-muted-foreground font-medium">Activity</span>
-               <span className="text-sm font-semibold text-foreground">@{username}</span>
-             </div>
+            <div className="flex flex-col">
+              <span className="text-xs text-muted-foreground font-medium">Activity</span>
+              <span className="text-sm font-semibold text-foreground">@{username}</span>
+            </div>
           </div>
 
           <div className="flex flex-col items-end">
-             <div className="flex items-center gap-1.5 mb-0.5">
-               <span className={cn("size-1.5 rounded-full", loading ? "bg-yellow-500" : error ? "bg-red-500" : "bg-emerald-500")} />
-               <span className="text-xs text-muted-foreground font-medium">Contributions</span>
-             </div>
-             <span className="text-sm font-semibold text-foreground">{loading ? '---' : totalCount} <span className="text-xs font-normal text-muted-foreground">in last year</span></span>
+            <div className="flex items-center gap-1.5 mb-0.5">
+              <span className={cn('size-1.5 rounded-full', loading ? 'bg-yellow-500' : error ? 'bg-red-500' : 'bg-emerald-500')} />
+              <span className="text-xs text-muted-foreground font-medium">Contributions</span>
+            </div>
+            <span className="text-sm font-semibold text-foreground">
+              {loading ? '---' : totalCount} <span className="text-xs font-normal text-muted-foreground">in last year</span>
+            </span>
           </div>
         </div>
 
-        <div 
-          ref={containerRef} 
-          className="w-full overflow-x-auto scrollbar-hide pb-2"
-        >
+        <div ref={containerRef} className="w-full overflow-x-auto scrollbar-hide pb-2">
           <div className="grid grid-flow-col gap-[3px] w-max mx-auto">
             {weeks.map((week, weekIndex) => (
               <div key={weekIndex} className="grid grid-rows-7 gap-[3px]">
                 {week.map((contribution, dayIndex) => {
                   const { date, count } = contribution
-                  const dateStr = date ? new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'N/A'
+                  const dateStr = date
+                    ? new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+                    : 'N/A'
                   const tooltipText = `${count} contributions on ${dateStr}`
 
                   return (
                     <Tooltip key={dayIndex} content={tooltipText} disabled={!tooltipEnabled || error}>
-                      <div
-                        className={cn(
-                          'size-3 xl:size-4.5 rounded-[3px] border transition-colors duration-300',
-                          getLevelClass(count)
-                        )}
-                      />
+                      <div className={cn('size-3 xl:size-4.5 rounded-[3px] border transition-colors duration-300', getLevelClass(count))} />
                     </Tooltip>
                   )
                 })}

@@ -3,10 +3,10 @@ import Layout from '~/layouts/Layout.astro'
 import AdminDashboard from '~/components/admin/AdminDashboard'
 
 // 不进行SEO优化，禁止搜索引擎索引此页面
-const title = "System Controller";
-const description = "Authorized Personnel Only";
+const title = 'System Controller'
+const description = 'Authorized Personnel Only'
 ---
 
-<Layout {title} {description} >
+<Layout {title} {description}>
   <AdminDashboard client:only="react" />
 </Layout>

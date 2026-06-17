@@ -1,81 +1,75 @@
-export const prerender = false;
+export const prerender = false
 
-import type { APIRoute } from 'astro';
-import bcrypt from 'bcryptjs';
-import {
-  cleanupExpiredRecords,
-  getClientIP,
-  checkRateLimit,
-  recordFailedAttempt,
-  clearRecord
-} from '~/lib/rateLimit';
+import type { APIRoute } from 'astro'
+import bcrypt from 'bcryptjs'
+import { cleanupExpiredRecords, getClientIP, checkRateLimit, recordFailedAttempt, clearRecord } from '~/lib/rateLimit'
 
 async function getJwt() {
-  const imported = await import('jsonwebtoken');
-  return imported.default || imported; 
+  const imported = await import('jsonwebtoken')
+  return imported.default || imported
 }
 
 export const POST: APIRoute = async ({ request }) => {
   try {
-    cleanupExpiredRecords();
-    const clientIP = getClientIP(request);
-    
-    const limitCheck = checkRateLimit(clientIP);
+    cleanupExpiredRecords()
+    const clientIP = getClientIP(request)
+
+    const limitCheck = checkRateLimit(clientIP)
     if (!limitCheck.allowed) {
-      return new Response(JSON.stringify({ error: limitCheck.message || 'Rate limit exceeded' }), { status: 429 });
+      return new Response(JSON.stringify({ error: limitCheck.message || 'Rate limit exceeded' }), { status: 429 })
     }
 
-    const body = await request.json();
-    const { password, captchaToken } = body;
+    const body = await request.json()
+    const { password, captchaToken } = body
 
     // CAPTCHA 令牌非空检查
     if (!captchaToken) {
-      return new Response(JSON.stringify({ error: 'Missing CAPTCHA verification' }), { status: 403 });
+      return new Response(JSON.stringify({ error: 'Missing CAPTCHA verification' }), { status: 403 })
     }
 
     // 验证 CAPTCHA 令牌合法性与时效性
     try {
-      const [signatureBase64, timestampStr] = captchaToken.split('.');
-      const timestamp = parseInt(timestampStr, 10);
+      const [signatureBase64, timestampStr] = captchaToken.split('.')
+      const timestamp = parseInt(timestampStr, 10)
 
       // 验证时间戳 (5分钟有效期，防重放攻击)
-      if (Date.now() - timestamp > 5 * 60 * 1000) throw new Error('Expired');
+      if (Date.now() - timestamp > 5 * 60 * 1000) throw new Error('Expired')
 
-      const encoder = new TextEncoder();
-      const secret = encoder.encode(import.meta.env.CAPTCHA_SECRET || 'refactx-edge-secret');
-      const tokenData = encoder.encode(`verified:${timestamp}`);
-      const key = await crypto.subtle.importKey('raw', secret, { name: 'HMAC', hash: 'SHA-256' }, false, ['verify']);
-      
-      const binaryString = atob(signatureBase64);
-      const signatureBytes = new Uint8Array(binaryString.length);
-      for (let i = 0; i < binaryString.length; i++) signatureBytes[i] = binaryString.charCodeAt(i);
+      const encoder = new TextEncoder()
+      const secret = encoder.encode(import.meta.env.CAPTCHA_SECRET || 'refactx-edge-secret')
+      const tokenData = encoder.encode(`verified:${timestamp}`)
+      const key = await crypto.subtle.importKey('raw', secret, { name: 'HMAC', hash: 'SHA-256' }, false, ['verify'])
 
-      const isValidToken = await crypto.subtle.verify('HMAC', key, signatureBytes, tokenData);
-      if (!isValidToken) throw new Error('Invalid signature');
+      const binaryString = atob(signatureBase64)
+      const signatureBytes = new Uint8Array(binaryString.length)
+      for (let i = 0; i < binaryString.length; i++) signatureBytes[i] = binaryString.charCodeAt(i)
+
+      const isValidToken = await crypto.subtle.verify('HMAC', key, signatureBytes, tokenData)
+      if (!isValidToken) throw new Error('Invalid signature')
     } catch (e) {
-      return new Response(JSON.stringify({ error: 'Invalid or expired CAPTCHA' }), { status: 403 });
+      return new Response(JSON.stringify({ error: 'Invalid or expired CAPTCHA' }), { status: 403 })
     }
 
     // 验证密码
-    const HASHED_PASSWORD = import.meta.env.ADMIN_PASSWORD;
+    const HASHED_PASSWORD = import.meta.env.ADMIN_PASSWORD
     if (!HASHED_PASSWORD) {
-      return new Response(JSON.stringify({ error: 'Server misconfiguration: ADMIN_PASSWORD missing' }), { status: 500 });
+      return new Response(JSON.stringify({ error: 'Server misconfiguration: ADMIN_PASSWORD missing' }), { status: 500 })
     }
 
-    const isMatch = await bcrypt.compare(password, HASHED_PASSWORD);
-    
+    const isMatch = await bcrypt.compare(password, HASHED_PASSWORD)
+
     if (isMatch) {
-      clearRecord(clientIP);
-      const jwt = await getJwt();
-      const SECRET = import.meta.env.ADMIN_JWT_SECRET || 'default_secret';
-      const token = jwt.sign({ ip: clientIP, ts: Date.now() }, SECRET, { expiresIn: '2h' });
-      return new Response(JSON.stringify({ success: true, token }), { status: 200 });
+      clearRecord(clientIP)
+      const jwt = await getJwt()
+      const SECRET = import.meta.env.ADMIN_JWT_SECRET || 'default_secret'
+      const token = jwt.sign({ ip: clientIP, ts: Date.now() }, SECRET, { expiresIn: '2h' })
+      return new Response(JSON.stringify({ success: true, token }), { status: 200 })
     } else {
-      recordFailedAttempt(clientIP);
-      return new Response(JSON.stringify({ error: 'Wrong password' }), { status: 401 });
+      recordFailedAttempt(clientIP)
+      return new Response(JSON.stringify({ error: 'Wrong password' }), { status: 401 })
     }
   } catch (e) {
-    const errorMessage = e instanceof Error ? e.message : String(e);
-    return new Response(JSON.stringify({ error: 'Invalid request', detail: errorMessage }), { status: 400 });
+    const errorMessage = e instanceof Error ? e.message : String(e)
+    return new Response(JSON.stringify({ error: 'Invalid request', detail: errorMessage }), { status: 400 })
   }
 }

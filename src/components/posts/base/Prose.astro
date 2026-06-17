@@ -60,12 +60,12 @@ const { class: className } = Astro.props
   if (enabled) {
     const darkModeHandler = () => {
       const isDark = document.documentElement.classList.contains('dark')
-      
+
       document.querySelectorAll('.markdown img:not(:hover):not(.medium-zoom-image--opened):not(.noDarken)').forEach((img) => {
         if (img.classList.contains('lazy-image') && !img.classList.contains('lazy-image-loaded')) {
           return
         }
-        
+
         if (isDark) {
           img.style.setProperty('filter', 'brightness(0.8) contrast(1.1)', 'important')
         } else {
@@ -91,7 +91,7 @@ const { class: className } = Astro.props
         img.addEventListener('mouseleave', () => {
           if (img.classList.contains('noDarken')) return
           if (img.classList.contains('lazy-image') && !img.classList.contains('lazy-image-loaded')) return
-          
+
           if (document.documentElement.classList.contains('dark')) {
             img.style.setProperty('filter', 'brightness(0.8) contrast(1.1)', 'important')
           }

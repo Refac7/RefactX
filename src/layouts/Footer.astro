@@ -4,70 +4,91 @@ import ThemeToggle from '~/components/theme/ThemeToggle'
 import FooterLink from '~/components/base/FooterLink.astro'
 
 const currentYear = new Date().getFullYear()
-const CONTAINER_CLASS = "mx-auto px-6 sm:px-8 py-12"
+const CONTAINER_CLASS = 'mx-auto px-6 sm:px-8 py-12'
 ---
 
 <footer class="relative z-10 border-t border-border/40 bg-background/50 backdrop-blur-sm">
   <div class={CONTAINER_CLASS}>
     <div class="grid grid-cols-1 md:grid-cols-4 gap-8 lg:gap-12 pb-12 border-b border-border/40">
-      
       <div class="md:col-span-2 space-y-4">
-         <span class="text-sm font-semibold tracking-tight text-foreground block">
-          {SITE.author || "Refac7"}
-         </span>
-         <p class="text-sm text-muted-foreground leading-relaxed max-w-sm">
-            {SITE.footerText}<br/>
-            {SITE.footerText2 || 'Minimalist layout, maximum focus. Data persistence guaranteed.'}
-         </p>
+        <span class="text-sm font-semibold tracking-tight text-foreground block">
+          {SITE.author || 'Refac7'}
+        </span>
+        <p class="text-sm text-muted-foreground leading-relaxed max-w-sm">
+          {SITE.footerText}<br />
+          {SITE.footerText2 || 'Minimalist layout, maximum focus. Data persistence guaranteed.'}
+        </p>
       </div>
 
       <div class="space-y-4">
-        <span class="text-sm font-semibold tracking-tight text-foreground block">
-          Navigation
-        </span>
+        <span class="text-sm font-semibold tracking-tight text-foreground block"> Navigation </span>
         <ul class="flex flex-col gap-2">
-          {FOOTER_LINKS.map((link) => (
-            <li>
-              <FooterLink href={link.url} class="text-muted-foreground hover:text-foreground transition-colors">{link.name}</FooterLink>
-            </li>
-          ))}
+          {
+            FOOTER_LINKS.map((link) => (
+              <li>
+                <FooterLink href={link.url} class="text-muted-foreground hover:text-foreground transition-colors">
+                  {link.name}
+                </FooterLink>
+              </li>
+            ))
+          }
         </ul>
       </div>
 
       <div class="space-y-4">
-        <span class="text-sm font-semibold tracking-tight text-foreground block">
-          Technology
-        </span>
+        <span class="text-sm font-semibold tracking-tight text-foreground block"> Technology </span>
         <ul class="flex flex-col gap-3">
-          <li><a href="https://astro.build" target="_blank" class="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"><span class="icon-[lineicons--astro] size-4"></span>Astro</a></li>
-          <li><a href="https://www.vercel.com" target="_blank" class="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"><span class="icon-[simple-icons--vercel] size-3 ml-0.5"></span>Vercel</a></li>
-          <li><a href="https://github.com/Refac7/RefactX" target="_blank" class="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"><span class="icon-[mingcute--github-fill] size-3 ml-0.5"></span>Source Code</a></li>
+          <li>
+            <a
+              href="https://astro.build"
+              target="_blank"
+              class="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
+              ><span class="icon-[lineicons--astro] size-4"></span>Astro</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://www.vercel.com"
+              target="_blank"
+              class="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
+              ><span class="icon-[simple-icons--vercel] size-3 ml-0.5"></span>Vercel</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://github.com/Refac7/RefactX"
+              target="_blank"
+              class="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
+              ><span class="icon-[mingcute--github-fill] size-3 ml-0.5"></span>Source Code</a
+            >
+          </li>
         </ul>
       </div>
-
     </div>
 
-    <div class="py-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-[10px] font-mono text-muted-foreground uppercase">
-        <div class="flex flex-col sm:flex-row gap-2 sm:gap-6">
-            <span>© {currentYear} {SITE.author || "Refac7"}. All Rights Reserved.</span>
-            <span class="hidden sm:inline text-muted-foreground">|</span>
-            <a href="https://icp.gov.moe/?keyword=20252280" target="_blank" class="hover:text-foreground transition-colors">
-               萌ICP备 20252280号
-            </a>
+    <div
+      class="py-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-[10px] font-mono text-muted-foreground uppercase"
+    >
+      <div class="flex flex-col sm:flex-row gap-2 sm:gap-6">
+        <span>© {currentYear} {SITE.author || 'Refac7'}. All Rights Reserved.</span>
+        <span class="hidden sm:inline text-muted-foreground">|</span>
+        <a href="https://icp.gov.moe/?keyword=20252280" target="_blank" class="hover:text-foreground transition-colors">
+          萌ICP备 20252280号
+        </a>
+      </div>
+
+      <div class="flex w-full sm:w-auto gap-4">
+        <div class="flex items-center gap-2">
+          <span class="relative flex h-1.5 w-1.5">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+            <span class="relative inline-flex h-1.5 w-1.5 bg-green-500 rounded-full"></span>
+          </span>
+          <span>All Systems Normal</span>
         </div>
-        
-        <div class="flex w-full sm:w-auto gap-4">
-          <div class="flex items-center gap-2">
-              <span class="relative flex h-1.5 w-1.5">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                <span class="relative inline-flex h-1.5 w-1.5 bg-green-500 rounded-full"></span>
-              </span>
-              <span>All Systems Normal</span>
-          </div>
-          <div class="flex ml-auto bg-background sm:hidden">
-              <ThemeToggle client:load />
-          </div>
+        <div class="flex ml-auto bg-background sm:hidden">
+          <ThemeToggle client:load />
         </div>
+      </div>
     </div>
   </div>
 </footer>

@@ -4,6 +4,7 @@ import type { CollectionEntry } from 'astro:content'
 import { getCollection } from 'astro:content'
 import { POSTS_CONFIG } from '~/config'
 import { postsSort } from '~/lib/utils'
+import { SECTION_HEADER_CLASS, SECTION_TITLE_CLASS, SECTION_NUM_CLASS } from '~/lib/ui'
 import Layout from '~/layouts/Layout.astro'
 import Pagination from '~/components/base/Pagination.astro'
 import List from '~/components/posts/card/List.astro'
@@ -14,76 +15,84 @@ export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
   return paginate(sortedPosts, { pageSize: POSTS_CONFIG.postPageConfig.size })
 }
 
-interface Props { page: Page<CollectionEntry<'posts'>> }
+interface Props {
+  page: Page<CollectionEntry<'posts'>>
+}
 const { page } = Astro.props
 const { title, description, introduce } = POSTS_CONFIG
-const progressPercent = Math.round((page.currentPage / page.lastPage) * 100);
-
-const SECTION_HEADER_CLASS = "flex items-center justify-between border-b border-border/40 pb-4 mb-4 select-none"
-const SECTION_TITLE_CLASS = "text-lg font-semibold tracking-tight text-foreground"
-const SECTION_NUM_CLASS = "inline-flex items-center justify-center rounded-full bg-muted/60 px-2.5 py-0.5 text-xs font-medium text-muted-foreground mr-3"
+const progressPercent = Math.round((page.currentPage / page.lastPage) * 100)
 ---
 
 <Layout {title} {description}>
   <div class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
     <aside class="w-full lg:w-1/3 lg:sticky lg:top-0 lg:h-screen flex flex-col xl:border-r border-border/40 z-20 bg-background">
-      
       <div class="flex flex-1 lg:overflow-y-auto scrollbar-hide flex-col">
         <div class="p-6 lg:p-8 xl:p-12 pb-0 shrink-0 fade-up">
           <span class="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary select-none">
             Feed Live
           </span>
         </div>
-        
-        <div class="flex-1 flex flex-col justify-end lg:justify-center p-6 lg:p-8 xl:p-12 min-h-[300px] lg:min-h-[250px] fade-up animation-delay-100">
-           <h1 class="text-5xl sm:text-6xl xl:text-7xl font-bold tracking-tight text-foreground leading-[1.1] mb-6 select-none">{title}</h1>
-           <div class="flex items-center gap-2 text-sm text-muted-foreground"><span class="icon-[ph--book-open] size-4"></span><span>Directory Listing</span></div>
+
+        <div
+          class="flex-1 flex flex-col justify-end lg:justify-center p-6 lg:p-8 xl:p-12 min-h-[300px] lg:min-h-[250px] fade-up animation-delay-100"
+        >
+          <h1 class="text-5xl sm:text-6xl xl:text-7xl font-bold tracking-tight text-foreground leading-[1.1] mb-6 select-none">{title}</h1>
+          <div class="flex items-center gap-2 text-sm text-muted-foreground">
+            <span class="icon-[ph--book-open] size-4"></span><span>Directory Listing</span>
+          </div>
         </div>
-        
+
         <div class="shrink-0 p-6 lg:p-8 xl:p-12 fade-up animation-delay-150">
-           <p class="text-sm text-muted-foreground leading-relaxed">{introduce}</p>
+          <p class="text-sm text-muted-foreground leading-relaxed">{introduce}</p>
         </div>
       </div>
 
       <div class="flex border-t border-border/40 shrink-0 fade-up animation-delay-200">
-          <div class="flex-1 flex flex-col items-start justify-center p-8 lg:p-10 xl:p-14 bg-background border-r border-border/40 hover:bg-muted/30 transition-colors">
-             <span class="text-2xl font-semibold text-foreground tracking-tight">{page.total}</span>
-             <span class="text-xs text-muted-foreground mt-1">Total Entries</span>
+        <div
+          class="flex-1 flex flex-col items-start justify-center p-8 lg:p-10 xl:p-14 bg-background border-r border-border/40 hover:bg-muted/30 transition-colors"
+        >
+          <span class="text-2xl font-semibold text-foreground tracking-tight">{page.total}</span>
+          <span class="text-xs text-muted-foreground mt-1">Total Entries</span>
+        </div>
+        <div class="flex-1 flex flex-col items-start justify-center p-8 lg:p-10 xl:p-14 bg-background hover:bg-muted/30 transition-colors">
+          <div class="flex items-baseline gap-1">
+            <span class="text-2xl font-semibold text-foreground tracking-tight">{page.currentPage}</span><span
+              class="text-sm text-muted-foreground/60">/ {page.lastPage}</span
+            >
           </div>
-          <div class="flex-1 flex flex-col items-start justify-center p-8 lg:p-10 xl:p-14 bg-background hover:bg-muted/30 transition-colors">
-             <div class="flex items-baseline gap-1"><span class="text-2xl font-semibold text-foreground tracking-tight">{page.currentPage}</span><span class="text-sm text-muted-foreground/60">/ {page.lastPage}</span></div>
-             <span class="text-xs text-muted-foreground mt-1">Page</span>
-          </div>
+          <span class="text-xs text-muted-foreground mt-1">Page</span>
+        </div>
       </div>
     </aside>
 
     <main class="w-full lg:w-2/3 z-10 flex flex-col fade-up animation-delay-100">
       <div class="p-6 lg:p-10 xl:p-16 2xl:p-20 flex-1 flex flex-col">
         <div class={SECTION_HEADER_CLASS}>
-           <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>Stream Sequence</h2></div>
+          <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>Stream Sequence</h2></div>
         </div>
-        
+
         <div class="relative z-10 flex-1 min-h-[400px] mt-4 fade-up animation-delay-200">
           <List posts={page.data} type={POSTS_CONFIG.postPageConfig.type} heroImageLayout={POSTS_CONFIG.postPageConfig?.heroImageLayout} />
         </div>
 
         <div class="mt-20 pt-8 border-t border-border/40">
           <div class="mb-8">
-             <div class="flex justify-between text-xs text-muted-foreground mb-3"><span>Reading Progress</span><span>{progressPercent}%</span></div>
-             <div class="w-full h-1.5 bg-muted/50 rounded-full overflow-hidden">
-                <div class="h-full bg-primary transition-all duration-700 ease-out rounded-full" style={`width: ${progressPercent}%`}></div>
-             </div>
+            <div class="flex justify-between text-xs text-muted-foreground mb-3">
+              <span>Reading Progress</span><span>{progressPercent}%</span>
+            </div>
+            <div class="w-full h-1.5 bg-muted/50 rounded-full overflow-hidden">
+              <div class="h-full bg-primary transition-all duration-700 ease-out rounded-full" style={`width: ${progressPercent}%`}></div>
+            </div>
           </div>
           <div class="flex flex-col md:flex-row items-center justify-between gap-6">
-             <div class="hidden md:flex flex-col gap-1">
-                <span class="text-sm font-medium text-foreground">Navigation</span>
-                <span class="text-xs text-muted-foreground">Select a page to continue reading.</span>
-             </div>
-             <div class="flex-1 w-full md:w-auto flex justify-center md:justify-end"><Pagination {page} baseUrl="/posts" /></div>
+            <div class="hidden md:flex flex-col gap-1">
+              <span class="text-sm font-medium text-foreground">Navigation</span>
+              <span class="text-xs text-muted-foreground">Select a page to continue reading.</span>
+            </div>
+            <div class="flex-1 w-full md:w-auto flex justify-center md:justify-end"><Pagination {page} baseUrl="/posts" /></div>
           </div>
         </div>
       </div>
     </main>
   </div>
 </Layout>
-<style>.scrollbar-hide::-webkit-scrollbar{display:none;}.scrollbar-hide{-ms-overflow-style:none;scrollbar-width:none;}</style>

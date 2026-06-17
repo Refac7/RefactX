@@ -25,12 +25,7 @@ const variantClasses = {
 <a
   href={`/tags/${tag}`}
   aria-label={`View posts tagged with ${tag}`}
-  class={cn(
-    'inline-flex items-center font-medium transition-colors duration-200',
-    sizeClasses[size],
-    variantClasses[variant],
-    className
-  )}
+  class={cn('inline-flex items-center font-medium transition-colors duration-200', sizeClasses[size], variantClasses[variant], className)}
 >
   <span class="icon-[ph--hash] opacity-70"></span>
   {tag}

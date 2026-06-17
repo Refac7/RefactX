@@ -7,26 +7,26 @@ import path from 'node:path'
 
 function createJsonLoader(filePath: string) {
   return {
-    name: "auto-json-id-loader",
+    name: 'auto-json-id-loader',
     load: async ({ store, logger, parseData }: any) => {
-      logger.info(`Loading data from: ${filePath}`);
-      const absolutePath = path.resolve(filePath);
-      const rawContents = await fs.readFile(absolutePath, 'utf-8');
-      const json = JSON.parse(rawContents);
+      logger.info(`Loading data from: ${filePath}`)
+      const absolutePath = path.resolve(filePath)
+      const rawContents = await fs.readFile(absolutePath, 'utf-8')
+      const json = JSON.parse(rawContents)
 
       if (Array.isArray(json)) {
         for (const [index, item] of json.entries()) {
-          const entryId = String(item.id || item.name || item.title || index);
+          const entryId = String(item.id || item.name || item.title || index)
           // 使用 collection 的 schema 校验数据
-          const data = await parseData({ id: entryId, data: item });
+          const data = await parseData({ id: entryId, data: item })
           // 存入 Astro 的内容仓库
-          store.set({ id: entryId, data });
+          store.set({ id: entryId, data })
         }
       } else {
-        logger.error(`Expected an array in ${filePath}, but got ${typeof json}`);
+        logger.error(`Expected an array in ${filePath}, but got ${typeof json}`)
       }
-    }
-  };
+    },
+  }
 }
 
 const posts = defineCollection({
@@ -38,14 +38,20 @@ const posts = defineCollection({
     updatedDate: z.coerce.date().optional(),
     recommend: z.boolean().default(false),
     author: z.string().default(POSTS_CONFIG.author),
-    heroImage: z.string().optional().transform(val => {
-      if (!val) return undefined;
-      return val.startsWith('http') || val === 'none' ? val : `/hero-images/${val}`;
-    }),
-    ogImage: z.string().optional().transform(val => {
-      if (!val) return undefined;
-      return val.startsWith('http') || val === 'none' ? val : `/og-images/${val}`;
-    }),
+    heroImage: z
+      .string()
+      .optional()
+      .transform((val) => {
+        if (!val) return undefined
+        return val.startsWith('http') || val === 'none' ? val : `/hero-images/${val}`
+      }),
+    ogImage: z
+      .string()
+      .optional()
+      .transform((val) => {
+        if (!val) return undefined
+        return val.startsWith('http') || val === 'none' ? val : `/og-images/${val}`
+      }),
     heroImageLayout: z.string().optional(),
     heroImageAspectRatio: z.string().default(POSTS_CONFIG.defaultHeroImageAspectRatio),
     tags: z.array(z.string()),
@@ -73,8 +79,8 @@ const projects = defineCollection({
     website: z.string().nullable().optional(),
     type: z.string(),
     icon: z.string(),
-    star: z.union([z.string(), z.number()]).transform(v => String(v)),
-    fork: z.union([z.string(), z.number()]).transform(v => String(v)),
+    star: z.union([z.string(), z.number()]).transform((v) => String(v)),
+    fork: z.union([z.string(), z.number()]).transform((v) => String(v)),
   }),
 })
 

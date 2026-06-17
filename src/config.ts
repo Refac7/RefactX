@@ -94,9 +94,9 @@ export const SKILLSSHOWCASE_CONFIG: SkillsShowcaseConfig = {
 
 // GitHub 贡献图配置
 export const GITHUB_CONFIG: GithubConfig = {
-  ENABLED: true,           // 是否启用贡献图
+  ENABLED: true, // 是否启用贡献图
   GITHUB_USERNAME: 'Refac7', // GitHub 用户名
-  TOOLTIP_ENABLED: true    // 是否开启悬浮提示
+  TOOLTIP_ENABLED: true, // 是否开启悬浮提示
 }
 
 // 文章页面配置
@@ -118,28 +118,28 @@ export const POSTS_CONFIG: PostConfig = {
   tocText: '目录导航',
   backToPostsText: '返回文章列表',
   nextPostText: '下一篇',
-  prevPostText: '上一篇'
+  prevPostText: '上一篇',
 }
 
 // 标签页面配置
 export const TAGS_CONFIG: TagsConfig = {
   title: 'Tags',
   description: '所有文章标签',
-  introduce: '所有文章标签均在此处，点击即可筛选。'
+  introduce: '所有文章标签均在此处，点击即可筛选。',
 }
 
 // 项目页面配置
 export const PROJECTS_CONFIG: ProjectConfig = {
   title: 'Projs',
   description: '我的项目案例',
-  introduce: '以下是我的项目案例展示，不定期维护项目。'
+  introduce: '以下是我的项目案例展示，不定期维护项目。',
 }
 
 // 动态页面配置
 export const DYNAMIC_CONFIG: DynamicConfig = {
   title: 'Dynamic',
   description: '我的动态',
-  introduce: '实时信号、简短想法和开发更新，直接从 Notion 工作区同步。'
+  introduce: '实时信号、简短想法和开发更新，直接从 Notion 工作区同步。',
 }
 
 // 关于页面配置
@@ -147,7 +147,7 @@ export const ABOUT_CONFIG = {
   title: 'About',
   description: 'Who am I?',
   introduce: ' 我那丑陋的情感，就不要表现出来啊。',
-  
+
   // 个人档案
   profile: {
     name: 'Refac7',
@@ -167,7 +167,7 @@ export const ABOUT_CONFIG = {
     { label: 'Location', value: 'Luoyang, China', icon: 'icon-[ph--map-pin]' },
     { label: 'status', value: 'Single', icon: 'icon-[ph--heart]' },
   ],
-  
+
   // 技能矩阵
   skills: [
     { category: 'Frontend // 前端', items: ['JavaScript', 'React', 'Astro', 'TypeScript', 'Tailwind CSS'] },
@@ -176,7 +176,7 @@ export const ABOUT_CONFIG = {
     { category: 'Others // 杂项', items: ['VSCode', 'Git', 'Docker', 'Linux'] },
     { category: 'Learning // 学习中', items: ['Java', 'Rust', 'Go'] },
   ],
-  
+
   // 硬件清单
   equipment: [
     { type: 'Workstation', name: 'Desktop', desc: 'Xeon E5 2660v2 / NVIDIA Geforce GTX 1060 / 32GB DDR3' },
@@ -202,8 +202,8 @@ export const ABOUT_CONFIG = {
       label: '周一',
       courses: [
         { time: '09:50-12:10 | 2-17周', name: 'Python语言程序设计', location: '土楼328机房' },
-        { time: '14:30-16:00 | 1-18周', name: '排球2', location: '场地未排/待定' }
-      ]
+        { time: '14:30-16:00 | 1-18周', name: '排球2', location: '场地未排/待定' },
+      ],
     },
     {
       day: 'TUE',
@@ -212,8 +212,8 @@ export const ABOUT_CONFIG = {
         { time: '08:00-09:30 | 2-17周', name: '离散数学', location: 'B合四' },
         { time: '09:50-12:10 | 2-17周', name: '线性代数A', location: 'E-318' },
         { time: '14:30-16:00 | 2-17周', name: '面向对象程序设计', location: '信工107' },
-        { time: '16:10-17:50 | 2-17周', name: '高等数学A2', location: 'B合十四' }
-      ]
+        { time: '16:10-17:50 | 2-17周', name: '高等数学A2', location: 'B合十四' },
+      ],
     },
     {
       day: 'WED',
@@ -222,8 +222,8 @@ export const ABOUT_CONFIG = {
         { time: '08:00-09:30 | 2-17周', name: '高等数学A2', location: 'B合十四' },
         { time: '09:50-11:20 | 2-17周', name: '大学生心理健康教育', location: 'E-309' },
         { time: '14:30-16:00 | 2-17周', name: '中国近现代史纲要', location: '艺术楼-208' },
-        { time: '16:10-17:50 | 2-17周', name: '军事理论', location: 'C-401' }
-      ]
+        { time: '16:10-17:50 | 2-17周', name: '军事理论', location: 'C-401' },
+      ],
     },
     {
       day: 'THU',
@@ -232,17 +232,17 @@ export const ABOUT_CONFIG = {
         { time: '08:00-09:30 | 2-17周', name: '面向对象程序设计', location: '土楼334机房' },
         { time: '09:50-11:20 | 2-17周', name: '大学英语2(非艺体)', location: 'B3-202' },
         { time: '14:30-16:00 | 2-17周', name: '离散数学', location: 'E-404' },
-        { time: '16:10-17:50 | 3-06周', name: '形势与政策(二)', location: 'E-304' }
-      ]
+        { time: '16:10-17:50 | 3-06周', name: '形势与政策(二)', location: 'E-304' },
+      ],
     },
     {
       day: 'FRI',
       label: '周五',
       courses: [
         { time: '08:00-09:30 | 2-17周', name: '高等数学A2', location: 'B合十四' },
-        { time: '09:50-11:20 | 双周 2-16', name: '大学英语2(非艺体)', location: 'D-504 语音室' }
-      ]
-    }
+        { time: '09:50-11:20 | 双周 2-16', name: '大学英语2(非艺体)', location: 'D-504 语音室' },
+      ],
+    },
   ],
 
   // 待办清单
@@ -272,32 +272,32 @@ export const FRIENDS_CONTACT = {
   author: 'Refac7',
   sitelink: 'https://www.refact.cc',
   siteavatar: 'https://img.refact.cc/base/avatar.jpg',
-  description: 'Another, another… another excuse.', 
+  description: 'Another, another… another excuse.',
 }
 
 // Waline 评论系统配置
 export const WALINE_CONFIG = {
   enableComment: true,
-  serverURL: import.meta.env.PUBLIC_WALINE_SERVER_URL || "https://waline.refact.cc",
+  serverURL: import.meta.env.PUBLIC_WALINE_SERVER_URL || 'https://waline.refact.cc',
   uploadToken: import.meta.env.PUBLIC_UPLOAD_TOKEN,
-  imgbedURL: import.meta.env.PUBLIC_IMG_BED_URL || "https://img.refact.cc/upload",
+  imgbedURL: import.meta.env.PUBLIC_IMG_BED_URL || 'https://img.refact.cc/upload',
   enableImgUpload: true, // true: 上传至图片服务器 / false: 存入数据库(限 128KiB)
-};
+}
 
 // CMS 内容管理配置
 // 需在部署平台设置环境变量: PUBLIC_UPLOAD_TOKEN (如需管理后台则添加 GITHUB_TOKEN, ADMIN_PASSWORD)
 // 数据源提醒: v1.6.1 及之后版本，友链/项目/照片数据须转为 JSON 存放在 content/data 目录下
 export const CMS_CONFIG = {
   enableCMS: true,
-  owner: 'Refac7',   // GitHub 仓库所有者
-  repo: 'RefactX',   // GitHub 仓库名称
-  branch: 'main',    // 目标分支
-  pathPrefix: 'src/content/posts/' // 相对路径前缀
-};
+  owner: 'Refac7', // GitHub 仓库所有者
+  repo: 'RefactX', // GitHub 仓库名称
+  branch: 'main', // 目标分支
+  pathPrefix: 'src/content/posts/', // 相对路径前缀
+}
 
 // 节日特效配置
 // 样式修改: src/components/base/HolidayTheme.astro & global.css
-export const Holiday_Effects = {
+export const HOLIDAY_EFFECTS = {
   enableHolidayEffects: true,
 }
 
@@ -486,4 +486,4 @@ export const HOLIDAY_THEMES = {
     theme: 'theme-red',
     message: '欢度国庆，全站已切换至节日主题。',
   },
-} as const;
+} as const

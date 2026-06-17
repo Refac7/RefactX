@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content'
 import { SITE, SKILLSSHOWCASE_CONFIG, SOCIAL_LINKS, GITHUB_CONFIG, POSTS_CONFIG } from '~/config.ts'
 import { cn, postsSort } from '~/lib/utils'
+import { SECTION_HEADER_CLASS, SECTION_TITLE_CLASS, SECTION_NUM_CLASS } from '~/lib/ui'
 import Layout from '~/layouts/Layout.astro'
 import GithubContributions from '~/components/base/GithubContributions.tsx'
 import List from '~/components/posts/card/List.astro'
@@ -19,11 +20,6 @@ const NAV_CARDS = [
   { id: '03', title: 'Projects', desc: 'Deployed modules', href: '/projects', icon: 'icon-[ph--stack]', status: 'Stable' },
   { id: '04', title: 'Tags', desc: 'Core filters', href: '/tags', icon: 'icon-[ph--tag]', status: 'Verified' },
 ]
-
-const SECTION_HEADER_CLASS = 'flex items-center justify-between border-b border-border/40 pb-4 mb-8 select-none'
-const SECTION_TITLE_CLASS = 'text-lg font-semibold tracking-tight text-foreground'
-const SECTION_NUM_CLASS =
-  'inline-flex items-center justify-center rounded-full bg-muted/60 px-2.5 py-0.5 text-xs font-medium text-muted-foreground mr-3'
 ---
 
 <Layout title="Home" description={SITE.description}>
@@ -149,13 +145,3 @@ const SECTION_NUM_CLASS =
     </main>
   </div>
 </Layout>
-
-<style>
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-</style>

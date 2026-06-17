@@ -1,28 +1,28 @@
-import { CMS_CONFIG, WALINE_CONFIG } from '~/config';
+import { CMS_CONFIG, WALINE_CONFIG } from '~/config'
 
 // --- Configuration ---
 export const REPO_CONFIG = {
   owner: CMS_CONFIG.owner,
   repo: CMS_CONFIG.repo,
   branch: CMS_CONFIG.branch,
-  pathPrefix: CMS_CONFIG.pathPrefix 
-};
+  pathPrefix: CMS_CONFIG.pathPrefix,
+}
 
 export const UPLOAD_CONFIG = {
   url: WALINE_CONFIG.imgbedURL,
-  token: WALINE_CONFIG.uploadToken
-};
+  token: WALINE_CONFIG.uploadToken,
+}
 
 export const DATA_FILES = [
   { name: 'projects.json', path: 'src/content/data/projects.json', label: 'PROJECTS' },
   { name: 'friends.json', path: 'src/content/data/friends.json', label: 'FRIENDS' },
-];
+]
 
-export type SchemaField = { 
-    key: string; 
-    label: string; 
-    type: 'text' | 'image' | 'textarea' | 'json';
-};
+export type SchemaField = {
+  key: string
+  label: string
+  type: 'text' | 'image' | 'textarea' | 'json'
+}
 
 export const SCHEMAS: Record<string, SchemaField[]> = {
   'friends.json': [
@@ -41,36 +41,46 @@ export const SCHEMAS: Record<string, SchemaField[]> = {
     { key: 'icon', label: 'Icon Class / Image URL', type: 'text' },
     { key: 'star', label: 'Stars', type: 'text' },
     { key: 'fork', label: 'Forks', type: 'text' },
-  ]
-};
+  ],
+}
 
 export const DEFAULT_META = {
-  title: '', description: '', pubDate: new Date().toISOString().split('T')[0],
-  author: CMS_CONFIG.owner, tags: '', recommend: false,
-  heroImage: '', ogImage: '', heroImageAspectRatio: '16/9'
-};
+  title: '',
+  description: '',
+  pubDate: new Date().toISOString().split('T')[0],
+  author: CMS_CONFIG.owner,
+  tags: '',
+  recommend: false,
+  heroImage: '',
+  ogImage: '',
+  heroImageAspectRatio: '16/9',
+}
 
 // --- Types ---
-export type FileType = 'post' | 'data';
-export type MobileView = 'files' | 'editor' | 'queue';
-export type EditorMode = 'visual' | 'raw';
+export type FileType = 'post' | 'data'
+export type MobileView = 'files' | 'editor' | 'queue'
+export type EditorMode = 'visual' | 'raw'
 
 export type QueueItem = {
-  id: string; type: 'write' | 'delete'; filename: string;
-  content?: string; sha?: string; status: 'pending' | 'processing' | 'done' | 'error';
-  isDataFile?: boolean;
-};
+  id: string
+  type: 'write' | 'delete'
+  filename: string
+  content?: string
+  sha?: string
+  status: 'pending' | 'processing' | 'done' | 'error'
+  isDataFile?: boolean
+}
 
-export type RemoteFile = { name: string; sha: string; path: string; };
+export type RemoteFile = { name: string; sha: string; path: string }
 
 export interface MetaType {
-    title: string;
-    description: string;
-    pubDate: string;
-    author: string;
-    tags: string;
-    recommend: boolean;
-    heroImage: string;
-    ogImage: string;
-    heroImageAspectRatio: string;
+  title: string
+  description: string
+  pubDate: string
+  author: string
+  tags: string
+  recommend: boolean
+  heroImage: string
+  ogImage: string
+  heroImageAspectRatio: string
 }

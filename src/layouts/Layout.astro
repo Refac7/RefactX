@@ -1,7 +1,7 @@
 ---
 import '~/styles/global.css'
 import '~/styles/pro.css'
-import { SITE, Holiday_Effects } from '~/config'
+import { SITE, HOLIDAY_EFFECTS } from '~/config'
 import Head from '~/components/base/Head.astro'
 import Header from './Header.astro'
 import Footer from './Footer.astro'
@@ -28,25 +28,20 @@ const { title, description, image }: Props = Astro.props
     </script>
   </head>
   <body>
-    
-    {Holiday_Effects.enableHolidayEffects && <HolidayTheme />}
+    {HOLIDAY_EFFECTS.enableHolidayEffects && <HolidayTheme />}
 
     <div class="select-text selection:bg-foreground/20 selection:text-foreground">
       <div class="relative z-10 bg-background">
         <Header />
       </div>
 
-      <main 
-        class="relative z-0 fullPage flex-auto bg-background"
-        transition:animate="fade"
-      >
+      <main class="relative z-0 fullPage flex-auto bg-background" transition:animate="fade">
         <slot />
       </main>
 
       <div class="relative z-70 bg-background">
         <Footer />
       </div>
-
     </div>
     <div
       class="pointer-events-none fixed bottom-0 left-0 h-28 w-full z-0 bg-background [mask-image:linear-gradient(transparent,hsl(var(--background)))]"
@@ -58,7 +53,7 @@ const { title, description, image }: Props = Astro.props
       document.addEventListener('astro:before-preparation', () => {
         // 页面开始切换时，预加载关键资源
         const prefetchLinks = document.querySelectorAll('link[rel="prefetch"]')
-        prefetchLinks.forEach(link => {
+        prefetchLinks.forEach((link) => {
           // 确保预加载是激活的
           link.setAttribute('rel', 'prefetch')
         })

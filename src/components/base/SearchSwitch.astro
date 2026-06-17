@@ -1,4 +1,5 @@
 ---
+
 ---
 
 <button
@@ -7,13 +8,17 @@
   aria-label="Search"
   title="Search (Ctrl+K / Cmd+K)"
 >
-    <span class="icon-[material-symbols--manage-search] size-6"></span>
+  <span class="icon-[material-symbols--manage-search] size-6"></span>
 </button>
 
 <div id="search-mask" class="fixed z-[200] hidden inset-0 bg-background/80 backdrop-blur-sm transition-opacity duration-300 opacity-0">
-  <div class="absolute left-1/2 top-[12%] -translate-x-1/2 transition-all duration-300 -translate-y-4 search-panel-show w-[92%] max-w-[640px]">
-      <div id="search-panel" class="flex flex-col max-h-[75vh] w-full bg-background/95 backdrop-blur-xl border border-border/40 rounded-md shadow-2xl overflow-hidden">
-      
+  <div
+    class="absolute left-1/2 top-[12%] -translate-x-1/2 transition-all duration-300 -translate-y-4 search-panel-show w-[92%] max-w-[640px]"
+  >
+    <div
+      id="search-panel"
+      class="flex flex-col max-h-[75vh] w-full bg-background/95 backdrop-blur-xl border border-border/40 rounded-md shadow-2xl overflow-hidden"
+    >
       <div id="search-bar" class="flex items-center gap-3 px-5 py-4 border-b border-border/40 bg-muted/10 shrink-0">
         <span class="icon-[material-symbols--manage-search] size-6 text-muted-foreground/60"></span>
         <label class="sr-only" for="search-input">Search</label>
@@ -24,11 +29,19 @@
           placeholder="Search documentation..."
           autocomplete="off"
         />
-        <button id="search-exact" class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md border border-border/40 transition-colors select-none shrink-0" aria-pressed="false" title="Exact Match">
+        <button
+          id="search-exact"
+          class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md border border-border/40 transition-colors select-none shrink-0"
+          aria-pressed="false"
+          title="Exact Match"
+        >
           <span class="icon-[material-symbols--format-quote] size-3.5"></span>
           Exact
         </button>
-        <kbd class="hidden sm:inline-flex items-center justify-center h-6 px-2 text-[10px] font-mono font-semibold text-muted-foreground bg-muted/50 border border-border/40 rounded shrink-0">ESC</kbd>
+        <kbd
+          class="hidden sm:inline-flex items-center justify-center h-6 px-2 text-[10px] font-mono font-semibold text-muted-foreground bg-muted/50 border border-border/40 rounded shrink-0"
+          >ESC</kbd
+        >
       </div>
 
       <div id="search-results" class="flex-1 overflow-y-auto custom-scrollbar p-2 sm:p-3 overscroll-contain" data-base="/"></div>
@@ -49,8 +62,10 @@
   let isPagefindLoading = false
 
   let exactMode = false
-  try { exactMode = localStorage.getItem('search-exact') === '1' } catch {}
-  
+  try {
+    exactMode = localStorage.getItem('search-exact') === '1'
+  } catch {}
+
   const updateExactUI = () => {
     if (!exactToggle) return
     exactToggle.setAttribute('aria-pressed', exactMode ? 'true' : 'false')
@@ -66,42 +81,44 @@
 
   exactToggle?.addEventListener('click', () => {
     exactMode = !exactMode
-    try { localStorage.setItem('search-exact', exactMode ? '1' : '0') } catch {}
+    try {
+      localStorage.setItem('search-exact', exactMode ? '1' : '0')
+    } catch {}
     updateExactUI()
     searchInput?.dispatchEvent(new Event('input'))
   })
 
   // 按需加载 Pagefind 引擎
   const initPagefind = async () => {
-    if (isPagefindLoaded || isPagefindLoading || !import.meta.env.PROD) return;
-    
-    isPagefindLoading = true;
-    if (searchInput) searchInput.placeholder = 'Initializing search engine...';
-    
+    if (isPagefindLoaded || isPagefindLoading || !import.meta.env.PROD) return
+
+    isPagefindLoading = true
+    if (searchInput) searchInput.placeholder = 'Initializing search engine...'
+
     try {
       // 核心修复：通过拼接字符串绕过 Vite 静态依赖解析，防止开发环境报错
-      const path = '/pagefind/' + 'pagefind.js';
-      const pagefind = await import(/* @vite-ignore */ path);
-      
+      const path = '/pagefind/' + 'pagefind.js'
+      const pagefind = await import(/* @vite-ignore */ path)
+
       await pagefind.options({
-        'excerptLength': 25,
-        'showSubResults': true,
-      });
-      await pagefind.init();
-      (window as any).pagefind = pagefind;
-      isPagefindLoaded = true;
-      
+        excerptLength: 25,
+        showSubResults: true,
+      })
+      await pagefind.init()
+      ;(window as any).pagefind = pagefind
+      isPagefindLoaded = true
+
       if (searchInput) {
-        searchInput.placeholder = 'Search documentation...';
+        searchInput.placeholder = 'Search documentation...'
         if (searchInput.value.trim() !== '') {
-          searchInput.dispatchEvent(new Event('input'));
+          searchInput.dispatchEvent(new Event('input'))
         }
       }
     } catch (e) {
-      console.error('Failed to load pagefind:', e);
-      if (searchInput) searchInput.placeholder = 'Engine failed to load';
+      console.error('Failed to load pagefind:', e)
+      if (searchInput) searchInput.placeholder = 'Engine failed to load'
     } finally {
-      isPagefindLoading = false;
+      isPagefindLoading = false
     }
   }
 
@@ -115,7 +132,7 @@
       searchPanelShow?.classList.add('translate-y-0')
     })
     searchInput?.focus()
-    
+
     // 打开面板的瞬间去加载庞大的 WASM
     initPagefind()
   }
@@ -171,17 +188,20 @@
     const reqId = ++searchReqId
 
     if (q === '') {
-      searchResults?.insertAdjacentHTML('beforeend', `
+      searchResults?.insertAdjacentHTML(
+        'beforeend',
+        `
         <div class="py-16 flex flex-col items-center justify-center gap-3 select-none opacity-50">
           <span class="icon-[ph--keyboard] size-10 text-muted-foreground"></span>
           <span class="text-sm font-medium text-muted-foreground">Type to start searching</span>
         </div>
-      `)
+      `
+      )
       return
     }
 
     if (import.meta.env.PROD) {
-      if (!isPagefindLoaded) return 
+      if (!isPagefindLoaded) return
 
       const pagefindQuery = exactMode ? `"${q}"` : q
       const search = await (window as any).pagefind.debouncedSearch(pagefindQuery)
@@ -189,21 +209,25 @@
       if (reqId !== searchReqId || searchInput?.value.trim() !== q) return
 
       if (!search?.results || search.results.length === 0) {
-        searchResults?.insertAdjacentHTML('beforeend', `
+        searchResults?.insertAdjacentHTML(
+          'beforeend',
+          `
           <div class="py-16 flex flex-col items-center justify-center gap-3 select-none opacity-60">
             <span class="icon-[ph--magnifying-glass-minus] size-10 text-muted-foreground"></span>
             <span class="text-sm font-medium text-muted-foreground">No results found for "${q}"</span>
           </div>
-        `)
+        `
+        )
         return
       }
 
       for (const result of search.results) {
         const data = await result.data()
-        
+
         const resultItem = document.createElement('a')
         resultItem.href = data.url
-        resultItem.className = 'block p-4 mb-2 bg-background hover:bg-muted/40 border border-transparent hover:border-border/60 rounded-md transition-all group'
+        resultItem.className =
+          'block p-4 mb-2 bg-background hover:bg-muted/40 border border-transparent hover:border-border/60 rounded-md transition-all group'
         resultItem.innerHTML = `
           <h3 class="text-base font-semibold text-foreground group-hover:text-primary transition-colors tracking-tight mb-2">${data.meta.title}</h3>
           <p class="text-sm text-muted-foreground leading-relaxed line-clamp-2">${data.excerpt}</p>
@@ -213,13 +237,14 @@
 
         if (data.sub_results) {
           for (const subResult of data.sub_results) {
-            if (subResult.excerpt === data.excerpt) continue;
-            const cleanTitle = subResult.title.replace(/\s*[Hh][1-6]$/g, '');
-            if (!cleanTitle) continue;
+            if (subResult.excerpt === data.excerpt) continue
+            const cleanTitle = subResult.title.replace(/\s*[Hh][1-6]$/g, '')
+            if (!cleanTitle) continue
 
             const subItem = document.createElement('a')
             subItem.href = subResult.url
-            subItem.className = 'block p-3 ml-6 mb-2 bg-muted/20 hover:bg-muted/50 border-l-[3px] border-border/60 hover:border-primary rounded-r-md transition-all group'
+            subItem.className =
+              'block p-3 ml-6 mb-2 bg-muted/20 hover:bg-muted/50 border-l-[3px] border-border/60 hover:border-primary rounded-r-md transition-all group'
             subItem.innerHTML = `
               <h4 class="text-sm font-medium text-foreground opacity-90 group-hover:text-primary transition-colors mb-1 tracking-tight">${cleanTitle}</h4>
               <p class="text-xs text-muted-foreground/80 line-clamp-1">${subResult.excerpt}</p>
@@ -230,12 +255,15 @@
         }
       }
     } else {
-      searchResults?.insertAdjacentHTML('beforeend', `
+      searchResults?.insertAdjacentHTML(
+        'beforeend',
+        `
         <div class="py-16 flex flex-col items-center justify-center gap-3 select-none opacity-60">
           <span class="icon-[ph--warning-circle] size-10 text-amber-500/80"></span>
           <span class="text-sm font-medium text-muted-foreground text-center">Search requires Pagefind.<br/>Not available in dev mode.</span>
         </div>
-      `)
+      `
+      )
     }
   }
 
