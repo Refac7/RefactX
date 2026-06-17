@@ -96,7 +96,7 @@ export default function JsonEditor() {
                         if (field.type !== 'json') handleUpdateItem(editingItemIndex, field.key, e.target.value)
                       }
                     }}
-                    className="w-full bg-background border border-border/40 p-3 rounded-xs text-sm focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none min-h-[120px] transition-all"
+                    className="w-full bg-background border border-border/40 p-3 rounded-xs text-sm focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none min-h-30 transition-all"
                     placeholder={`Enter ${field.label.toLowerCase()}...`}
                   />
                 ) : (

@@ -34,7 +34,7 @@ export default function LoginScreen() {
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-center w-full z-10">
-        <div className="w-full max-w-[340px] bg-background rounded-lg border border-border/40 p-8 sm:p-10 relative">
+        <div className="w-full max-w-85 bg-background rounded-lg border border-border/40 p-8 sm:p-10 relative">
           <div className="text-center mb-8">
             <h1 className="text-2xl font-bold tracking-tight text-foreground mb-1">Authenticate</h1>
             <p className="text-sm text-muted-foreground">Sign in to the CMS dashboard.</p>

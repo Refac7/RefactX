@@ -144,9 +144,9 @@ export default function GithubContributions({ username, tooltipEnabled }: Props)
         </div>
 
         <div ref={containerRef} className="w-full overflow-x-auto scrollbar-hide pb-2">
-          <div className="grid grid-flow-col gap-[3px] w-max mx-auto">
+          <div className="grid grid-flow-col gap-0.75 w-max mx-auto">
             {weeks.map((week, weekIndex) => (
-              <div key={weekIndex} className="grid grid-rows-7 gap-[3px]">
+              <div key={weekIndex} className="grid grid-rows-7 gap-0.75">
                 {week.map((contribution, dayIndex) => {
                   const { date, count } = contribution
                   const dateStr = date

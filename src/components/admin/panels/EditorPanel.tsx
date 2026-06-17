@@ -116,7 +116,7 @@ export default function EditorPanel() {
       </div>
 
       {/* 编辑区域 */}
-      <div className="flex-1 relative w-full h-full min-h-[400px] flex flex-col overflow-hidden bg-background">
+      <div className="flex-1 relative w-full h-full min-h-100 flex flex-col overflow-hidden bg-background">
         {isFetchingContent && (
           <div className="absolute inset-0 bg-background/50 z-20 flex flex-col items-center justify-center gap-3 backdrop-blur-sm">
             <span className="icon-[ph--spinner] animate-spin size-6 text-muted-foreground"></span>

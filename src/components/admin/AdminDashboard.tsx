@@ -67,7 +67,7 @@ const DashboardLayout = () => {
           <div className="bg-background rounded-lg border border-border/40 p-5 flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-muted-foreground mb-1">Repository</p>
-              <h3 className="text-sm font-bold truncate max-w-[200px]">{REPO_CONFIG.repo}</h3>
+              <h3 className="text-sm font-bold truncate max-w-50">{REPO_CONFIG.repo}</h3>
             </div>
             <div className="size-10 rounded-full bg-muted/50 flex items-center justify-center">
               <span className="icon-[ph--git-branch] size-5 text-muted-foreground"></span>

@@ -15,7 +15,7 @@ const { class: className } = Astro.props
 
   {
     WALINE_CONFIG.enableComment ? (
-      <div id="waline-container" class="waline-lazy relative min-h-[200px] w-full">
+      <div id="waline-container" class="waline-lazy relative min-h-50 w-full">
         <div class="waline-loading absolute inset-0 flex flex-col items-center justify-center bg-transparent z-0">
           <span class="icon-[ph--spinner-gap] size-6 text-muted-foreground animate-spin mb-3" />
           <span class="text-xs font-medium text-muted-foreground/60">Loading comments...</span>

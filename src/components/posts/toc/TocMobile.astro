@@ -40,7 +40,7 @@ const getRelativeIndentClass = (depth: number) => {
           data-toc-toggle
         >
           <div class="flex gap-4 items-center min-w-0 flex-1">
-            <SimpleProgressRing size={16} strokeWidth={2} class="flex-shrink-0" />
+            <SimpleProgressRing size={16} strokeWidth={2} class="shrink-0" />
             <span id="mobile-toc-current-section" class="text-sm font-medium text-foreground/80 truncate">
               Overview
             </span>
@@ -56,11 +56,11 @@ const getRelativeIndentClass = (depth: number) => {
         >
           <div class="relative">
             <div
-              class="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-background/98 to-transparent pointer-events-none z-10 opacity-0 transition-opacity duration-200"
+              class="absolute top-0 left-0 right-0 h-8 bg-linear-to-b from-background/98 to-transparent pointer-events-none z-10 opacity-0 transition-opacity duration-200"
               data-fade-top
             />
             <div
-              class="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-background/98 to-transparent pointer-events-none z-10 opacity-0 transition-opacity duration-200"
+              class="absolute bottom-0 left-0 right-0 h-8 bg-linear-to-t from-background/98 to-transparent pointer-events-none z-10 opacity-0 transition-opacity duration-200"
               data-fade-bottom
             />
 
@@ -71,7 +71,7 @@ const getRelativeIndentClass = (depth: number) => {
                   return (
                     <li class={cn('flex items-start gap-2 min-w-0', depthClass, getRelativeIndentClass(heading.depth) || '')}>
                       <span
-                        class="text-primary/40 font-mono text-xs mt-1 min-w-[1.5rem] transition-colors duration-200 flex-shrink-0 mobile-toc-number"
+                        class="text-primary/40 font-mono text-xs mt-1 min-w-6 transition-colors duration-200 shrink-0 mobile-toc-number"
                         data-order={heading.order}
                       >
                         {heading.order.toString().padStart(2, '0')}

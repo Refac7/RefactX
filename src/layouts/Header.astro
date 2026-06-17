@@ -11,7 +11,7 @@ import { CMS_CONFIG } from '~/config'
 
 <header>
   <div class="mx-auto flex justify-between px-6 sm:px-8 border-b border-border/40 py-8 lg:px-8">
-    <div class="flex gap-3 sm:gap-6 items-center flex-shrink-0">
+    <div class="flex gap-3 sm:gap-6 items-center shrink-0">
       <a href="/" class="pointer-events-auto select-none" transition:persist>
         <Image src={favicon} width={56} height={56} alt="Logo" class="w-8 h-8 border-2 border-transparent" loading="eager" />
       </a>
@@ -39,7 +39,7 @@ import { CMS_CONFIG } from '~/config'
               {/* 下拉悬浮面板 */}
               <div
                 id="mobile-menu-dropdown"
-                class="absolute top-full left-0 mt-3 w-30 rounded-md bg-background/95 backdrop-blur-md border border-border/60 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] opacity-0 invisible translate-y-[-10px] transition-all duration-300 flex flex-col p-1.5 z-[100]"
+                class="absolute top-full left-0 mt-3 w-30 rounded-md bg-background/95 backdrop-blur-md border border-border/60 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] opacity-0 invisible -translate-y-2.5 transition-all duration-300 flex flex-col p-1.5 z-100"
               >
                 {HEADER_LINKS.slice(2).map((link) => (
                   <a

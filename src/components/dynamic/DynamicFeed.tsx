@@ -61,7 +61,7 @@ function FeedItemCard({ item, animationDelay }: { item: FeedItem; animationDelay
         <div
           className={cn(
             'relative transition-[max-height] duration-500 ease-in-out overflow-hidden',
-            isExpanded ? 'max-h-[3000px]' : 'max-h-[160px]'
+            isExpanded ? 'max-h-[3000px]' : 'max-h-40'
           )}
         >
           <div
@@ -72,7 +72,7 @@ function FeedItemCard({ item, animationDelay }: { item: FeedItem; animationDelay
           </div>
 
           {!isExpanded && hasOverflow && (
-            <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background to-transparent pointer-events-none" />
+            <div className="absolute bottom-0 left-0 right-0 h-16 bg-linear-to-t from-background to-transparent pointer-events-none" />
           )}
         </div>
 
@@ -169,7 +169,7 @@ export default function DynamicFeed() {
   const hasMore = visibleCount < feed.length
 
   return (
-    <div className="flex flex-col relative min-h-[400px]">
+    <div className="flex flex-col relative min-h-100">
       {!isVerified && (
         <div className="absolute flex items-center justify-center p-2 animate-in fade-in duration-500 z-10">
           <div className="flex flex-col items-start text-start mx-auto">
@@ -190,13 +190,13 @@ export default function DynamicFeed() {
       <div
         className={cn(
           'transition-all duration-1000 flex flex-col',
-          !isVerified && 'blur-[8px] pointer-events-none select-none opacity-80 grayscale-[0.5]'
+          !isVerified && 'blur-sm pointer-events-none select-none opacity-80 grayscale-[0.5]'
         )}
       >
         {loading || !isVerified ? (
           <div className="grid grid-cols-1 gap-6">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="flex flex-col bg-background/50 border border-border/40 rounded-lg p-6 min-h-[140px] animate-pulse">
+              <div key={i} className="flex flex-col bg-background/50 border border-border/40 rounded-lg p-6 min-h-35 animate-pulse">
                 <div className="flex justify-between items-center mb-4">
                   <div className="h-5 w-16 bg-muted/50 rounded-full"></div>
                   <div className="h-3 w-20 bg-muted/30 rounded"></div>

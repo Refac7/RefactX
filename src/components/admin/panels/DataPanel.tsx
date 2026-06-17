@@ -12,7 +12,7 @@ export default function DataPanel() {
         'flex-col bg-background rounded-lg border border-border/40 transition-all duration-300 relative overflow-hidden',
         mobileView === 'files' ? 'flex h-[calc(100vh-12rem)]' : 'hidden',
         showLeftPanel ? 'lg:flex lg:col-span-3 xl:col-span-2' : 'lg:hidden',
-        'lg:h-auto lg:min-h-[400px] lg:max-h-[calc(100vh-8rem)]'
+        'lg:h-auto lg:min-h-100 lg:max-h-[calc(100vh-8rem)]'
       )}
     >
       <div className="h-12 px-4 border-b border-border/40 flex justify-between items-center bg-muted/20 shrink-0">

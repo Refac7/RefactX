@@ -36,7 +36,7 @@ const getRelativeIndentClass = (depth: number) => {
 <aside
   id="desktop-toc-aside"
   class={cn(
-    'hidden xl:block sticky top-32 w-[15rem] shrink-0 z-40 transition-opacity duration-300 ease-out',
+    'hidden xl:block sticky top-32 w-60 shrink-0 z-40 transition-opacity duration-300 ease-out',
     'opacity-80 hover:opacity-100 group',
     className
   )}
@@ -61,11 +61,11 @@ const getRelativeIndentClass = (depth: number) => {
                   class="group/link relative flex items-center w-full py-1.5 transition-colors duration-200"
                 >
                   {/* 当前激活的粗线指示器，覆盖在背景细线上 */}
-                  <span class="absolute left-[-0.5px] top-1/2 -translate-y-1/2 w-[2px] h-[calc(100%-8px)] bg-primary opacity-0 transition-opacity duration-200 group-data-[active]/link:opacity-100" />
+                  <span class="absolute left-[-0.5px] top-1/2 -translate-y-1/2 w-0.5 h-[calc(100%-8px)] bg-primary opacity-0 transition-opacity duration-200 group-data-active/link:opacity-100" />
 
                   <span
                     class={cn(
-                      'text-sm truncate transition-colors group-data-[active]/link:text-primary group-data-[active]/link:font-medium',
+                      'text-sm truncate transition-colors group-data-active/link:text-primary group-data-active/link:font-medium',
                       depthClass,
                       getRelativeIndentClass(heading.depth)
                     )}

@@ -34,7 +34,7 @@ const progressPercent = Math.round((page.currentPage / page.lastPage) * 100)
         </div>
 
         <div
-          class="flex-1 flex flex-col justify-end lg:justify-center p-6 lg:p-8 xl:p-12 min-h-[300px] lg:min-h-[250px] fade-up animation-delay-100"
+          class="flex-1 flex flex-col justify-end lg:justify-center p-6 lg:p-8 xl:p-12 min-h-75 lg:min-h-62.5 fade-up animation-delay-100"
         >
           <h1 class="text-5xl sm:text-6xl xl:text-7xl font-bold tracking-tight text-foreground leading-[1.1] mb-6 select-none">{title}</h1>
           <div class="flex items-center gap-2 text-sm text-muted-foreground">
@@ -71,7 +71,7 @@ const progressPercent = Math.round((page.currentPage / page.lastPage) * 100)
           <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>Stream Sequence</h2></div>
         </div>
 
-        <div class="relative z-10 flex-1 min-h-[400px] mt-4 fade-up animation-delay-200">
+        <div class="relative z-10 flex-1 min-h-100 mt-4 fade-up animation-delay-200">
           <List posts={page.data} type={POSTS_CONFIG.postPageConfig.type} heroImageLayout={POSTS_CONFIG.postPageConfig?.heroImageLayout} />
         </div>
 
