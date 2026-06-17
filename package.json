@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro check && astro build && pagefind --site .vercel/output/static",
-    "preview": "astro preview",
+    "preview": "python3 -m http.server --directory dist/client 4321",
     "astro": "astro",
     "format": "prettier . --check --ignore-unknown",
     "format:write": "prettier . --write --ignore-unknown --cache"
