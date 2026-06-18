@@ -5,7 +5,40 @@ import { useAdminAuth } from './hooks/useAdminAuth'
 import { useAdminEditor } from './hooks/useAdminEditor'
 import { useAdminFileSystem } from './hooks/useAdminFileSystem'
 
-// 为了保持现有组件不报错，我们将所有的返回值都打平在一个 interface 中，相当于一个聚合体
+function useAnimatedToasts<T extends { id: string | number }>(originalToasts: T[]) {
+  const [renderedToasts, setRenderedToasts] = useState<{ toast: T; isLeaving: boolean }[]>([])
+
+  useEffect(() => {
+    setRenderedToasts((prev) => {
+      const currentIds = originalToasts.map((t) => t.id)
+
+      const next = prev.map((item) => {
+        if (!currentIds.includes(item.toast.id) && !item.isLeaving) {
+          return { ...item, isLeaving: true }
+        }
+        return item
+      })
+
+      const prevIds = prev.map((item) => item.toast.id)
+      originalToasts.forEach((t) => {
+        if (!prevIds.includes(t.id)) {
+          next.push({ toast: t, isLeaving: false })
+        }
+      })
+
+      return next
+    })
+  }, [originalToasts])
+
+  const handleAnimationEnd = (id: string | number, isLeaving: boolean) => {
+    if (isLeaving) {
+      setRenderedToasts((prev) => prev.filter((item) => item.toast.id !== id))
+    }
+  }
+
+  return { renderedToasts, handleAnimationEnd }
+}
+
 export interface AdminContextType
   extends ReturnType<typeof useAdminAuth>,
     ReturnType<typeof useAdminEditor>,
@@ -27,11 +60,13 @@ const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   const [showRightPanel, setShowRightPanel] = useState(true)
 
   const { toasts, showToast } = useAdminToast()
+  
+  const { renderedToasts, handleAnimationEnd } = useAnimatedToasts(toasts)
+
   const auth = useAdminAuth(showToast)
   const editor = useAdminEditor(showToast)
   const fileSystem = useAdminFileSystem(showToast, auth.getAuthHeaders, auth.handleLogout, editor, setMobileView)
 
-  // 认证成功后自动拉取文件列表
   useEffect(() => {
     if (auth.isLoggedIn) {
       fileSystem.fetchRemoteFiles()
@@ -54,19 +89,27 @@ const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   return (
     <AdminContext.Provider value={value}>
       {children}
-      {/* 极简 Toast 提示 */}
       <style>{`
-        @keyframes geist-toast-slide {
+        @keyframes geist-toast-slide-in {
           from { transform: translateY(100%); opacity: 0; }
           to { transform: translateY(0); opacity: 1; }
         }
+        @keyframes geist-toast-slide-out {
+          from { transform: translateY(0); opacity: 1; }
+          to { transform: translateY(100%); opacity: 0; }
+        }
       `}</style>
-      <div className="fixed bottom-12 left-6 z-9999 flex flex-col gap-3 pointer-events-none">
-        {toasts.map((toast) => (
+      <div className="fixed bottom-12 left-6 z-[9999] flex flex-col gap-3 pointer-events-none">
+        {renderedToasts.map(({ toast, isLeaving }) => (
           <div
             key={toast.id}
+            onAnimationEnd={() => handleAnimationEnd(toast.id, isLeaving)}
             className="bg-background border border-border/40 px-4 py-3 rounded-lg text-sm font-medium shadow-lg flex items-center gap-3 pointer-events-auto"
-            style={{ animation: 'geist-toast-slide 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards' }}
+            style={{ 
+              animation: isLeaving 
+                ? 'geist-toast-slide-out 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards' 
+                : 'geist-toast-slide-in 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards' 
+            }}
           >
             <span
               className={`flex size-2 rounded-full shrink-0 ${

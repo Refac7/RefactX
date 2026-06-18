@@ -35,11 +35,11 @@ const { title, description, image }: Props = Astro.props
         <Header />
       </div>
 
-      <main class="relative z-0 fullPage flex-auto bg-background" transition:animate="fade">
+      <main class="relative z-5 fullPage flex-auto bg-background" transition:animate="fade">
         <slot />
       </main>
 
-      <div class="relative z-70 bg-background">
+      <div class="relative z-0 bg-background">
         <Footer />
       </div>
     </div>
