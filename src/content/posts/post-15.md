@@ -46,8 +46,6 @@ heroImageAspectRatio: '16/9'
 
 ![](https://img.refact.cc/1780751090600-kzz0q61pwp.jpg)
 
-![](https://img.refact.cc/1780751113839-94f46tl4bwe.jpg)
-
 ## 生日
 
 既然写到这里，就还是记一笔。我的生日是公历3月31日，农历二月十三，十九岁。按照“十九年七闰”，今年公历与农历刚好重合。可谁在乎呢？
