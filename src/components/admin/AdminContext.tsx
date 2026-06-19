@@ -60,7 +60,7 @@ const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   const [showRightPanel, setShowRightPanel] = useState(true)
 
   const { toasts, showToast } = useAdminToast()
-  
+
   const { renderedToasts, handleAnimationEnd } = useAnimatedToasts(toasts)
 
   const auth = useAdminAuth(showToast)
@@ -105,10 +105,10 @@ const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
             key={toast.id}
             onAnimationEnd={() => handleAnimationEnd(toast.id, isLeaving)}
             className="bg-background border border-border/40 px-4 py-3 rounded-lg text-sm font-medium shadow-lg flex items-center gap-3 pointer-events-auto"
-            style={{ 
-              animation: isLeaving 
-                ? 'geist-toast-slide-out 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards' 
-                : 'geist-toast-slide-in 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards' 
+            style={{
+              animation: isLeaving
+                ? 'geist-toast-slide-out 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards'
+                : 'geist-toast-slide-in 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards',
             }}
           >
             <span
