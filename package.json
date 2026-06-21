@@ -3,6 +3,38 @@
   "type": "module",
   "version": "1.8.0",
   "license": "MIT",
+  "prettier": {
+    "experimentalTernaries": false,
+    "printWidth": 140,
+    "tabWidth": 2,
+    "useTabs": false,
+    "semi": false,
+    "singleQuote": true,
+    "quoteProps": "consistent",
+    "jsxSingleQuote": false,
+    "trailingComma": "es5",
+    "bracketSpacing": true,
+    "bracketSameLine": false,
+    "arrowParens": "always",
+    "proseWrap": "preserve",
+    "htmlWhitespaceSensitivity": "css",
+    "endOfLine": "lf",
+    "embeddedLanguageFormatting": "auto",
+    "singleAttributePerLine": false,
+    "plugins": [
+      "prettier-plugin-astro"
+    ],
+    "overrides": [
+      {
+        "files": "*.astro",
+        "options": {
+          "parser": "astro",
+          "astroAllowShorthand": true,
+          "astroSkipFrontmatter": false
+        }
+      }
+    ]
+  },
   "scripts": {
     "dev": "astro dev",
     "build": "astro check && astro build && pagefind --site .vercel/output/static",
@@ -37,8 +69,8 @@
     "@astrojs/mdx": "^5.0.3",
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "3.7.2",
-    "@expressive-code/plugin-collapsible-sections": "^0.41.1",
-    "@expressive-code/plugin-line-numbers": "^0.41.1",
+    "@expressive-code/plugin-collapsible-sections": "^0.43.1",
+    "@expressive-code/plugin-line-numbers": "^0.43.1",
     "@iconify/json": "^2.2.321",
     "@iconify/tailwind4": "^1.0.6",
     "@lokesh.dhakar/quantize": "^1.4.0",
@@ -51,7 +83,7 @@
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@types/yargs": "^17.0.33",
-    "astro-expressive-code": "^0.41.7",
+    "astro-expressive-code": "^0.43.1",
     "astro-robots-txt": "^1.0.0",
     "babel-plugin-react-compiler": "1.0.0",
     "chalk": "^5.4.1",
