@@ -1,11 +1,11 @@
 [
   {
-    "name": "Mail_Terminal",
-    "description": "无服务器 SMTP 邮件发送器",
-    "website": "https://mail.refact.cc",
-    "githubUrl": "https://github.com/refac7/mail-terminal",
+    "name": "AnonBoard",
+    "description": "基于 React + Next.js + shadcn/ui 的匿名留言板，数据存储在 Notion 数据库。",
+    "website": "https://board.refact.cc",
+    "githubUrl": "https://github.com/Refac7/AnonBoard",
     "type": "icon",
-    "icon": "icon-[ri--terminal-box-line]",
+    "icon": "icon-[ri--pages-line]",
     "star": "0",
     "fork": "0"
   },
