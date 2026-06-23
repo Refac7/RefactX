@@ -329,6 +329,14 @@
   filter: none !important;
 }
 
+.medium-zoom-overlay {
+  z-index: 100 !important;
+}
+
+.medium-zoom-image--opened {
+  z-index: 101 !important;
+}
+
 .dark .markdown img.medium-zoom-image,
 .dark .markdown a img,
 .dark .markdown figure img {
