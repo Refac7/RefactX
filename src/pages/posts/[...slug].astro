@@ -6,6 +6,7 @@ import PostNavigation from '~/components/posts/base/PostNavigation.astro'
 import TocMobile from '~/components/posts/toc/TocMobile.astro'
 import Jap from '~/components/posts/layouts/Jap.astro'
 import { POSTS_CONFIG } from '~/config'
+import { SECTION_NUM_CLASS } from '~/lib/ui'
 import Comments from '~/components/posts/base/Comments.astro'
 
 export async function getStaticPaths() {
@@ -54,12 +55,11 @@ const PostLayout = layoutMap[layoutKey] || Jap
 <Layout title={frontmatter.title} description={frontmatter.description || frontmatter.title} image={frontmatter.ogImage}>
   <button
     id="hud-btt-btn"
-    class="fixed bottom-6 left-6 md:bottom-10 md:left-10 z-100 group flex items-center gap-3 bg-foreground/80 text-primary-foreground px-4 py-3 rounded-full shadow-lg shadow-primary/20 hover:shadow-primary/40 opacity-0 translate-y-4 pointer-events-none hover:-translate-y-1 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+    class="fixed bottom-6 left-6 md:bottom-10 md:left-10 z-100 group flex items-center gap-2 bg-background/80 backdrop-blur-sm border border-border/40 text-foreground px-4 py-2.5 rounded-full shadow-lg hover:shadow-xl hover:border-primary/30 hover:-translate-y-1 opacity-0 translate-y-4 pointer-events-none transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
     aria-label="Back to top"
   >
-    <div class="flex items-center justify-center">
-      <span class="icon-[ph--arrow-up-bold] w-3.5 h-5 group-hover:-translate-y-0.5 transition-transform duration-300"></span>
-    </div>
+    <span class="icon-[ph--arrow-up-bold] size-3.5 group-hover:-translate-y-0.5 transition-transform duration-300"></span>
+    <span class="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">Top</span>
   </button>
 
   <div class="flex flex-col justify-between h-fit transition-all duration-500 ease-out fade-up relative">
@@ -76,6 +76,10 @@ const PostLayout = layoutMap[layoutKey] || Jap
     </div>
 
     <div class="mt-8 p-6 lg:p-8 xl:p-12 pb-12 mx-auto w-full fade-up animation-delay-200">
+      <div class="border-b border-border/40 pb-4 mb-8 flex items-center gap-3">
+        <span class={SECTION_NUM_CLASS}>∞</span>
+        <h2 class="text-xl md:text-2xl font-bold text-foreground tracking-tight">Comments</h2>
+      </div>
       <Comments />
     </div>
   </div>
