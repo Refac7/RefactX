@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content'
 import { SITE, SKILLSSHOWCASE_CONFIG, SOCIAL_LINKS, GITHUB_CONFIG, POSTS_CONFIG } from '~/config.ts'
 import { cn, postsSort } from '~/lib/utils'
-import { SECTION_HEADER_CLASS, SECTION_TITLE_CLASS, SECTION_NUM_CLASS } from '~/lib/ui'
+
 import Layout from '~/layouts/Layout.astro'
 import GithubContributions from '~/components/base/GithubContributions.tsx'
 import List from '~/components/posts/card/List.astro'
@@ -24,69 +24,137 @@ const NAV_CARDS = [
 
 <Layout title="Home" description={SITE.description}>
   <div class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
-    <aside class="w-full lg:w-1/3 lg:sticky lg:top-0 lg:h-screen flex flex-col xl:border-r border-border/40 z-20">
-      <div class="flex flex-1 lg:overflow-y-auto scrollbar-hide flex-col">
-        <div class="p-6 lg:p-8 xl:p-12 pb-0 shrink-0 fade-up flex justify-between items-center">
-          <span class="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary select-none">
-            V{SITE.version} - Astro v6
+    <aside
+      class="w-full lg:w-1/3 lg:sticky lg:top-0 lg:h-screen flex flex-col xl:border-r border-border/40 z-20 bg-background/50 backdrop-blur-sm relative overflow-hidden"
+    >
+      <div
+        class="absolute top-0 left-0 w-full h-96 bg-primary/5 rounded-full blur-3xl -z-10 translate-x-[-20%] translate-y-[-20%] pointer-events-none"
+      >
+      </div>
+
+      <div class="flex flex-1 lg:overflow-y-auto scrollbar-hide flex-col relative z-10">
+        <div class="p-6 lg:p-8 xl:p-12 pb-0 shrink-0 fade-up flex justify-between items-start">
+          <div class="flex items-center gap-3 select-none">
+            <div class="size-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+              <span class="icon-[ph--terminal-window-duotone] size-6"></span>
+            </div>
+            <div>
+              <div class="text-sm font-bold tracking-tight">{SITE.title || 'Digital Hub'}</div>
+              <div class="text-[10px] text-muted-foreground uppercase tracking-widest font-mono">System Online</div>
+            </div>
+          </div>
+          <span
+            class="inline-flex items-center rounded-full border border-primary/20 bg-primary/5 px-2.5 py-1 text-[10px] font-mono text-primary select-none"
+          >
+            v{SITE.version} / Astro
           </span>
         </div>
 
-        <div
-          class="flex-1 flex flex-col justify-end lg:justify-center p-6 lg:p-8 xl:p-12 min-h-75 lg:min-h-62.5 fade-up animation-delay-100"
-        >
-          <h1 class="text-5xl sm:text-6xl xl:text-7xl font-bold tracking-tight text-foreground leading-[1.1] mb-6 select-none">Home</h1>
-          <div class="flex items-center gap-2 text-sm text-muted-foreground">
-            <span class="icon-[ph--user] size-4"></span><span>Function Panel</span>
+        <div class="flex-1 flex flex-col justify-center p-6 lg:p-8 xl:p-12 min-h-[50vh] lg:min-h-0 fade-up animation-delay-100">
+          <div
+            class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted/30 border border-border/50 text-xs font-medium text-muted-foreground mb-8 w-fit select-none"
+          >
+            <span class="relative flex size-2">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full size-2 bg-emerald-500"></span>
+            </span>
+            Building & Exploring
           </div>
-        </div>
 
-        <div class="shrink-0 p-6 lg:p-8 xl:p-12 fade-up animation-delay-150">
-          <p class="text-sm text-muted-foreground leading-relaxed">欢迎访问此站点，基于Astro v6构建，欢迎提出建议。</p>
+          <h1 class="text-4xl sm:text-5xl xl:text-6xl font-bold tracking-tight text-foreground leading-[1.15] mb-4 select-none">
+            Welcome to <br />
+            <span class="text-transparent bg-clip-text bg-linear-to-r from-foreground to-foreground/50">My Workspace.</span>
+          </h1>
+
+          <div class="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-8 font-mono">
+            <span class="flex items-center gap-1.5"><span class="icon-[ph--code] size-4"></span> Developer</span>
+            <span class="w-1 h-1 rounded-full bg-border"></span>
+            <span class="flex items-center gap-1.5"><span class="icon-[ph--pen-nib] size-4"></span> Creator</span>
+            <span class="w-1 h-1 rounded-full bg-border"></span>
+            <span class="flex items-center gap-1.5"><span class="icon-[ph--map-pin] size-4"></span> Earth</span>
+          </div>
+
+          <div class="relative pl-4 border-l-2 border-primary/30 fade-up animation-delay-150">
+            <p class="text-sm md:text-base text-muted-foreground leading-relaxed">
+              欢迎访问此站点，这里是我的数字花园。<br />
+              基于 Astro v6 构建，记录技术、分享生活。欢迎提出建议或与我取得联系。
+            </p>
+          </div>
         </div>
       </div>
 
-      <div class="flex border-t border-border/40 shrink-0 select-none fade-up animation-delay-200">
-        {
-          SOCIAL_LINKS.map((item) => (
-            <a
-              href={item.url}
-              target="_blank"
-              class="flex-1 flex flex-col items-start justify-center p-8 lg:p-10 xl:p-14 bg-background hover:bg-muted/30 border-r border-border/40 last:border-r-0 transition-colors"
-            >
-              <span class={`${item.icon} size-6 text-foreground group-hover:text-foreground transition-colors mb-2`} />
-              <span class="text-xs font-medium text-muted-foreground">{item.name || 'Link'}</span>
-            </a>
-          ))
-        }
+      <div class="shrink-0 border-t border-border/40 bg-background/50 select-none fade-up animation-delay-200">
+        <div
+          class="p-4 flex items-center justify-between text-xs text-muted-foreground font-mono border-b border-border/20 px-6 lg:px-8 xl:px-12"
+        >
+          <span>// CONNECT PORTALS</span>
+          <span>{SOCIAL_LINKS.length} ACTIVE</span>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-border/40">
+          {
+            SOCIAL_LINKS.map((item) => (
+              <a
+                href={item.url}
+                target="_blank"
+                class="group flex flex-col items-center justify-center p-6 bg-background hover:bg-primary/5 transition-all duration-300"
+              >
+                <div class="p-2 rounded-full bg-muted/30 group-hover:bg-primary/10 group-hover:scale-110 transition-all duration-300 mb-2">
+                  <span class={`${item.icon} size-5 text-muted-foreground group-hover:text-primary transition-colors`} />
+                </div>
+                <span class="text-[10px] font-mono font-medium text-muted-foreground group-hover:text-primary uppercase tracking-wider transition-colors">
+                  {item.name || 'Link'}
+                </span>
+              </a>
+            ))
+          }
+        </div>
       </div>
     </aside>
 
     <main class="w-full lg:w-2/3 z-10 flex flex-col fade-up animation-delay-150">
-      <div class="p-6 lg:p-10 xl:p-16 2xl:p-20 flex-1 flex flex-col">
-        <div class="mb-24 fade-up mt-4">
-          <div class={SECTION_HEADER_CLASS}>
-            <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>Navigation</h2></div>
+      <div class="p-6 lg:p-10 xl:p-16 2xl:p-20 flex-1 flex flex-col gap-20 xl:gap-24 mt-4 lg:mt-0">
+        <div>
+          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-b border-border/40 pb-4">
+            <div class="flex items-center gap-3">
+              <span class="inline-flex items-center justify-center size-7 rounded-md bg-primary/10 text-primary font-mono text-xs font-bold"
+                >01</span
+              >
+              <h2 class="text-xl md:text-2xl font-bold text-foreground tracking-tight">Navigation</h2>
+            </div>
+            <span class="text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest hidden sm:inline-block"
+              >// System_Modules</span
+            >
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mt-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             {
               NAV_CARDS.map((card, i) => (
                 <a
                   href={card.href}
-                  class="group relative flex flex-col justify-between rounded-lg border border-border/40 bg-background/50 p-6 hover:bg-muted/20 hover:border-border hover:shadow-xs transition-all duration-300 hover:-translate-y-0.5"
+                  class="group relative flex flex-col justify-between rounded-xl border border-border/40 bg-background/50 p-6 hover:bg-muted/20 hover:border-primary/30 hover:shadow-sm transition-all duration-300"
                   style={`animation-delay: ${i * 50}ms`}
                 >
-                  <div class="relative z-10 flex flex-col h-full">
-                    <div class="flex justify-between items-start">
-                      <div class="size-12 flex items-center justify-center rounded-md bg-muted/30 border border-border/40 group-hover:border-border/60 transition-colors">
-                        <span class={cn('size-6 text-foreground/80 group-hover:text-foreground transition-colors', card.icon)} />
-                      </div>
-                      <span class="icon-[ph--arrow-up-right] size-5 text-muted-foreground/30 group-hover:text-foreground transition-colors mt-1" />
+                  <div class="absolute right-4 top-4 flex items-center gap-1.5 opacity-60 group-hover:opacity-100 transition-opacity">
+                    <span class="relative flex size-1.5">
+                      {card.status === 'Active' && (
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                      )}
+                      <span
+                        class={`relative inline-flex rounded-full size-1.5 ${card.status === 'Active' ? 'bg-emerald-500' : 'bg-primary/50'}`}
+                      />
+                    </span>
+                    <span class="text-[10px] font-mono uppercase tracking-wider text-muted-foreground group-hover:text-foreground transition-colors">
+                      {card.status}
+                    </span>
+                  </div>
+                  <div class="size-12 flex items-center justify-center rounded-lg bg-primary/5 border border-primary/10 group-hover:bg-primary/10 group-hover:scale-110 transition-all duration-300 mb-8">
+                    <span class={cn('size-6 text-primary/80 group-hover:text-primary transition-colors', card.icon)} />
+                  </div>
+                  <div>
+                    <div class="flex items-center justify-between mb-1">
+                      <h3 class="text-base font-semibold text-foreground tracking-tight">{card.title}</h3>
+                      <span class="icon-[ph--arrow-up-right] size-4 text-muted-foreground/30 group-hover:text-primary transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                     </div>
-                    <div class="mt-4">
-                      <h3 class="text-base font-semibold text-foreground mb-0.5 tracking-tight">{card.title}</h3>
-                      <p class="text-sm text-muted-foreground leading-relaxed line-clamp-1">{card.desc}</p>
-                    </div>
+                    <p class="text-sm text-muted-foreground leading-relaxed line-clamp-1">{card.desc}</p>
                   </div>
                 </a>
               ))
@@ -94,32 +162,44 @@ const NAV_CARDS = [
           </div>
         </div>
 
-        <div class="mb-20 fade-up" style="animation-delay: 200ms">
-          <div class={SECTION_HEADER_CLASS}>
-            <div class="flex items-center"><span class={SECTION_NUM_CLASS}>02</span><h2 class={SECTION_TITLE_CLASS}>Recent Logs</h2></div>
+        <div class="fade-up" style="animation-delay: 200ms">
+          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-b border-border/40 pb-4">
+            <div class="flex items-center gap-3">
+              <span class="inline-flex items-center justify-center size-7 rounded-md bg-primary/10 text-primary font-mono text-xs font-bold"
+                >02</span
+              >
+              <h2 class="text-xl md:text-2xl font-bold text-foreground tracking-tight">Recent Logs</h2>
+            </div>
             <a
               href="/posts"
-              class="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-              ><span>View All</span><span class="icon-[ph--arrow-right]"></span></a
+              class="group flex items-center gap-1.5 text-xs font-mono font-medium text-muted-foreground hover:text-primary transition-colors"
             >
+              <span class="uppercase tracking-wider">View_All</span>
+              <span class="icon-[ph--arrow-right] group-hover:translate-x-1 transition-transform"></span>
+            </a>
           </div>
-          <div class="mt-8">
+          <div>
             <List {posts} {type} {heroImageLayout} />
           </div>
         </div>
 
         {
           ENABLED && (
-            <div class="mb-20 fade-up" style="animation-delay: 300ms">
-              <div class={SECTION_HEADER_CLASS}>
-                <div class="flex items-center">
-                  <>
-                    <span class={SECTION_NUM_CLASS}>03</span>
-                    <h2 class={SECTION_TITLE_CLASS}>Activity</h2>
-                  </>
+            <div class="fade-up" style="animation-delay: 300ms">
+              <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-b border-border/40 pb-4">
+                <div class="flex items-center gap-3">
+                  <span class="inline-flex items-center justify-center size-7 rounded-md bg-primary/10 text-primary font-mono text-xs font-bold">
+                    03
+                  </span>
+                  <h2 class="text-xl md:text-2xl font-bold text-foreground tracking-tight">Activity</h2>
                 </div>
+                <span class="text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest hidden sm:inline-block">
+                  // GitHub_Trace
+                </span>
               </div>
-              <GithubContributions username={GITHUB_USERNAME} tooltipEnabled={TOOLTIP_ENABLED} client:visible transition:animate="none" />
+              <div class="p-6 sm:p-8 rounded-xl border border-border/40 bg-background/50 hover:bg-muted/10 transition-colors">
+                <GithubContributions username={GITHUB_USERNAME} tooltipEnabled={TOOLTIP_ENABLED} client:visible transition:animate="none" />
+              </div>
             </div>
           )
         }
@@ -127,15 +207,18 @@ const NAV_CARDS = [
         {
           SKILLS_ENABLED && SKILLS_DATA.length > 0 && (
             <div class="fade-up" style="animation-delay: 400ms">
-              <div class={SECTION_HEADER_CLASS}>
-                <div class="flex items-center">
-                  <>
-                    <span class={SECTION_NUM_CLASS}>04</span>
-                    <h2 class={SECTION_TITLE_CLASS}>Tech Stack</h2>
-                  </>
+              <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-b border-border/40 pb-4">
+                <div class="flex items-center gap-3">
+                  <span class="inline-flex items-center justify-center size-7 rounded-md bg-primary/10 text-primary font-mono text-xs font-bold">
+                    04
+                  </span>
+                  <h2 class="text-xl md:text-2xl font-bold text-foreground tracking-tight">Tech Stack</h2>
                 </div>
+                <span class="text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest hidden sm:inline-block">
+                  // Skill_Radar
+                </span>
               </div>
-              <div class="mt-8 [&_.skill-card]:rounded-lg [&_.skill-card]:border-border/40 [&_.skill-card]:bg-background/50 hover:[&_.skill-card]:bg-muted/20 [&_.skill-card]:shadow-xs">
+              <div class="[&_.skill-card]:rounded-xl [&_.skill-card]:border-border/40 [&_.skill-card]:bg-background/50 hover:[&_.skill-card]:bg-primary/5 hover:[&_.skill-card]:border-primary/20 [&_.skill-card]:shadow-sm [&_.skill-card]:transition-all duration-300">
                 <SkillsShowcase skillsData={SKILLS_DATA} />
               </div>
             </div>

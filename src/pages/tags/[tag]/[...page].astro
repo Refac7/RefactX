@@ -4,10 +4,11 @@ import type { CollectionEntry } from 'astro:content'
 import { getCollection } from 'astro:content'
 import { POSTS_CONFIG } from '~/config'
 import { postsSort } from '~/lib/utils'
-import { SECTION_HEADER_CLASS, SECTION_TITLE_CLASS, SECTION_NUM_CLASS } from '~/lib/ui'
+import { SECTION_HEADER_CLASS, SECTION_TITLE_CLASS, SECTION_NUM_CLASS, SECTION_META_CLASS } from '~/lib/ui'
 import Layout from '~/layouts/Layout.astro'
 import Pagination from '~/components/base/Pagination.astro'
 import List from '~/components/posts/card/List.astro'
+import PageAside from '~/components/base/PageAside.astro'
 
 export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
   const allPosts = await getCollection('posts')
@@ -32,63 +33,25 @@ const progressPercent = Math.round((page.currentPage / page.lastPage) * 100)
 
 <Layout title={`#${tag}`} {description}>
   <div class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
-    <aside class="w-full lg:w-1/3 lg:sticky lg:top-0 lg:h-screen flex flex-col xl:border-r border-border/40 z-20 bg-background">
-      <div class="flex flex-1 lg:overflow-y-auto scrollbar-hide flex-col">
-        <div class="p-6 lg:p-8 xl:p-12 pb-0 shrink-0 fade-up">
-          <span class="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary select-none">
-            Filter Active
-          </span>
-        </div>
-
-        <div
-          class="flex-1 flex flex-col justify-end lg:justify-center p-6 lg:p-8 xl:p-12 min-h-75 lg:min-h-62.5 fade-up animation-delay-100"
-        >
-          <div class="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-            <span class="icon-[ph--folder] size-4"></span><span>Directory</span>
-          </div>
-          <h1
-            class="text-5xl sm:text-6xl xl:text-7xl font-bold tracking-tight text-foreground leading-[1.1] mb-6 select-none break-all capitalize"
-          >
-            {tag}
-          </h1>
-          <div class="flex items-center gap-2 text-sm text-muted-foreground">
-            <span class="icon-[ph--funnel] size-4"></span><span>Query Results</span>
-          </div>
-        </div>
-
-        <div class="shrink-0 p-6 lg:p-8 xl:p-12 fade-up animation-delay-150">
-          <div class="text-sm text-muted-foreground flex items-center gap-2 flex-wrap">
-            <a href="/" class="hover:text-foreground transition-colors">home</a>
-            <span class="text-muted-foreground/40">/</span>
-            <a href="/tags" class="hover:text-foreground transition-colors">tags</a>
-            <span class="text-muted-foreground/40">/</span>
-            <span class="text-foreground font-medium bg-muted/50 px-2 py-0.5 rounded-xs">{tag}</span>
-          </div>
-          <a
-            href="/tags"
-            class="group flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors mt-6 w-fit"
-            ><span class="icon-[ph--arrow-left] size-4"></span><span>Return to Index</span></a
-          >
-        </div>
-      </div>
-
-      <div class="flex border-t border-border/40 shrink-0 fade-up animation-delay-200">
-        <div
-          class="flex-1 flex flex-col items-start justify-center p-8 lg:p-10 xl:p-14 bg-background border-r border-border/40 hover:bg-muted/30 transition-colors"
-        >
-          <span class="text-2xl font-semibold text-foreground tracking-tight">{page.total}</span>
-          <span class="text-xs text-muted-foreground mt-1">Found</span>
-        </div>
-        <div class="flex-1 flex flex-col items-start justify-center p-8 lg:p-10 xl:p-14 bg-background hover:bg-muted/30 transition-colors">
-          <div class="flex items-baseline gap-1">
-            <span class="text-2xl font-semibold text-foreground tracking-tight">{page.currentPage}</span><span
-              class="text-sm text-muted-foreground/60">/ {page.lastPage}</span
-            >
-          </div>
-          <span class="text-xs text-muted-foreground mt-1">Page</span>
-        </div>
-      </div>
-    </aside>
+    <PageAside
+      statusText="Filter Active"
+      statusHasPing={false}
+      statusVariant="primary"
+      title={tag}
+      subtitleIcon="icon-[ph--funnel]"
+      subtitleText="Query Results"
+      identityTags={[
+        { icon: 'icon-[ph--folder]', label: 'Directory' },
+        { icon: 'icon-[ph--hash]', label: `#${tag}` },
+        { icon: 'icon-[ph--article]', label: `${page.total} Found` },
+      ]}
+      statsLabel="// FILTER STATUS"
+      statsMeta={`${page.total} FOUND`}
+      stats={[
+        { value: String(page.total), label: 'Found' },
+        { value: `${page.currentPage} / ${page.lastPage}`, label: 'Page' },
+      ]}
+    />
 
     <main class="w-full lg:w-2/3 z-10 flex flex-col fade-up animation-delay-100">
       <div class="p-6 lg:p-10 xl:p-16 2xl:p-20 flex-1 flex flex-col">
@@ -96,6 +59,16 @@ const progressPercent = Math.round((page.currentPage / page.lastPage) * 100)
           <div class="flex items-center">
             <span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>Filtered Results</h2>
           </div>
+          <span class={SECTION_META_CLASS}>// Query_Output</span>
+        </div>
+
+        <!-- Breadcrumb -->
+        <div class="text-sm text-muted-foreground flex items-center gap-2 flex-wrap -mt-4 mb-6">
+          <a href="/" class="hover:text-foreground transition-colors">home</a>
+          <span class="text-muted-foreground/40">/</span>
+          <a href="/tags" class="hover:text-foreground transition-colors">tags</a>
+          <span class="text-muted-foreground/40">/</span>
+          <span class="text-foreground font-medium bg-muted/50 px-2 py-0.5 rounded-xs">{tag}</span>
         </div>
 
         <div class="space-y-8 min-h-[40vh] flex-1 fade-up animation-delay-200">

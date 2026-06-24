@@ -40,7 +40,7 @@ function FeedItemCard({ item, animationDelay }: { item: FeedItem; animationDelay
   }, [item.content])
 
   return (
-    <div className="group relative flex flex-col bg-background border border-border/40 rounded-lg fade-up" style={{ animationDelay }}>
+    <div className="group relative flex flex-col bg-background/50 border border-border/40 rounded-xl hover:border-primary/30 hover:shadow-sm transition-all duration-300 fade-up" style={{ animationDelay }}>
       <div className="p-5 pb-3 flex justify-between items-start gap-4">
         <span className="inline-flex items-center rounded-full bg-muted/40 px-2.5 py-0.5 text-[11px] font-medium text-foreground tracking-tight select-none">
           {item.mood}
@@ -196,7 +196,7 @@ export default function DynamicFeed() {
         {loading || !isVerified ? (
           <div className="grid grid-cols-1 gap-6">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="flex flex-col bg-background/50 border border-border/40 rounded-lg p-6 min-h-35 animate-pulse">
+              <div key={i} className="flex flex-col bg-background/50 border border-border/40 rounded-xl p-6 min-h-35 animate-pulse">
                 <div className="flex justify-between items-center mb-4">
                   <div className="h-5 w-16 bg-muted/50 rounded-full"></div>
                   <div className="h-3 w-20 bg-muted/30 rounded"></div>

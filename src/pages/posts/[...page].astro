@@ -4,10 +4,11 @@ import type { CollectionEntry } from 'astro:content'
 import { getCollection } from 'astro:content'
 import { POSTS_CONFIG } from '~/config'
 import { postsSort } from '~/lib/utils'
-import { SECTION_HEADER_CLASS, SECTION_TITLE_CLASS, SECTION_NUM_CLASS } from '~/lib/ui'
+import { SECTION_HEADER_CLASS, SECTION_TITLE_CLASS, SECTION_NUM_CLASS, SECTION_META_CLASS } from '~/lib/ui'
 import Layout from '~/layouts/Layout.astro'
 import Pagination from '~/components/base/Pagination.astro'
 import List from '~/components/posts/card/List.astro'
+import PageAside from '~/components/base/PageAside.astro'
 
 export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
   const allPosts = await getCollection('posts')
@@ -25,50 +26,32 @@ const progressPercent = Math.round((page.currentPage / page.lastPage) * 100)
 
 <Layout {title} {description}>
   <div class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
-    <aside class="w-full lg:w-1/3 lg:sticky lg:top-0 lg:h-screen flex flex-col xl:border-r border-border/40 z-20 bg-background">
-      <div class="flex flex-1 lg:overflow-y-auto scrollbar-hide flex-col">
-        <div class="p-6 lg:p-8 xl:p-12 pb-0 shrink-0 fade-up">
-          <span class="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary select-none">
-            Feed Live
-          </span>
-        </div>
-
-        <div
-          class="flex-1 flex flex-col justify-end lg:justify-center p-6 lg:p-8 xl:p-12 min-h-75 lg:min-h-62.5 fade-up animation-delay-100"
-        >
-          <h1 class="text-5xl sm:text-6xl xl:text-7xl font-bold tracking-tight text-foreground leading-[1.1] mb-6 select-none">{title}</h1>
-          <div class="flex items-center gap-2 text-sm text-muted-foreground">
-            <span class="icon-[ph--book-open] size-4"></span><span>Directory Listing</span>
-          </div>
-        </div>
-
-        <div class="shrink-0 p-6 lg:p-8 xl:p-12 fade-up animation-delay-150">
-          <p class="text-sm text-muted-foreground leading-relaxed">{introduce}</p>
-        </div>
-      </div>
-
-      <div class="flex border-t border-border/40 shrink-0 fade-up animation-delay-200">
-        <div
-          class="flex-1 flex flex-col items-start justify-center p-8 lg:p-10 xl:p-14 bg-background border-r border-border/40 hover:bg-muted/30 transition-colors"
-        >
-          <span class="text-2xl font-semibold text-foreground tracking-tight">{page.total}</span>
-          <span class="text-xs text-muted-foreground mt-1">Total Entries</span>
-        </div>
-        <div class="flex-1 flex flex-col items-start justify-center p-8 lg:p-10 xl:p-14 bg-background hover:bg-muted/30 transition-colors">
-          <div class="flex items-baseline gap-1">
-            <span class="text-2xl font-semibold text-foreground tracking-tight">{page.currentPage}</span><span
-              class="text-sm text-muted-foreground/60">/ {page.lastPage}</span
-            >
-          </div>
-          <span class="text-xs text-muted-foreground mt-1">Page</span>
-        </div>
-      </div>
-    </aside>
+    <PageAside
+      statusText="Feed Live"
+      statusHasPing={false}
+      statusVariant="primary"
+      title={title}
+      subtitleIcon="icon-[ph--book-open]"
+      subtitleText="Directory Listing"
+      identityTags={[
+        { icon: 'icon-[ph--article]', label: `${page.total} Posts` },
+        { icon: 'icon-[ph--rss]', label: 'RSS Feed' },
+        { icon: 'icon-[ph--archive]', label: 'Archives' },
+      ]}
+      intro={introduce}
+      statsLabel="// FEED STATUS"
+      statsMeta={`${page.total} TOTAL`}
+      stats={[
+        { value: String(page.total), label: 'Total Entries' },
+        { value: `${page.currentPage} / ${page.lastPage}`, label: 'Page' },
+      ]}
+    />
 
     <main class="w-full lg:w-2/3 z-10 flex flex-col fade-up animation-delay-100">
       <div class="p-6 lg:p-10 xl:p-16 2xl:p-20 flex-1 flex flex-col">
         <div class={SECTION_HEADER_CLASS}>
           <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>Stream Sequence</h2></div>
+          <span class={SECTION_META_CLASS}>// Post_Feed</span>
         </div>
 
         <div class="relative z-10 flex-1 min-h-100 mt-4 fade-up animation-delay-200">

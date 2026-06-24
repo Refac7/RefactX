@@ -1,10 +1,11 @@
 ---
 import { cn } from '~/lib/utils'
-import { SECTION_HEADER_CLASS, SECTION_TITLE_CLASS, SECTION_NUM_CLASS } from '~/lib/ui'
+import { SECTION_HEADER_CLASS, SECTION_TITLE_CLASS, SECTION_NUM_CLASS, SECTION_META_CLASS } from '~/lib/ui'
 import { PROJECTS_CONFIG } from '~/config'
 import Layout from '~/layouts/Layout.astro'
 import ProjectStats from '~/components/projects/ProjectStats'
 import rawProjectList from '~/content/data/projects.json'
+import PageAside from '~/components/base/PageAside.astro'
 
 interface Project {
   name: string
@@ -24,49 +25,25 @@ const totalCount = ProjectList.length.toString().padStart(2, '0')
 
 <Layout {title} {description}>
   <div class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
-    <aside class="w-full lg:w-1/3 lg:sticky lg:top-0 lg:h-screen flex flex-col xl:border-r border-border/40 z-20 bg-background">
-      <div class="flex flex-1 lg:overflow-y-auto scrollbar-hide flex-col">
-        <div class="p-6 lg:p-8 xl:p-12 pb-0 shrink-0 fade-up">
-          <span
-            class="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-600 select-none"
-          >
-            <span class="relative flex h-1.5 w-1.5">
-              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
-            </span>
-            Online
-          </span>
-        </div>
-
-        <div
-          class="flex-1 flex flex-col justify-end lg:justify-center p-6 lg:p-8 xl:p-12 min-h-75 lg:min-h-62.5 fade-up animation-delay-100"
-        >
-          <h1 class="text-5xl sm:text-6xl xl:text-7xl font-bold tracking-tight text-foreground leading-[1.1] mb-6 select-none">{title}</h1>
-          <div class="flex items-center gap-2 text-sm text-muted-foreground">
-            <span class="icon-[ph--stack] size-4"></span><span>Module Registry</span>
-          </div>
-        </div>
-
-        <div class="shrink-0 p-6 lg:p-8 xl:p-12 fade-up animation-delay-150">
-          <p class="text-sm text-muted-foreground leading-relaxed">{introduce}</p>
-        </div>
-      </div>
-
-      <div class="flex border-t border-border/40 shrink-0 fade-up animation-delay-200">
-        <div
-          class="flex-1 flex flex-col items-start justify-center p-8 lg:p-10 xl:p-14 bg-background border-r border-border/40 hover:bg-muted/30 transition-colors"
-        >
-          <span class="text-2xl font-semibold text-foreground tracking-tight">{totalCount}</span>
-          <span class="text-xs text-muted-foreground mt-1">Total Modules</span>
-        </div>
-        <div class="flex-1 flex flex-col items-start justify-center p-8 lg:p-10 xl:p-14 bg-background hover:bg-muted/30 transition-colors">
-          <span class="text-xl font-semibold text-foreground tracking-tight"
-            >{new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit' })}</span
-          >
-          <span class="text-xs text-muted-foreground mt-1">Last Update</span>
-        </div>
-      </div>
-    </aside>
+    <PageAside
+      statusText="Online"
+      statusVariant="emerald"
+      title={title}
+      subtitleIcon="icon-[ph--stack]"
+      subtitleText="Module Registry"
+      identityTags={[
+        { icon: 'icon-[ph--cube]', label: `${totalCount} Modules` },
+        { icon: 'icon-[mdi--github]', label: 'GitHub' },
+        { icon: 'icon-[ph--arrow-up-right]', label: 'Deployed' },
+      ]}
+      intro={introduce}
+      statsLabel="// REGISTRY STATUS"
+      statsMeta={`${totalCount} TOTAL`}
+      stats={[
+        { value: totalCount, label: 'Total Modules' },
+        { value: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit' }), label: 'Last Update' },
+      ]}
+    />
 
     <main class="w-full lg:w-2/3 z-10 flex flex-col fade-up animation-delay-100">
       <div class="p-6 lg:p-10 xl:p-16 2xl:p-20 flex-1">
@@ -74,6 +51,7 @@ const totalCount = ProjectList.length.toString().padStart(2, '0')
           <div class="flex items-center">
             <span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>Component Sequence</h2>
           </div>
+          <span class={SECTION_META_CLASS}>// Module_Registry</span>
         </div>
 
         <div class="grid grid-cols-1 gap-6 mt-8">
@@ -81,7 +59,7 @@ const totalCount = ProjectList.length.toString().padStart(2, '0')
             ProjectList.map((project, index) => {
               return (
                 <div
-                  class="group relative flex flex-col bg-background/50 border border-border/40 rounded-lg hover:bg-muted/20 hover:shadow-xs transition-all duration-300 fade-up hover:-translate-y-0.5"
+                  class="group relative flex flex-col bg-background/50 border border-border/40 rounded-xl hover:bg-muted/20 hover:border-primary/30 hover:shadow-sm transition-all duration-300 fade-up hover:-translate-y-0.5"
                   style={`animation-delay: ${index * 100}ms`}
                 >
                   <div class="p-6 pb-2 relative z-10 flex justify-between items-start">
