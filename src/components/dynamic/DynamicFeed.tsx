@@ -40,7 +40,10 @@ function FeedItemCard({ item, animationDelay }: { item: FeedItem; animationDelay
   }, [item.content])
 
   return (
-    <div className="group relative flex flex-col bg-background/50 border border-border/40 rounded-xl hover:border-primary/30 hover:shadow-sm transition-all duration-300 fade-up" style={{ animationDelay }}>
+    <div
+      className="group relative flex flex-col bg-background/50 border border-border/40 rounded-xl hover:border-primary/30 hover:shadow-sm transition-all duration-300 fade-up"
+      style={{ animationDelay }}
+    >
       <div className="p-5 pb-3 flex justify-between items-start gap-4">
         <span className="inline-flex items-center rounded-full bg-muted/40 px-2.5 py-0.5 text-[11px] font-medium text-foreground tracking-tight select-none">
           {item.mood}

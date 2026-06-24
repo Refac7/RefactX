@@ -91,8 +91,8 @@ const pingColor = statusVariant === 'emerald' ? 'bg-emerald-400' : 'bg-primary/6
         {
           statusHasPing && (
             <span class="relative flex size-2">
-              <span class={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${pingColor}`}></span>
-              <span class={`relative inline-flex rounded-full size-2 ${dotColor}`}></span>
+              <span class={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${pingColor}`} />
+              <span class={`relative inline-flex rounded-full size-2 ${dotColor}`} />
             </span>
           )
         }
@@ -108,7 +108,7 @@ const pingColor = statusVariant === 'emerald' ? 'bg-emerald-400' : 'bg-primary/6
       {
         subtitleIcon && subtitleText && (
           <div class="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-            <span class={`${subtitleIcon} size-4`}></span>
+            <span class={`${subtitleIcon} size-4`} />
             <span>{subtitleText}</span>
           </div>
         )
@@ -118,17 +118,15 @@ const pingColor = statusVariant === 'emerald' ? 'bg-emerald-400' : 'bg-primary/6
       {
         identityTags.length > 0 && (
           <div class="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-8 font-mono">
-            {
-              identityTags.map((tag, i) => (
-                <>
-                  {i > 0 && <span class="w-1 h-1 rounded-full bg-border"></span>}
-                  <span class="flex items-center gap-1.5">
-                    <span class={`${tag.icon} size-4`}></span>
-                    {tag.label}
-                  </span>
-                </>
-              ))
-            }
+            {identityTags.map((tag, i) => (
+              <>
+                {i > 0 && <span class="w-1 h-1 rounded-full bg-border" />}
+                <span class="flex items-center gap-1.5">
+                  <span class={`${tag.icon} size-4`} />
+                  {tag.label}
+                </span>
+              </>
+            ))}
           </div>
         )
       }
@@ -156,16 +154,14 @@ const pingColor = statusVariant === 'emerald' ? 'bg-emerald-400' : 'bg-primary/6
     {
       stats.length === 2 && (
         <div class="flex">
-          {
-            stats.map((stat, i) => (
-              <div
-                class={`flex-1 flex flex-col items-start justify-center p-6 lg:p-8 xl:p-10 bg-background/50 hover:bg-primary/5 transition-colors ${i < stats.length - 1 ? 'border-r border-border/40' : ''}`}
-              >
-                <span class="text-2xl font-semibold text-foreground tracking-tight">{stat.value}</span>
-                <span class="text-xs text-muted-foreground mt-1">{stat.label}</span>
-              </div>
-            ))
-          }
+          {stats.map((stat, i) => (
+            <div
+              class={`flex-1 flex flex-col items-start justify-center p-6 lg:p-8 xl:p-10 bg-background/50 hover:bg-primary/5 transition-colors ${i < stats.length - 1 ? 'border-r border-border/40' : ''}`}
+            >
+              <span class="text-2xl font-semibold text-foreground tracking-tight">{stat.value}</span>
+              <span class="text-xs text-muted-foreground mt-1">{stat.label}</span>
+            </div>
+          ))}
         </div>
       )
     }
@@ -174,16 +170,14 @@ const pingColor = statusVariant === 'emerald' ? 'bg-emerald-400' : 'bg-primary/6
       stats.length === 3 && (
         <div class="flex flex-col">
           <div class="flex">
-            {
-              stats.slice(0, 2).map((stat, i) => (
-                <div
-                  class={`flex-1 flex flex-col items-start justify-center p-6 lg:p-8 xl:p-10 bg-background/50 border-b border-border/40 hover:bg-primary/5 transition-colors ${i === 0 ? 'border-r border-border/40' : ''}`}
-                >
-                  <span class="text-2xl font-semibold text-foreground tracking-tight">{stat.value}</span>
-                  <span class="text-xs text-muted-foreground mt-1">{stat.label}</span>
-                </div>
-              ))
-            }
+            {stats.slice(0, 2).map((stat, i) => (
+              <div
+                class={`flex-1 flex flex-col items-start justify-center p-6 lg:p-8 xl:p-10 bg-background/50 border-b border-border/40 hover:bg-primary/5 transition-colors ${i === 0 ? 'border-r border-border/40' : ''}`}
+              >
+                <span class="text-2xl font-semibold text-foreground tracking-tight">{stat.value}</span>
+                <span class="text-xs text-muted-foreground mt-1">{stat.label}</span>
+              </div>
+            ))}
           </div>
           <div class="flex items-center justify-between p-5 lg:p-6 bg-background/50 hover:bg-primary/5 transition-colors">
             <span class="text-xs text-muted-foreground font-medium">{stats[2].label}</span>
