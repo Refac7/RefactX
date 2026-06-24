@@ -19,9 +19,7 @@ const { prev, next } = Astro.props
             <span class="icon-[ph--arrow-left] size-3.5 text-muted-foreground/50 group-hover:text-primary group-hover:-translate-x-0.5 transition-all" />
             <span class="text-[10px] font-mono uppercase tracking-widest text-muted-foreground/50">{POSTS_CONFIG.prevPostText}</span>
           </div>
-          <p class="font-serif text-sm text-foreground/80 group-hover:text-primary transition-colors line-clamp-1">
-            {next.data.title}
-          </p>
+          <p class="font-serif text-sm text-foreground/80 group-hover:text-primary transition-colors line-clamp-1">{next.data.title}</p>
         </div>
       </a>
     )
@@ -35,18 +33,12 @@ const { prev, next } = Astro.props
             <span class="text-[10px] font-mono uppercase tracking-widest text-muted-foreground/50">{POSTS_CONFIG.nextPostText}</span>
             <span class="icon-[ph--arrow-right] size-3.5 text-muted-foreground/50 group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
           </div>
-          <p class="font-serif text-sm text-foreground/80 group-hover:text-primary transition-colors line-clamp-1">
-            {prev.data.title}
-          </p>
+          <p class="font-serif text-sm text-foreground/80 group-hover:text-primary transition-colors line-clamp-1">{prev.data.title}</p>
         </div>
       </a>
     )
   }
 
-  {
-    !next && <div class="flex-1" />
-  }
-  {
-    !prev && <div class="flex-1" />
-  }
+  {!next && <div class="flex-1" />}
+  {!prev && <div class="flex-1" />}
 </nav>

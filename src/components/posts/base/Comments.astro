@@ -10,7 +10,10 @@ const { class: className } = Astro.props
 <div class={`waline-wrapper ${className || ''} relative z-10 w-full`}>
   {
     WALINE_CONFIG.enableComment ? (
-      <div id="waline-container" class="waline-lazy relative min-h-50 w-full rounded-xl border border-border/40 bg-background/50 p-6 lg:p-8">
+      <div
+        id="waline-container"
+        class="waline-lazy relative min-h-50 w-full rounded-xl border border-border/40 bg-background/50 p-6 lg:p-8"
+      >
         <div class="waline-loading absolute inset-0 flex flex-col items-center justify-center bg-transparent z-0">
           <span class="icon-[ph--spinner-gap] size-6 text-muted-foreground animate-spin mb-3" />
           <span class="text-xs font-mono text-muted-foreground/50 uppercase tracking-widest">Loading comments...</span>

@@ -51,9 +51,7 @@ export default function DataPanel() {
               onClick={() => loadFile(f.name, true, f.path)}
               className={cn(
                 'group flex items-center justify-between text-sm px-3 py-2 rounded-md cursor-pointer transition-all',
-                filename === f.name
-                  ? 'bg-primary/10 text-primary font-medium'
-                  : 'text-muted-foreground hover:bg-muted'
+                filename === f.name ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground hover:bg-muted'
               )}
             >
               <div className="flex items-center gap-2.5 overflow-hidden">
