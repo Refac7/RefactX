@@ -4,7 +4,10 @@ const fs = require('fs')
 
 const envContent = fs.readFileSync('.env', 'utf-8')
 const match = envContent.match(/ADMIN_USERS=\s*(.+)/)
-if (!match) { console.error('ADMIN_USERS not found in .env'); process.exit(1) }
+if (!match) {
+  console.error('ADMIN_USERS not found in .env')
+  process.exit(1)
+}
 
 const raw = match[1].trim()
 console.log('Raw value (first 50 chars):', raw.substring(0, 50) + '...')
@@ -34,7 +37,7 @@ if (testPassword) {
   for (const [user, hash] of Object.entries(parsed)) {
     let finalHash = hash
     if (!finalHash.startsWith('$2')) finalHash = Buffer.from(finalHash, 'base64').toString('utf-8')
-    bcrypt.compare(testPassword, finalHash).then(r => {
+    bcrypt.compare(testPassword, finalHash).then((r) => {
       console.log(`Password "${testPassword}" matches ${user}: ${r}`)
     })
   }
