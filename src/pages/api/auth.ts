@@ -9,6 +9,27 @@ async function getJwt() {
   return imported.default || imported
 }
 
+/** Parse ADMIN_USERS env var (JSON) or fall back to single ADMIN_PASSWORD */
+function getUserMap(): Map<string, string> | null {
+  const usersJson = import.meta.env.ADMIN_USERS
+  if (usersJson) {
+    try {
+      const parsed = JSON.parse(usersJson)
+      if (typeof parsed === 'object' && parsed !== null && !Array.isArray(parsed)) {
+        return new Map(Object.entries(parsed as Record<string, string>))
+      }
+    } catch {
+      // fall through
+    }
+  }
+  // Backward compatibility: single ADMIN_PASSWORD → default "admin" user
+  const legacyHash = import.meta.env.ADMIN_PASSWORD
+  if (legacyHash) {
+    return new Map([['admin', legacyHash]])
+  }
+  return null
+}
+
 export const POST: APIRoute = async ({ request }) => {
   try {
     cleanupExpiredRecords()
@@ -20,11 +41,16 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     const body = await request.json()
-    const { password, captchaToken } = body
+    const { username, password, captchaToken } = body
 
     // CAPTCHA 令牌非空检查
     if (!captchaToken) {
       return new Response(JSON.stringify({ error: 'Missing CAPTCHA verification' }), { status: 403 })
+    }
+
+    // Username 非空检查
+    if (!username || typeof username !== 'string' || username.trim().length === 0) {
+      return new Response(JSON.stringify({ error: 'Username is required' }), { status: 400 })
     }
 
     // 验证 CAPTCHA 令牌合法性与时效性
@@ -50,23 +76,33 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ error: 'Invalid or expired CAPTCHA' }), { status: 403 })
     }
 
-    // 验证密码
-    const HASHED_PASSWORD = import.meta.env.ADMIN_PASSWORD
-    if (!HASHED_PASSWORD) {
-      return new Response(JSON.stringify({ error: 'Server misconfiguration: ADMIN_PASSWORD missing' }), { status: 500 })
+    // 加载用户映射表
+    const userMap = getUserMap()
+    if (!userMap) {
+      return new Response(JSON.stringify({ error: 'Server misconfiguration: ADMIN_USERS or ADMIN_PASSWORD missing' }), { status: 500 })
     }
 
-    const isMatch = await bcrypt.compare(password, HASHED_PASSWORD)
+    // 查找用户
+    const trimmedUsername = username.trim().toLowerCase()
+    const hashedPassword = userMap.get(trimmedUsername)
+
+    if (!hashedPassword) {
+      recordFailedAttempt(clientIP)
+      return new Response(JSON.stringify({ error: 'Invalid username or password' }), { status: 401 })
+    }
+
+    // 验证密码
+    const isMatch = await bcrypt.compare(password, hashedPassword)
 
     if (isMatch) {
       clearRecord(clientIP)
       const jwt = await getJwt()
       const SECRET = import.meta.env.ADMIN_JWT_SECRET || 'default_secret'
-      const token = jwt.sign({ ip: clientIP, ts: Date.now() }, SECRET, { expiresIn: '2h' })
-      return new Response(JSON.stringify({ success: true, token }), { status: 200 })
+      const token = jwt.sign({ username: trimmedUsername, ip: clientIP, ts: Date.now() }, SECRET, { expiresIn: '2h' })
+      return new Response(JSON.stringify({ success: true, token, username: trimmedUsername }), { status: 200 })
     } else {
       recordFailedAttempt(clientIP)
-      return new Response(JSON.stringify({ error: 'Wrong password' }), { status: 401 })
+      return new Response(JSON.stringify({ error: 'Invalid username or password' }), { status: 401 })
     }
   } catch (e) {
     const errorMessage = e instanceof Error ? e.message : String(e)

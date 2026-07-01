@@ -5,12 +5,13 @@ import Captcha from '~/components/ui/Captcha'
 
 export default function LoginScreen() {
   const { performLogin, isValidating, loginError } = useAdmin()
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [captchaToken, setCaptchaToken] = useState<string | null>(null)
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && captchaToken) {
-      performLogin(password, captchaToken)
+    if (e.key === 'Enter' && captchaToken && username.trim()) {
+      performLogin(username.trim(), password, captchaToken)
     }
   }
 
@@ -66,6 +67,26 @@ export default function LoginScreen() {
 
           <div className="space-y-5">
             <div className="space-y-1.5">
+              <label className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest ml-1">Username</label>
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                onKeyDown={handleKeyDown}
+                disabled={isValidating}
+                placeholder="admin"
+                autoFocus
+                autoComplete="username"
+                className={cn(
+                  'w-full px-4 py-2.5 rounded-lg border bg-background text-sm transition-all focus:outline-none focus:ring-2 focus:ring-offset-0',
+                  loginError
+                    ? 'border-red-500/50 focus:ring-red-500/20 text-red-500'
+                    : 'border-border/60 focus:border-primary/50 focus:ring-primary/20'
+                )}
+              />
+            </div>
+
+            <div className="space-y-1.5">
               <label className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest ml-1">Passkey</label>
               <input
                 type="password"
@@ -74,7 +95,7 @@ export default function LoginScreen() {
                 onKeyDown={handleKeyDown}
                 disabled={isValidating}
                 placeholder="••••••••"
-                autoFocus
+                autoComplete="current-password"
                 className={cn(
                   'w-full px-4 py-2.5 rounded-lg border bg-background text-sm transition-all focus:outline-none focus:ring-2 focus:ring-offset-0',
                   loginError
@@ -87,11 +108,11 @@ export default function LoginScreen() {
             <Captcha onVerify={setCaptchaToken} />
 
             <button
-              onClick={() => captchaToken && performLogin(password, captchaToken)}
-              disabled={isValidating || !captchaToken}
+              onClick={() => captchaToken && performLogin(username.trim(), password, captchaToken)}
+              disabled={isValidating || !captchaToken || !username.trim()}
               className={cn(
                 'w-full py-2.5 rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-2',
-                !captchaToken || loginError
+                !captchaToken || !username.trim() || loginError
                   ? 'bg-muted text-muted-foreground border border-border/50 cursor-not-allowed'
                   : 'bg-foreground text-background hover:bg-foreground/90 shadow-sm'
               )}

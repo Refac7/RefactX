@@ -1,41 +1,171 @@
-# 环境变量加密与校验说明
+# Admin 身份验证配置指南
 
-## 1. 密码/Token 哈希生成
+本文档涵盖 RefactX CMS 管理面板的完整身份验证配置，包括多用户支持、JWT 签发、CAPTCHA 验证和频率限制。
 
-请使用如下命令生成 bcrypt 哈希：
+---
+
+## 1. 管理员账号配置
+
+### 1.1 生成密码哈希
+
+使用 `scripts/gen-hash.js` 为每位管理员生成 bcrypt 哈希：
 
 ```sh
-node scripts/gen-hash.js 你的明文内容
+# 单用户（默认用户名 admin）
+node scripts/gen-hash.js 你的明文密码
+
+# 指定用户名
+node scripts/gen-hash.js Refac7 你的明文密码
 ```
 
-## 2. .env 文件配置
+输出示例：
 
-将生成的哈希值填入 .env 文件对应字段。例如：
+```
+Username: Refac7
+Hash: $2b$10$UINwFaBpoh62R5WPfS1L4ul.wM4o0lhvE1rskIGzFhJUS1vB2rCGC
 
+-- Add to .env as ADMIN_USERS (JSON) --
+ADMIN_USERS='{"Refac7":"$2b$10$UINwFaBpoh62R5WPfS1L4ul.wM4o0lhvE1rskIGzFhJUS1vB2rCGC"}'
+
+For multiple users, combine into a single JSON object:
+ADMIN_USERS='{"user1":"$2b$10$...","user2":"$2b$10$..."}'
+```
+
+### 1.2 配置管理员用户
+
+在 `.env` 文件中设置 `ADMIN_USERS`（JSON 格式，键为用户名，值为 bcrypt 哈希）：
+
+```env
+# 多用户（推荐）
+ADMIN_USERS='{"Refac7":"$2b$10$UINwFaBpoh62R5WPfS1L4ul.wM4o0lhvE1rskIGzFhJUS1vB2rCGC","editor":"$2b$10$yyyyyy"}'
+
+# 单用户兼容写法（等同于 {"admin":"$2b$10$xxxxxx"}）
 ADMIN_PASSWORD=$2b$10$xxxxxx
-
-## 3. 代码校验方式
-
-- 密码校验采用 bcrypt.compare 进行哈希比对，由于需要通过GitHub API拉取数据和提交，所以无法执行不可逆加密，但 GitHub_Token 仅在后端node.js服务器流转。所以无需担心泄漏问题。
-- 前端/客户端提交明文，后端自动比对哈希。
-
-## 4. 上传 Token 校验示例
-
-如需在自定义 API 路由中校验上传 Token，可参考：
-
-```ts
-import bcrypt from 'bcryptjs';
-
-const uploadToken = request.headers.get('Authorization')?.replace('Bearer ', '');
-const HASHED_TOKEN = import.meta.env.PUBLIC_UPLOAD_TOKEN;
-if (!uploadToken || !HASHED_TOKEN) {
-  return new Response(JSON.stringify({ error: 'Invalid upload token' }), { status: 403 });
-}
-const isTokenMatch = await bcrypt.compare(uploadToken, HASHED_TOKEN);
-if (!isTokenMatch) {
-  return new Response(JSON.stringify({ error: 'Invalid upload token' }), { status: 403 });
-}
-// ...后续逻辑
 ```
 
-如需批量替换其他 Token 校验方式，请联系开发者。
+- 用户名**不区分大小写**（后端自动转为小写匹配）
+- `ADMIN_USERS` 优先级高于 `ADMIN_PASSWORD`，两者同时存在时忽略 `ADMIN_PASSWORD`
+
+---
+
+## 2. JWT 密钥配置
+
+用于签发和验证登录会话 Token。
+
+```env
+ADMIN_JWT_SECRET=YOUR_ADMIN_JWT_SECRET
+```
+
+使用 `openssl rand -hex 32` 生成随机密钥：
+
+```sh
+openssl rand -hex 32
+```
+
+- Token 有效期：**2 小时**
+- Token 中包含 `username`、`ip`、`ts` 字段
+- 客户端 Token 存储在 `localStorage` 的 `admin_jwt_token` 键中
+- 登出时自动清除
+
+---
+
+## 3. CAPTCHA 验证配置
+
+系统使用 **Proof-of-Work (PoW) 验证码** 替代第三方验证码服务。用户在浏览器中计算 SHA-256 哈希以满足难度要求，无需外部服务依赖。
+
+```env
+CAPTCHA_SECRET=YOUR_CAPTCHA_SECRET_KEY
+```
+
+同样使用 `openssl rand -hex 32` 生成：
+
+```sh
+openssl rand -hex 32
+```
+
+CAPTCHA 工作流程：
+
+1. 客户端请求挑战值（随机 UUID）和难度（当前为 4，即哈希结果需以 `0000` 开头）
+2. 客户端在浏览器中迭代 nonce 计算 `SHA-256(challenge:nonce)`，直到满足难度
+3. 客户端提交 nonce 到服务端验证，换取 HMAC-SHA256 签名的令牌
+4. 该令牌有效期 **5 分钟**，用于防重放攻击
+
+---
+
+## 4. 频率限制（Rate Limiting）
+
+防止暴力破解的内置机制，无需额外配置。
+
+| 参数 | 值 | 说明 |
+|------|-----|------|
+| 最大尝试次数 | 5 次 | 达到后触发锁定 |
+| 锁定时间 | 15 分钟 | 锁定期间所有请求返回 429 |
+| 记录重置时间 | 1 小时 | 超过后该 IP 记录自动清除 |
+
+- 基于客户端 IP（优先 `x-forwarded-for`，其次 `cf-connecting-ip`）
+- **内存存储**，服务重启后所有记录重置
+- 密码正确后自动清除该 IP 的失败记录
+- 对所有 Admin API 端点生效：`/api/auth`、`/api/batch-commit`、`/api/get-content`、`/api/list-files`、`/api/next-filename`、`/api/captcha`
+
+---
+
+## 5. 完整 .env 配置模板
+
+```env
+# --- Notion 集成（可选，用于动态内容同步） ---
+NOTION_DATABASE_ID=YOUR_NOTION_DATABASE_ID
+NOTION_API_KEY=YOUR_NOTION_API_KEY
+
+# --- Admin 多用户认证 ---
+# 使用 node scripts/gen-hash.js <username> <password> 生成哈希
+ADMIN_USERS='{"your-username":"$2b$10$your-bcrypt-hash"}'
+
+# --- JWT 签名密钥（openssl rand -hex 32） ---
+ADMIN_JWT_SECRET=YOUR_ADMIN_JWT_SECRET
+
+# --- GitHub API Token（用于 CMS 文件管理） ---
+GITHUB_TOKEN=YOUR_GITHUB_TOKEN
+
+# --- CAPTCHA 密钥（openssl rand -hex 32） ---
+CAPTCHA_SECRET=YOUR_CAPTCHA_SECRET_KEY
+
+# --- 上传 Token（可选） ---
+PUBLIC_UPLOAD_TOKEN=YOUR_PUBLIC_UPLOAD_TOKEN
+```
+
+---
+
+## 6. 身份验证流程
+
+```
+用户输入用户名+密码 → 完成 PoW CAPTCHA
+       │
+       ▼
+POST /api/auth { username, password, captchaToken }
+       │
+       ├─ 频率限制检查（每个 IP 最多 5 次失败，锁定 15 分钟）
+       ├─ CAPTCHA 令牌验证（HMAC-SHA256，5 分钟有效期）
+       ├─ 用户名查找（从 ADMIN_USERS 映射表）
+       ├─ bcrypt.compare 密码比对
+       │
+       ├─ 成功 → 签发 JWT（含 username、ip、ts，有效期 2h）→ 返回 200
+       └─ 失败 → 记录失败尝试 → 返回 401
+```
+
+所有后续 CMS API 请求均需携带 `Authorization: Bearer <jwt_token>` 请求头，无需重复验证 CAPTCHA。
+
+---
+
+## 7. 安全建议
+
+1. **生产环境务必更换所有默认密钥**，不要使用代码中的硬编码回退值：
+   - `ADMIN_JWT_SECRET` 回退值：`default_secret`
+   - `CAPTCHA_SECRET` 回退值：`refactx-edge-secret`
+
+2. **定期轮换密钥**：`ADMIN_JWT_SECRET` 和 `CAPTCHA_SECRET` 应定期更换
+
+3. **为每位管理员创建独立账号**：不要共用密码，便于审计和权限收窄
+
+4. **使用强密码**：bcrypt 的 10 轮加盐可抵御彩虹表攻击，但弱密码仍会被暴力破解
+
+5. **频率限制**：当前为内存存储，服务重启后失效。如需持久化，可改为 Redis 或数据库存储
