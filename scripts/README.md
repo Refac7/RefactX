@@ -8,7 +8,7 @@
 
 ### 1.1 生成密码哈希
 
-使用 `scripts/gen-hash.js` 为每位管理员生成 bcrypt 哈希。脚本会自动将哈希以 **base64** 编码输出，以避免 `.env` 中 `$` 符号被 Vite 的 `dotenv-expand` 当作变量展开。
+使用 `scripts/gen-hash.js` 为每位管理员生成 bcrypt 哈希：
 
 ```sh
 # 单用户（默认用户名 admin）
@@ -22,39 +22,29 @@ node scripts/gen-hash.js Refac7 你的明文密码
 
 ```
 Username: Refac7
-Original hash: $2b$10$UINwFaBpoh62R5WPfS1L4ul.wM4o0lhvE1rskIGzFhJUS1vB2rCGC
-Base64 encoded: JDJiJDEwJFVJTndGYUJwb2g2MlI1V1BmUzFMNHVsLndNNG8wbGh2RTFyc2tJR3pGaEpVUzF2QjJyQ0dD
+Hash: $2b$10$UINwFaBpoh62R5WPfS1L4ul.wM4o0lhvE1rskIGzFhJUS1vB2rCGC
 
 -- Add to .env as ADMIN_USERS (JSON) --
-ADMIN_USERS='{"Refac7":"JDJiJDEwJFVJTndGYUJwb2g2MlI1V1BmUzFMNHVsLndNNG8wbGh2RTFyc2tJR3pGaEpVUzF2QjJyQ0dD"}'
+ADMIN_USERS='{"Refac7":"$2b$10$UINwFaBpoh62R5WPfS1L4ul.wM4o0lhvE1rskIGzFhJUS1vB2rCGC"}'
 
 For multiple users, combine into a single JSON object:
-ADMIN_USERS='{"user1":"base64hash...","user2":"base64hash..."}'
+ADMIN_USERS='{"user1":"$2b$10$...","user2":"$2b$10$..."}'
 ```
 
 ### 1.2 配置管理员用户
 
-在 `.env` 文件中设置 `ADMIN_USERS`（JSON 格式，键为用户名，值为 base64 编码的 bcrypt 哈希）：
+在 `.env` 文件中设置 `ADMIN_USERS`（JSON 格式，键为用户名，值为 bcrypt 哈希）：
 
 ```env
 # 多用户（推荐）
-# 哈希值使用 base64 编码，避免 $ 符号被 dotenv-expand 误处理
-ADMIN_USERS='{"Refac7":"JDJiJDEwJFVJTndGYUJwb2g2MlI1V1BmUzFMNHVsLndNNG8wbGh2RTFyc2tJR3pGaEpVUzF2QjJyQ0dD","editor":"base64hash..."}'
+ADMIN_USERS='{"Refac7":"$2b$10$UINwFaBpoh62R5WPfS1L4ul.wM4o0lhvE1rskIGzFhJUS1vB2rCGC","editor":"$2b$10$yyyyyy"}'
 
-# 单用户兼容写法（base64 编码的哈希，等同于 {"admin":"base64hash..."}）
-ADMIN_PASSWORD=base64hash...
+# 单用户兼容写法（等同于 {"admin":"$2b$10$xxxxxx"}）
+ADMIN_PASSWORD=$2b$10$xxxxxx
 ```
 
 - 用户名**不区分大小写**（后端自动转为小写匹配）
 - `ADMIN_USERS` 优先级高于 `ADMIN_PASSWORD`，两者同时存在时忽略 `ADMIN_PASSWORD`
-- 哈希值以 base64 编码存储（`gen-hash.js` 自动生成），后端自动解码为原始 bcrypt 哈希
-- 同时也兼容直接存储原始 bcrypt 哈希（以 `$2` 开头），但不推荐，因为 `$` 可能被 Vite 的 `dotenv-expand` 误处理
-
-### 1.3 为什么需要 base64 编码？
-
-bcrypt 哈希的格式为 `$2b$10$...`，其中包含多个 `$` 符号。Vite/Astro 在加载 `.env` 时使用 `dotenv-expand` 处理变量值，该库会将 `$VAR_NAME` 模式解释为环境变量引用并展开。例如哈希中的 `$UINwFaBpoh62R5WPfS1L4ul` 被识别为变量名，展开为空字符串，导致哈希损坏。
-
-使用 base64 编码后，存储的值仅包含 `[A-Za-z0-9+/=]`，不包含 `$` 符号，完全避免了此问题。
 
 ---
 
@@ -127,8 +117,8 @@ NOTION_DATABASE_ID=YOUR_NOTION_DATABASE_ID
 NOTION_API_KEY=YOUR_NOTION_API_KEY
 
 # --- Admin 多用户认证 ---
-# 使用 node scripts/gen-hash.js <username> <password> 生成 base64 编码的哈希
-ADMIN_USERS='{"your-username":"base64-encoded-bcrypt-hash"}'
+# 使用 node scripts/gen-hash.js <username> <password> 生成哈希
+ADMIN_USERS='{"your-username":"$2b$10$your-bcrypt-hash"}'
 
 # --- JWT 签名密钥（openssl rand -hex 32） ---
 ADMIN_JWT_SECRET=YOUR_ADMIN_JWT_SECRET
@@ -156,7 +146,6 @@ POST /api/auth { username, password, captchaToken }
        ├─ 频率限制检查（每个 IP 最多 5 次失败，锁定 15 分钟）
        ├─ CAPTCHA 令牌验证（HMAC-SHA256，5 分钟有效期）
        ├─ 用户名查找（从 ADMIN_USERS 映射表）
-       ├─ base64 解码存储的哈希，还原为 bcrypt 哈希
        ├─ bcrypt.compare 密码比对
        │
        ├─ 成功 → 签发 JWT（含 username、ip、ts，有效期 2h）→ 返回 200
@@ -180,18 +169,3 @@ POST /api/auth { username, password, captchaToken }
 4. **使用强密码**：bcrypt 的 10 轮加盐可抵御彩虹表攻击，但弱密码仍会被暴力破解
 
 5. **频率限制**：当前为内存存储，服务重启后失效。如需持久化，可改为 Redis 或数据库存储
-
----
-
-## 8. 添加新用户
-
-```sh
-# 为新用户生成密码哈希
-node scripts/gen-hash.js 新用户名 密码
-
-# 将输出的 base64 哈希添加到 .env 的 ADMIN_USERS JSON 中
-# 例如：
-ADMIN_USERS='{"Refac7":"JDJiJDEw...","新用户名":"base64hash..."}'
-```
-
-重启 `pnpm dev` 后新用户即可登录。

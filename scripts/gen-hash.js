@@ -1,16 +1,17 @@
 // 用于生成 bcrypt 哈希密码的脚本
 // Usage: node scripts/gen-hash.js <username> <password>
-// Outputs base64-encoded hash for ADMIN_USERS env var
-// (base64 encoding avoids dotenv-expand $VAR expansion issues)
+// Outputs JSON entry for ADMIN_USERS env var
 
 import bcrypt from 'bcryptjs'
 
 const args = process.argv.slice(2)
 
+// Backward compatible: single argument = password only (old style)
 let username
 let password
 
 if (args.length === 1) {
+  // Legacy mode: just password
   username = 'admin'
   password = args[0]
 } else if (args.length >= 2) {
@@ -28,14 +29,12 @@ bcrypt.hash(password, saltRounds, (err, hash) => {
     console.error('Hash generation failed:', err)
     process.exit(1)
   }
-  const encoded = Buffer.from(hash).toString('base64')
   console.log(`Username: ${username}`)
-  console.log(`Original hash: ${hash}`)
-  console.log(`Base64 encoded: ${encoded}`)
+  console.log(`Hash: ${hash}`)
   console.log('')
   console.log('-- Add to .env as ADMIN_USERS (JSON) --')
-  console.log(`ADMIN_USERS='{"${username}":"${encoded}"}'`)
+  console.log(`ADMIN_USERS='{"${username}":"${hash}"}'`)
   console.log('')
   console.log('For multiple users, combine into a single JSON object:')
-  console.log('ADMIN_USERS=\'{"user1":"base64hash...","user2":"base64hash..."}\'')
+  console.log(`ADMIN_USERS='{"user1":"$2b$10$...","user2":"$2b$10$..."}'`)
 })
