@@ -28,8 +28,15 @@ const duplicateSkills = (skills: Skill[]) => [...skills, ...skills, ...skills, .
           >
             {duplicatedSkills.map((skill) => (
               <div class="safari-item group flex items-center gap-2.5 px-4 py-2.5 mx-2 rounded-full border border-border/40 bg-background/50 hover:bg-muted/30 transition-all duration-300">
-                <span class={cn('flex items-center justify-center w-4 h-4 text-foreground/70 group-hover:text-foreground transition-colors', skill.icon)} />
-                <span class="font-sans text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">{skill.name}</span>
+                <span
+                  class={cn(
+                    'flex items-center justify-center w-4 h-4 text-foreground/70 group-hover:text-foreground transition-colors',
+                    skill.icon
+                  )}
+                />
+                <span class="font-sans text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">
+                  {skill.name}
+                </span>
               </div>
             ))}
           </div>
@@ -37,24 +44,40 @@ const duplicateSkills = (skills: Skill[]) => [...skills, ...skills, ...skills, .
       )
     })
   }
-  </div>
+</div>
 
 <style is:global>
   @-webkit-keyframes scroll {
-    0% { transform: translate3d(0, 0, 0); }
-    100% { transform: translate3d(-25%, 0, 0); }
+    0% {
+      transform: translate3d(0, 0, 0);
+    }
+    100% {
+      transform: translate3d(-25%, 0, 0);
+    }
   }
   @keyframes scroll {
-    0% { transform: translate3d(0, 0, 0); }
-    100% { transform: translate3d(-25%, 0, 0); }
+    0% {
+      transform: translate3d(0, 0, 0);
+    }
+    100% {
+      transform: translate3d(-25%, 0, 0);
+    }
   }
   @-webkit-keyframes scroll-reverse {
-    0% { transform: translate3d(-25%, 0, 0); }
-    100% { transform: translate3d(0, 0, 0); }
+    0% {
+      transform: translate3d(-25%, 0, 0);
+    }
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
   }
   @keyframes scroll-reverse {
-    0% { transform: translate3d(-25%, 0, 0); }
-    100% { transform: translate3d(0, 0, 0); }
+    0% {
+      transform: translate3d(-25%, 0, 0);
+    }
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
   }
   .safari-only {
     -webkit-transform-style: preserve-3d;

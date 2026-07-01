@@ -4,39 +4,39 @@ import Layout from '~/layouts/Layout.astro'
 
 <Layout title="404 Not Found" description="The page could not be found.">
   <div class="relative min-h-screen flex flex-col p-6 lg:p-12 font-sans overflow-hidden fade-up">
-      
-      <div class="absolute top-6 left-6 lg:top-12 lg:left-12 flex items-center gap-2">
-        <span class="size-2 rounded-full bg-red-500"></span>
-        <span class="text-xs font-medium text-foreground tracking-tight">System Status</span>
-      </div>
+    <div class="absolute top-6 left-6 lg:top-12 lg:left-12 flex items-center gap-2">
+      <span class="size-2 rounded-full bg-red-500"></span>
+      <span class="text-xs font-medium text-foreground tracking-tight">System Status</span>
+    </div>
 
-      <div class="absolute top-6 right-6 lg:top-12 lg:right-12">
-        <span class="text-xs font-medium text-muted-foreground">Error Code: 404</span>
-      </div>
+    <div class="absolute top-6 right-6 lg:top-12 lg:right-12">
+      <span class="text-xs font-medium text-muted-foreground">Error Code: 404</span>
+    </div>
 
-      <div class="absolute bottom-6 left-6 lg:bottom-12 lg:left-12 z-20">
-        <button onclick="history.back()" class="inline-flex items-center justify-center rounded-full border border-border/40 bg-background px-5 py-2 text-xs font-semibold text-foreground shadow-sm hover:bg-muted/50 transition-colors">
-          Go Back
-        </button>
-      </div>
+    <div class="absolute bottom-6 left-6 lg:bottom-12 lg:left-12 z-20">
+      <button
+        onclick="history.back()"
+        class="inline-flex items-center justify-center rounded-full border border-border/40 bg-background px-5 py-2 text-xs font-semibold text-foreground shadow-sm hover:bg-muted/50 transition-colors"
+      >
+        Go Back
+      </button>
+    </div>
 
-      <div class="absolute bottom-6 right-6 lg:bottom-12 lg:right-12 z-20">
-        <a href="/" class="inline-flex items-center justify-center rounded-full bg-foreground px-5 py-2 text-xs font-semibold text-background shadow-sm hover:bg-foreground/90 transition-colors">
-          Return Home
-        </a>
-      </div>
+    <div class="absolute bottom-6 right-6 lg:bottom-12 lg:right-12 z-20">
+      <a
+        href="/"
+        class="inline-flex items-center justify-center rounded-full bg-foreground px-5 py-2 text-xs font-semibold text-background shadow-sm hover:bg-foreground/90 transition-colors"
+      >
+        Return Home
+      </a>
+    </div>
 
-      <div class="flex-1 flex flex-col items-center justify-center max-w-2xl mx-auto z-10 w-full text-center">
-         <h1 class="text-[8rem] sm:text-[12rem] font-bold tracking-tighter text-foreground leading-none mb-4 select-none">
-            404
-         </h1>
-         <h2 class="text-xl sm:text-2xl font-semibold tracking-tight text-foreground mb-4">
-            Page Not Found
-         </h2>
-         <p class="text-sm sm:text-base text-muted-foreground max-w-md mx-auto leading-relaxed">
-            The page you are looking for doesn't exist, has been moved, or is currently unavailable.
-         </p>
-      </div>
-
+    <div class="flex-1 flex flex-col items-center justify-center max-w-2xl mx-auto z-10 w-full text-center">
+      <h1 class="text-[8rem] sm:text-[12rem] font-bold tracking-tighter text-foreground leading-none mb-4 select-none">404</h1>
+      <h2 class="text-xl sm:text-2xl font-semibold tracking-tight text-foreground mb-4">Page Not Found</h2>
+      <p class="text-sm sm:text-base text-muted-foreground max-w-md mx-auto leading-relaxed">
+        The page you are looking for doesn't exist, has been moved, or is currently unavailable.
+      </p>
+    </div>
   </div>
 </Layout>

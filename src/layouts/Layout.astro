@@ -1,8 +1,7 @@
 ---
 import '~/styles/global.css'
 import '~/styles/pro.css'
-import '~/styles/picture.css'
-import { SITE, Holiday_Effects } from '~/config'
+import { SITE, HOLIDAY_EFFECTS } from '~/config'
 import Head from '~/components/base/Head.astro'
 import Header from './Header.astro'
 import Footer from './Footer.astro'
@@ -21,30 +20,50 @@ const { title, description, image }: Props = Astro.props
 <html lang="zh-CN">
   <head>
     <Head title={`${title} | ${SITE.title}`} {description} {image} />
+    <script is:inline>
+      // 在样式加载前预设背景色，避免白闪
+      const theme = localStorage.getItem('theme') || 'system'
+      const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
+      document.documentElement.style.backgroundColor = isDark ? '#0a0a0a' : '#fafafa'
+    </script>
   </head>
   <body>
-    
-    {Holiday_Effects.enableHolidayEffects && <HolidayTheme />}
+    {HOLIDAY_EFFECTS.enableHolidayEffects && <HolidayTheme />}
 
     <div class="select-text selection:bg-foreground/20 selection:text-foreground">
       <div class="relative z-10 bg-background">
         <Header />
       </div>
 
-      <main 
-        class="relative z-0 fullPage flex-auto border-x border-border/40 bg-background transition-all duration-500 ease-in-out"
-      >
+      <main class="relative z-5 fullPage flex-auto bg-background" transition:animate="fade">
         <slot />
       </main>
 
-      <div class="relative z-70 bg-background">
+      <div class="relative z-0 bg-background">
         <Footer />
       </div>
-
     </div>
     <div
-      class="pointer-events-none fixed bottom-0 left-0 h-28 w-full z-0 bg-background [mask-image:linear-gradient(transparent,hsl(var(--background)))]"
+      class="pointer-events-none fixed bottom-0 left-0 h-28 w-full z-0 bg-background mask-[linear-gradient(transparent,hsl(var(--background)))]"
     >
     </div>
+
+    <script is:inline>
+      // 性能监测和优化
+      document.addEventListener('astro:before-preparation', () => {
+        // 页面开始切换时，预加载关键资源
+        const prefetchLinks = document.querySelectorAll('link[rel="prefetch"]')
+        prefetchLinks.forEach((link) => {
+          // 确保预加载是激活的
+          link.setAttribute('rel', 'prefetch')
+        })
+      })
+
+      // 使用 astro:after-swap 替代 astro:page-load 获得更快的转换反应
+      document.addEventListener('astro:after-swap', () => {
+        // 重置滚动位置（使用更快的同步操作）
+        window.scrollTo(0, 0)
+      })
+    </script>
   </body>
 </html>

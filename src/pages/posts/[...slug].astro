@@ -6,7 +6,8 @@ import PostNavigation from '~/components/posts/base/PostNavigation.astro'
 import TocMobile from '~/components/posts/toc/TocMobile.astro'
 import Jap from '~/components/posts/layouts/Jap.astro'
 import { POSTS_CONFIG } from '~/config'
-import Comments from '~/components/posts/base/Comments.astro';
+import { SECTION_NUM_CLASS } from '~/lib/ui'
+import Comments from '~/components/posts/base/Comments.astro'
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts')
@@ -29,22 +30,22 @@ const { Content, headings, remarkPluginFrontmatter } = await render(post)
 const filterHeadings = headings.filter((heading) => heading.slug !== 'footnote-label')
 
 const getWordCount = (content: string) => {
-  if (!content) return 0;
-  let cleanContent = content;
-  cleanContent = cleanContent.replace(/^---[\s\S]*?---\s*/, '');
-  cleanContent = cleanContent.replace(/```[\s\S]*?```/g, '');
-  cleanContent = cleanContent.replace(/<[^>]+>/g, '');
-  cleanContent = cleanContent.replace(/\[([^\]]*)\]\([^)]*\)/g, '$1');
-  cleanContent = cleanContent.replace(/!\[.*?\]\(.*?\)/g, '');
-  cleanContent = cleanContent.replace(/[*#>`~\-\[\]]/g, '');
-  const cn = (cleanContent.match(/[\u4e00-\u9fa5]/g) ||[]).length;
-  const en = (cleanContent.replace(/[\u4e00-\u9fa5]/g, ' ').match(/[a-zA-Z0-9_\-]+/g) ||[]).length;
-  return cn + en;
-};
-const wordCount = getWordCount(post.body || '');
+  if (!content) return 0
+  let cleanContent = content
+  cleanContent = cleanContent.replace(/^---[\s\S]*?---\s*/, '')
+  cleanContent = cleanContent.replace(/```[\s\S]*?```/g, '')
+  cleanContent = cleanContent.replace(/<[^>]+>/g, '')
+  cleanContent = cleanContent.replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+  cleanContent = cleanContent.replace(/!\[.*?\]\(.*?\)/g, '')
+  cleanContent = cleanContent.replace(/[*#>`~\-\[\]]/g, '')
+  const cn = (cleanContent.match(/[\u4e00-\u9fa5]/g) || []).length
+  const en = (cleanContent.replace(/[\u4e00-\u9fa5]/g, ' ').match(/[a-zA-Z0-9_\-]+/g) || []).length
+  return cn + en
+}
+const wordCount = getWordCount(post.body || '')
 
 const layoutMap = {
-  'jap': Jap,
+  jap: Jap,
 } as const
 
 const layoutKey = (frontmatter.postType || POSTS_CONFIG.postType) as keyof typeof layoutMap
@@ -52,28 +53,20 @@ const PostLayout = layoutMap[layoutKey] || Jap
 ---
 
 <Layout title={frontmatter.title} description={frontmatter.description || frontmatter.title} image={frontmatter.ogImage}>
-
   <button
     id="hud-btt-btn"
-    class="fixed bottom-6 left-6 md:bottom-10 md:left-10 z-[100] group flex items-center gap-3 bg-primary text-primary-foreground px-4 py-3 rounded-full shadow-lg shadow-primary/20 hover:shadow-primary/40 opacity-0 translate-y-4 pointer-events-none hover:-translate-y-1 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+    class="fixed bottom-6 left-6 md:bottom-10 md:left-10 z-100 group flex items-center gap-2 bg-background/80 backdrop-blur-sm border border-border/40 text-foreground px-4 py-2.5 rounded-full shadow-lg hover:shadow-xl hover:border-primary/30 hover:-translate-y-1 opacity-0 translate-y-4 pointer-events-none transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
     aria-label="Back to top"
   >
-    <div class="flex items-center justify-center">
-      <span class="icon-[ph--arrow-up-bold] w-3.5 h-5 group-hover:-translate-y-0.5 transition-transform duration-300"></span>
-    </div>
+    <span class="icon-[ph--arrow-up-bold] size-3.5 group-hover:-translate-y-0.5 transition-transform duration-300"></span>
+    <span class="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">Top</span>
   </button>
 
   <div class="flex flex-col justify-between h-fit transition-all duration-500 ease-out fade-up relative">
-    
     <TocMobile {post} {posts} headings={filterHeadings} />
 
     <div class="fade-up animation-delay-100">
-      <PostLayout 
-        {frontmatter} 
-        minutesRead={remarkPluginFrontmatter.minutesRead}
-        wordCount={wordCount}
-        headings={filterHeadings}
-      >
+      <PostLayout {frontmatter} minutesRead={remarkPluginFrontmatter.minutesRead} {wordCount} headings={filterHeadings}>
         <Content />
       </PostLayout>
     </div>
@@ -83,41 +76,44 @@ const PostLayout = layoutMap[layoutKey] || Jap
     </div>
 
     <div class="mt-8 p-6 lg:p-8 xl:p-12 pb-12 mx-auto w-full fade-up animation-delay-200">
+      <div class="border-b border-border/40 pb-4 mb-8 flex items-center gap-3">
+        <span class={SECTION_NUM_CLASS}>∞</span>
+        <h2 class="text-xl md:text-2xl font-bold text-foreground tracking-tight">Comments</h2>
+      </div>
       <Comments />
     </div>
   </div>
-
 </Layout>
 
 <script>
-  let bttScrollHandler: (() => void) | null = null;
+  let bttScrollHandler: (() => void) | null = null
 
   document.addEventListener('astro:page-load', () => {
-    const btn = document.getElementById('hud-btt-btn');
-    if (!btn) return;
+    const btn = document.getElementById('hud-btt-btn')
+    if (!btn) return
 
     bttScrollHandler = () => {
       if (window.scrollY > 400) {
-        btn.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
-        btn.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
+        btn.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none')
+        btn.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto')
       } else {
-        btn.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
-        btn.classList.remove('opacity-100', 'translate-y-0', 'pointer-events-auto');
+        btn.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none')
+        btn.classList.remove('opacity-100', 'translate-y-0', 'pointer-events-auto')
       }
-    };
+    }
 
     btn.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    })
 
-    window.addEventListener('scroll', bttScrollHandler, { passive: true });
-    bttScrollHandler();
-  });
+    window.addEventListener('scroll', bttScrollHandler, { passive: true })
+    bttScrollHandler()
+  })
 
   document.addEventListener('astro:before-swap', () => {
     if (bttScrollHandler) {
-      window.removeEventListener('scroll', bttScrollHandler);
-      bttScrollHandler = null;
+      window.removeEventListener('scroll', bttScrollHandler)
+      bttScrollHandler = null
     }
-  });
+  })
 </script>

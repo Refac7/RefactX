@@ -3,10 +3,42 @@
   "type": "module",
   "version": "1.8.0",
   "license": "MIT",
+  "prettier": {
+    "experimentalTernaries": false,
+    "printWidth": 140,
+    "tabWidth": 2,
+    "useTabs": false,
+    "semi": false,
+    "singleQuote": true,
+    "quoteProps": "consistent",
+    "jsxSingleQuote": false,
+    "trailingComma": "es5",
+    "bracketSpacing": true,
+    "bracketSameLine": false,
+    "arrowParens": "always",
+    "proseWrap": "preserve",
+    "htmlWhitespaceSensitivity": "css",
+    "endOfLine": "lf",
+    "embeddedLanguageFormatting": "auto",
+    "singleAttributePerLine": false,
+    "plugins": [
+      "prettier-plugin-astro"
+    ],
+    "overrides": [
+      {
+        "files": "*.astro",
+        "options": {
+          "parser": "astro",
+          "astroAllowShorthand": true,
+          "astroSkipFrontmatter": false
+        }
+      }
+    ]
+  },
   "scripts": {
     "dev": "astro dev",
     "build": "astro check && astro build && pagefind --site .vercel/output/static",
-    "preview": "astro preview",
+    "preview": "python3 -m http.server --directory dist/client 4321",
     "astro": "astro",
     "format": "prettier . --check --ignore-unknown",
     "format:write": "prettier . --write --ignore-unknown --cache"
@@ -37,13 +69,13 @@
     "@astrojs/mdx": "^5.0.3",
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "3.7.2",
-    "@expressive-code/plugin-collapsible-sections": "^0.41.1",
-    "@expressive-code/plugin-line-numbers": "^0.41.1",
+    "@expressive-code/plugin-collapsible-sections": "^0.43.1",
+    "@expressive-code/plugin-line-numbers": "^0.43.1",
     "@iconify/json": "^2.2.321",
     "@iconify/tailwind4": "^1.0.6",
     "@lokesh.dhakar/quantize": "^1.4.0",
-    "@tailwindcss/typography": "^0.5.16",
-    "@tailwindcss/vite": "^4.0.12",
+    "@tailwindcss/typography": "^0.5.20",
+    "@tailwindcss/vite": "^4.3.1",
     "@types/cli-progress": "^3.11.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/mdast": "^4.0.4",
@@ -51,7 +83,7 @@
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@types/yargs": "^17.0.33",
-    "astro-expressive-code": "^0.41.7",
+    "astro-expressive-code": "^0.43.1",
     "astro-robots-txt": "^1.0.0",
     "babel-plugin-react-compiler": "1.0.0",
     "chalk": "^5.4.1",
@@ -79,9 +111,9 @@
     "remark-smartypants": "^3.0.2",
     "sharp": "^0.34.1",
     "shiki": "^3.2.2",
-    "tailwindcss": "^4.0.12",
+    "tailwindcss": "^4.3.1",
     "terser": "^5.46.0",
-    "tsx": "^4.19.3",
+    "tsx": "^4.22.4",
     "unist-util-visit": "^5.0.0",
     "yargs": "^17.7.2"
   }

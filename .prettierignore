@@ -1,3 +1,5 @@
 # exclude formatting
 pnpm-lock.yaml
 *.md
+public/js/*
+.claude/*

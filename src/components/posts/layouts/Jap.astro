@@ -14,65 +14,110 @@ const { frontmatter, minutesRead, wordCount, headings } = Astro.props
 ---
 
 <article class="relative w-full">
-  
-  <header class="relative w-full min-h-[50vh] flex flex-col justify-center px-6 md:px-12 py-24 border-b border-border/40 bg-muted/5">
-     
-     <div class="absolute top-8 left-6 md:left-12 flex items-center gap-2 sm:flex">
-       <a href="/posts" class="inline-flex items-center justify-center size-8 rounded-full bg-background border border-border/40 text-muted-foreground hover:text-foreground transition-colors">
-         <span class="icon-[ph--arrow-left] size-4"></span>
-       </a>
-     </div>
+  <!-- Header -->
+  <header class="relative w-full min-h-[50vh] flex flex-col justify-center px-6 md:px-12 py-24 border-b border-border/40 overflow-hidden">
+    <!-- Decorative blur -->
+    <div
+      class="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -z-10 translate-x-[30%] translate-y-[-30%] pointer-events-none"
+    >
+    </div>
 
-     <div class="absolute top-8 right-6 md:right-12 text-xs font-medium text-muted-foreground">
-       {formatDate(frontmatter.pubDate)}
-     </div>
+    <!-- Top bar: back button + status -->
+    <div class="absolute top-8 left-6 md:left-12 right-6 md:right-12 flex items-center justify-between">
+      <a
+        href="/posts"
+        class="group inline-flex items-center gap-2.5 text-xs font-mono text-muted-foreground hover:text-foreground transition-colors"
+      >
+        <span
+          class="inline-flex items-center justify-center size-8 rounded-lg bg-background/50 border border-border/40 text-muted-foreground group-hover:text-foreground group-hover:border-primary/30 group-hover:bg-primary/5 transition-all"
+        >
+          <span class="icon-[ph--arrow-left] size-4"></span>
+        </span>
+        <span class="hidden sm:inline uppercase tracking-widest">// Return_Index</span>
+      </a>
 
-     <div class="absolute bottom-8 left-6 md:left-12 flex flex-wrap gap-2 max-w-[50vw]">
-        {frontmatter.tags && frontmatter.tags.map((tag: string) => (
-          <a href={`/tags/${tag}`} class="text-xs font-medium bg-background border border-border/40 text-muted-foreground hover:text-foreground px-3 py-1 rounded-full transition-colors">
-            {tag}
-          </a>
-        ))}
-     </div>
+      <span
+        class="inline-flex items-center gap-1.5 rounded-full bg-muted/30 border border-border/40 px-3 py-1 text-[10px] font-mono text-muted-foreground select-none"
+      >
+        <span class="relative flex size-1.5">
+          <span class="relative inline-flex rounded-full size-1.5 bg-emerald-500"></span>
+        </span>
+        Published
+      </span>
+    </div>
 
-     <div class="absolute bottom-8 right-6 md:right-12 flex flex-col items-end gap-1 text-xs font-medium text-muted-foreground text-right sm:flex">
-       <span>{wordCount} Words</span>
-       <span>{minutesRead || 'Unknown'} Read</span>
-     </div>
-     
-     <div class="max-w-4xl mx-auto text-center z-10 w-full">
-       <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-foreground leading-tight sm:leading-[1.1]" data-pagefind-body>
-         {frontmatter.title}
-       </h1>
-       {frontmatter.description && (
-         <p class="mt-6 text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-           {frontmatter.description}
-         </p>
-       )}
-       {frontmatter.updatedDate && (
-         <p class="mt-6 text-xs font-medium text-muted-foreground/60 flex items-center justify-center gap-1.5">
-           <span class="icon-[ph--clock-clockwise]"></span>
-           Updated {formatDate(frontmatter.updatedDate)}
-         </p>
-       )}
-     </div>
+    <!-- Tags (bottom-left) -->
+    <div class="absolute bottom-8 left-6 md:left-12 flex flex-wrap gap-2 max-w-[50vw]">
+      {
+        frontmatter.tags &&
+          frontmatter.tags.map((tag: string) => (
+            <a
+              href={`/tags/${tag}`}
+              class="text-[11px] font-mono font-medium bg-background/50 backdrop-blur-sm border border-border/40 text-muted-foreground hover:text-foreground hover:border-primary/30 hover:bg-primary/5 px-3 py-1 rounded-full transition-all"
+            >
+              #{tag}
+            </a>
+          ))
+      }
+    </div>
+
+    <!-- Metadata (bottom-right) -->
+    <div
+      class="absolute bottom-8 right-6 md:right-12 flex items-center gap-4 text-[10px] font-mono text-muted-foreground uppercase tracking-widest select-none"
+    >
+      <span class="flex items-center gap-1.5">
+        <span class="icon-[ph--article] size-3.5"></span>
+        {wordCount} words
+      </span>
+      <span class="w-1 h-1 rounded-full bg-border"></span>
+      <span class="flex items-center gap-1.5">
+        <span class="icon-[ph--clock] size-3.5"></span>
+        {minutesRead || 'Unknown'}
+      </span>
+      <span class="w-1 h-1 rounded-full bg-border"></span>
+      <span>{formatDate(frontmatter.pubDate)}</span>
+    </div>
+
+    <!-- Title + description -->
+    <div class="max-w-4xl mx-auto z-10 w-full">
+      <h1
+        class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-foreground leading-tight sm:leading-[1.1]"
+        data-pagefind-body
+      >
+        {frontmatter.title}
+      </h1>
+      {
+        frontmatter.description && (
+          <div class="mt-6 relative">
+            <p class="text-base sm:text-lg text-muted-foreground max-w-2xl leading-relaxed">{frontmatter.description}</p>
+          </div>
+        )
+      }
+      {
+        frontmatter.updatedDate && (
+          <p class="mt-6 text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest flex items-center gap-1.5">
+            <span class="icon-[ph--clock-clockwise] size-3" />
+            Updated {formatDate(frontmatter.updatedDate)}
+          </p>
+        )
+      }
+    </div>
   </header>
 
-  <div class="relative bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:48px_48px]">
+  <!-- Content area -->
+  <div
+    class="relative bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-size-[48px_48px]"
+  >
     <div class="relative w-full max-w-[1920px] mx-auto px-6 md:px-12 py-12 md:py-20">
       <div class="relative w-full flex flex-col xl:flex-row items-start justify-center gap-10 xl:gap-24">
-        
-        <div class="w-full mx-auto max-w-4xl shrink-0 relative">
+        <div class="w-full mx-auto max-w-3xl shrink-0 relative">
           <Prose>
             <slot />
           </Prose>
         </div>
-        
-        {headings && headings.length > 0 && (
-          <TableOfContent headings={headings} />
-        )}
 
-      </div>    
-    </div>   
+        {headings && headings.length > 0 && <TableOfContent headings={headings} />}
+      </div>
+    </div>
   </div>
 </article>

@@ -10,12 +10,12 @@ type Props = {
 const { href, class: className, ...props }: Props = Astro.props
 ---
 
-<a 
-  {href} 
+<a
+  {href}
   class={cn(
     'group relative flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-muted-foreground transition-colors hover:text-primary py-1',
     className
-  )} 
+  )}
   {...props}
 >
   {/* Hover 时左侧出现的装饰块 */}

@@ -1,0 +1,45 @@
+---
+import Layout from '~/layouts/Layout.astro'
+import DynamicFeed from '~/components/dynamic/DynamicFeed'
+import { DYNAMIC_CONFIG } from '~/config'
+import { SECTION_HEADER_CLASS, SECTION_TITLE_CLASS, SECTION_NUM_CLASS, SECTION_META_CLASS } from '~/lib/ui'
+import PageAside from '~/components/base/PageAside.astro'
+---
+
+<Layout title={DYNAMIC_CONFIG.title} description={DYNAMIC_CONFIG.introduce}>
+  <div class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
+    <PageAside
+      statusText="Live Sync"
+      statusVariant="emerald"
+      title={DYNAMIC_CONFIG.title}
+      subtitleIcon="icon-[ph--activity]"
+      subtitleText="Signal Stream"
+      identityTags={[
+        { icon: 'icon-[ph--broadcast]', label: 'Notion API' },
+        { icon: 'icon-[ph--timer]', label: '30m Cache' },
+        { icon: 'icon-[ph--shield-check]', label: 'Verified' },
+      ]}
+      intro={DYNAMIC_CONFIG.introduce}
+      statsLabel="// STREAM STATUS"
+      statsMeta="2 METRICS"
+      stats={[
+        { value: 'API', label: 'Data Source' },
+        { value: '30m', label: 'Edge Cache' },
+      ]}
+    />
+
+    <main class="w-full lg:w-2/3 z-10 flex flex-col fade-up animation-delay-100">
+      <div class="p-6 lg:p-10 xl:p-16 2xl:p-20 flex-1">
+        <div class={SECTION_HEADER_CLASS}>
+          <div class="flex items-center">
+            <span class={SECTION_NUM_CLASS}>01</span>
+            <h2 class={SECTION_TITLE_CLASS}>Timeline</h2>
+          </div>
+          <span class={SECTION_META_CLASS}>// Signal_Stream</span>
+        </div>
+
+        <DynamicFeed client:load />
+      </div>
+    </main>
+  </div>
+</Layout>

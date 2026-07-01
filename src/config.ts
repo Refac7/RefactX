@@ -3,6 +3,7 @@ import type {
   Link,
   PostConfig,
   ProjectConfig,
+  DynamicConfig,
   Site,
   SkillsShowcaseConfig,
   SocialLink,
@@ -12,9 +13,7 @@ import type {
 // 站点全局配置
 export const SITE: Site = {
   title: 'RefactX Project',
-  description: '如风般轻盈，如光般纯粹。',
-  indexIntro1: '你好，我是 Refact 。一名时空修剪者。',
-  indexIntro2: '记录技术与生活的点滴，保持简单与专注。',
+  description: '又是又是……又是借口 / Another another... Another excuse.',
   website: 'https://www.refact.cc/',
   base: '/',
   author: 'Refact',
@@ -27,8 +26,8 @@ export const SITE: Site = {
 // 顶部导航菜单
 export const HEADER_LINKS: Link[] = [
   { name: '文章', url: '/posts' },
+  { name: '动态', url: '/dynamic' },
   { name: '项目', url: '/projects' },
-  { name: '图库', url: '/photos' },
   { name: '关于', url: '/about' },
 ]
 
@@ -36,9 +35,9 @@ export const HEADER_LINKS: Link[] = [
 export const FOOTER_LINKS: Link[] = [
   { name: '主页', url: '/' },
   { name: '文章', url: '/posts' },
+  { name: '动态', url: '/dynamic' },
   { name: '项目', url: '/projects' },
   { name: '标签', url: '/tags' },
-  { name: '图库', url: '/photos' },
   { name: '友链', url: '/friends' },
   { name: '关于', url: '/about' },
 ]
@@ -46,13 +45,13 @@ export const FOOTER_LINKS: Link[] = [
 // 社交链接 (图标参考: https://icon-sets.iconify.design/)
 export const SOCIAL_LINKS: SocialLink[] = [
   {
-    name: 'github',
-    url: '/',
+    name: 'GitHub',
+    url: 'https://github.com/Refac7',
     icon: 'icon-[ri--github-fill]',
   },
   {
-    name: 'bilibili',
-    url: '/',
+    name: 'BiliBili',
+    url: 'https://space.bilibili.com/441325177',
     icon: 'icon-[ri--bilibili-fill]',
   },
 ]
@@ -95,9 +94,9 @@ export const SKILLSSHOWCASE_CONFIG: SkillsShowcaseConfig = {
 
 // GitHub 贡献图配置
 export const GITHUB_CONFIG: GithubConfig = {
-  ENABLED: true,           // 是否启用贡献图
+  ENABLED: true, // 是否启用贡献图
   GITHUB_USERNAME: 'Refac7', // GitHub 用户名
-  TOOLTIP_ENABLED: true    // 是否开启悬浮提示
+  TOOLTIP_ENABLED: true, // 是否开启悬浮提示
 }
 
 // 文章页面配置
@@ -107,7 +106,7 @@ export const POSTS_CONFIG: PostConfig = {
   introduce: '不定时更新维护文章，可订阅 RSS 获取最新更新状态。',
   author: 'Refact',
   homePageConfig: { size: 3, type: 'compact' },
-  postPageConfig: { size: 5, type: 'image' },
+  postPageConfig: { size: 8, type: 'image' },
   tagsPageConfig: { size: 5, type: 'time-line' },
   defaultHeroImage: '/og-image.webp',
   defaultHeroImageAspectRatio: '16/9',
@@ -119,21 +118,28 @@ export const POSTS_CONFIG: PostConfig = {
   tocText: '目录导航',
   backToPostsText: '返回文章列表',
   nextPostText: '下一篇',
-  prevPostText: '上一篇'
+  prevPostText: '上一篇',
 }
 
 // 标签页面配置
 export const TAGS_CONFIG: TagsConfig = {
   title: 'Tags',
   description: '所有文章标签',
-  introduce: '所有文章标签均在此处，点击即可筛选。'
+  introduce: '所有文章标签均在此处，点击即可筛选。',
 }
 
 // 项目页面配置
 export const PROJECTS_CONFIG: ProjectConfig = {
   title: 'Projs',
   description: '我的项目案例',
-  introduce: '以下是我的项目案例展示，不定期维护项目。'
+  introduce: '以下是我的项目案例展示，不定期维护项目。',
+}
+
+// 动态页面配置
+export const DYNAMIC_CONFIG: DynamicConfig = {
+  title: 'Dynamic',
+  description: '我的动态',
+  introduce: '实时信号、简短想法和开发更新，直接从 Notion 工作区同步。',
 }
 
 // 关于页面配置
@@ -141,7 +147,7 @@ export const ABOUT_CONFIG = {
   title: 'About',
   description: 'Who am I?',
   introduce: ' 我那丑陋的情感，就不要表现出来啊。',
-  
+
   // 个人档案
   profile: {
     name: 'Refac7',
@@ -149,7 +155,19 @@ export const ABOUT_CONFIG = {
     role: 'Creative Developer / UI Designer',
     bio: '又是又是……又是借口 / Another another... Another excuse. \n\n某计科专业在读，高数苦手。喜欢电子音乐，熟悉以下所有技术栈的拼写，熟练使用剪贴板和cmd c和cmd v. 如果你和我有共同爱好，欢迎随时使用你能找到的所有渠道联系我哦～',
   },
-  
+
+  // 附加信息
+  physicalAttributes: [
+    { label: 'Height', value: '175 cm', icon: 'icon-[ph--ruler]' },
+    { label: 'Weight', value: '65 kg', icon: 'icon-[ph--barbell]' },
+    { label: 'Blood Type', value: 'A+', icon: 'icon-[ph--drop]' },
+    { label: 'MBTI', value: 'INTJ', icon: 'icon-[ph--brain]' },
+    { label: 'Birthdate', value: '2007-03-31', icon: 'icon-[ph--cake]' },
+    { label: 'Gender', value: 'Non-binary', icon: 'icon-[ph--gender-nonbinary]' },
+    { label: 'Location', value: 'Luoyang, China', icon: 'icon-[ph--map-pin]' },
+    { label: 'status', value: 'Single', icon: 'icon-[ph--heart]' },
+  ],
+
   // 技能矩阵
   skills: [
     { category: 'Frontend // 前端', items: ['JavaScript', 'React', 'Astro', 'TypeScript', 'Tailwind CSS'] },
@@ -158,21 +176,22 @@ export const ABOUT_CONFIG = {
     { category: 'Others // 杂项', items: ['VSCode', 'Git', 'Docker', 'Linux'] },
     { category: 'Learning // 学习中', items: ['Java', 'Rust', 'Go'] },
   ],
-  
+
   // 硬件清单
   equipment: [
-    { type: 'Workstation', name: 'Mac mini', desc: 'M4 / 16GB / 256GB + Solidigm P44 Pro 1TB' },
+    { type: 'Workstation', name: 'Desktop', desc: 'Xeon E5 2660v2 / NVIDIA Geforce GTX 1060 / 32GB DDR3' },
+    { type: 'Laptop', name: 'DELL Inspiron 3576', desc: 'Intel Core i5-8250U / AMD Radeon R5 M435 / 16GB DDR4' },
     { type: 'Phone', name: 'iPhone 12 mini', desc: 'A14 / 128GB' },
     { type: 'Pad', name: 'iPad', desc: 'A16 / 256GB' },
     { type: 'Monitor', name: 'HKC T2755U', desc: '27" / 4K / Standard Glass' },
-    { type: 'Keyboard', name: 'Magic Keyboard', desc: 'White / Short Edition / USB-C' },
-    { type: 'Trackpad', name: 'Magic Trackpad', desc: 'White / USB-C' },
-    { type: 'Audio', name: 'CMF Buds 2A', desc: '-42dB Noise Cancellation' },
+    { type: 'Keyboard', name: 'Lenovo GK10', desc: 'Black / Mechanical / Red axis' },
+    { type: 'Mouse', name: 'Lenovo Xiaoxin M2', desc: 'Grey / Wireless / Muted' },
+    { type: 'Audio', name: 'CMF Buds 2Plus', desc: '-50dB Noise Cancellation' },
   ],
 
   // 游戏日志
   games: [
-    { title: 'Rhythm Doctor', platform: 'PC / Steam', status: 'Playing', hours: '80h+', color: 'text-yellow-500' },
+    { title: 'Rhythm Doctor', platform: 'PC / Steam', status: 'Playing', hours: '100h+', color: 'text-yellow-500' },
     { title: 'Muse Dash', platform: 'PC / Steam', status: 'Paused', hours: '20h+', color: 'text-green-500' },
   ],
 
@@ -183,8 +202,8 @@ export const ABOUT_CONFIG = {
       label: '周一',
       courses: [
         { time: '09:50-12:10 | 2-17周', name: 'Python语言程序设计', location: '土楼328机房' },
-        { time: '14:30-16:00 | 1-18周', name: '排球2', location: '场地未排/待定' }
-      ]
+        { time: '14:30-16:00 | 1-18周', name: '排球2', location: '场地未排/待定' },
+      ],
     },
     {
       day: 'TUE',
@@ -193,8 +212,8 @@ export const ABOUT_CONFIG = {
         { time: '08:00-09:30 | 2-17周', name: '离散数学', location: 'B合四' },
         { time: '09:50-12:10 | 2-17周', name: '线性代数A', location: 'E-318' },
         { time: '14:30-16:00 | 2-17周', name: '面向对象程序设计', location: '信工107' },
-        { time: '16:10-17:50 | 2-17周', name: '高等数学A2', location: 'B合十四' }
-      ]
+        { time: '16:10-17:50 | 2-17周', name: '高等数学A2', location: 'B合十四' },
+      ],
     },
     {
       day: 'WED',
@@ -203,8 +222,8 @@ export const ABOUT_CONFIG = {
         { time: '08:00-09:30 | 2-17周', name: '高等数学A2', location: 'B合十四' },
         { time: '09:50-11:20 | 2-17周', name: '大学生心理健康教育', location: 'E-309' },
         { time: '14:30-16:00 | 2-17周', name: '中国近现代史纲要', location: '艺术楼-208' },
-        { time: '16:10-17:50 | 2-17周', name: '军事理论', location: 'C-401' }
-      ]
+        { time: '16:10-17:50 | 2-17周', name: '军事理论', location: 'C-401' },
+      ],
     },
     {
       day: 'THU',
@@ -213,17 +232,17 @@ export const ABOUT_CONFIG = {
         { time: '08:00-09:30 | 2-17周', name: '面向对象程序设计', location: '土楼334机房' },
         { time: '09:50-11:20 | 2-17周', name: '大学英语2(非艺体)', location: 'B3-202' },
         { time: '14:30-16:00 | 2-17周', name: '离散数学', location: 'E-404' },
-        { time: '16:10-17:50 | 3-06周', name: '形势与政策(二)', location: 'E-304' }
-      ]
+        { time: '16:10-17:50 | 3-06周', name: '形势与政策(二)', location: 'E-304' },
+      ],
     },
     {
       day: 'FRI',
       label: '周五',
       courses: [
         { time: '08:00-09:30 | 2-17周', name: '高等数学A2', location: 'B合十四' },
-        { time: '09:50-11:20 | 双周 2-16', name: '大学英语2(非艺体)', location: 'D-504 语音室' }
-      ]
-    }
+        { time: '09:50-11:20 | 双周 2-16', name: '大学英语2(非艺体)', location: 'D-504 语音室' },
+      ],
+    },
   ],
 
   // 待办清单
@@ -243,7 +262,7 @@ export const FRIENDS_CONFIG = {
   title: 'Friends',
   description: '我的朋友们都在这里，欢迎互访～',
   introduce: '已获取星图定位，正在前往友链星系的路上……',
-  enableAdd: true,
+  enableAdd: false,
 }
 
 // 博主专属友链卡片信息
@@ -253,31 +272,218 @@ export const FRIENDS_CONTACT = {
   author: 'Refac7',
   sitelink: 'https://www.refact.cc',
   siteavatar: 'https://img.refact.cc/base/avatar.jpg',
-  description: '形体是简单而纯粹的，它不是完整的群体，每个形体都指向其复杂性，并最终被复杂性联系在一起。', 
+  description: 'Another, another… another excuse.',
 }
 
 // Waline 评论系统配置
 export const WALINE_CONFIG = {
   enableComment: true,
-  serverURL: import.meta.env.PUBLIC_WALINE_SERVER_URL || "https://waline.refact.cc",
+  serverURL: import.meta.env.PUBLIC_WALINE_SERVER_URL || 'https://waline.refact.cc',
   uploadToken: import.meta.env.PUBLIC_UPLOAD_TOKEN,
-  imgbedURL: import.meta.env.PUBLIC_IMG_BED_URL || "https://img.refact.cc/upload",
+  imgbedURL: import.meta.env.PUBLIC_IMG_BED_URL || 'https://img.refact.cc/upload',
   enableImgUpload: true, // true: 上传至图片服务器 / false: 存入数据库(限 128KiB)
-};
+}
 
 // CMS 内容管理配置
 // 需在部署平台设置环境变量: PUBLIC_UPLOAD_TOKEN (如需管理后台则添加 GITHUB_TOKEN, ADMIN_PASSWORD)
 // 数据源提醒: v1.6.1 及之后版本，友链/项目/照片数据须转为 JSON 存放在 content/data 目录下
 export const CMS_CONFIG = {
   enableCMS: true,
-  owner: 'Refac7',   // GitHub 仓库所有者
-  repo: 'RefactX',   // GitHub 仓库名称
-  branch: 'main',    // 目标分支
-  pathPrefix: 'src/content/posts/' // 相对路径前缀
-};
+  owner: 'Refac7', // GitHub 仓库所有者
+  repo: 'RefactX', // GitHub 仓库名称
+  branch: 'main', // 目标分支
+  pathPrefix: 'src/content/posts/', // 相对路径前缀
+}
 
 // 节日特效配置
 // 样式修改: src/components/base/HolidayTheme.astro & global.css
-export const Holiday_Effects = {
+export const HOLIDAY_EFFECTS = {
   enableHolidayEffects: true,
 }
+
+// src/config.ts
+
+export const HOLIDAY_THEMES = {
+  // ====== 哀悼日 ======
+  '2026-04-04': {
+    theme: 'theme-mourning',
+    message: '今日是特殊纪念日，全站已开启哀悼模式。',
+  },
+  '2026-04-05': {
+    theme: 'theme-mourning',
+    message: '今日是特殊纪念日，全站已开启哀悼模式。',
+  },
+  '2026-04-06': {
+    theme: 'theme-mourning',
+    message: '今日是特殊纪念日，全站已开启哀悼模式。',
+  },
+  '2026-12-13': {
+    theme: 'theme-mourning',
+    message: '国家公祭日，全站已开启哀悼模式。',
+  },
+
+  '2027-04-04': {
+    theme: 'theme-mourning',
+    message: '今日是特殊纪念日，全站已开启哀悼模式。',
+  },
+  '2027-04-05': {
+    theme: 'theme-mourning',
+    message: '今日是特殊纪念日，全站已开启哀悼模式。',
+  },
+  '2027-04-06': {
+    theme: 'theme-mourning',
+    message: '今日是特殊纪念日，全站已开启哀悼模式。',
+  },
+  '2027-12-13': {
+    theme: 'theme-mourning',
+    message: '国家公祭日，全站已开启哀悼模式。',
+  },
+
+  // ====== 元旦 ======
+  '2026-01-01': {
+    theme: 'theme-red',
+    message: '新年快乐，全站已切换至节日主题。',
+  },
+  '2027-01-01': {
+    theme: 'theme-red',
+    message: '新年快乐，全站已切换至节日主题。',
+  },
+  '2028-01-01': {
+    theme: 'theme-red',
+    message: '新年快乐，全站已切换至节日主题。',
+  },
+
+  // ====== 春节 ======
+  '2026-02-17': {
+    theme: 'theme-red',
+    message: '春节快乐，全站已切换至节日主题。',
+  },
+  '2026-02-18': {
+    theme: 'theme-red',
+    message: '春节快乐，全站已切换至节日主题。',
+  },
+  '2026-02-19': {
+    theme: 'theme-red',
+    message: '春节快乐，全站已切换至节日主题。',
+  },
+
+  '2027-02-06': {
+    theme: 'theme-red',
+    message: '春节快乐，全站已切换至节日主题。',
+  },
+  '2027-02-07': {
+    theme: 'theme-red',
+    message: '春节快乐，全站已切换至节日主题。',
+  },
+  '2027-02-08': {
+    theme: 'theme-red',
+    message: '春节快乐，全站已切换至节日主题。',
+  },
+
+  '2028-01-26': {
+    theme: 'theme-red',
+    message: '春节快乐，全站已切换至节日主题。',
+  },
+  '2028-01-27': {
+    theme: 'theme-red',
+    message: '春节快乐，全站已切换至节日主题。',
+  },
+  '2028-01-28': {
+    theme: 'theme-red',
+    message: '春节快乐，全站已切换至节日主题。',
+  },
+
+  // ====== 端午 ======
+  '2026-06-19': {
+    theme: 'theme-green',
+    message: '端午安康，全站已切换至粽叶绿主题。',
+  },
+  '2026-06-20': {
+    theme: 'theme-green',
+    message: '端午安康，全站已切换至粽叶绿主题。',
+  },
+  '2026-06-21': {
+    theme: 'theme-green',
+    message: '端午安康，全站已切换至粽叶绿主题。',
+  },
+
+  '2027-06-09': {
+    theme: 'theme-green',
+    message: '端午安康，全站已切换至粽叶绿主题。',
+  },
+  '2027-06-10': {
+    theme: 'theme-green',
+    message: '端午安康，全站已切换至粽叶绿主题。',
+  },
+  '2027-06-11': {
+    theme: 'theme-green',
+    message: '端午安康，全站已切换至粽叶绿主题。',
+  },
+
+  // ====== 中秋 ======
+  '2026-09-25': {
+    theme: 'theme-gold',
+    message: '中秋快乐，全站已切换至月华金主题。',
+  },
+  '2026-09-26': {
+    theme: 'theme-gold',
+    message: '中秋快乐，全站已切换至月华金主题。',
+  },
+  '2026-09-27': {
+    theme: 'theme-gold',
+    message: '中秋快乐，全站已切换至月华金主题。',
+  },
+
+  '2027-09-15': {
+    theme: 'theme-gold',
+    message: '中秋快乐，全站已切换至月华金主题。',
+  },
+  '2027-09-16': {
+    theme: 'theme-gold',
+    message: '中秋快乐，全站已切换至月华金主题。',
+  },
+  '2027-09-17': {
+    theme: 'theme-gold',
+    message: '中秋快乐，全站已切换至月华金主题。',
+  },
+
+  // ====== 国庆 ======
+  '2026-10-01': {
+    theme: 'theme-red',
+    message: '欢度国庆，全站已切换至节日主题。',
+  },
+  '2026-10-02': {
+    theme: 'theme-red',
+    message: '欢度国庆，全站已切换至节日主题。',
+  },
+  '2026-10-03': {
+    theme: 'theme-red',
+    message: '欢度国庆，全站已切换至节日主题。',
+  },
+
+  '2027-10-01': {
+    theme: 'theme-red',
+    message: '欢度国庆，全站已切换至节日主题。',
+  },
+  '2027-10-02': {
+    theme: 'theme-red',
+    message: '欢度国庆，全站已切换至节日主题。',
+  },
+  '2027-10-03': {
+    theme: 'theme-red',
+    message: '欢度国庆，全站已切换至节日主题。',
+  },
+
+  '2028-10-01': {
+    theme: 'theme-red',
+    message: '欢度国庆，全站已切换至节日主题。',
+  },
+  '2028-10-02': {
+    theme: 'theme-red',
+    message: '欢度国庆，全站已切换至节日主题。',
+  },
+  '2028-10-03': {
+    theme: 'theme-red',
+    message: '欢度国庆，全站已切换至节日主题。',
+  },
+} as const

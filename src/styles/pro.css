@@ -5,53 +5,45 @@
 
 /* ===== Color Variables | 颜色变量 ===== */
 .markdown {
-  /* Vercel Geist Light Palette */
-  --text: #444444;          
-  --text-deep: #000000;     
-  --heading: #000000;       
-  --links: #000000;         
-  --links-border: #eaeaea;  
-  --links-hover-border: #000000; 
-  --anchor: #0070f3;        
-  --hr-color: #eaeaea;      
-  --blockquote-border: #eaeaea; 
-  --blockquote-text: #666666;
-  --table-text: #000000;    
-  --table-border: #eaeaea;
-  --inline-code-bg: #f5f5f5; 
-  --inline-code-text: #000000; 
-  --inline-code-border: #ebebeb; 
-  --details-bg: #fafafa;
+  --text: #3f3f46; /* zinc-700 */
+  --text-deep: #09090b; /* zinc-950 */
+  --heading: #09090b; /* zinc-950 */
+  --links: #09090b; /* zinc-950 */
+  --links-border: #e4e4e7; /* zinc-200 */
+  --links-hover-border: #a1a1aa; /* zinc-400 */
+  --anchor: var(--color-primary); /* blue-500 */
+  --hr-color: #e4e4e7; /* zinc-200 */
+  --blockquote-border: #e4e4e7; /* zinc-200 */
+  --blockquote-bg: #fafafa; /* zinc-50 */
+  --table-text: #18181b; /* zinc-900 */
+  --inline-code-bg: #f4f4f5; /* zinc-100 */
+  --inline-code-text: #18181b; /* zinc-900 */
+  --inline-code-border: #e4e4e7; /* zinc-200 */
 }
 
 .dark .markdown {
-  /* Vercel Geist Dark Palette */
-  --text: #a0a0a0;          
-  --text-deep: #ffffff;     
-  --heading: #ffffff;       
-  --links: #ffffff;         
-  --links-border: #333333;  
-  --links-hover-border: #ffffff; 
-  --anchor: #3291ff;        
-  --hr-color: #333333;      
-  --blockquote-border: #333333; 
-  --blockquote-text: #888888;
-  --table-text: #ffffff;    
-  --table-border: #333333;
-  --inline-code-bg: #111111; 
-  --inline-code-text: #ffffff; 
-  --inline-code-border: #333333; 
-  --details-bg: #111111;
+  --text: #a1a1aa; /* zinc-400 */
+  --text-deep: #fafafa; /* zinc-50 */
+  --heading: #fafafa; /* zinc-50 */
+  --links: #fafafa; /* zinc-50 */
+  --links-border: #3f3f46; /* zinc-700 */
+  --links-hover-border: #a1a1aa; /* zinc-400 */
+  --anchor: var(--color-primary); /* blue-400 */
+  --hr-color: #27272a; /* zinc-800 */
+  --blockquote-border: #3f3f46; /* zinc-700 */
+  --blockquote-bg: #18181b; /* zinc-900 */
+  --table-text: #fafafa; /* zinc-50 */
+  --inline-code-bg: #27272a; /* zinc-800 */
+  --inline-code-text: #e4e4e7; /* zinc-200 */
+  --inline-code-border: #3f3f46; /* zinc-700 */
 }
 
 /* ===== Base Styles | 基础样式 ===== */
 .markdown {
   color: var(--text);
   font-size: 1rem;
-  line-height: 1.7;
+  line-height: 1.75;
   font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 /* ===== Typography | 排版 ===== */
@@ -63,10 +55,10 @@
 .markdown h6 {
   color: var(--heading);
   font-weight: 600;
-  margin-top: 2.25em;
+  margin-top: 2em;
   margin-bottom: 1em;
-  line-height: 1.3;
-  letter-spacing: -0.03em;
+  line-height: 1.4;
+  letter-spacing: -0.02em;
 }
 
 .markdown h1 {
@@ -75,19 +67,21 @@
   margin-top: 0;
   margin-bottom: 0.8888889em;
   line-height: 1.1;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.03em;
 }
 .markdown h2 {
   font-size: 1.5em;
+  line-height: 1.3333333;
 }
 .markdown h3 {
   font-size: 1.25em;
-  font-weight: 600;
-  margin-top: 1.8em;
-  margin-bottom: 0.8em;
+  font-weight: 500;
+  margin-top: 1.6em;
+  margin-bottom: 0.6em;
 }
 .markdown h4 {
   font-size: 1.125em;
+  font-weight: 500;
 }
 .markdown h5 {
   font-size: 1em;
@@ -118,14 +112,15 @@
 /* ===== Links | 链接 ===== */
 .markdown a {
   color: var(--links);
-  text-decoration: underline;
-  text-decoration-color: var(--links-border);
-  text-underline-offset: 3px;
+  text-decoration: none;
   font-weight: 500;
-  transition: text-decoration-color 0.2s ease, color 0.2s ease;
+  border-bottom: 1px solid var(--links-border);
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease;
 }
 .markdown a:hover {
-  text-decoration-color: var(--links-hover-border);
+  border-bottom-color: var(--links-hover-border);
 }
 .markdown a code {
   color: inherit;
@@ -156,7 +151,7 @@
   height: 0.375em;
   top: calc(0.875em - 0.1875em);
   left: 0.25em;
-  opacity: 0.6;
+  opacity: 0.7;
 }
 
 .markdown ol,
@@ -190,11 +185,12 @@
 
 .markdown blockquote {
   font-weight: 400;
-  color: var(--blockquote-text);
-  background-color: transparent;
-  border-left: 2px solid var(--blockquote-border);
+  color: var(--text);
+  background-color: var(--blockquote-bg);
+  border-left: 3px solid var(--blockquote-border);
+  border-radius: 0 0.5rem 0.5rem 0;
   margin: 1.6em 0;
-  padding: 0.25em 0 0.25em 1.25em;
+  padding: 1em 1.25em;
 }
 
 .markdown blockquote > * {
@@ -219,7 +215,7 @@
   font-size: 0.875em;
   line-height: 1.7;
   margin: 1.5em 0;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
   border: 1px solid var(--hr-color);
   padding: 1em 1.25em;
 }
@@ -250,7 +246,7 @@
   color: var(--inline-code-text);
   border: 1px solid var(--inline-code-border);
   border-radius: 0.375rem;
-  padding: 0.15em 0.3em;
+  padding: 0.15em 0.4em;
   word-wrap: break-word;
 }
 
@@ -267,23 +263,23 @@
 
 .markdown thead {
   color: var(--table-text);
-  font-weight: 500;
-  border-bottom: 1px solid var(--table-border);
+  font-weight: 600;
+  border-bottom: 1px solid var(--hr-color);
+  background-color: var(--inline-code-bg);
 }
 
 .markdown thead th {
   vertical-align: bottom;
   padding: 0.75em 1em;
-  padding-left: 0;
 }
 
 .markdown tbody tr {
-  border-bottom: 1px solid var(--table-border);
+  border-bottom: 1px solid var(--hr-color);
   transition: background-color 0.2s;
 }
 
 .markdown tbody tr:hover {
-  background-color: var(--inline-code-bg);
+  background-color: var(--blockquote-bg);
 }
 
 .markdown tbody tr:last-child {
@@ -292,13 +288,12 @@
 .markdown tbody td {
   vertical-align: top;
   padding: 0.75em 1em;
-  padding-left: 0;
 }
 
 /* ===== Media | 媒体 ===== */
 .markdown img {
   margin: 2em auto;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
   border: 1px solid var(--hr-color);
   will-change: transform, filter;
 }
@@ -309,9 +304,8 @@
 .markdown video,
 .markdown figure {
   margin: 2em 0;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
   overflow: hidden;
-  border: 1px solid var(--hr-color);
 }
 .markdown figure > * {
   margin: 0;
@@ -335,10 +329,20 @@
   filter: none !important;
 }
 
+.medium-zoom-overlay {
+  z-index: 100 !important;
+}
+
+.medium-zoom-image--opened {
+  z-index: 101 !important;
+}
+
 .dark .markdown img.medium-zoom-image,
 .dark .markdown a img,
 .dark .markdown figure img {
-  transition: filter 0.2s ease, transform 0.2s cubic-bezier(0.2, 0, 0.2, 1) !important;
+  transition:
+    filter 0.2s ease,
+    transform 0.2s cubic-bezier(0.2, 0, 0.2, 1) !important;
 }
 
 /* ===== Spacing | 间距 ===== */
@@ -359,9 +363,9 @@
 
 /* ===== Interactive Elements | 交互元素 ===== */
 .markdown details {
-  background-color: var(--details-bg);
+  background-color: var(--blockquote-bg);
   border: 1px solid var(--hr-color);
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
   padding: 1em;
   margin: 1.5em 0;
 }
@@ -428,12 +432,12 @@
   border: 1px solid var(--hr-color);
   border-radius: 0.25rem;
   cursor: pointer;
-  accent-color: var(--text-deep);
+  accent-color: var(--anchor);
 }
 
 /* ===== Footnotes | 脚注 ===== */
 .markdown .footnotes {
-  margin-top: 4em;
+  margin-top: 3em;
   font-size: 0.875em;
   color: var(--text);
 }
@@ -441,7 +445,7 @@
 .markdown .footnotes::before {
   content: '';
   display: block;
-  width: 30%;
+  width: 100%;
   margin-bottom: 1.5em;
   border-top: 1px solid var(--hr-color);
 }
@@ -492,7 +496,7 @@
   opacity: 0;
   font-size: 0.8em;
   text-decoration: none;
-  color: var(--text);
+  color: var(--anchor);
   transition: opacity 0.2s ease;
 }
 
@@ -515,8 +519,12 @@
   padding-right: 4px;
 }
 
-.dark .img-light { display: none; }
-html:not(.dark) .img-dark { display: none; }
+.dark .img-light {
+  display: none;
+}
+html:not(.dark) .img-dark {
+  display: none;
+}
 
 .rds-video {
   z-index: 150;
@@ -524,7 +532,7 @@ html:not(.dark) .img-dark { display: none; }
   width: 100%;
   aspect-ratio: 16 / 9;
   margin: 2rem 0;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
 }
 
 [data-link='github-acct'] > img,
@@ -586,17 +594,41 @@ html:not(.dark) .img-dark { display: none; }
 
 /* ===== Mobile Adaptation | 移动端适配 ===== */
 @media (max-width: 768px) {
-  .markdown { font-size: 0.9375rem; }
-  .markdown h1 { font-size: 1.875em; margin-bottom: 0.75em; }
-  .markdown h2 { font-size: 1.375em; margin-top: 1.75em; margin-bottom: 0.875em; }
-  .markdown h3 { font-size: 1.125em; margin-top: 1.5em; margin-bottom: 0.5em; }
-  .markdown pre { padding: 1em; border-radius: 0.5rem; }
-  .markdown blockquote { padding: 0.5em 1em; }
-  .markdown table { display: block; overflow-x: auto; }
-  .markdown a.header-anchor { margin-left: -1.1em; font-size: 0.75em; }
+  .markdown {
+    font-size: 0.9375rem;
+  }
+  .markdown h1 {
+    font-size: 1.875em;
+    margin-bottom: 0.75em;
+  }
+  .markdown h2 {
+    font-size: 1.375em;
+    margin-top: 1.75em;
+    margin-bottom: 0.875em;
+  }
+  .markdown h3 {
+    font-size: 1.125em;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+  }
+  .markdown pre {
+    padding: 1em;
+    border-radius: 0.5rem;
+  }
+  .markdown blockquote {
+    padding: 0.75em 1em;
+  }
+  .markdown table {
+    display: block;
+    overflow-x: auto;
+  }
+  .markdown a.header-anchor {
+    margin-left: -1.1em;
+    font-size: 0.75em;
+  }
 }
 
-/* ===== LQIP Styles | LQIP 样式 (保留无需修改) ===== */
+/* ===== LQIP Styles | LQIP 样式 (不做修改) ===== */
 [style*='--lqip:']:where([loading='lazy'], [preload='none'], .force-lqip) {
   --lqip-ca: mod(round(down, calc((var(--lqip) + 524288) / 262144)), 4);
   --lqip-cb: mod(round(down, calc((var(--lqip) + 524288) / 65536)), 4);

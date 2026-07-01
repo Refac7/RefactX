@@ -14,8 +14,36 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site)
 const ogImage = new URL(image || SITE.ogImage, Astro.url)
 ---
 
-<script is:inline src="/js/theme.js"></script>
+<script is:inline>
+  ;(function () {
+    const STORAGE_KEY = 'theme'
+    const root = document.documentElement
+    const saved = localStorage.getItem(STORAGE_KEY) || 'system'
 
+    // 超轻量执行，0 重排 0 阻塞
+    const isDark = saved === 'dark' || (saved === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
+
+    root.dataset.theme = isDark ? 'dark' : 'light'
+    root.classList.toggle('dark', isDark)
+
+    // 只在必要时监听
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+      if (localStorage.getItem(STORAGE_KEY) === 'system') {
+        const nowDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+        root.dataset.theme = nowDark ? 'dark' : 'light'
+        root.classList.toggle('dark', nowDark)
+      }
+    })
+
+    // Astro 路由同步
+    document.addEventListener('astro:after-swap', () => {
+      const theme = localStorage.getItem(STORAGE_KEY) || 'system'
+      const dark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
+      root.dataset.theme = dark ? 'dark' : 'light'
+      root.classList.toggle('dark', dark)
+    })
+  })()
+</script>
 
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -27,10 +55,8 @@ const ogImage = new URL(image || SITE.ogImage, Astro.url)
 <meta name="description" content={description} />
 <meta name="author" content={SITE.author} />
 
-
 <meta name="theme-color" content="" />
 <meta name="color-scheme" content="light dark" />
-
 
 <link rel="icon" type="image/x-icon" sizes="16x16 32x32 48x48" href="/favicon.ico" />
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
@@ -42,16 +68,9 @@ const ogImage = new URL(image || SITE.ogImage, Astro.url)
 
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
 
-
-
-
-
-
 <link rel="canonical" href={canonicalURL} />
 
-
 <link rel="sitemap" href="/sitemap-index.xml" />
-
 
 <meta property="og:type" content="website" />
 <meta property="og:url" content={Astro.url} />
@@ -59,7 +78,6 @@ const ogImage = new URL(image || SITE.ogImage, Astro.url)
 <meta property="og:site_name" content={SITE.title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={ogImage} />
-
 
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content={Astro.url} />

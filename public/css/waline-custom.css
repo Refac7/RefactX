@@ -1,0 +1,104 @@
+#waline {
+  --waline-font-family: inherit !important;
+  --waline-theme-color: hsl(var(--primary)) !important;
+  --waline-active-color: hsl(var(--primary)) !important;
+  --waline-color: hsl(var(--foreground)) !important;
+  --waline-bgcolor: hsl(var(--background)) !important;
+  --waline-bgcolor-light: hsl(var(--muted) / 0.1) !important;
+  --waline-bgcolor-hover: hsl(var(--muted) / 0.3) !important;
+  --waline-border-color: hsl(var(--border) / 0.4) !important;
+  --waline-disable-bg-color: hsl(var(--muted) / 0.2) !important;
+  --waline-disable-color: hsl(var(--muted-foreground) / 0.5) !important;
+  --waline-info-color: hsl(var(--muted-foreground)) !important;
+  --waline-code-bg-color: hsl(var(--muted) / 0.4) !important;
+  --waline-border-radius: 0.5rem !important;
+  --waline-avatar-radius: 50% !important;
+}
+
+#waline .wl-panel:focus-within {
+  background-color: var(--waline-bgcolor) !important;
+  border-color: var(--waline-border-color) !important;
+}
+
+.wl-panel {
+  margin: 0rem !important;
+  background-color: var(--waline-bgcolor);
+  border-color: var(--waline-border-color);
+  border-radius: var(--waline-border-radius);
+}
+
+.wl-login-info {
+  margin-right: 0.75rem !important;
+}
+
+.wl-editor {
+  padding: 0.75em 0.75em !important;
+}
+
+.wl-action {
+  font-size: 12px !important;
+}
+
+.wl-btn {
+  border-radius: 0.25em !important;
+}
+
+.wl-actions {
+  gap: 0.25rem !important;
+}
+
+.wl-header-item {
+  border-bottom: 1px dashed var(--waline-border-color) !important;
+  padding: 0.5rem 0rem !important;
+}
+
+.wl-header {
+  border: none !important;
+}
+
+.wl-cards {
+  padding: 0rem !important;
+}
+
+.wl-card-item {
+  padding: 0rem !important;
+  padding-bottom: 1.5rem !important;
+  padding-top: 1.5rem !important;
+}
+
+.wl-meta-head {
+  display: none !important;
+}
+
+.wl-quote {
+  border: none !important;
+}
+
+#waline .wl-editor:focus,
+#waline .wl-input:focus {
+  background-color: transparent !important;
+}
+
+#waline .wl-btn {
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+#waline .wl-btn:hover {
+  opacity: 0.8;
+}
+
+#waline .wl-content,
+#waline .wl-content p,
+#waline .wl-content a {
+  word-break: break-word !important;
+  overflow-wrap: anywhere !important;
+  white-space: normal !important;
+}
+
+@media screen and (max-width: 768px) {
+  #waline .wl-input,
+  #waline .wl-editor {
+    font-size: 12px !important;
+  }
+}
