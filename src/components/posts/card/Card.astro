@@ -23,10 +23,10 @@ const sideWidthClass = 'md:w-[280px] lg:w-[320px]'
     hasImage && showImage && (
       <div
         class={`
-        hidden md:flex flex-col relative shrink-0 h-auto
-        ${sideWidthClass}
-        ${isReverse ? 'md:order-2 border-l border-border/40' : 'md:order-1 border-r border-border/40'}
-      `}
+	        hidden md:flex flex-col relative shrink-0 h-auto
+	        ${sideWidthClass}
+	        ${isReverse ? 'md:order-2 border-l border-border/40' : 'md:order-1 border-r border-border/40'}
+	      `}
       >
         <a href={`/posts/${post.id}`} class="block w-full h-full relative overflow-hidden bg-muted group/img">
           <img
@@ -46,11 +46,11 @@ const sideWidthClass = 'md:w-[280px] lg:w-[320px]'
       <a
         href={`/posts/${post.id}`}
         class={`
-        hidden md:flex shrink-0 h-auto relative overflow-hidden flex-col items-center justify-center p-6 bg-muted/20
-        ${sideWidthClass}
-        ${isReverse ? 'md:order-2 border-l border-border/40' : 'md:order-1 border-r border-border/40'}
-        group/placeholder hover:bg-muted/30 transition-all duration-300 cursor-pointer
-      `}
+	        hidden md:flex shrink-0 h-auto relative overflow-hidden flex-col items-center justify-center p-6 bg-muted/20
+	        ${sideWidthClass}
+	        ${isReverse ? 'md:order-2 border-l border-border/40' : 'md:order-1 border-r border-border/40'}
+	        group/placeholder hover:bg-muted/30 transition-all duration-300 cursor-pointer
+	      `}
       >
         <span class="icon-[ph--image-broken] size-12 text-muted-foreground/30 mb-3 group-hover/placeholder:scale-110 transition-transform duration-500 ease-out" />
         <span class="text-xs font-medium text-muted-foreground/60">No Media</span>
@@ -60,22 +60,35 @@ const sideWidthClass = 'md:w-[280px] lg:w-[320px]'
 
   <div
     class={`
-      flex flex-col w-full p-6 sm:p-8 flex-1
-      ${hasImage && showImage && isReverse ? 'md:order-1' : 'md:order-1'} 
-    `}
+	      flex flex-col w-full p-6 sm:p-8 flex-1
+	      ${hasImage && showImage && isReverse ? 'md:order-1' : 'md:order-1'}
+	    `}
   >
     <div class="flex items-center justify-between mb-2">
       <div class="flex items-center gap-2 text-sm font-medium text-muted-foreground leading-6.5">
         <time>
           {formatDate(post.data.pubDate)}
         </time>
-        {post.data.updatedDate && <span class="text-border">•</span>}
+        {post.data.updatedDate && <span class="text-border">&bull;</span>}
         {
           post.data.updatedDate && (
             <time class="flex items-center gap-1">
               <span class="icon-[ph--clock-clockwise] size-3.5" />
               {formatDate(post.data.updatedDate)}
             </time>
+          )
+        }
+        {
+          post.data.author && (
+            <>
+              <span class="text-border">&bull;</span>
+              <a
+                href={`/authors/${post.data.author}`}
+                class="hover:text-foreground hover:underline transition-colors"
+              >
+                {post.data.author}
+              </a>
+            </>
           )
         }
       </div>

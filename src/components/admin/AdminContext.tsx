@@ -65,7 +65,7 @@ const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
   const auth = useAdminAuth(showToast)
   const editor = useAdminEditor(showToast)
-  const fileSystem = useAdminFileSystem(showToast, auth.getAuthHeaders, auth.handleLogout, editor, setMobileView)
+  const fileSystem = useAdminFileSystem(showToast, auth.getAuthHeaders, auth.handleLogout, editor, setMobileView, auth.username)
 
   useEffect(() => {
     if (auth.isLoggedIn) {

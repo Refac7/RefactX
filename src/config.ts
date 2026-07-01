@@ -8,6 +8,7 @@ import type {
   SkillsShowcaseConfig,
   SocialLink,
   TagsConfig,
+  AuthorsConfig,
 } from '~/types'
 
 // 站点全局配置
@@ -38,6 +39,7 @@ export const FOOTER_LINKS: Link[] = [
   { name: '动态', url: '/dynamic' },
   { name: '项目', url: '/projects' },
   { name: '标签', url: '/tags' },
+  { name: '作者', url: '/authors' },
   { name: '友链', url: '/friends' },
   { name: '关于', url: '/about' },
 ]
@@ -108,6 +110,7 @@ export const POSTS_CONFIG: PostConfig = {
   homePageConfig: { size: 3, type: 'compact' },
   postPageConfig: { size: 8, type: 'image' },
   tagsPageConfig: { size: 5, type: 'time-line' },
+  authorsPageConfig: { size: 8, type: 'image' },
   defaultHeroImage: '/og-image.webp',
   defaultHeroImageAspectRatio: '16/9',
   postType: 'jap',
@@ -126,6 +129,13 @@ export const TAGS_CONFIG: TagsConfig = {
   title: 'Tags',
   description: '所有文章标签',
   introduce: '所有文章标签均在此处，点击即可筛选。',
+}
+
+// 作者页面配置
+export const AUTHORS_CONFIG: AuthorsConfig = {
+  title: 'Authors',
+  description: '所有文章作者',
+  introduce: '浏览不同作者的文章，点击作者名即可筛选其撰写的所有文章。',
 }
 
 // 项目页面配置

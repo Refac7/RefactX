@@ -7,7 +7,8 @@ export function useAdminFileSystem(
   getAuthHeaders: () => any,
   handleLogout: () => void,
   editor: any, // 传入 editor hook 返回的完整对象以获取其状态和设值函数
-  setMobileView: (v: MobileView) => void
+  setMobileView: (v: MobileView) => void,
+  username: string | null
 ) {
   const [remoteFiles, setRemoteFiles] = useState<RemoteFile[]>([])
   const [queue, setQueue] = useState<QueueItem[]>([])
@@ -104,6 +105,11 @@ export function useAdminFileSystem(
         editor.setEditingItemIndex(null)
         setMobileView('editor')
         showToast('New data file initialized', 'info')
+        return
+      }
+      if (res.status === 403) {
+        const errData = await res.json().catch(() => ({ error: 'Forbidden' }))
+        showToast(errData.error || 'You can only access your own posts', 'error')
         return
       }
       if (!res.ok) throw new Error('Fetch failed')
@@ -223,14 +229,17 @@ export function useAdminFileSystem(
         body: JSON.stringify({ config: REPO_CONFIG, operations: queue }),
       })
       if (res.status === 401) throw new Error('UNAUTHORIZED')
-      if (!res.ok) throw new Error('BATCH FAILED')
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({ error: 'BATCH FAILED' }))
+        throw new Error(errData.error || 'BATCH FAILED')
+      }
       setQueue([])
       localStorage.removeItem('admin_queue_v1')
       showToast('Operations committed successfully', 'success')
       await fetchRemoteFiles()
     } catch (error: any) {
       if (error.message === 'UNAUTHORIZED') handleLogout()
-      else showToast('Batch commit failed', 'error')
+      else showToast(error.message || 'Batch commit failed', 'error')
     } finally {
       setIsProcessingQueue(false)
     }
@@ -241,7 +250,7 @@ export function useAdminFileSystem(
     editor.setCurrentMode('post')
     editor.setFilename('')
     editor.setBody('')
-    editor.setMeta(DEFAULT_META)
+    editor.setMeta({ ...DEFAULT_META, author: username || DEFAULT_META.author })
     showToast('Workspace cleared', 'info')
     try {
       const res = await fetch('/api/next-filename', {

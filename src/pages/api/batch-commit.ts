@@ -3,6 +3,7 @@ export const prerender = false
 import type { APIRoute } from 'astro'
 import { Octokit } from '@octokit/rest'
 import { cleanupExpiredRecords, getClientIP, checkRateLimit } from '~/lib/rateLimit'
+import { extractJwtUsername, parseAuthorFromContent } from '~/lib/adminAuth'
 
 // 定义操作的接口类型
 interface FileOperation {
@@ -24,42 +25,86 @@ export const POST: APIRoute = async ({ request }) => {
     const { config, operations } = body // operations 是原始的操作数组
 
     const authHeader = request.headers.get('authorization')
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return new Response(JSON.stringify({ error: 'Missing token' }), { status: 401 })
-    }
-    const token = authHeader.split(' ')[1]
-
-    try {
-      const jwtImport = await import('jsonwebtoken')
-      // @ts-ignore
-      const jwt = jwtImport.default || jwtImport
-      const SECRET = import.meta.env.ADMIN_JWT_SECRET
-      jwt.verify(token, SECRET || 'default_secret')
-    } catch {
-      return new Response(JSON.stringify({ error: 'Invalid token' }), { status: 401 })
+    const username = await extractJwtUsername(authHeader)
+    if (!username) {
+      return new Response(JSON.stringify({ error: 'Invalid or missing token' }), { status: 401 })
     }
 
     const octokit = new Octokit({ auth: import.meta.env.GITHUB_TOKEN })
     const { owner, repo, branch, pathPrefix } = config
 
+    // 验证每个操作的作者权限
+    for (const op of operations as FileOperation[]) {
+      const fullPath = op.isDataFile || op.filename.includes('/') ? op.filename : `${pathPrefix}${op.filename}`
+
+      if (op.type === 'delete') {
+        // 删除操作：获取文件内容，检查作者
+        try {
+          const { data } = await octokit.repos.getContent({ owner, repo, path: fullPath })
+          if ('content' in data && !Array.isArray(data)) {
+            const fileContent = Buffer.from(data.content, 'base64').toString('utf-8')
+            const fileAuthor = parseAuthorFromContent(fileContent)
+            if (fileAuthor && fileAuthor.toLowerCase() !== username.toLowerCase()) {
+              return new Response(
+                JSON.stringify({ error: `You can only delete your own posts. "${op.filename}" is authored by "${fileAuthor}"` }),
+                { status: 403 }
+              )
+            }
+          }
+        } catch (e: any) {
+          if (e.status === 404) {
+            return new Response(JSON.stringify({ error: `File not found: ${op.filename}` }), { status: 404 })
+          }
+          throw e
+        }
+      } else {
+        // 写入操作：检查提交内容中的 author 是否匹配
+        if (op.content) {
+          const contentAuthor = parseAuthorFromContent(op.content)
+          if (contentAuthor && contentAuthor.toLowerCase() !== username.toLowerCase()) {
+            return new Response(
+              JSON.stringify({ error: `You can only write posts as yourself. Content author "${contentAuthor}" does not match "${username}"` }),
+              { status: 403 }
+            )
+          }
+          if (!contentAuthor) {
+            return new Response(
+              JSON.stringify({ error: `Post content must include an author field.` }),
+              { status: 400 }
+            )
+          }
+        }
+
+        // 对于已有文件的更新操作：额外检查远端文件的作者
+        try {
+          const { data } = await octokit.repos.getContent({ owner, repo, path: fullPath })
+          if ('content' in data && !Array.isArray(data)) {
+            const fileContent = Buffer.from(data.content, 'base64').toString('utf-8')
+            const fileAuthor = parseAuthorFromContent(fileContent)
+            if (fileAuthor && fileAuthor.toLowerCase() !== username.toLowerCase()) {
+              return new Response(
+                JSON.stringify({ error: `You can only edit your own posts. "${op.filename}" is authored by "${fileAuthor}"` }),
+                { status: 403 }
+              )
+            }
+          }
+        } catch (e: any) {
+          // 404 = 文件不存在，属于新建操作，允许通过
+          if (e.status !== 404) throw e
+        }
+      }
+    }
+
     // 使用 Map，Key 为完整文件路径。后续的操作会直接覆盖前面的操作。
     const uniqueOpsMap = new Map<string, any>()
 
     ;(operations as FileOperation[]).forEach((op) => {
-      // 预先计算完整路径，确保去重是基于真实文件位置的
       const fullPath = op.isDataFile || op.filename.includes('/') ? op.filename : `${pathPrefix}${op.filename}`
-
-      // 存入 Map，如果路径已存在，新的 op 会覆盖旧的
-      // 这样自然实现了：
-      // - 修改A -> 修改B => 最终只保留修改B
-      // - 修改 -> 删除 => 最终只保留删除
       uniqueOpsMap.set(fullPath, { ...op, finalPath: fullPath })
     })
 
-    // 将 Map 转回数组，用于后续处理
     const distinctOperations = Array.from(uniqueOpsMap.values())
 
-    // 如果合并后没有操作，直接返回
     if (distinctOperations.length === 0) {
       return new Response(JSON.stringify({ success: true, message: 'No changes to commit' }), { status: 200 })
     }
@@ -75,13 +120,12 @@ export const POST: APIRoute = async ({ request }) => {
     // 构建 Tree (使用去重后的 distinctOperations)
     const tree = await Promise.all(
       distinctOperations.map(async (item: any) => {
-        // 注意：这里直接使用我们上面计算好的 finalPath
         if (item.type === 'delete') {
           return {
             path: item.finalPath,
             mode: '100644',
             type: 'blob',
-            sha: null, // 删除文件的核心标志
+            sha: null,
           }
         } else {
           const { data: blobData } = await octokit.git.createBlob({

@@ -1,0 +1,93 @@
+---
+import { AUTHORS_CONFIG } from '~/config'
+import Layout from '~/layouts/Layout.astro'
+import { getCollection } from 'astro:content'
+import { SECTION_HEADER_CLASS, SECTION_TITLE_CLASS, SECTION_NUM_CLASS, SECTION_META_CLASS } from '~/lib/ui'
+import PageAside from '~/components/base/PageAside.astro'
+
+const allPosts = await getCollection('posts')
+const authors = [...new Set(allPosts.map((post) => post.data.author).filter(Boolean))]
+const sortedAuthors = authors
+  .map((author) => ({ name: author, count: allPosts.filter((post) => post.data.author === author).length }))
+  .sort((a, b) => b.count - a.count)
+const { title, description, introduce } = AUTHORS_CONFIG
+const maxCount = Math.max(...(sortedAuthors.map((a) => a.count).length > 0 ? sortedAuthors.map((a) => a.count) : [0]))
+const totalAuthors = authors.length.toString().padStart(2, '0')
+const totalPosts = allPosts.length.toString().padStart(2, '0')
+const lastUpdate = new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit' })
+---
+
+<Layout {title} {description}>
+  <div class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
+    <PageAside
+      statusText="Indexing"
+      statusHasPing={false}
+      statusVariant="primary"
+      {title}
+      subtitleIcon="icon-[ph--user]"
+      subtitleText="Authors Index"
+      identityTags={[
+        { icon: 'icon-[ph--user]', label: `${totalAuthors} Authors` },
+        { icon: 'icon-[ph--article]', label: `${totalPosts} Posts` },
+        { icon: 'icon-[ph--arrows-clockwise]', label: lastUpdate },
+      ]}
+      intro={introduce}
+      statsLabel="// INDEX STATUS"
+      statsMeta={`${totalAuthors} AUTHORS`}
+      stats={[
+        { value: totalAuthors, label: 'Authors' },
+        { value: totalPosts, label: 'Posts' },
+        { value: lastUpdate, label: 'Last Rebuild' },
+      ]}
+    />
+
+    <main class="w-full lg:w-2/3 z-10 flex flex-col fade-up animation-delay-150">
+      <div class="p-6 lg:p-10 xl:p-16 2xl:p-20 flex-1">
+        <div class={SECTION_HEADER_CLASS}>
+          <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>All Authors</h2></div>
+          <span class={SECTION_META_CLASS}>// Author_Cloud</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mt-8 fade-up animation-delay-200">
+          {
+            sortedAuthors.map((author, index) => {
+              const percent = sortedAuthors.length > 0 ? Math.min((author.count / maxCount) * 100, 100) : 0
+              return (
+                <a
+                  href={`/authors/${encodeURIComponent(author.name)}`}
+                  class="group relative flex flex-col justify-between p-6 bg-background/50 border border-border/40 rounded-xl hover:bg-muted/30 hover:border-primary/30 hover:shadow-sm transition-all duration-300 h-32 fade-up hover:-translate-y-0.5"
+                  style={`animation-delay: ${index * 50}ms`}
+                  rel="noopener noreferrer"
+                >
+                  <div class="flex justify-between items-start z-10">
+                    <h3 class="font-semibold text-lg text-foreground group-hover:text-primary transition-colors tracking-tight">
+                      {author.name}
+                    </h3>
+                    <span class="inline-flex items-center justify-center rounded-full bg-muted/60 px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+                      {author.count}
+                    </span>
+                  </div>
+                  <div class="w-full h-1.5 bg-muted/50 rounded-full overflow-hidden mt-4">
+                    <div
+                      class="h-full bg-primary/60 group-hover:bg-primary transition-all duration-500 ease-out rounded-full"
+                      style={`width: ${percent}%`}
+                    />
+                  </div>
+                </a>
+              )
+            })
+          }
+        </div>
+
+        {
+          authors.length === 0 && (
+            <div class="flex flex-col items-center justify-center py-24 rounded-xl border border-border/40 bg-muted/10 mt-8">
+              <span class="icon-[ph--warning-circle] size-10 text-muted-foreground/40 mb-4" />
+              <p class="text-sm text-muted-foreground">No authors found.</p>
+            </div>
+          )
+        }
+      </div>
+    </main>
+  </div>
+</Layout>
