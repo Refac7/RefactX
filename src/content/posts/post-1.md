@@ -2,7 +2,7 @@
 title: '关于 RefactX Project'
 description: '关于此项目的详细信息。我的看法以及有关我的一些信息。'
 pubDate: 2025-07-27
-author: 'Refact'
+author: 'Refac7'
 tags: ['Me', '杂谈']
 recommend: true
 heroImage: none

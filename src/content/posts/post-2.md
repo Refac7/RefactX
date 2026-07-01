@@ -2,7 +2,7 @@
 title: 'RefactX Project v1.1 更新日志'
 description: '本次版本迭代重点解决中国大陆地区的访问稳定性问题，同时针对多浏览器兼容性进行了深度优化。'
 pubDate: 2025-07-27
-author: 'Refact'
+author: 'Refac7'
 tags: ['更新日志', '笔记']
 recommend: false
 heroImage: 'https://img.refact.cc/base/UpdateLog.webp'
