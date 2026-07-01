@@ -4,13 +4,41 @@ import aboutData from '~/content/data/about.json'
 import { SECTION_HEADER_CLASS, SECTION_TITLE_CLASS, SECTION_NUM_CLASS, SECTION_META_CLASS } from '~/lib/ui'
 import PageAside from '~/components/base/PageAside.astro'
 
-interface AttrItem { label: string; value: string; icon: string }
-interface SkillGroup { category: string; items: string[] }
-interface EquipItem { type: string; name: string; desc: string }
-interface GameItem { title: string; platform: string; status: string; hours: string; color: string }
-interface CourseItem { time: string; name: string; location: string }
-interface ScheduleDay { day: string; label: string; courses: CourseItem[] }
-interface TodoItem { task: string; completed: boolean }
+interface AttrItem {
+  label: string
+  value: string
+  icon: string
+}
+interface SkillGroup {
+  category: string
+  items: string[]
+}
+interface EquipItem {
+  type: string
+  name: string
+  desc: string
+}
+interface GameItem {
+  title: string
+  platform: string
+  status: string
+  hours: string
+  color: string
+}
+interface CourseItem {
+  time: string
+  name: string
+  location: string
+}
+interface ScheduleDay {
+  day: string
+  label: string
+  courses: CourseItem[]
+}
+interface TodoItem {
+  task: string
+  completed: boolean
+}
 
 const { title, description, introduce } = aboutData
 

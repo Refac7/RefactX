@@ -57,11 +57,7 @@ export default function JsonEditor() {
   }
 
   /** Render a form field based on schema field type */
-  const renderField = (
-    field: SchemaField,
-    value: any,
-    onChange: (val: any) => void
-  ) => {
+  const renderField = (field: SchemaField, value: any, onChange: (val: any) => void) => {
     if (field.type === 'textarea' || field.type === 'json') {
       const displayValue = typeof value === 'object' && value !== null ? JSON.stringify(value, null, 2) : (value ?? '')
       return (
@@ -95,12 +91,7 @@ export default function JsonEditor() {
         />
         {field.type === 'image' && value && !value.startsWith('icon-') && (
           <div className="size-10 shrink-0 rounded-xs border border-border/40 overflow-hidden bg-muted/20">
-            <img
-              src={value}
-              className="size-full object-cover"
-              alt="preview"
-              onError={(e) => (e.currentTarget.style.display = 'none')}
-            />
+            <img src={value} className="size-full object-cover" alt="preview" onError={(e) => (e.currentTarget.style.display = 'none')} />
           </div>
         )}
       </div>
