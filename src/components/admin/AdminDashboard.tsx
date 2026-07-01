@@ -8,7 +8,7 @@ import EditorPanel from './panels/EditorPanel'
 import QueuePanel from './panels/QueuePanel'
 
 const DashboardLayout = () => {
-  const { isLoggedIn, fileInputRef, handleFileChange, mobileView, setMobileView, queue, remoteFiles, handleLogout } = useAdmin()
+  const { isLoggedIn, username, fileInputRef, handleFileChange, mobileView, setMobileView, queue, remoteFiles, handleLogout } = useAdmin()
 
   if (!isLoggedIn) return <LoginScreen />
 
@@ -41,6 +41,12 @@ const DashboardLayout = () => {
               </span>
               <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest">Online</span>
             </div>
+            {username && (
+              <>
+                <div className="h-4 w-px bg-border/60 mx-1" />
+                <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest hidden sm:inline">{username}</span>
+              </>
+            )}
             <div className="h-4 w-px bg-border/60 mx-1" />
             <button
               onClick={handleLogout}
