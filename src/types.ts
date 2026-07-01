@@ -82,6 +82,7 @@ export interface PostConfig {
   homePageConfig: PostCardPageConfig
   postPageConfig: PostCardPageConfig
   tagsPageConfig: PostCardPageConfig
+  authorsPageConfig: PostCardPageConfig
   defaultHeroImage: string
   defaultHeroImageAspectRatio: HeroImageAspectRatio
   postType: PostType
@@ -102,6 +103,18 @@ export interface PostConfig {
  * @property {string} introduce - 标签页介绍 / Tags page introduce
  */
 export interface TagsConfig {
+  title: string
+  description: string
+  introduce: string
+}
+
+/**
+ * 作者配置接口 / Authors configuration interface
+ * @property {string} title - 作者页标题 / Authors page title
+ * @property {string} description - 作者页描述 / Authors page description
+ * @property {string} introduce - 作者页介绍 / Authors page introduce
+ */
+export interface AuthorsConfig {
   title: string
   description: string
   introduce: string

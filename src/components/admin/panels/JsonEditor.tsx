@@ -16,9 +16,17 @@ export default function JsonEditor() {
     triggerUpload,
   } = useAdmin()
 
+  const isSingleObject = !Array.isArray(parsedJson)
+
   const handleUpdateItem = (index: number, key: string, value: any) => {
     const newData = [...parsedJson]
     newData[index] = { ...newData[index], [key]: value }
+    setParsedJson(newData)
+    setJsonContent(JSON.stringify(newData, null, 2))
+  }
+
+  const handleUpdateSingle = (key: string, value: any) => {
+    const newData = { ...parsedJson, [key]: value }
     setParsedJson(newData)
     setJsonContent(JSON.stringify(newData, null, 2))
   }
@@ -48,7 +56,82 @@ export default function JsonEditor() {
     if (editingItemIndex === index) setEditingItemIndex(null)
   }
 
+  /** Render a form field based on schema field type */
+  const renderField = (field: SchemaField, value: any, onChange: (val: any) => void) => {
+    if (field.type === 'textarea' || field.type === 'json') {
+      const displayValue = typeof value === 'object' && value !== null ? JSON.stringify(value, null, 2) : (value ?? '')
+      return (
+        <textarea
+          value={displayValue}
+          onChange={(e) => {
+            if (field.type === 'json') {
+              try {
+                onChange(JSON.parse(e.target.value || '{}'))
+              } catch {
+                // Allow editing even with invalid JSON (will be fixed by user)
+                onChange(e.target.value)
+              }
+            } else {
+              onChange(e.target.value)
+            }
+          }}
+          className="w-full bg-background border border-border/40 p-3 rounded-xs text-sm font-mono focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none min-h-30 transition-all"
+          placeholder={`Enter ${field.label.toLowerCase()}...`}
+        />
+      )
+    }
+
+    return (
+      <div className="flex gap-4 items-center">
+        <input
+          value={value || ''}
+          onChange={(e) => onChange(e.target.value)}
+          className="flex-1 bg-background border border-border/40 p-3 rounded-xs text-sm focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+          placeholder={`Enter ${field.label.toLowerCase()}...`}
+        />
+        {field.type === 'image' && value && !value.startsWith('icon-') && (
+          <div className="size-10 shrink-0 rounded-xs border border-border/40 overflow-hidden bg-muted/20">
+            <img src={value} className="size-full object-cover" alt="preview" onError={(e) => (e.currentTarget.style.display = 'none')} />
+          </div>
+        )}
+      </div>
+    )
+  }
+
+  /** Single-object visual editor (for files like about.json) */
+  const renderSingleObjectEditor = () => {
+    const schema = SCHEMAS[filename] || []
+    if (schema.length === 0)
+      return <div className="p-8 text-center text-muted-foreground text-sm">No visual schema available. Please use Raw Mode.</div>
+
+    return (
+      <div className="flex-1 overflow-y-auto p-4 sm:p-8 custom-scrollbar bg-background">
+        <div className="flex items-center justify-between mb-8 pb-4 border-b border-border/40">
+          <div>
+            <h3 className="text-base font-semibold text-foreground">{filename}</h3>
+            <p className="text-xs text-muted-foreground mt-0.5">Single object — edit fields below</p>
+          </div>
+        </div>
+        <div className="mx-auto space-y-6 pb-12">
+          {schema.map((field: SchemaField) => (
+            <div key={field.key} className="space-y-2">
+              <label className="flex justify-between items-center text-sm font-medium text-foreground">
+                <span>{field.label}</span>
+              </label>
+              {renderField(field, (parsedJson as any)[field.key], (val) => handleUpdateSingle(field.key, val))}
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
   const renderVisualEditor = () => {
+    // Single-object mode (e.g., about.json)
+    if (isSingleObject) {
+      return renderSingleObjectEditor()
+    }
+
     const schema = SCHEMAS[filename] || []
     if (schema.length === 0)
       return <div className="p-8 text-center text-muted-foreground text-sm">No visual schema available. Please use Raw Mode.</div>
@@ -85,40 +168,7 @@ export default function JsonEditor() {
                     </button>
                   )}
                 </label>
-                {field.type === 'textarea' || field.type === 'json' ? (
-                  <textarea
-                    value={typeof item[field.key] === 'object' ? JSON.stringify(item[field.key], null, 2) : item[field.key] || ''}
-                    onChange={(e) => {
-                      try {
-                        const newValue = field.type === 'json' ? JSON.parse(e.target.value || '{}') : e.target.value
-                        handleUpdateItem(editingItemIndex, field.key, newValue)
-                      } catch (err) {
-                        if (field.type !== 'json') handleUpdateItem(editingItemIndex, field.key, e.target.value)
-                      }
-                    }}
-                    className="w-full bg-background border border-border/40 p-3 rounded-xs text-sm focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none min-h-30 transition-all"
-                    placeholder={`Enter ${field.label.toLowerCase()}...`}
-                  />
-                ) : (
-                  <div className="flex gap-4 items-center">
-                    <input
-                      value={item[field.key] || ''}
-                      onChange={(e) => handleUpdateItem(editingItemIndex, field.key, e.target.value)}
-                      className="flex-1 bg-background border border-border/40 p-3 rounded-xs text-sm focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                      placeholder={`Enter ${field.label.toLowerCase()}...`}
-                    />
-                    {field.type === 'image' && item[field.key] && !item[field.key].startsWith('icon-') && (
-                      <div className="size-10 shrink-0 rounded-xs border border-border/40 overflow-hidden bg-muted/20">
-                        <img
-                          src={item[field.key]}
-                          className="size-full object-cover"
-                          alt="preview"
-                          onError={(e) => (e.currentTarget.style.display = 'none')}
-                        />
-                      </div>
-                    )}
-                  </div>
-                )}
+                {renderField(field, item[field.key], (val) => handleUpdateItem(editingItemIndex, field.key, val))}
               </div>
             ))}
           </div>

@@ -1,0 +1,103 @@
+---
+import type { GetStaticPaths, Page } from 'astro'
+import type { CollectionEntry } from 'astro:content'
+import { getCollection } from 'astro:content'
+import { POSTS_CONFIG } from '~/config'
+import { postsSort } from '~/lib/utils'
+import { SECTION_HEADER_CLASS, SECTION_TITLE_CLASS, SECTION_NUM_CLASS, SECTION_META_CLASS } from '~/lib/ui'
+import Layout from '~/layouts/Layout.astro'
+import Pagination from '~/components/base/Pagination.astro'
+import List from '~/components/posts/card/List.astro'
+import PageAside from '~/components/base/PageAside.astro'
+
+export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
+  const allPosts = await getCollection('posts')
+  const sortedPosts = postsSort(allPosts)
+  const uniqueAuthors = [...new Set(sortedPosts.map((post) => post.data.author).filter(Boolean))]
+  return uniqueAuthors
+    .map((author) => {
+      const authorPosts = sortedPosts.filter((post) => post.data.author === author)
+      return paginate(authorPosts, { params: { author }, props: { author }, pageSize: POSTS_CONFIG.authorsPageConfig.size })
+    })
+    .flat()
+}
+
+interface Props {
+  page: Page<CollectionEntry<'posts'>>
+  author: string
+}
+const { page, author } = Astro.props
+const description = `Posts written by ${author}`
+const progressPercent = Math.round((page.currentPage / page.lastPage) * 100)
+---
+
+<Layout title={`${author} 的文章`} {description}>
+  <div class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
+    <PageAside
+      statusText="Filter Active"
+      statusHasPing={false}
+      statusVariant="primary"
+      title={author}
+      subtitleIcon="icon-[ph--user]"
+      subtitleText="Author Query"
+      identityTags={[
+        { icon: 'icon-[ph--folder]', label: 'Directory' },
+        { icon: 'icon-[ph--user]', label: author },
+        { icon: 'icon-[ph--article]', label: `${page.total} Posts` },
+      ]}
+      statsLabel="// FILTER STATUS"
+      statsMeta={`${page.total} POSTS`}
+      stats={[
+        { value: String(page.total), label: 'Posts' },
+        { value: `${page.currentPage} / ${page.lastPage}`, label: 'Page' },
+      ]}
+    />
+
+    <main class="w-full lg:w-2/3 z-10 flex flex-col fade-up animation-delay-100">
+      <div class="p-6 lg:p-10 xl:p-16 2xl:p-20 flex-1 flex flex-col">
+        <div class={SECTION_HEADER_CLASS}>
+          <div class="flex items-center">
+            <span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>Posts by {author}</h2>
+          </div>
+          <span class={SECTION_META_CLASS}>// Query_Output</span>
+        </div>
+
+        <!-- Breadcrumb -->
+        <div class="text-sm text-muted-foreground flex items-center gap-2 flex-wrap -mt-4 mb-6">
+          <a href="/" class="hover:text-foreground transition-colors">home</a>
+          <span class="text-muted-foreground/40">/</span>
+          <a href="/authors" class="hover:text-foreground transition-colors">authors</a>
+          <span class="text-muted-foreground/40">/</span>
+          <span class="text-foreground font-medium bg-muted/50 px-2 py-0.5 rounded-xs">{author}</span>
+        </div>
+
+        <div class="space-y-8 min-h-[40vh] flex-1 fade-up animation-delay-200">
+          <List
+            posts={page.data}
+            type={POSTS_CONFIG.authorsPageConfig.type}
+            heroImageLayout={POSTS_CONFIG.authorsPageConfig?.heroImageLayout}
+          />
+        </div>
+
+        <div class="pt-8 border-t border-border/40">
+          <div class="flex justify-between text-xs text-muted-foreground mb-3">
+            <span>Reading Progress</span><span>{progressPercent}%</span>
+          </div>
+          <div class="w-full h-1.5 bg-muted/50 rounded-full overflow-hidden mb-8">
+            <div class="h-full bg-primary transition-all duration-700 ease-out rounded-full" style={`width: ${progressPercent}%`}></div>
+          </div>
+          <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="hidden md:flex flex-col gap-1">
+              <span class="text-sm font-medium text-foreground">Navigation</span><span class="text-xs text-muted-foreground"
+                >Select a page to continue.</span
+              >
+            </div>
+            <div class="flex-1 w-full md:w-auto flex justify-center md:justify-end">
+              <Pagination {page} baseUrl={`/authors/${encodeURIComponent(author)}`} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</Layout>

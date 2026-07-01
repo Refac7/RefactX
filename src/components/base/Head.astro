@@ -6,9 +6,11 @@ type Props = {
   title: string
   description: string
   image?: string
+  author?: string
 }
 
-const { title, description, image }: Props = Astro.props
+const { title, description, image, author }: Props = Astro.props
+const metaAuthor = author || SITE.author
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site)
 const ogImage = new URL(image || SITE.ogImage, Astro.url)
@@ -53,7 +55,7 @@ const ogImage = new URL(image || SITE.ogImage, Astro.url)
 <title>{title}</title>
 <meta name="title" content={title} />
 <meta name="description" content={description} />
-<meta name="author" content={SITE.author} />
+<meta name="author" content={metaAuthor} />
 
 <meta name="theme-color" content="" />
 <meta name="color-scheme" content="light dark" />
@@ -84,5 +86,8 @@ const ogImage = new URL(image || SITE.ogImage, Astro.url)
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={ogImage} />
+
+{/* Author metadata for OpenGraph / article pages */}
+{author && <meta property="article:author" content={author} />}
 
 <ClientRouter />

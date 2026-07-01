@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { REPO_CONFIG, DATA_FILES, DEFAULT_META, type RemoteFile, type QueueItem, type MobileView } from '../types'
+import { REPO_CONFIG, DATA_FILES, DEFAULT_META, SCHEMAS, type RemoteFile, type QueueItem, type MobileView } from '../types'
 import type { ToastType } from './useAdminToast'
 
 export function useAdminFileSystem(
@@ -7,7 +7,8 @@ export function useAdminFileSystem(
   getAuthHeaders: () => any,
   handleLogout: () => void,
   editor: any, // 传入 editor hook 返回的完整对象以获取其状态和设值函数
-  setMobileView: (v: MobileView) => void
+  setMobileView: (v: MobileView) => void,
+  username: string | null
 ) {
   const [remoteFiles, setRemoteFiles] = useState<RemoteFile[]>([])
   const [queue, setQueue] = useState<QueueItem[]>([])
@@ -96,14 +97,39 @@ export function useAdminFileSystem(
       if (res.status === 401) throw new Error('UNAUTHORIZED')
 
       if (res.status === 404 && isData) {
+        // Generate default content from schema if available
+        const schema = SCHEMAS[name]
+        let defaultData: any
+        if (schema && schema.length > 0) {
+          // For files with a single-object schema (like about.json), use {} with defaults
+          // For array-based files, the schema describes each item, but the top-level is still an array
+          // Check if this is a known array file
+          const isArrayFile = name === 'friends.json' || name === 'projects.json'
+          if (isArrayFile) {
+            defaultData = []
+          } else {
+            const defaultObj: any = {}
+            schema.forEach((field) => {
+              defaultObj[field.key] = field.type === 'json' ? [] : ''
+            })
+            defaultData = defaultObj
+          }
+        } else {
+          defaultData = []
+        }
         editor.setFilename(name)
-        editor.setJsonContent('[]')
-        editor.setParsedJson([])
+        editor.setJsonContent(JSON.stringify(defaultData, null, 2))
+        editor.setParsedJson(defaultData)
         editor.setCurrentMode('data')
         editor.setEditorMode('visual')
         editor.setEditingItemIndex(null)
         setMobileView('editor')
         showToast('New data file initialized', 'info')
+        return
+      }
+      if (res.status === 403) {
+        const errData = await res.json().catch(() => ({ error: 'Forbidden' }))
+        showToast(errData.error || 'You can only access your own posts', 'error')
         return
       }
       if (!res.ok) throw new Error('Fetch failed')
@@ -115,7 +141,7 @@ export function useAdminFileSystem(
         try {
           const parsed = JSON.parse(data.content)
           editor.setJsonContent(JSON.stringify(parsed, null, 2))
-          editor.setParsedJson(Array.isArray(parsed) ? parsed : [])
+          editor.setParsedJson(parsed)
           editor.setEditingItemIndex(null)
           editor.setEditorMode('visual')
         } catch (e) {
@@ -223,14 +249,17 @@ export function useAdminFileSystem(
         body: JSON.stringify({ config: REPO_CONFIG, operations: queue }),
       })
       if (res.status === 401) throw new Error('UNAUTHORIZED')
-      if (!res.ok) throw new Error('BATCH FAILED')
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({ error: 'BATCH FAILED' }))
+        throw new Error(errData.error || 'BATCH FAILED')
+      }
       setQueue([])
       localStorage.removeItem('admin_queue_v1')
       showToast('Operations committed successfully', 'success')
       await fetchRemoteFiles()
     } catch (error: any) {
       if (error.message === 'UNAUTHORIZED') handleLogout()
-      else showToast('Batch commit failed', 'error')
+      else showToast(error.message || 'Batch commit failed', 'error')
     } finally {
       setIsProcessingQueue(false)
     }
@@ -241,7 +270,7 @@ export function useAdminFileSystem(
     editor.setCurrentMode('post')
     editor.setFilename('')
     editor.setBody('')
-    editor.setMeta(DEFAULT_META)
+    editor.setMeta({ ...DEFAULT_META, author: username || DEFAULT_META.author })
     showToast('Workspace cleared', 'info')
     try {
       const res = await fetch('/api/next-filename', {

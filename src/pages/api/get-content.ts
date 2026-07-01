@@ -2,8 +2,8 @@ export const prerender = false
 
 import type { APIRoute } from 'astro'
 import { Octokit } from '@octokit/rest'
-import jwt from 'jsonwebtoken'
 import { cleanupExpiredRecords, getClientIP, checkRateLimit } from '~/lib/rateLimit'
+import { extractJwtUsername, parseAuthorFromContent } from '~/lib/adminAuth'
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -19,24 +19,11 @@ export const POST: APIRoute = async ({ request }) => {
     const body = await request.json()
     const { config, filename, absolutePath } = body
 
-    // 身份验证
+    // 身份验证 + 提取用户名
     const authHeader = request.headers.get('authorization')
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 })
-    }
-
-    const token = authHeader.split(' ')[1]
-    const SECRET = import.meta.env.ADMIN_JWT_SECRET
-
-    if (!SECRET) {
-      console.error('[Config Error] ADMIN_JWT_SECRET is missing')
-      return new Response(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 })
-    }
-
-    try {
-      jwt.verify(token, SECRET)
-    } catch {
-      return new Response(JSON.stringify({ error: 'Invalid token' }), { status: 401 })
+    const username = await extractJwtUsername(authHeader)
+    if (!username) {
+      return new Response(JSON.stringify({ error: 'Invalid or missing token' }), { status: 401 })
     }
 
     // GitHub API 调用
@@ -58,6 +45,15 @@ export const POST: APIRoute = async ({ request }) => {
 
       if ('content' in data && !Array.isArray(data)) {
         const fileContent = Buffer.from(data.content, 'base64').toString('utf-8')
+
+        // 作者权限检查：仅允许加载自己的文章
+        const fileAuthor = parseAuthorFromContent(fileContent)
+        if (fileAuthor && fileAuthor.toLowerCase() !== username.toLowerCase()) {
+          return new Response(JSON.stringify({ error: `You can only access your own posts. This post is authored by "${fileAuthor}".` }), {
+            status: 403,
+          })
+        }
+
         return new Response(
           JSON.stringify({
             content: fileContent,

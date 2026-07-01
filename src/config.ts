@@ -8,6 +8,7 @@ import type {
   SkillsShowcaseConfig,
   SocialLink,
   TagsConfig,
+  AuthorsConfig,
 } from '~/types'
 
 // 站点全局配置
@@ -38,6 +39,7 @@ export const FOOTER_LINKS: Link[] = [
   { name: '动态', url: '/dynamic' },
   { name: '项目', url: '/projects' },
   { name: '标签', url: '/tags' },
+  { name: '作者', url: '/authors' },
   { name: '友链', url: '/friends' },
   { name: '关于', url: '/about' },
 ]
@@ -108,6 +110,7 @@ export const POSTS_CONFIG: PostConfig = {
   homePageConfig: { size: 3, type: 'compact' },
   postPageConfig: { size: 8, type: 'image' },
   tagsPageConfig: { size: 5, type: 'time-line' },
+  authorsPageConfig: { size: 8, type: 'image' },
   defaultHeroImage: '/og-image.webp',
   defaultHeroImageAspectRatio: '16/9',
   postType: 'jap',
@@ -128,6 +131,13 @@ export const TAGS_CONFIG: TagsConfig = {
   introduce: '所有文章标签均在此处，点击即可筛选。',
 }
 
+// 作者页面配置
+export const AUTHORS_CONFIG: AuthorsConfig = {
+  title: 'Authors',
+  description: '所有文章作者',
+  introduce: '浏览不同作者的文章，点击作者名即可筛选其撰写的所有文章。',
+}
+
 // 项目页面配置
 export const PROJECTS_CONFIG: ProjectConfig = {
   title: 'Projs',
@@ -140,121 +150,6 @@ export const DYNAMIC_CONFIG: DynamicConfig = {
   title: 'Dynamic',
   description: '我的动态',
   introduce: '实时信号、简短想法和开发更新，直接从 Notion 工作区同步。',
-}
-
-// 关于页面配置
-export const ABOUT_CONFIG = {
-  title: 'About',
-  description: 'Who am I?',
-  introduce: ' 我那丑陋的情感，就不要表现出来啊。',
-
-  // 个人档案
-  profile: {
-    name: 'Refac7',
-    avatar: '/avatar.png',
-    role: 'Creative Developer / UI Designer',
-    bio: '又是又是……又是借口 / Another another... Another excuse. \n\n某计科专业在读，高数苦手。喜欢电子音乐，熟悉以下所有技术栈的拼写，熟练使用剪贴板和cmd c和cmd v. 如果你和我有共同爱好，欢迎随时使用你能找到的所有渠道联系我哦～',
-  },
-
-  // 附加信息
-  physicalAttributes: [
-    { label: 'Height', value: '175 cm', icon: 'icon-[ph--ruler]' },
-    { label: 'Weight', value: '65 kg', icon: 'icon-[ph--barbell]' },
-    { label: 'Blood Type', value: 'A+', icon: 'icon-[ph--drop]' },
-    { label: 'MBTI', value: 'INTJ', icon: 'icon-[ph--brain]' },
-    { label: 'Birthdate', value: '2007-03-31', icon: 'icon-[ph--cake]' },
-    { label: 'Gender', value: 'Non-binary', icon: 'icon-[ph--gender-nonbinary]' },
-    { label: 'Location', value: 'Luoyang, China', icon: 'icon-[ph--map-pin]' },
-    { label: 'status', value: 'Single', icon: 'icon-[ph--heart]' },
-  ],
-
-  // 技能矩阵
-  skills: [
-    { category: 'Frontend // 前端', items: ['JavaScript', 'React', 'Astro', 'TypeScript', 'Tailwind CSS'] },
-    { category: 'Backend // 后端', items: ['Node.js', 'Python', 'PostgreSQL', 'Redis'] },
-    { category: 'Design // 设计', items: ['Figma', 'Photoshop', 'AE'] },
-    { category: 'Others // 杂项', items: ['VSCode', 'Git', 'Docker', 'Linux'] },
-    { category: 'Learning // 学习中', items: ['Java', 'Rust', 'Go'] },
-  ],
-
-  // 硬件清单
-  equipment: [
-    { type: 'Workstation', name: 'Desktop', desc: 'Xeon E5 2660v2 / NVIDIA Geforce GTX 1060 / 32GB DDR3' },
-    { type: 'Laptop', name: 'DELL Inspiron 3576', desc: 'Intel Core i5-8250U / AMD Radeon R5 M435 / 16GB DDR4' },
-    { type: 'Phone', name: 'iPhone 12 mini', desc: 'A14 / 128GB' },
-    { type: 'Pad', name: 'iPad', desc: 'A16 / 256GB' },
-    { type: 'Monitor', name: 'HKC T2755U', desc: '27" / 4K / Standard Glass' },
-    { type: 'Keyboard', name: 'Lenovo GK10', desc: 'Black / Mechanical / Red axis' },
-    { type: 'Mouse', name: 'Lenovo Xiaoxin M2', desc: 'Grey / Wireless / Muted' },
-    { type: 'Audio', name: 'CMF Buds 2Plus', desc: '-50dB Noise Cancellation' },
-  ],
-
-  // 游戏日志
-  games: [
-    { title: 'Rhythm Doctor', platform: 'PC / Steam', status: 'Playing', hours: '100h+', color: 'text-yellow-500' },
-    { title: 'Muse Dash', platform: 'PC / Steam', status: 'Paused', hours: '20h+', color: 'text-green-500' },
-  ],
-
-  // 课程表
-  courseSchedule: [
-    {
-      day: 'MON',
-      label: '周一',
-      courses: [
-        { time: '09:50-12:10 | 2-17周', name: 'Python语言程序设计', location: '土楼328机房' },
-        { time: '14:30-16:00 | 1-18周', name: '排球2', location: '场地未排/待定' },
-      ],
-    },
-    {
-      day: 'TUE',
-      label: '周二',
-      courses: [
-        { time: '08:00-09:30 | 2-17周', name: '离散数学', location: 'B合四' },
-        { time: '09:50-12:10 | 2-17周', name: '线性代数A', location: 'E-318' },
-        { time: '14:30-16:00 | 2-17周', name: '面向对象程序设计', location: '信工107' },
-        { time: '16:10-17:50 | 2-17周', name: '高等数学A2', location: 'B合十四' },
-      ],
-    },
-    {
-      day: 'WED',
-      label: '周三',
-      courses: [
-        { time: '08:00-09:30 | 2-17周', name: '高等数学A2', location: 'B合十四' },
-        { time: '09:50-11:20 | 2-17周', name: '大学生心理健康教育', location: 'E-309' },
-        { time: '14:30-16:00 | 2-17周', name: '中国近现代史纲要', location: '艺术楼-208' },
-        { time: '16:10-17:50 | 2-17周', name: '军事理论', location: 'C-401' },
-      ],
-    },
-    {
-      day: 'THU',
-      label: '周四',
-      courses: [
-        { time: '08:00-09:30 | 2-17周', name: '面向对象程序设计', location: '土楼334机房' },
-        { time: '09:50-11:20 | 2-17周', name: '大学英语2(非艺体)', location: 'B3-202' },
-        { time: '14:30-16:00 | 2-17周', name: '离散数学', location: 'E-404' },
-        { time: '16:10-17:50 | 3-06周', name: '形势与政策(二)', location: 'E-304' },
-      ],
-    },
-    {
-      day: 'FRI',
-      label: '周五',
-      courses: [
-        { time: '08:00-09:30 | 2-17周', name: '高等数学A2', location: 'B合十四' },
-        { time: '09:50-11:20 | 双周 2-16', name: '大学英语2(非艺体)', location: 'D-504 语音室' },
-      ],
-    },
-  ],
-
-  // 待办清单
-  todos: [
-    { task: '重构个人博客风格 UI', completed: true },
-    { task: '活着（到目前为止）', completed: true },
-    { task: '重构项目结构，将pages页面统一框架', completed: false },
-    { task: '重写博客配置文档', completed: false },
-    { task: '完成基于 Astro 的文档系统部署', completed: false },
-    { task: '期末不挂科', completed: false },
-    { task: '保持项目存活并稳定更新', completed: false },
-  ],
 }
 
 // 友链页面配置

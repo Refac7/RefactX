@@ -65,6 +65,20 @@ const { frontmatter, minutesRead, wordCount, headings } = Astro.props
     <div
       class="absolute bottom-8 right-6 md:right-12 flex items-center gap-4 text-[10px] font-mono text-muted-foreground uppercase tracking-widest select-none"
     >
+      {
+        frontmatter.author && (
+          <>
+            <a
+              href={`/authors/${frontmatter.author}`}
+              class="flex items-center gap-1.5 hover:text-foreground hover:underline transition-colors"
+            >
+              <span class="icon-[ph--user] size-3.5" />
+              {frontmatter.author}
+            </a>
+            <span class="w-1 h-1 rounded-full bg-border" />
+          </>
+        )
+      }
       <span class="flex items-center gap-1.5">
         <span class="icon-[ph--article] size-3.5"></span>
         {wordCount} words

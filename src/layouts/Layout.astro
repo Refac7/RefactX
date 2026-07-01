@@ -11,15 +11,16 @@ type Props = {
   title: string
   description: string
   image?: string
+  author?: string
 }
 
-const { title, description, image }: Props = Astro.props
+const { title, description, image, author }: Props = Astro.props
 ---
 
 <!doctype html>
 <html lang="zh-CN">
   <head>
-    <Head title={`${title} | ${SITE.title}`} {description} {image} />
+    <Head title={`${title} | ${SITE.title}`} {description} {image} {author} />
     <script is:inline>
       // 在样式加载前预设背景色，避免白闪
       const theme = localStorage.getItem('theme') || 'system'
