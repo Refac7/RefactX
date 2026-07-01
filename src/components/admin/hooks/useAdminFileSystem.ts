@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { REPO_CONFIG, DATA_FILES, DEFAULT_META, type RemoteFile, type QueueItem, type MobileView } from '../types'
+import { REPO_CONFIG, DATA_FILES, DEFAULT_META, SCHEMAS, type RemoteFile, type QueueItem, type MobileView } from '../types'
 import type { ToastType } from './useAdminToast'
 
 export function useAdminFileSystem(
@@ -97,9 +97,29 @@ export function useAdminFileSystem(
       if (res.status === 401) throw new Error('UNAUTHORIZED')
 
       if (res.status === 404 && isData) {
+        // Generate default content from schema if available
+        const schema = SCHEMAS[name]
+        let defaultData: any
+        if (schema && schema.length > 0) {
+          // For files with a single-object schema (like about.json), use {} with defaults
+          // For array-based files, the schema describes each item, but the top-level is still an array
+          // Check if this is a known array file
+          const isArrayFile = name === 'friends.json' || name === 'projects.json'
+          if (isArrayFile) {
+            defaultData = []
+          } else {
+            const defaultObj: any = {}
+            schema.forEach((field) => {
+              defaultObj[field.key] = field.type === 'json' ? [] : ''
+            })
+            defaultData = defaultObj
+          }
+        } else {
+          defaultData = []
+        }
         editor.setFilename(name)
-        editor.setJsonContent('[]')
-        editor.setParsedJson([])
+        editor.setJsonContent(JSON.stringify(defaultData, null, 2))
+        editor.setParsedJson(defaultData)
         editor.setCurrentMode('data')
         editor.setEditorMode('visual')
         editor.setEditingItemIndex(null)
