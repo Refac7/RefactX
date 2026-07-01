@@ -1,10 +1,31 @@
 ---
 import Layout from '~/layouts/Layout.astro'
-import { ABOUT_CONFIG } from '~/config'
+import aboutData from '~/content/data/about.json'
 import { SECTION_HEADER_CLASS, SECTION_TITLE_CLASS, SECTION_NUM_CLASS, SECTION_META_CLASS } from '~/lib/ui'
 import PageAside from '~/components/base/PageAside.astro'
 
-const { title, description, introduce, profile, skills, equipment, games, courseSchedule, todos } = ABOUT_CONFIG
+interface AttrItem { label: string; value: string; icon: string }
+interface SkillGroup { category: string; items: string[] }
+interface EquipItem { type: string; name: string; desc: string }
+interface GameItem { title: string; platform: string; status: string; hours: string; color: string }
+interface CourseItem { time: string; name: string; location: string }
+interface ScheduleDay { day: string; label: string; courses: CourseItem[] }
+interface TodoItem { task: string; completed: boolean }
+
+const { title, description, introduce } = aboutData
+
+const profile = {
+  name: aboutData.profileName,
+  avatar: aboutData.profileAvatar,
+  role: aboutData.profileRole,
+  bio: aboutData.profileBio,
+}
+const physicalAttributes: AttrItem[] = aboutData.physicalAttributes
+const skills: SkillGroup[] = aboutData.skills
+const equipment: EquipItem[] = aboutData.equipment
+const games: GameItem[] = aboutData.games
+const courseSchedule: ScheduleDay[] = aboutData.courseSchedule
+const todos: TodoItem[] = aboutData.todos
 ---
 
 <Layout {title} {description}>
@@ -63,7 +84,7 @@ const { title, description, introduce, profile, skills, equipment, games, course
 
               <div class="mt-8 pt-6 border-t border-border/40 grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {
-                  ABOUT_CONFIG.physicalAttributes.map((attr) => (
+                  physicalAttributes.map((attr) => (
                     <div class="flex flex-col p-3 rounded-xl bg-background border border-border/40 hover:bg-muted/30 transition-colors">
                       <span class="flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground mb-1.5 uppercase tracking-wider select-none">
                         <span class={`${attr.icon} size-3.5`} />

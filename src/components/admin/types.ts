@@ -16,6 +16,7 @@ export const UPLOAD_CONFIG = {
 export const DATA_FILES = [
   { name: 'projects.json', path: 'src/content/data/projects.json', label: 'PROJECTS' },
   { name: 'friends.json', path: 'src/content/data/friends.json', label: 'FRIENDS' },
+  { name: 'about.json', path: 'src/content/data/about.json', label: 'ABOUT' },
 ]
 
 export type SchemaField = {
@@ -41,6 +42,21 @@ export const SCHEMAS: Record<string, SchemaField[]> = {
     { key: 'icon', label: 'Icon Class / Image URL', type: 'text' },
     { key: 'star', label: 'Stars', type: 'text' },
     { key: 'fork', label: 'Forks', type: 'text' },
+  ],
+  'about.json': [
+    { key: 'title', label: 'Page Title', type: 'text' },
+    { key: 'description', label: 'Meta Description', type: 'text' },
+    { key: 'introduce', label: 'Introduce', type: 'textarea' },
+    { key: 'profileName', label: 'Profile Name', type: 'text' },
+    { key: 'profileAvatar', label: 'Profile Avatar', type: 'text' },
+    { key: 'profileRole', label: 'Profile Role', type: 'text' },
+    { key: 'profileBio', label: 'Profile Bio', type: 'textarea' },
+    { key: 'physicalAttributes', label: 'Physical Attributes (JSON)', type: 'json' },
+    { key: 'skills', label: 'Skills (JSON)', type: 'json' },
+    { key: 'equipment', label: 'Equipment (JSON)', type: 'json' },
+    { key: 'games', label: 'Games (JSON)', type: 'json' },
+    { key: 'courseSchedule', label: 'Course Schedule (JSON)', type: 'json' },
+    { key: 'todos', label: 'Todos (JSON)', type: 'json' },
   ],
 }
 

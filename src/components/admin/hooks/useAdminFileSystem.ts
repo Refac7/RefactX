@@ -121,7 +121,7 @@ export function useAdminFileSystem(
         try {
           const parsed = JSON.parse(data.content)
           editor.setJsonContent(JSON.stringify(parsed, null, 2))
-          editor.setParsedJson(Array.isArray(parsed) ? parsed : [])
+          editor.setParsedJson(parsed)
           editor.setEditingItemIndex(null)
           editor.setEditorMode('visual')
         } catch (e) {
