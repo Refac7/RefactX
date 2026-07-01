@@ -63,15 +63,14 @@ export const POST: APIRoute = async ({ request }) => {
           const contentAuthor = parseAuthorFromContent(op.content)
           if (contentAuthor && contentAuthor.toLowerCase() !== username.toLowerCase()) {
             return new Response(
-              JSON.stringify({ error: `You can only write posts as yourself. Content author "${contentAuthor}" does not match "${username}"` }),
+              JSON.stringify({
+                error: `You can only write posts as yourself. Content author "${contentAuthor}" does not match "${username}"`,
+              }),
               { status: 403 }
             )
           }
           if (!contentAuthor) {
-            return new Response(
-              JSON.stringify({ error: `Post content must include an author field.` }),
-              { status: 400 }
-            )
+            return new Response(JSON.stringify({ error: `Post content must include an author field.` }), { status: 400 })
           }
         }
 

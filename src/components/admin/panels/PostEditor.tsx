@@ -100,9 +100,7 @@ export default function PostEditor({ showPreview, showMetaConfig }: PostEditorPr
               />
             </div>
             <div className="sm:col-span-4">
-              <label className="block text-xs font-medium text-muted-foreground mb-1.5">
-                Author
-              </label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1.5">Author</label>
               <div className="w-full bg-muted/30 border border-border/40 rounded-xs px-3 py-2 text-sm text-muted-foreground font-mono select-all">
                 {username || meta.author || '—'}
               </div>

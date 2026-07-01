@@ -49,10 +49,9 @@ export const POST: APIRoute = async ({ request }) => {
         // 作者权限检查：仅允许加载自己的文章
         const fileAuthor = parseAuthorFromContent(fileContent)
         if (fileAuthor && fileAuthor.toLowerCase() !== username.toLowerCase()) {
-          return new Response(
-            JSON.stringify({ error: `You can only access your own posts. This post is authored by "${fileAuthor}".` }),
-            { status: 403 }
-          )
+          return new Response(JSON.stringify({ error: `You can only access your own posts. This post is authored by "${fileAuthor}".` }), {
+            status: 403,
+          })
         }
 
         return new Response(

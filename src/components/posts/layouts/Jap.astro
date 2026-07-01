@@ -72,10 +72,10 @@ const { frontmatter, minutesRead, wordCount, headings } = Astro.props
               href={`/authors/${frontmatter.author}`}
               class="flex items-center gap-1.5 hover:text-foreground hover:underline transition-colors"
             >
-              <span class="icon-[ph--user] size-3.5"></span>
+              <span class="icon-[ph--user] size-3.5" />
               {frontmatter.author}
             </a>
-            <span class="w-1 h-1 rounded-full bg-border"></span>
+            <span class="w-1 h-1 rounded-full bg-border" />
           </>
         )
       }
