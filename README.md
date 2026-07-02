@@ -60,14 +60,25 @@ pnpm build
 pnpm preview
 ```
 
-### 管理面板密码
+### 管理面板登录配置
 
 ```bash
-# 生成 bcrypt 哈希
-node scripts/gen-hash.js "your-password"
+# 为指定用户生成密码哈希
+node scripts/gen-hash.js <用户名> <密码>
+
+# 示例：为用户 Refac7 生成哈希
+node scripts/gen-hash.js Refac7 "your-password"
 ```
 
-将输出的哈希值写入 Vercel 环境变量 `ADMIN_PASSWORD`。
+脚本将输出 `ADMIN_USERS` JSON 字符串，将其写入 Vercel 环境变量：
+
+```env
+ADMIN_USERS='{"Refac7":"base64编码的bcrypt哈希"}'
+ADMIN_JWT_SECRET=<openssl rand -hex 32 生成的随机密钥>
+CAPTCHA_SECRET=<openssl rand -hex 32 生成的随机密钥>
+```
+
+> 详细配置请参阅 [`scripts/README.md`](scripts/README.md)。
 
 ---
 
@@ -95,6 +106,7 @@ RefactX/
 │   │   └── posts/           # Markdown 文章
 │   ├── layouts/             # 页面布局（Layout / Header / Footer）
 │   ├── lib/                 # 工具函数与设计常量
+│   │   └── adminAuth.ts      #   JWT 鉴权与作者权限校验
 │   ├── pages/               # 路由页面
 │   │   ├── api/             #   SSR API 端点
 │   │   ├── admin.astro      #   CMS 入口
@@ -102,6 +114,7 @@ RefactX/
 │   │   ├── about.astro      #   关于页
 │   │   ├── friends.astro    #   友链页
 │   │   ├── 404.astro        #   错误页
+│   │   ├── authors/         #   作者索引 / 作者文章列表
 │   │   ├── dynamic/         #   动态流页
 │   │   ├── posts/           #   文章列表 / 文章详情
 │   │   ├── projects/        #   项目展示页
@@ -193,9 +206,25 @@ export const POSTS_CONFIG: PostConfig = {
     type: 'time-line',
   },
 
+  // 作者文章列表页
+  authorsPageConfig: {
+    size: 8,
+    type: 'image',
+  },
+
   defaultHeroImage: '/og-image.webp',
   postType: 'jap',                // 文章布局：jap
   imageDarkenInDark: true,        // 暗色模式下图片加深
+}
+```
+
+### 作者页面配置 `AUTHORS_CONFIG`
+
+```ts
+export const AUTHORS_CONFIG: AuthorsConfig = {
+  title: 'Authors',
+  description: '所有文章作者',
+  introduce: '浏览不同作者的文章，点击作者名即可筛选其撰写的所有文章。',
 }
 ```
 
@@ -307,6 +336,7 @@ export const HOLIDAY_THEMES = {
 ---
 title: 文章标题
 description: 文章摘要
+author: 作者名                # CMS 自动填入当前登录用户
 pubDate: 2026-06-24
 updatedDate: 2026-06-25    # 可选
 tags: [笔记, Astro]          # 可选
@@ -364,13 +394,17 @@ postType: jap                # 可选，文章布局
 
 | 变量名 | 必填 | 说明 |
 |--------|------|------|
-| `ADMIN_PASSWORD` | CMS 使用时 | bcrypt 哈希密码 |
-| `GITHUB_TOKEN` | CMS 使用时 | GitHub Personal Access Token |
+| `ADMIN_USERS` | CMS 使用时 | 多用户 JSON 映射（用户名 → bcrypt 哈希） |
+| `ADMIN_JWT_SECRET` | CMS 使用时 | JWT 签名密钥（`openssl rand -hex 32`） |
+| `CAPTCHA_SECRET` | CMS 使用时 | CAPTCHA PoW 签名密钥（`openssl rand -hex 32`） |
+| `GITHUB_TOKEN` | CMS 使用时 | GitHub Personal Access Token（repo 权限） |
 | `PUBLIC_WALINE_SERVER_URL` | 评论使用时 | Waline 服务端地址 |
 | `PUBLIC_UPLOAD_TOKEN` | 图片上传时 | 图床上传凭证 |
 | `PUBLIC_IMG_BED_URL` | 图片上传时 | 图床地址 |
 | `NOTION_API_KEY` | 动态流使用时 | Notion API 密钥 |
 | `NOTION_DATABASE_ID` | 动态流使用时 | Notion 数据库 ID |
+
+> **兼容说明：** 仍支持旧版单用户 `ADMIN_PASSWORD` 环境变量（等同于用户 `admin`），但推荐使用 `ADMIN_USERS` 多用户模式。详见 [`scripts/README.md`](scripts/README.md)。
 
 4. 部署。构建命令和输出目录已预配置。
 
@@ -383,11 +417,23 @@ postType: jap                # 可选，文章布局
 
 ## CMS 管理面板
 
-访问 `/admin` 进入管理面板。首次使用需配置：
+访问 `/admin` 进入管理面板。首次使用需完成以下配置（详见 [`scripts/README.md`](scripts/README.md)）：
 
-1. **生成密码哈希**：`node scripts/gen-hash.js "your-password"`
-2. **设置环境变量**：将哈希写入 `ADMIN_PASSWORD`
+1. **生成密码哈希**：`node scripts/gen-hash.js <用户名> <密码>`
+2. **设置环境变量**：
+   - `ADMIN_USERS`：多用户 JSON 映射（`{"用户名":"bcrypt哈希"}`）
+   - `ADMIN_JWT_SECRET`：JWT 签名密钥
+   - `CAPTCHA_SECRET`：CAPTCHA 验证密钥
 3. **配置 GitHub Token**：在 GitHub Settings → Developer settings → Personal access tokens 中生成，写入 `GITHUB_TOKEN`（需要 repo 权限）
+
+### 多用户支持
+
+`ADMIN_USERS` 支持为每位成员创建独立账号。登录时输入用户名和密码即可。系统特性：
+- 用户名**不区分大小写**
+- JWT Token 有效期 **2 小时**，包含用户名信息
+- 每位用户**只能编辑自己撰写的文章**（基于 frontmatter 中的 `author` 字段校验）
+- CMS 编辑器中的作者字段**自动填入**当前登录用户，不可手动修改
+- 支持旧版 `ADMIN_PASSWORD` 单用户模式（等同于用户 `admin`）
 
 ### 功能概览
 
@@ -400,8 +446,10 @@ postType: jap                # 可选，文章布局
 ### 安全机制
 
 - bcrypt 密码验证 + PoW CAPTCHA 人机验证
-- 登录频率限制（可配置）
-- CAPTCHA 令牌 5 分钟过期 + 24 小时验证有效期
+- JWT 会话管理（2 小时过期）
+- 登录频率限制：每 IP 最多 5 次失败，锁定 15 分钟
+- CAPTCHA 令牌 5 分钟过期
+- 作者权限隔离：用户仅可访问和编辑自己的文章
 
 ---
 
@@ -409,7 +457,7 @@ postType: jap                # 可选，文章布局
 
 | 端点 | 方法 | 说明 | 认证 |
 |------|------|------|------|
-| `/api/auth` | POST | 密码验证 | 密码 + CAPTCHA |
+| `/api/auth` | POST | 用户名 + 密码验证，返回 JWT | 用户名 + 密码 + CAPTCHA |
 | `/api/dynamic` | GET | 获取 Notion 动态流 | CAPTCHA 验证状态 |
 | `/api/repo-stats` | GET | 获取仓库文件统计 | GitHub Token |
 | `/api/batch-commit` | POST | 批量提交更改 | GitHub Token |

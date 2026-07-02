@@ -60,14 +60,25 @@ pnpm build
 pnpm preview
 ```
 
-### Admin Password
+### Admin Login Setup
 
 ```bash
-# Generate a bcrypt hash
-node scripts/gen-hash.js "your-password"
+# Generate a password hash for a specific user
+node scripts/gen-hash.js <username> <password>
+
+# Example: generate hash for user Refac7
+node scripts/gen-hash.js Refac7 "your-password"
 ```
 
-Set the output hash as the `ADMIN_PASSWORD` environment variable in Vercel.
+The script outputs an `ADMIN_USERS` JSON string. Set the following Vercel environment variables:
+
+```env
+ADMIN_USERS='{"Refac7":"base64-encoded-bcrypt-hash"}'
+ADMIN_JWT_SECRET=<random key from: openssl rand -hex 32>
+CAPTCHA_SECRET=<random key from: openssl rand -hex 32>
+```
+
+> See [`scripts/README.md`](scripts/README.md) for detailed configuration.
 
 ---
 
@@ -95,6 +106,7 @@ RefactX/
 │   │   └── posts/           # Markdown posts
 │   ├── layouts/             # Page layouts (Layout / Header / Footer)
 │   ├── lib/                 # Utilities & design constants
+│   │   └── adminAuth.ts      #   JWT auth & author permission checks
 │   ├── pages/               # Route pages
 │   │   ├── api/             #   SSR API endpoints
 │   │   ├── admin.astro      #   CMS entry
@@ -102,6 +114,7 @@ RefactX/
 │   │   ├── about.astro      #   About page
 │   │   ├── friends.astro    #   Friends page
 │   │   ├── 404.astro        #   Error page
+│   │   ├── authors/         #   Author index / author post list
 │   │   ├── dynamic/         #   Dynamic feed
 │   │   ├── posts/           #   Post list / Post detail
 │   │   ├── projects/        #   Project showcase
@@ -193,9 +206,25 @@ export const POSTS_CONFIG: PostConfig = {
     type: 'time-line',
   },
 
+  // Author post list page
+  authorsPageConfig: {
+    size: 8,
+    type: 'image',
+  },
+
   defaultHeroImage: '/og-image.webp',
   postType: 'jap',                  // Post layout: jap
   imageDarkenInDark: true,          // Dim images in dark mode
+}
+```
+
+### Author Page Configuration `AUTHORS_CONFIG`
+
+```ts
+export const AUTHORS_CONFIG: AuthorsConfig = {
+  title: 'Authors',
+  description: 'All post authors',
+  introduce: 'Browse posts by author — click an author name to filter their contributions.',
 }
 ```
 
@@ -307,6 +336,7 @@ Posts are stored as Markdown files in `src/content/posts/`. Each file requires Y
 ---
 title: My Post Title
 description: A brief summary
+author: Author Name            # Auto-filled by CMS from logged-in user
 pubDate: 2026-06-24
 updatedDate: 2026-06-25      # Optional
 tags: [notes, astro]          # Optional
@@ -364,13 +394,17 @@ The `type` field: `"icon"` for an Iconify icon, `"image"` for a custom image.
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `ADMIN_PASSWORD` | For CMS | bcrypt password hash |
-| `GITHUB_TOKEN` | For CMS | GitHub Personal Access Token |
+| `ADMIN_USERS` | For CMS | Multi-user JSON mapping (username → bcrypt hash) |
+| `ADMIN_JWT_SECRET` | For CMS | JWT signing key (`openssl rand -hex 32`) |
+| `CAPTCHA_SECRET` | For CMS | CAPTCHA PoW signing key (`openssl rand -hex 32`) |
+| `GITHUB_TOKEN` | For CMS | GitHub Personal Access Token (repo scope) |
 | `PUBLIC_WALINE_SERVER_URL` | For comments | Waline server URL |
 | `PUBLIC_UPLOAD_TOKEN` | For image uploads | Image bed upload token |
 | `PUBLIC_IMG_BED_URL` | For image uploads | Image bed URL |
 | `NOTION_API_KEY` | For dynamic feed | Notion API key |
 | `NOTION_DATABASE_ID` | For dynamic feed | Notion database ID |
+
+> **Backward compatibility:** The legacy `ADMIN_PASSWORD` single-user variable is still supported (equivalent to user `admin`), but `ADMIN_USERS` multi-user mode is recommended. See [`scripts/README.md`](scripts/README.md).
 
 4. Deploy. Build command and output directory are pre-configured.
 
@@ -383,11 +417,23 @@ The `type` field: `"icon"` for an Iconify icon, `"image"` for a custom image.
 
 ## CMS Admin Panel
 
-Visit `/admin` to access the management panel. Initial setup:
+Visit `/admin` to access the management panel. Complete setup steps below (see [`scripts/README.md`](scripts/README.md) for details):
 
-1. **Generate password hash**: `node scripts/gen-hash.js "your-password"`
-2. **Set environment variable**: write the hash to `ADMIN_PASSWORD`
+1. **Generate password hash**: `node scripts/gen-hash.js <username> <password>`
+2. **Set environment variables**:
+   - `ADMIN_USERS`: Multi-user JSON mapping (`{"username":"bcrypt-hash"}`)
+   - `ADMIN_JWT_SECRET`: JWT signing key
+   - `CAPTCHA_SECRET`: CAPTCHA verification key
 3. **Configure GitHub Token**: generate a token at GitHub Settings → Developer settings → Personal access tokens, write to `GITHUB_TOKEN` (requires `repo` scope)
+
+### Multi-User Support
+
+`ADMIN_USERS` enables independent accounts for each team member. Enter your username and password on the login screen. Features:
+- **Case-insensitive** username matching
+- JWT tokens valid for **2 hours**, carrying the username claim
+- Each user can **only edit their own posts** (enforced via the `author` field in frontmatter)
+- The author field in the CMS editor is **auto-filled** from the logged-in user and is read-only
+- Legacy `ADMIN_PASSWORD` single-user mode still works (equivalent to user `admin`)
 
 ### Panel Overview
 
@@ -400,8 +446,10 @@ Visit `/admin` to access the management panel. Initial setup:
 ### Security
 
 - bcrypt password verification + Proof-of-Work CAPTCHA
-- Configurable login rate limiting
-- CAPTCHA token expiry: 5 minutes · Verification validity: 24 hours
+- JWT session management (2-hour expiry)
+- Login rate limiting: max 5 failed attempts per IP, 15-minute lockout
+- CAPTCHA token expiry: 5 minutes
+- Author-based access isolation: users can only access and edit their own posts
 
 ---
 
@@ -409,7 +457,7 @@ Visit `/admin` to access the management panel. Initial setup:
 
 | Endpoint | Method | Purpose | Auth |
 |----------|--------|---------|------|
-| `/api/auth` | POST | Password verification | Password + CAPTCHA |
+| `/api/auth` | POST | Username + password login, returns JWT | Username + Password + CAPTCHA |
 | `/api/dynamic` | GET | Fetch Notion dynamic feed | CAPTCHA verified |
 | `/api/repo-stats` | GET | Get repo file statistics | GitHub Token |
 | `/api/batch-commit` | POST | Batch commit changes | GitHub Token |
