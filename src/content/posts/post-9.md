@@ -2,7 +2,7 @@
 title: '图床配置指南'
 description: '如何在 RefactX v1.6中使用图床以及在Waline 评论系统中启用图片上传'
 pubDate: 2025-12-30
-author: 'Refac7'
+author: 'refac7'
 tags: ['笔记']
 recommend: false
 heroImage: none

@@ -2,7 +2,7 @@
 title: '节奏医生入门指南'
 description: '因为我也没什么乐理知识，所以就是经验总结'
 pubDate: 2026-03-22
-author: 'Refac7'
+author: 'refac7'
 tags: ['游戏']
 recommend: false
 heroImage: https://img.refact.cc/1774168663165-z2ny30ms9vb.jpg

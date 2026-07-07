@@ -2,7 +2,7 @@
 title: 'RefactX Project v1.8 更新日志'
 description: '本次更新全新交互方式与加载动画，重点精简代码、提升执行效率，优化整体稳定性'
 pubDate: 2026-04-06
-author: 'Refac7'
+author: 'refac7'
 tags: ['更新日志', '项目']
 recommend: false
 heroImage: 'https://img.refact.cc/base/UpdateLog.webp'
