@@ -5,7 +5,7 @@
   "profileName": "Refac7",
   "profileAvatar": "/avatar.png",
   "profileRole": "Creative Developer / UI Designer",
-  "profileBio": "又是又是……又是借口 / Another another... Another excuse. \n\n某计科专业在读，高数苦手。喜欢电子音乐，熟悉以下所有技术栈的拼写，熟练使用剪贴板和cmd c和cmd v. 如果你和我有共同爱好，欢迎随时使用你能找到的所有渠道联系我哦～",
+  "profileBio": "你与光芒 / Another another... Another excuse. \n\n因抑郁发作休学，高数苦手。喜欢电子音乐，熟悉以下所有技术栈的拼写，熟练使用剪贴板和cmd c和cmd v. 如果你和我有共同爱好，欢迎随时使用你能找到的所有渠道联系我哦～",
   "physicalAttributes": [
     {
       "label": "Height",
@@ -34,8 +34,8 @@
     },
     {
       "label": "Gender",
-      "value": "Non-binary",
-      "icon": "icon-[ph--gender-nonbinary]"
+      "value": "Male-to-Female",
+      "icon": "icon-[ph--gender-transgender]"
     },
     {
       "label": "Location",
@@ -266,32 +266,8 @@
   ],
   "todos": [
     {
-      "task": "重构个人博客风格 UI",
-      "completed": true
-    },
-    {
       "task": "活着（到目前为止）",
       "completed": true
-    },
-    {
-      "task": "重构项目结构，将pages页面统一框架",
-      "completed": false
-    },
-    {
-      "task": "重写博客配置文档",
-      "completed": false
-    },
-    {
-      "task": "完成基于 Astro 的文档系统部署",
-      "completed": false
-    },
-    {
-      "task": "期末不挂科",
-      "completed": false
-    },
-    {
-      "task": "保持项目存活并稳定更新",
-      "completed": false
     }
   ]
 }
