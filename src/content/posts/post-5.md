@@ -2,7 +2,7 @@
 title: 'Waline评论系统的部署与配置'
 description: '本文重点指出了在部署 Waline 评论系统时可能遇到的问题。'
 pubDate: 2025-09-26
-author: 'Refac7'
+author: 'refac7'
 heroImage: none
 heroImageAspectRatio: '16/9'
 tags: ['笔记']

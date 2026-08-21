@@ -2,7 +2,7 @@
 title: '只是想要被好好爱一次'
 description: '还是用珍贵的理智把这篇文章写出来了，其实一开始，我并不知道我在写什么东西'
 pubDate: 2026-06-06
-author: 'Refac7'
+author: 'refac7'
 tags: ['杂谈']
 recommend: false
 heroImage: none

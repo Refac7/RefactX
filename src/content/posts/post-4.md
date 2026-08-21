@@ -2,7 +2,7 @@
 title: 'RefactX Project v1.5 更新日志'
 description: '本次更新集成了Waline评论系统并全面优化了界面设计，提升了中国大陆地区的访问性能，带来了更加统一的视觉体验和更流畅的用户交互。'
 pubDate: 2025-09-18
-author: 'Refac7'
+author: 'refac7'
 heroImage: 'https://img.refact.cc/base/UpdateLog.webp'
 heroImageAspectRatio: '16/9'
 tags: ['更新日志','笔记']

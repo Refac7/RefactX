@@ -9,14 +9,32 @@ async function getJwt() {
   return imported.default || imported
 }
 
-/** Parse ADMIN_USERS env var (JSON) or fall back to single ADMIN_PASSWORD */
+/**
+ * Parse ADMIN_USERS env var (JSON) or fall back to single ADMIN_PASSWORD.
+ * All usernames are lowercased for case-insensitive matching.
+ * Hash values may be stored as base64 to avoid dotenv-expand $VAR expansion.
+ */
 function getUserMap(): Map<string, string> | null {
   const usersJson = import.meta.env.ADMIN_USERS
   if (usersJson) {
     try {
       const parsed = JSON.parse(usersJson)
       if (typeof parsed === 'object' && parsed !== null && !Array.isArray(parsed)) {
-        return new Map(Object.entries(parsed as Record<string, string>))
+        const map = new Map<string, string>()
+        for (const [key, value] of Object.entries(parsed as Record<string, string>)) {
+          // Decode base64-encoded hash if needed (starts with $ = raw bcrypt, otherwise base64)
+          let hash = value as string
+          if (!hash.startsWith('$2')) {
+            // Assume base64-encoded bcrypt hash
+            try {
+              hash = Buffer.from(hash, 'base64').toString('utf-8')
+            } catch {
+              // If decoding fails, use as-is (backward compatibility)
+            }
+          }
+          map.set(key.toLowerCase(), hash)
+        }
+        return map
       }
     } catch {
       // fall through
@@ -25,7 +43,15 @@ function getUserMap(): Map<string, string> | null {
   // Backward compatibility: single ADMIN_PASSWORD → default "admin" user
   const legacyHash = import.meta.env.ADMIN_PASSWORD
   if (legacyHash) {
-    return new Map([['admin', legacyHash]])
+    let hash = legacyHash
+    if (!hash.startsWith('$2')) {
+      try {
+        hash = Buffer.from(hash, 'base64').toString('utf-8')
+      } catch {
+        // use as-is
+      }
+    }
+    return new Map([['admin', hash]])
   }
   return null
 }

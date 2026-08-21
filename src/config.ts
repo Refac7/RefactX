@@ -180,7 +180,7 @@ export const WALINE_CONFIG = {
 }
 
 // CMS 内容管理配置
-// 需在部署平台设置环境变量: PUBLIC_UPLOAD_TOKEN (如需管理后台则添加 GITHUB_TOKEN, ADMIN_PASSWORD)
+// 需在部署平台设置环境变量: GITHUB_TOKEN, ADMIN_USERS, ADMIN_JWT_SECRET, CAPTCHA_SECRET
 // 数据源提醒: v1.6.1 及之后版本，友链/项目/照片数据须转为 JSON 存放在 content/data 目录下
 export const CMS_CONFIG = {
   enableCMS: true,

@@ -2,7 +2,7 @@
 title: '从 JavaScript 前端开发到 Electron 框架跨平台开发'
 description: '本文主要描述了 JavaScript 和 Electron 的发展，关系，以及对于软件开发和原生开发可能存在的影响进行了分析。'
 pubDate: 2026-01-02
-author: 'Refac7'
+author: 'refac7'
 tags: ['笔记']
 recommend: true
 heroImage: none

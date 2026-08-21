@@ -1,6 +1,7 @@
 // 用于生成 bcrypt 哈希密码的脚本
 // Usage: node scripts/gen-hash.js <username> <password>
 // Outputs JSON entry for ADMIN_USERS env var
+// Uses base64 encoding to avoid $VAR expansion issues in .env files
 
 import bcrypt from 'bcryptjs'
 
@@ -29,12 +30,20 @@ bcrypt.hash(password, saltRounds, (err, hash) => {
     console.error('Hash generation failed:', err)
     process.exit(1)
   }
+
+  // Base64-encode to avoid $VAR expansion issues in .env files
+  const base64Hash = Buffer.from(hash).toString('base64')
+
   console.log(`Username: ${username}`)
-  console.log(`Hash: ${hash}`)
+  console.log(`Raw hash:    ${hash}`)
+  console.log(`Base64 hash: ${base64Hash}`)
   console.log('')
   console.log('-- Add to .env as ADMIN_USERS (JSON) --')
-  console.log(`ADMIN_USERS='{"${username}":"${hash}"}'`)
+  console.log('')
+  console.log(`ADMIN_USERS={"${username}":"${base64Hash}"}`)
   console.log('')
   console.log('For multiple users, combine into a single JSON object:')
-  console.log(`ADMIN_USERS='{"user1":"$2b$10$...","user2":"$2b$10$..."}'`)
+  console.log(`ADMIN_USERS='{"user1":"<base64_hash_1>","user2":"<base64_hash_2>"}'`)
+  console.log('')
+  console.log('You can verify with: node scripts/test-hash.cjs <your-password>')
 })

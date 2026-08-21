@@ -2,7 +2,7 @@
 title: 'RefactX Project v1.7 更新日志'
 description: '本次更新重点新增了内容管理系统的支持，更新全局设计，以及其他若干漏洞修复。'
 pubDate: 2026-02-07
-author: 'Refac7'
+author: 'refac7'
 tags: ['更新日志', '笔记']
 recommend: false
 heroImage: 'https://img.refact.cc/base/UpdateLog.webp'

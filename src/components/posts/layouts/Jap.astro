@@ -46,50 +46,54 @@ const { frontmatter, minutesRead, wordCount, headings } = Astro.props
       </span>
     </div>
 
-    <!-- Tags (bottom-left) -->
-    <div class="absolute bottom-8 left-6 md:left-12 flex flex-wrap gap-2 max-w-[50vw]">
-      {
-        frontmatter.tags &&
-          frontmatter.tags.map((tag: string) => (
-            <a
-              href={`/tags/${tag}`}
-              class="text-[11px] font-mono font-medium bg-background/50 backdrop-blur-sm border border-border/40 text-muted-foreground hover:text-foreground hover:border-primary/30 hover:bg-primary/5 px-3 py-1 rounded-full transition-all"
-            >
-              #{tag}
-            </a>
-          ))
-      }
-    </div>
+    <!-- Bottom bar: tags (left) + metadata (right) -->
+    <div class="absolute bottom-8 left-6 md:left-12 right-6 md:right-12 flex flex-wrap items-center gap-x-4 gap-y-2 justify-between">
+      <!-- Tags -->
+      <div class="flex flex-wrap gap-2">
+        {
+          frontmatter.tags &&
+            frontmatter.tags.map((tag: string) => (
+              <a
+                href={`/tags/${tag}`}
+                class="text-[11px] font-mono font-medium bg-background/50 backdrop-blur-sm border border-border/40 text-muted-foreground hover:text-foreground hover:border-primary/30 hover:bg-primary/5 px-3 py-1 rounded-full transition-all"
+              >
+                #{tag}
+              </a>
+            ))
+        }
+      </div>
 
-    <!-- Metadata (bottom-right) -->
-    <div
-      class="absolute bottom-8 right-6 md:right-12 flex items-center gap-4 text-[10px] font-mono text-muted-foreground uppercase tracking-widest select-none"
-    >
-      {
-        frontmatter.author && (
-          <>
-            <a
-              href={`/authors/${frontmatter.author}`}
-              class="flex items-center gap-1.5 hover:text-foreground hover:underline transition-colors"
-            >
-              <span class="icon-[ph--user] size-3.5" />
-              {frontmatter.author}
-            </a>
-            <span class="w-1 h-1 rounded-full bg-border" />
-          </>
-        )
-      }
-      <span class="flex items-center gap-1.5">
-        <span class="icon-[ph--article] size-3.5"></span>
-        {wordCount} words
-      </span>
-      <span class="w-1 h-1 rounded-full bg-border"></span>
-      <span class="flex items-center gap-1.5">
-        <span class="icon-[ph--clock] size-3.5"></span>
-        {minutesRead || 'Unknown'}
-      </span>
-      <span class="w-1 h-1 rounded-full bg-border"></span>
-      <span>{formatDate(frontmatter.pubDate)}</span>
+      <!-- Metadata: compact on mobile, full on sm+ -->
+      <div
+        class="flex flex-wrap items-center gap-x-2 sm:gap-x-3 gap-y-1 text-[10px] font-mono text-muted-foreground uppercase tracking-widest select-none"
+      >
+        {
+          frontmatter.author && (
+            <>
+              <a
+                href={`/authors/${frontmatter.author}`}
+                class="flex items-center gap-1.5 hover:text-foreground hover:underline transition-colors"
+              >
+                <span class="icon-[ph--user] size-3.5" />
+                {frontmatter.author}
+              </a>
+              <span class="w-1 h-1 rounded-full bg-border hidden sm:inline" />
+              <span class="w-1 h-1 rounded-full bg-border sm:hidden" />
+            </>
+          )
+        }
+        <span class="hidden sm:flex items-center gap-1.5">
+          <span class="icon-[ph--article] size-3.5"></span>
+          {wordCount} words
+        </span>
+        <span class="hidden sm:inline w-1 h-1 rounded-full bg-border"></span>
+        <span class="flex items-center gap-1.5">
+          <span class="icon-[ph--clock] size-3.5"></span>
+          {minutesRead || 'Unknown'}
+        </span>
+        <span class="w-1 h-1 rounded-full bg-border"></span>
+        <span>{formatDate(frontmatter.pubDate)}</span>
+      </div>
     </div>
 
     <!-- Title + description -->

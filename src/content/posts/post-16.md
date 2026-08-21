@@ -2,7 +2,7 @@
 title: '凭什么你的眼泪就是比我的值钱？'
 description: '我活着，本就是一个错误'
 pubDate: 2026-06-19
-author: 'Refac7'
+author: 'refac7'
 tags: ['杂谈']
 recommend: false
 heroImage: none
