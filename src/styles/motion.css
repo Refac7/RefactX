@@ -1,0 +1,90 @@
+/* ===== Motion system ===== */
+:root {
+  --motion-duration-fast: 160ms;
+  --motion-duration-base: 220ms;
+  --motion-duration-slow: 360ms;
+  --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-ease-soft: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Keep Astro page transitions subtle and GPU-friendly. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--motion-duration-slow);
+  animation-timing-function: var(--motion-ease);
+}
+
+::view-transition-old(root) {
+  animation-name: motion-page-out;
+}
+
+::view-transition-new(root) {
+  animation-name: motion-page-in;
+}
+
+@keyframes motion-page-out {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    opacity: 0;
+    transform: translate3d(0, -4px, 0);
+  }
+}
+
+@keyframes motion-page-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.motion-interactive {
+  transition:
+    transform var(--motion-duration-base) var(--motion-ease),
+    opacity var(--motion-duration-base) var(--motion-ease),
+    background-color var(--motion-duration-fast) ease,
+    border-color var(--motion-duration-fast) ease,
+    color var(--motion-duration-fast) ease,
+    box-shadow var(--motion-duration-base) var(--motion-ease);
+  will-change: transform;
+}
+
+.motion-interactive:hover {
+  transform: translate3d(0, -2px, 0);
+}
+
+.motion-interactive:active {
+  transform: translate3d(0, 0, 0) scale(0.985);
+  transition-duration: 90ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+
+  .motion-interactive:hover,
+  .motion-interactive:active {
+    transform: none;
+  }
+}
