@@ -17,7 +17,7 @@ const sideWidthClass = 'md:w-[280px] lg:w-[320px]'
 ---
 
 <article
-  class="group relative flex flex-col md:flex-row bg-background/50 border border-border/40 hover:shadow-sm hover:border-primary/30 transition-all duration-300 rounded-xl overflow-hidden mb-8 h-full hover:-translate-y-0.5"
+  class="motion-interactive group relative flex flex-col md:flex-row bg-background/50 border border-border/40 hover:shadow-sm hover:border-primary/30 rounded-xl overflow-hidden mb-8 h-full"
 >
   {
     hasImage && showImage && (
@@ -34,7 +34,7 @@ const sideWidthClass = 'md:w-[280px] lg:w-[320px]'
             alt={post.data.title}
             loading="eager"
             decoding="async"
-            class="absolute inset-0 w-full h-full object-cover grayscale transition-all duration-500 ease-out group-hover/img:grayscale-0 group-hover/img:scale-105"
+            class="absolute inset-0 w-full h-full object-cover grayscale transition-[filter,transform] duration-500 ease-out group-hover/img:grayscale-0 group-hover/img:scale-105 motion-reduce:transform-none"
           />
         </a>
       </div>
@@ -49,10 +49,10 @@ const sideWidthClass = 'md:w-[280px] lg:w-[320px]'
 	        hidden md:flex shrink-0 h-auto relative overflow-hidden flex-col items-center justify-center p-6 bg-muted/20
 	        ${sideWidthClass}
 	        ${isReverse ? 'md:order-2 border-l border-border/40' : 'md:order-1 border-r border-border/40'}
-	        group/placeholder hover:bg-muted/30 transition-all duration-300 cursor-pointer
+	        group/placeholder hover:bg-muted/30 transition-colors duration-300 cursor-pointer
 	      `}
       >
-        <span class="icon-[ph--image-broken] size-12 text-muted-foreground/30 mb-3 group-hover/placeholder:scale-110 transition-transform duration-500 ease-out" />
+        <span class="icon-[ph--image-broken] size-12 text-muted-foreground/30 mb-3 group-hover/placeholder:scale-110 transition-transform duration-500 ease-out motion-reduce:transform-none" />
         <span class="text-xs font-medium text-muted-foreground/60">No Media</span>
       </a>
     )
@@ -94,7 +94,7 @@ const sideWidthClass = 'md:w-[280px] lg:w-[320px]'
     </div>
 
     <a href={`/posts/${post.id}`} class="group/title block mb-4 outline-none">
-      <h2 class="text-xl font-bold leading-tight text-foreground transition-colors group-hover/title:text-primary tracking-tight">
+      <h2 class="text-xl font-bold leading-tight text-foreground transition-colors duration-200 group-hover/title:text-primary tracking-tight">
         {post.data.title}
       </h2>
       {
