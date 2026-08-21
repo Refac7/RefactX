@@ -37,6 +37,9 @@ export const POST: APIRoute = async ({ request }) => {
     for (const op of operations as FileOperation[]) {
       const fullPath = op.isDataFile || op.filename.includes('/') ? op.filename : `${pathPrefix}${op.filename}`
 
+      // Data files are shared configuration/content and do not use post author ownership.
+      if (op.isDataFile) continue
+
       if (op.type === 'delete') {
         // 删除操作：获取文件内容，检查作者
         try {
