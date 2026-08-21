@@ -1,534 +1,257 @@
-# RefactX — 使用手册
+# RefactX
 
-> 适用于 Astro v6 · React v19 · Tailwind CSS v4 · TypeScript
+A modern, configurable, and self-hostable content platform built with Astro, React, Tailwind CSS, and TypeScript.
 
-![License](https://img.shields.io/github/license/Refac7/RefactX?color=blue&style=flat-square)
-![Astro](https://img.shields.io/badge/Astro-v6.0-orange?style=flat-square&logo=astro)
-![React](https://img.shields.io/badge/React-v19.0-blue?style=flat-square&logo=react)
-![Tailwind](https://img.shields.io/badge/TailwindCSS-v4.0-38b2ac?style=flat-square&logo=tailwindcss)
-![TypeScript](https://img.shields.io/badge/TypeScript-v5.0-blue?style=flat-square&logo=typescript)
+RefactX provides a structured foundation for publishing long-form content, maintaining project and link data, and managing content through an integrated CMS. The project combines a high-density editorial interface with a component-oriented architecture intended for individual developers, technical writers, and content-focused personal websites.
 
-RefactX 是一款面向内容创作者与开发者的现代博客主题。设计语言以「系统终端」为隐喻：玻璃态面板、等宽标签、编号徽章、模糊光晕——在视觉精致与信息密度之间取平衡。
+## Technology Stack
 
-> [!WARNING]
-> 本项目按 MIT 许可证分发，不提供任何明示或默示的担保。部署前请修改 `src/config.ts` 中的站点配置，不得直接用于生产环境。
+- **Astro 6** — application framework and routing
+- **React 19** — interactive administrative interfaces
+- **TypeScript** — static typing and application contracts
+- **Tailwind CSS 4** — styling and design tokens
+- **Nano Stores** — lightweight client-side state management
+- **Vercel-compatible server APIs** — authentication and CMS operations
 
----
+## Features
 
-## 目录
+- Markdown-based article publishing with typed content collections
+- Configurable post layouts, pagination, tags, authors, and featured content
+- Integrated CMS for creating, editing, and deleting repository-backed content
+- Support for structured JSON data, including projects and external links
+- Multi-user administration with password hashing and JWT-based authentication
+- Repository-backed publishing through the GitHub API
+- Author ownership validation for editorial content
+- Configurable site metadata, navigation, social links, comments, and page content
+- Light and dark themes, seasonal themes, and optional visual effects
+- GitHub contribution activity display
+- Responsive layouts designed for desktop and mobile environments
+- Vercel deployment support
 
-- [快速开始](#快速开始)
-- [项目结构](#项目结构)
-- [配置手册](#配置手册)
-- [内容创作](#内容创作)
-- [部署指南](#部署指南)
-- [CMS 管理面板](#cms-管理面板)
-- [API 参考](#api-参考)
-- [主题与节日](#主题与节日)
-- [技术架构](#技术架构)
-- [致谢与许可](#致谢与许可)
+## Requirements
 
----
+| Dependency | Requirement |
+| --- | --- |
+| Node.js | 18 or later |
+| pnpm | 8 or later |
+| Git | Any supported version |
 
-## 快速开始
+## Getting Started
 
-### 环境要求
-
-| 依赖 | 版本 |
-|------|------|
-| Node.js | ≥ 18 |
-| pnpm | ≥ 8 |
-| Git | 任意 |
-
-### 安装与运行
+Clone the repository and install the dependencies:
 
 ```bash
-# 克隆仓库
 git clone https://github.com/Refac7/RefactX.git
 cd RefactX
-
-# 安装依赖
 pnpm install
+```
 
-# 启动开发服务器（默认 http://localhost:4321）
+Start the development server:
+
+```bash
 pnpm dev
+```
 
-# 生产构建
+Create a production build:
+
+```bash
 pnpm build
+```
 
-# 预览构建产物
+Preview the production build locally:
+
+```bash
 pnpm preview
 ```
 
-### 管理面板登录配置
+By default, the development server is available at `http://localhost:4321`.
 
-```bash
-# 为指定用户生成密码哈希
-node scripts/gen-hash.js <用户名> <密码>
+## Project Structure
 
-# 示例：为用户 Refac7 生成哈希
-node scripts/gen-hash.js Refac7 "your-password"
-```
-
-脚本将输出 `ADMIN_USERS` JSON 字符串，将其写入 Vercel 环境变量：
-
-```env
-ADMIN_USERS='{"Refac7":"base64编码的bcrypt哈希"}'
-ADMIN_JWT_SECRET=<openssl rand -hex 32 生成的随机密钥>
-CAPTCHA_SECRET=<openssl rand -hex 32 生成的随机密钥>
-```
-
-> 详细配置请参阅 [`scripts/README.md`](scripts/README.md)。
-
----
-
-## 项目结构
-
-```
+```text
 RefactX/
 ├── src/
-│   ├── assets/              # 静态资源（封面图等）
-│   ├── components/
-│   │   ├── admin/           # CMS 管理面板（React）
-│   │   ├── base/            # 通用组件
-│   │   │   └── PageAside.astro  # 统一侧边栏模板
-│   │   ├── dynamic/         # 动态流组件
-│   │   ├── posts/           # 文章相关组件
-│   │   │   ├── base/        #   基础：Prose / PostTag / PostNavigation / Comments
-│   │   │   ├── card/        #   卡片：Card / List
-│   │   │   ├── layouts/     #   布局：Jap
-│   │   │   └── toc/         #   目录：TableOfContents / TocMobile
-│   │   ├── projects/        # 项目展示组件
-│   │   ├── theme/           # 主题切换组件
-│   │   └── ui/              # 通用 UI（Captcha）
+│   ├── assets/          # Static and application assets
+│   ├── components/      # Astro and React components
+│   │   ├── admin/       # CMS administration interface
+│   │   ├── base/        # Shared layout components
+│   │   ├── dynamic/     # Activity and dynamic content components
+│   │   ├── posts/       # Article presentation components
+│   │   ├── projects/    # Project presentation components
+│   │   ├── theme/       # Theme controls
+│   │   └── ui/          # General-purpose UI components
 │   ├── content/
-│   │   ├── data/            # JSON 数据源（friends.json / projects.json）
-│   │   └── posts/           # Markdown 文章
-│   ├── layouts/             # 页面布局（Layout / Header / Footer）
-│   ├── lib/                 # 工具函数与设计常量
-│   │   └── adminAuth.ts      #   JWT 鉴权与作者权限校验
-│   ├── pages/               # 路由页面
-│   │   ├── api/             #   SSR API 端点
-│   │   ├── admin.astro      #   CMS 入口
-│   │   ├── index.astro      #   首页
-│   │   ├── about.astro      #   关于页
-│   │   ├── friends.astro    #   友链页
-│   │   ├── 404.astro        #   错误页
-│   │   ├── authors/         #   作者索引 / 作者文章列表
-│   │   ├── dynamic/         #   动态流页
-│   │   ├── posts/           #   文章列表 / 文章详情
-│   │   ├── projects/        #   项目展示页
-│   │   └── tags/            #   标签索引 / 标签筛选
-│   ├── stores/              # 客户端状态（nanostores）
-│   └── styles/              # 全局样式
-│       ├── global.css       #   Tailwind v4 + 主题变量 + 动画
-│       └── pro.css          #   文章排版样式
-├── plugins/                 # Remark / Rehype 插件
-├── scripts/                 # 工具脚本
-├── public/                  # 公共静态资源
-│   ├── fonts/               #   自托管字体
-│   └── favicon/             #   网站图标
-├── astro.config.mjs         # Astro 配置
-├── vercel.json              # Vercel 部署配置
-├── package.json             # 依赖与脚本
-└── tsconfig.json            # TypeScript 配置
+│   │   ├── data/        # Structured JSON content
+│   │   └── posts/       # Markdown articles
+│   ├── layouts/         # Application layouts
+│   ├── lib/             # Utilities and authentication logic
+│   ├── pages/           # Routes and API endpoints
+│   ├── stores/          # Client-side state
+│   └── styles/          # Global and typography styles
+├── plugins/             # Remark and Rehype extensions
+├── scripts/             # Development and administration utilities
+├── public/              # Public static files
+├── astro.config.mjs     # Astro configuration
+├── package.json         # Project dependencies and scripts
+├── tsconfig.json        # TypeScript configuration
+└── vercel.json          # Deployment configuration
 ```
 
----
+## Configuration
 
-## 配置手册
+Primary site configuration is defined in `src/config.ts`. The configuration module controls site metadata, navigation, social links, post presentation, author pages, project displays, comments, CMS behavior, GitHub integration, and optional seasonal themes.
 
-所有站点配置集中在 `src/config.ts`，以下是完整配置项说明。
-
-### 站点元数据 `SITE`
+Typical site metadata includes:
 
 ```ts
-export const SITE: Site = {
-  title: 'RefactX Project',       // 站点名称
-  description: '...',             // 站点描述（SEO）
-  website: 'https://www.refact.cc/', // 站点 URL
-  author: 'Refact',               // 作者名
-  ogImage: '/og-image.webp',      // Open Graph 默认图片
-  version: '1.8',                 // 版本号（显示在侧边栏）
-  footerText: '...',              // 页脚文案第一行
-  footerText2: '...',             // 页脚文案第二行
+export const SITE = {
+  title: 'RefactX Project',
+  description: 'A concise description of the site.',
+  website: 'https://example.com',
+  author: 'Author',
+  ogImage: '/og-image.webp',
 }
 ```
 
-### 导航菜单
+Review `src/config.ts` before deployment and replace the example values with values appropriate for the target site.
 
-```ts
-// 顶部导航（Header）
-export const HEADER_LINKS: Link[] = [
-  { name: '文章', url: '/posts' },
-  { name: '动态', url: '/dynamic' },
-  { name: '项目', url: '/projects' },
-  { name: '关于', url: '/about' },
-]
+## Content Management
 
-// 底部导航（Footer）
-export const FOOTER_LINKS: Link[] = [ ... ]
+### Articles
 
-// 侧边栏社交链接（图标来自 Iconify）
-export const SOCIAL_LINKS: SocialLink[] = [
-  {
-    name: 'GitHub',
-    url: 'https://github.com/Refac7',
-    icon: 'icon-[ri--arrow-left-up-line]',
-  },
-]
-```
-
-### 文章配置 `POSTS_CONFIG`
-
-```ts
-export const POSTS_CONFIG: PostConfig = {
-  title: 'Posts',
-  description: 'Refact 的文章',
-  introduce: '...',               // 文章列表页简介
-  author: 'Refact',
-
-  // 首页文章卡片
-  homePageConfig: {
-    size: 3,                      // 显示数量
-    type: 'compact',              // 卡片样式：compact | image | time-line
-  },
-
-  // 文章列表页
-  postPageConfig: {
-    size: 8,
-    type: 'image',
-  },
-
-  // 标签筛选页
-  tagsPageConfig: {
-    size: 5,
-    type: 'time-line',
-  },
-
-  // 作者文章列表页
-  authorsPageConfig: {
-    size: 8,
-    type: 'image',
-  },
-
-  defaultHeroImage: '/og-image.webp',
-  postType: 'jap',                // 文章布局：jap
-  imageDarkenInDark: true,        // 暗色模式下图片加深
-}
-```
-
-### 作者页面配置 `AUTHORS_CONFIG`
-
-```ts
-export const AUTHORS_CONFIG: AuthorsConfig = {
-  title: 'Authors',
-  description: '所有文章作者',
-  introduce: '浏览不同作者的文章，点击作者名即可筛选其撰写的所有文章。',
-}
-```
-
-### 技能展示矩阵 `SKILLSSHOWCASE_CONFIG`
-
-```ts
-export const SKILLSSHOWCASE_CONFIG = {
-  SKILLS_ENABLED: true,
-  SKILLS_DATA: [
-    {
-      direction: 'left',          // 滚动方向：left | right
-      skills: [
-        { name: 'JavaScript', icon: 'icon-[mdi--language-javascript]' },
-      ],
-    },
-  ],
-}
-```
-
-### GitHub 贡献图 `GITHUB_CONFIG`
-
-```ts
-export const GITHUB_CONFIG = {
-  ENABLED: true,
-  GITHUB_USERNAME: 'Refac7',
-  TOOLTIP_ENABLED: true,
-}
-```
-
-### 关于页 `ABOUT_CONFIG`
-
-`ABOUT_CONFIG` 包含个人档案、物理属性、技能矩阵、硬件清单、游戏日志、课程表和待办清单。所有字段均为可选，按需填写即可。
-
-### 友链配置 `FRIENDS_CONFIG` / `FRIENDS_CONTACT`
-
-```ts
-export const FRIENDS_CONFIG = {
-  title: 'Friends',
-  description: '...',
-  introduce: '...',
-  enableAdd: false,               // 是否开放友链申请通道
-}
-
-// 你的站点信息（供他人交换友链时复制）
-export const FRIENDS_CONTACT = {
-  sitename: 'RefactX Project',
-  email: 'i@refact.cc',
-  author: 'Refac7',
-  sitelink: 'https://www.refact.cc',
-  siteavatar: 'https://img.refact.cc/base/avatar.jpg',
-  description: '...',
-}
-```
-
-### 评论系统 `WALINE_CONFIG`
-
-```ts
-export const WALINE_CONFIG = {
-  enableComment: true,
-  serverURL: import.meta.env.PUBLIC_WALINE_SERVER_URL,
-  uploadToken: import.meta.env.PUBLIC_UPLOAD_TOKEN,
-  imgbedURL: import.meta.env.PUBLIC_IMG_BED_URL,
-  enableImgUpload: true,
-}
-```
-
-### CMS 配置 `CMS_CONFIG`
-
-```ts
-export const CMS_CONFIG = {
-  enableCMS: true,
-  owner: 'Refac7',
-  repo: 'RefactX',
-  branch: 'main',
-  pathPrefix: 'src/content/posts/',
-}
-```
-
-### 节日特效 `HOLIDAY_EFFECTS` / `HOLIDAY_THEMES`
-
-```ts
-export const HOLIDAY_EFFECTS = {
-  enableHolidayEffects: true,
-}
-
-// 按日期配置主题切换
-export const HOLIDAY_THEMES = {
-  '2026-01-01': {
-    theme: 'theme-red',
-    message: '新年快乐，全站已切换至节日主题。',
-  },
-  '2026-06-19': {
-    theme: 'theme-green',
-    message: '端午安康，全站已切换至粽叶绿主题。',
-  },
-  // theme-red | theme-green | theme-gold | theme-mourning
-}
-```
-
----
-
-## 内容创作
-
-### 编写文章
-
-文章以 Markdown 格式存放在 `src/content/posts/`。每篇文章需包含 YAML frontmatter：
+Articles are stored as Markdown files in `src/content/posts/`. Each article uses YAML frontmatter to define its metadata.
 
 ```yaml
 ---
-title: 文章标题
-description: 文章摘要
-author: 作者名                # CMS 自动填入当前登录用户
-pubDate: 2026-06-24
-updatedDate: 2026-06-25    # 可选
-tags: [笔记, Astro]          # 可选
-heroImage: /path/to/image   # 设为 "none" 隐藏头图
-heroImageLayout: right      # right | left
-recommend: true              # 可选，标记为推荐
-postType: jap                # 可选，文章布局
+title: Article Title
+description: A concise summary of the article.
+author: Author Name
+pubDate: 2026-01-01
+updatedDate: 2026-01-02
+tags: [Astro, TypeScript]
+heroImage: /path/to/image.webp
+heroImageLayout: right
+recommend: true
+postType: jap
 ---
 ```
 
-### 管理友链
+The `updatedDate`, `tags`, `heroImage`, `heroImageLayout`, `recommend`, and `postType` fields are optional according to the configured content schema.
 
-友链数据存储在 `src/content/data/friends.json`：
+### Structured Data
+
+Structured content is stored separately from editorial posts under `src/content/data/`.
+
+Examples include:
+
+- `friends.json` — external links and associated metadata
+- `projects.json` — project information and presentation metadata
+
+Structured data is not treated as an article and does not require post-specific fields such as `author`.
+
+An example project entry:
 
 ```json
-[
-  {
-    "name": "站点名称",
-    "url": "https://example.com",
-    "author": "作者",
-    "description": "站点描述",
-    "avatar": "https://example.com/avatar.jpg"
-  }
-]
-```
-
-### 管理项目
-
-项目数据存储在 `src/content/data/projects.json`：
-
-```json
-[
-  {
-    "name": "项目名称",
-    "description": "项目描述",
-    "githubUrl": "https://github.com/user/repo",
-    "website": "https://example.com",
-    "type": "icon",
-    "icon": "icon-[mdi--github]"
-  }
-]
-```
-
-`type` 字段：`"icon"` 使用 Iconify 图标，`"image"` 使用自定义图片作为图标。
-
----
-
-## 部署指南
-
-### Vercel（推荐）
-
-1. Fork 本仓库
-2. 在 Vercel 中导入项目
-3. 配置环境变量：
-
-| 变量名 | 必填 | 说明 |
-|--------|------|------|
-| `ADMIN_USERS` | CMS 使用时 | 多用户 JSON 映射（用户名 → bcrypt 哈希） |
-| `ADMIN_JWT_SECRET` | CMS 使用时 | JWT 签名密钥（`openssl rand -hex 32`） |
-| `CAPTCHA_SECRET` | CMS 使用时 | CAPTCHA PoW 签名密钥（`openssl rand -hex 32`） |
-| `GITHUB_TOKEN` | CMS 使用时 | GitHub Personal Access Token（repo 权限） |
-| `PUBLIC_WALINE_SERVER_URL` | 评论使用时 | Waline 服务端地址 |
-| `PUBLIC_UPLOAD_TOKEN` | 图片上传时 | 图床上传凭证 |
-| `PUBLIC_IMG_BED_URL` | 图片上传时 | 图床地址 |
-| `NOTION_API_KEY` | 动态流使用时 | Notion API 密钥 |
-| `NOTION_DATABASE_ID` | 动态流使用时 | Notion 数据库 ID |
-
-> **兼容说明：** 仍支持旧版单用户 `ADMIN_PASSWORD` 环境变量（等同于用户 `admin`），但推荐使用 `ADMIN_USERS` 多用户模式。详见 [`scripts/README.md`](scripts/README.md)。
-
-4. 部署。构建命令和输出目录已预配置。
-
-### 环境变量前缀说明
-
-- `PUBLIC_*` — 客户端可访问，用于 Waline 等前端服务
-- 无前缀 — 服务端专用，用于 CMS API、Notion 代理等
-
----
-
-## CMS 管理面板
-
-访问 `/admin` 进入管理面板。首次使用需完成以下配置（详见 [`scripts/README.md`](scripts/README.md)）：
-
-1. **生成密码哈希**：`node scripts/gen-hash.js <用户名> <密码>`
-2. **设置环境变量**：
-   - `ADMIN_USERS`：多用户 JSON 映射（`{"用户名":"bcrypt哈希"}`）
-   - `ADMIN_JWT_SECRET`：JWT 签名密钥
-   - `CAPTCHA_SECRET`：CAPTCHA 验证密钥
-3. **配置 GitHub Token**：在 GitHub Settings → Developer settings → Personal access tokens 中生成，写入 `GITHUB_TOKEN`（需要 repo 权限）
-
-### 多用户支持
-
-`ADMIN_USERS` 支持为每位成员创建独立账号。登录时输入用户名和密码即可。系统特性：
-- 用户名**不区分大小写**
-- JWT Token 有效期 **2 小时**，包含用户名信息
-- 每位用户**只能编辑自己撰写的文章**（基于 frontmatter 中的 `author` 字段校验）
-- CMS 编辑器中的作者字段**自动填入**当前登录用户，不可手动修改
-- 支持旧版 `ADMIN_PASSWORD` 单用户模式（等同于用户 `admin`）
-
-### 功能概览
-
-| 面板 | 功能 |
-|------|------|
-| **Content（FS）** | 浏览文章与配置数据，点击加载到编辑器 |
-| **Editor** | Markdown 编辑器，支持预览、元数据编辑、保存到队列 |
-| **Changes Queue（Q）** | 暂存所有修改，统一提交到 GitHub |
-
-### 安全机制
-
-- bcrypt 密码验证 + PoW CAPTCHA 人机验证
-- JWT 会话管理（2 小时过期）
-- 登录频率限制：每 IP 最多 5 次失败，锁定 15 分钟
-- CAPTCHA 令牌 5 分钟过期
-- 作者权限隔离：用户仅可访问和编辑自己的文章
-
----
-
-## API 参考
-
-| 端点 | 方法 | 说明 | 认证 |
-|------|------|------|------|
-| `/api/auth` | POST | 用户名 + 密码验证，返回 JWT | 用户名 + 密码 + CAPTCHA |
-| `/api/dynamic` | GET | 获取 Notion 动态流 | CAPTCHA 验证状态 |
-| `/api/repo-stats` | GET | 获取仓库文件统计 | GitHub Token |
-| `/api/batch-commit` | POST | 批量提交更改 | GitHub Token |
-| `/api/get-content` | GET | 读取文件内容 | GitHub Token |
-| `/api/list-files` | GET | 列出仓库文件 | GitHub Token |
-| `/api/next-filename` | GET | 生成下一篇文件名 | GitHub Token |
-| `/api/captcha` | POST | PoW 质询/验证 | 无 |
-
----
-
-## 主题与节日
-
-### 内置节日主题
-
-| 主题类 | 触发日期 | 视觉效果 |
-|--------|----------|----------|
-| `theme-red` | 元旦、春节、国庆 | 红色主色调 |
-| `theme-green` | 端午 | 绿色主色调 |
-| `theme-gold` | 中秋 | 金色主色调 |
-| `theme-mourning` | 清明、公祭日 | 全站灰度 |
-
-### 添加自定义主题
-
-1. 在 `src/styles/global.css` 的 `@layer base` 中定义 CSS 变量覆盖（参考现有 `theme-red` 等）
-2. 在 `src/config.ts` 的 `HOLIDAY_THEMES` 中添加日期配置
-
-```css
-html.theme-custom {
-  --primary: 280 70% 45%;
-  --primary-foreground: 0 0% 100%;
-  --accent: 280 60% 95%;
-  /* ... 其他变量 */
+{
+  "name": "Project Name",
+  "description": "A concise project description.",
+  "githubUrl": "https://github.com/user/repository",
+  "website": "https://example.com",
+  "type": "icon",
+  "icon": "icon-[mdi--github]"
 }
 ```
 
----
+## CMS Administration
 
-## 技术架构
+The CMS is configured through `CMS_CONFIG` and provides repository-backed content management. Authentication supports multiple administrative users through the `ADMIN_USERS` environment variable.
 
-### 技术栈
+Generate a password hash with:
 
-| 层 | 技术 |
-|----|------|
-| 框架 | Astro v6（静态输出 + SSR 端点） |
-| UI | React v19（交互岛屿） |
-| 样式 | Tailwind CSS v4 + `@tailwindcss/typography` |
-| 图标 | `@iconify/tailwind4`（Phosphor 图标集） |
-| 状态管理 | nanostores（主题切换） |
-| 内容 | Markdown + YAML frontmatter（Astro Content Collections） |
-| 搜索 | Pagefind（构建时索引） |
-| 评论 | Waline |
-| 数学 | KaTeX（remark-math + rehype-katex） |
-| 部署 | Vercel（Serverless Functions） |
+```bash
+node scripts/gen-hash.js <username> <password>
+```
 
-### 路径别名
+The resulting value can be used to construct the administrative user configuration:
 
-`~/` 映射到 `src/`，在 `.astro`、`.tsx`、`.ts` 文件中均可使用。
+```env
+ADMIN_USERS='{"username":"bcrypt-hash"}'
+ADMIN_JWT_SECRET=<secure-random-secret>
+CAPTCHA_SECRET=<secure-random-secret>
+```
 
-### 代码规范
+Additional repository access is required for CMS publishing:
 
-- Prettier 格式化（140 字符行宽，无分号，单引号）
-- `pnpm format` 检查格式，`pnpm format:write` 自动修复
-- TypeScript 严格模式
+```env
+GITHUB_TOKEN=<github-personal-access-token>
+```
 
----
+The token must have permission to modify the configured repository and branch.
 
-## 致谢与许可
+For implementation-specific details, refer to `scripts/README.md` and the CMS configuration in `src/config.ts`.
 
-本项目基于 [Litos theme](https://github.com/Dnzzk2/Litos)（MIT 许可证）重构。
+## Deployment
 
-由 Refac7 维护，沿用 MIT 许可证。
+RefactX is designed to work with Vercel and other environments capable of running Astro applications and the required server-side API endpoints.
 
-> [!NOTE]
-> 开发者对开源项目无必须的维护义务。欢迎提交 Issue 与 Pull Request，但请理解响应时间可能较长。
+### Vercel
+
+1. Fork or clone the repository.
+2. Import the project into Vercel.
+3. Configure the required environment variables.
+4. Review `src/config.ts` and CMS settings.
+5. Deploy the project.
+
+Common environment variables include:
+
+| Variable | Required When | Purpose |
+| --- | --- | --- |
+| `ADMIN_USERS` | CMS is enabled | Administrative user credentials |
+| `ADMIN_JWT_SECRET` | CMS is enabled | JWT signing secret |
+| `CAPTCHA_SECRET` | CAPTCHA is enabled | CAPTCHA signing secret |
+| `GITHUB_TOKEN` | CMS publishing is enabled | Repository access |
+| `PUBLIC_WALINE_SERVER_URL` | Comments are enabled | Waline server endpoint |
+| `PUBLIC_UPLOAD_TOKEN` | Image upload is enabled | Upload service credential |
+| `PUBLIC_IMG_BED_URL` | Image upload is enabled | Image hosting endpoint |
+
+Never commit production credentials, access tokens, or private signing keys to the repository.
+
+## Comments and External Services
+
+Comment functionality is configured through `WALINE_CONFIG`. Image uploads and other optional integrations are configured through public environment variables and site configuration.
+
+External services should be treated as deployment dependencies. Their availability, security, and operational configuration are the responsibility of the site operator.
+
+## Theming
+
+RefactX supports application-wide theme configuration, including light and dark modes. Optional date-based themes and seasonal effects can be configured through `HOLIDAY_THEMES` and `HOLIDAY_EFFECTS`.
+
+Theme behavior is intentionally configurable so that deployments can disable decorative effects or maintain a consistent visual identity throughout the year.
+
+## Development
+
+Before submitting changes, ensure that the project builds successfully:
+
+```bash
+pnpm build
+```
+
+Changes should preserve the existing TypeScript contracts, content schemas, authentication boundaries, and repository-backed CMS behavior.
+
+When modifying the CMS, distinguish between editorial posts and structured data. Post-specific validation must not be applied to JSON configuration or data entries that do not use article metadata.
+
+## Contributing
+
+Contributions are welcome through issues and pull requests. Please keep changes focused, document behavior that affects configuration or deployment, and verify the production build before submitting a pull request.
+
+For substantial changes, opening an issue before implementation is recommended so that the proposed approach can be discussed.
+
+## License
+
+This project is distributed under the MIT License. See the repository license file for details.
+
+## Disclaimer
+
+RefactX is provided on an "AS IS" basis, without warranties or guarantees of any kind, express or implied. The repository maintainer is not obligated to provide continuous maintenance, support, or compatibility updates.
+
+Operators are responsible for reviewing configuration, credentials, third-party integrations, and deployment security before using the project in production.
