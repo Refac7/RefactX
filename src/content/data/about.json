@@ -1,273 +1,50 @@
 {
-  "title": "About",
-  "description": "Who am I?",
-  "introduce": "你还想知道些什么？",
+  "title": "关于",
+  "description": "个人简介与技术档案",
+  "introduce": "这里记录我的背景、能力、设备与当前的学习状态。",
   "profileName": "Refac7",
   "profileAvatar": "/avatar.png",
-  "profileRole": "Creative Developer / UI Designer",
-  "profileBio": "你与光芒 / Another another... Another excuse. \n\n因抑郁发作休学，高数苦手。喜欢电子音乐，熟悉以下所有技术栈的拼写，熟练使用剪贴板和cmd c和cmd v. 如果你和我有共同爱好，欢迎随时使用你能找到的所有渠道联系我哦～",
+  "profileRole": "开发者 / 界面设计爱好者",
+  "profileBio": "我主要关注 Web 开发、用户界面与数字产品设计，并持续探索软件工程中的工具、方法与实践。\n\n我重视清晰的表达、可靠的实现和可维护的系统。在学习与项目实践之外，也会关注电子音乐、交互设计及其他与数字创作相关的领域。\n\n如果你对技术、设计或开源项目有建设性的想法，欢迎通过公开渠道与我交流。",
   "physicalAttributes": [
-    {
-      "label": "Height",
-      "value": "175 cm",
-      "icon": "icon-[ph--ruler]"
-    },
-    {
-      "label": "Weight",
-      "value": "65 kg",
-      "icon": "icon-[ph--barbell]"
-    },
-    {
-      "label": "Blood Type",
-      "value": "A+",
-      "icon": "icon-[ph--drop]"
-    },
-    {
-      "label": "MBTI",
-      "value": "INTJ",
-      "icon": "icon-[ph--brain]"
-    },
-    {
-      "label": "Birthdate",
-      "value": "2007-03-31",
-      "icon": "icon-[ph--cake]"
-    },
-    {
-      "label": "Gender",
-      "value": "Male-to-Female",
-      "icon": "icon-[ph--gender-transgender]"
-    },
-    {
-      "label": "Location",
-      "value": "Luoyang, China",
-      "icon": "icon-[ph--map-pin]"
-    },
-    {
-      "label": "status",
-      "value": "Single",
-      "icon": "icon-[ph--heart]"
-    }
+    {"label":"身高","value":"175 cm","icon":"icon-[ph--ruler]"},
+    {"label":"体重","value":"65 kg","icon":"icon-[ph--barbell]"},
+    {"label":"血型","value":"A+","icon":"icon-[ph--drop]"},
+    {"label":"人格类型","value":"INTJ","icon":"icon-[ph--brain]"},
+    {"label":"出生日期","value":"2007-03-31","icon":"icon-[ph--cake]"},
+    {"label":"性别","value":"Male-to-Female","icon":"icon-[ph--gender-transgender]"},
+    {"label":"所在地","value":"Luoyang, China","icon":"icon-[ph--map-pin]"},
+    {"label":"状态","value":"Single","icon":"icon-[ph--heart]"}
   ],
   "skills": [
-    {
-      "category": "Frontend // 前端",
-      "items": [
-        "JavaScript",
-        "React",
-        "Astro",
-        "TypeScript",
-        "Tailwind CSS"
-      ]
-    },
-    {
-      "category": "Backend // 后端",
-      "items": [
-        "Node.js",
-        "Python",
-        "PostgreSQL",
-        "Redis"
-      ]
-    },
-    {
-      "category": "Design // 设计",
-      "items": [
-        "Figma",
-        "Photoshop",
-        "AE"
-      ]
-    },
-    {
-      "category": "Others // 杂项",
-      "items": [
-        "VSCode",
-        "Git",
-        "Docker",
-        "Linux"
-      ]
-    },
-    {
-      "category": "Learning // 学习中",
-      "items": [
-        "Java",
-        "Rust",
-        "Go"
-      ]
-    }
+    {"category":"前端开发","items":["JavaScript","React","Astro","TypeScript","Tailwind CSS"]},
+    {"category":"后端与数据","items":["Node.js","Python","PostgreSQL","Redis"]},
+    {"category":"设计工具","items":["Figma","Photoshop","After Effects"]},
+    {"category":"工程与工具","items":["VS Code","Git","Docker","Linux"]},
+    {"category":"持续学习","items":["Java","Rust","Go"]}
   ],
   "equipment": [
-    {
-      "type": "Workstation",
-      "name": "Desktop",
-      "desc": "Xeon E5 2660v2 / NVIDIA Geforce GTX 1060 / 32GB DDR3"
-    },
-    {
-      "type": "Laptop",
-      "name": "DELL Inspiron 3576",
-      "desc": "Intel Core i5-8250U / AMD Radeon R5 M435 / 16GB DDR4"
-    },
-    {
-      "type": "Phone",
-      "name": "Nothing phone 4a",
-      "desc": "Qualcomm snapdragon 7s Gen4 / 256GB"
-    },
-    {
-      "type": "Pad",
-      "name": "iPad",
-      "desc": "A16 / 256GB"
-    },
-    {
-      "type": "Monitor",
-      "name": "HKC T2755U",
-      "desc": "27\" / 4K / Standard Glass"
-    },
-    {
-      "type": "Keyboard",
-      "name": "Lenovo GK10",
-      "desc": "Black / Mechanical / Red axis"
-    },
-    {
-      "type": "Mouse",
-      "name": "Lenovo Xiaoxin M2",
-      "desc": "Grey / Wireless / Muted"
-    },
-    {
-      "type": "Audio",
-      "name": "CMF Buds 2Plus",
-      "desc": "-50dB Noise Cancellation"
-    }
+    {"type":"工作站","name":"Desktop","desc":"Xeon E5 2660v2 / NVIDIA GeForce GTX 1060 / 32GB DDR3"},
+    {"type":"笔记本电脑","name":"DELL Inspiron 3576","desc":"Intel Core i5-8250U / AMD Radeon R5 M435 / 16GB DDR4"},
+    {"type":"手机","name":"Nothing Phone 4a","desc":"Qualcomm Snapdragon 7s Gen 4 / 256GB"},
+    {"type":"平板电脑","name":"iPad","desc":"A16 / 256GB"},
+    {"type":"显示器","name":"HKC T2755U","desc":"27\" / 4K / Standard Glass"},
+    {"type":"键盘","name":"Lenovo GK10","desc":"Black / Mechanical / Red Switch"},
+    {"type":"鼠标","name":"Lenovo Xiaoxin M2","desc":"Grey / Wireless / Quiet"},
+    {"type":"音频设备","name":"CMF Buds 2 Plus","desc":"Up to 50 dB Noise Cancellation"}
   ],
   "games": [
-    {
-      "title": "Rhythm Doctor",
-      "platform": "PC / Steam",
-      "status": "Playing",
-      "hours": "100h+",
-      "color": "text-yellow-500"
-    },
-    {
-      "title": "Muse Dash",
-      "platform": "PC / Steam",
-      "status": "Paused",
-      "hours": "20h+",
-      "color": "text-green-500"
-    }
+    {"title":"Rhythm Doctor","platform":"PC / Steam","status":"进行中","hours":"100h+","color":"text-yellow-500"},
+    {"title":"Muse Dash","platform":"PC / Steam","status":"暂缓","hours":"20h+","color":"text-green-500"}
   ],
   "courseSchedule": [
-    {
-      "day": "MON",
-      "label": "周一",
-      "courses": [
-        {
-          "time": "09:50-12:10 | 2-17周",
-          "name": "Python语言程序设计",
-          "location": "土楼328机房"
-        },
-        {
-          "time": "14:30-16:00 | 1-18周",
-          "name": "排球2",
-          "location": "场地未排/待定"
-        }
-      ]
-    },
-    {
-      "day": "TUE",
-      "label": "周二",
-      "courses": [
-        {
-          "time": "08:00-09:30 | 2-17周",
-          "name": "离散数学",
-          "location": "B合四"
-        },
-        {
-          "time": "09:50-12:10 | 2-17周",
-          "name": "线性代数A",
-          "location": "E-318"
-        },
-        {
-          "time": "14:30-16:00 | 2-17周",
-          "name": "面向对象程序设计",
-          "location": "信工107"
-        },
-        {
-          "time": "16:10-17:50 | 2-17周",
-          "name": "高等数学A2",
-          "location": "B合十四"
-        }
-      ]
-    },
-    {
-      "day": "WED",
-      "label": "周三",
-      "courses": [
-        {
-          "time": "08:00-09:30 | 2-17周",
-          "name": "高等数学A2",
-          "location": "B合十四"
-        },
-        {
-          "time": "09:50-11:20 | 2-17周",
-          "name": "大学生心理健康教育",
-          "location": "E-309"
-        },
-        {
-          "time": "14:30-16:00 | 2-17周",
-          "name": "中国近现代史纲要",
-          "location": "艺术楼-208"
-        },
-        {
-          "time": "16:10-17:50 | 2-17周",
-          "name": "军事理论",
-          "location": "C-401"
-        }
-      ]
-    },
-    {
-      "day": "THU",
-      "label": "周四",
-      "courses": [
-        {
-          "time": "08:00-09:30 | 2-17周",
-          "name": "面向对象程序设计",
-          "location": "土楼334机房"
-        },
-        {
-          "time": "09:50-11:20 | 2-17周",
-          "name": "大学英语2(非艺体)",
-          "location": "B3-202"
-        },
-        {
-          "time": "14:30-16:00 | 2-17周",
-          "name": "离散数学",
-          "location": "E-404"
-        },
-        {
-          "time": "16:10-17:50 | 3-06周",
-          "name": "形势与政策(二)",
-          "location": "E-304"
-        }
-      ]
-    },
-    {
-      "day": "FRI",
-      "label": "周五",
-      "courses": [
-        {
-          "time": "08:00-09:30 | 2-17周",
-          "name": "高等数学A2",
-          "location": "B合十四"
-        },
-        {
-          "time": "09:50-11:20 | 双周 2-16",
-          "name": "大学英语2(非艺体)",
-          "location": "D-504 语音室"
-        }
-      ]
-    }
+    {"day":"MON","label":"周一","courses":[{"time":"09:50-12:10 | 第2-17周","name":"Python语言程序设计","location":"土楼328机房"},{"time":"14:30-16:00 | 第1-18周","name":"排球2","location":"场地待定"}]},
+    {"day":"TUE","label":"周二","courses":[{"time":"08:00-09:30 | 第2-17周","name":"离散数学","location":"B合四"},{"time":"09:50-12:10 | 第2-17周","name":"线性代数A","location":"E-318"},{"time":"14:30-16:00 | 第2-17周","name":"面向对象程序设计","location":"信工107"},{"time":"16:10-17:50 | 第2-17周","name":"高等数学A2","location":"B合十四"}]},
+    {"day":"WED","label":"周三","courses":[{"time":"08:00-09:30 | 第2-17周","name":"高等数学A2","location":"B合十四"},{"time":"09:50-11:20 | 第2-17周","name":"大学生心理健康教育","location":"E-309"},{"time":"14:30-16:00 | 第2-17周","name":"中国近现代史纲要","location":"艺术楼-208"},{"time":"16:10-17:50 | 第2-17周","name":"军事理论","location":"C-401"}]},
+    {"day":"THU","label":"周四","courses":[{"time":"08:00-09:30 | 第2-17周","name":"面向对象程序设计","location":"土楼334机房"},{"time":"09:50-11:20 | 第2-17周","name":"大学英语2（非艺体）","location":"B3-202"},{"time":"14:30-16:00 | 第2-17周","name":"离散数学","location":"E-404"},{"time":"16:10-17:50 | 第3-6周","name":"形势与政策（二）","location":"E-304"}]},
+    {"day":"FRI","label":"周五","courses":[{"time":"08:00-09:30 | 第2-17周","name":"高等数学A2","location":"B合十四"},{"time":"09:50-11:20 | 双周第2-16周","name":"大学英语2（非艺体）","location":"D-504语音室"}]}
   ],
   "todos": [
-    {
-      "task": "活着（到目前为止）",
-      "completed": true
-    }
+    {"task":"持续推进学习与个人项目","completed":false}
   ]
 }
