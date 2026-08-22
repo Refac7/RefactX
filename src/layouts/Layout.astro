@@ -22,7 +22,6 @@ const { title, description, image, author } = Astro.props
   <head>
     <Head title={`${title} | ${SITE.title}`} {description} {image} {author} />
     <script is:inline>
-      // 在样式加载前预设背景色，避免白闪
       const theme = localStorage.getItem('theme') || 'system'
       const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
       document.documentElement.style.backgroundColor = isDark ? '#0a0a0a' : '#fafafa'
@@ -77,12 +76,16 @@ const { title, description, image, author } = Astro.props
         opacity: 0;
         visibility: hidden;
         pointer-events: none;
-        transition: opacity 240ms ease, visibility 240ms ease;
+        transition: opacity 180ms ease;
+        will-change: opacity;
+        contain: strict;
       }
 
+      /* 显示加载层时禁止任何渐变，避免 opacity 从旧状态过渡而产生一帧闪烁。 */
       .page-transition-loading .page-transition-loader {
         opacity: 1;
         visibility: visible;
+        transition: none;
       }
 
       .page-transition-loader--done {
@@ -113,7 +116,7 @@ const { title, description, image, author } = Astro.props
         50% { transform: scale(1); opacity: 1; }
       }
 
-      /* 页面切换期间冻结新页面的飞入动画，避免与加载层同时绘制造成闪烁。 */
+      /* 新页面在加载层覆盖期间保持在飞入动画的第一帧，直到加载层交接。 */
       .page-transition-loading .fade-up {
         animation-play-state: paused;
       }
@@ -125,7 +128,7 @@ const { title, description, image, author } = Astro.props
       @media (prefers-reduced-motion: reduce) {
         .page-transition-loader,
         .page-transition-loader--done {
-          transition: none;
+          transition: none !important;
         }
 
         .page-transition-loader__dot {
@@ -139,7 +142,6 @@ const { title, description, image, author } = Astro.props
     </style>
 
     <script is:inline>
-      // ClientRouter 会在导航时复用持久化 loader；防止脚本重复注册事件导致多个计时器互相抢状态。
       if (!window.__refactxPageTransitionInitialized) {
         window.__refactxPageTransitionInitialized = true
 
@@ -156,25 +158,30 @@ const { title, description, image, author } = Astro.props
 
         const showPageLoader = () => {
           clearTimers()
-          root.classList.add('page-transition-loading')
+
+          // 先同步锁住状态，再让 Astro 执行 DOM swap，避免 swap 前后出现一帧裸页面。
           root.classList.remove('page-transition-ready')
+          root.classList.add('page-transition-loading')
           getLoader()?.classList.remove('page-transition-loader--done')
         }
 
         const startPageContentAnimation = () => {
           clearTimers()
 
-          // 阶段 1：加载层保持可见，确保旧页面已完全退出。
-          transitionTimer = window.setTimeout(() => {
-            // 阶段 2：加载层仍在前景，启动新页面组件飞入动画。
-            root.classList.add('page-transition-ready')
-          }, 400)
+          // 等待一次绘制，让新页面的 fade-up 从稳定的第一帧开始，而不是在 DOM swap 中抢跑。
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              if (!root.classList.contains('page-transition-loading')) return
 
-          finishTimer = window.setTimeout(() => {
-            // 阶段 3：组件飞入后才移除加载层。
-            getLoader()?.classList.add('page-transition-loader--done')
-            root.classList.remove('page-transition-loading')
-          }, 1000)
+              root.classList.add('page-transition-ready')
+
+              // 给组件飞入动画留下完整的 600ms，同时让加载层在最后 180ms 平滑退出。
+              finishTimer = window.setTimeout(() => {
+                getLoader()?.classList.add('page-transition-loader--done')
+                root.classList.remove('page-transition-loading')
+              }, 620)
+            })
+          })
         }
 
         document.addEventListener('astro:before-preparation', showPageLoader)
