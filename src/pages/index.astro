@@ -82,7 +82,7 @@ const NAV_CARDS = [
         </div>
       </div>
 
-      <div class="hidden md:block shrink-0 border-t border-border/40 select-none fade-up animation-delay-200">
+      <div class="hidden lg:block shrink-0 border-t border-border/40 select-none fade-up animation-delay-200">
         <div
           class="p-4 flex items-center justify-between text-xs text-muted-foreground font-mono border-b border-border/40 px-6 lg:px-8 xl:px-12 bg-background/50"
         >
@@ -115,14 +115,10 @@ const NAV_CARDS = [
         <div>
           <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-b border-border/40 pb-4">
             <div class="flex items-center gap-3">
-              <span class="inline-flex items-center justify-center size-7 rounded-md bg-primary/10 text-primary font-mono text-xs font-bold"
-                >01</span
-              >
+              <span class="inline-flex items-center justify-center size-7 rounded-md bg-primary/10 text-primary font-mono text-xs font-bold">01</span>
               <h2 class="text-xl md:text-2xl font-bold text-foreground tracking-tight">Navigation</h2>
             </div>
-            <span class="text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest hidden sm:inline-block"
-              >// System_Modules</span
-            >
+            <span class="text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest hidden sm:inline-block">// System_Modules</span>
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             {
@@ -134,16 +130,10 @@ const NAV_CARDS = [
                 >
                   <div class="absolute right-4 top-4 flex items-center gap-1.5 opacity-60 group-hover:opacity-100 transition-opacity">
                     <span class="relative flex size-1.5">
-                      {card.status === 'Active' && (
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                      )}
-                      <span
-                        class={`relative inline-flex rounded-full size-1.5 ${card.status === 'Active' ? 'bg-emerald-500' : 'bg-primary/50'}`}
-                      />
+                      {card.status === 'Active' && <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />}
+                      <span class={`relative inline-flex rounded-full size-1.5 ${card.status === 'Active' ? 'bg-emerald-500' : 'bg-primary/50'}`} />
                     </span>
-                    <span class="text-[10px] font-mono uppercase tracking-wider text-muted-foreground group-hover:text-foreground transition-colors">
-                      {card.status}
-                    </span>
+                    <span class="text-[10px] font-mono uppercase tracking-wider text-muted-foreground group-hover:text-foreground transition-colors">{card.status}</span>
                   </div>
                   <div class="size-12 flex items-center justify-center rounded-lg bg-primary/5 border border-primary/10 group-hover:bg-primary/10 group-hover:scale-110 transition-all duration-300 mb-8">
                     <span class={cn('size-6 text-primary/80 group-hover:text-primary transition-colors', card.icon)} />
@@ -164,22 +154,15 @@ const NAV_CARDS = [
         <div class="fade-up" style="animation-delay: 200ms">
           <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-b border-border/40 pb-4">
             <div class="flex items-center gap-3">
-              <span class="inline-flex items-center justify-center size-7 rounded-md bg-primary/10 text-primary font-mono text-xs font-bold"
-                >02</span
-              >
+              <span class="inline-flex items-center justify-center size-7 rounded-md bg-primary/10 text-primary font-mono text-xs font-bold">02</span>
               <h2 class="text-xl md:text-2xl font-bold text-foreground tracking-tight">Recent Logs</h2>
             </div>
-            <a
-              href="/posts"
-              class="group flex items-center gap-1.5 text-xs font-mono font-medium text-muted-foreground hover:text-primary transition-colors"
-            >
+            <a href="/posts" class="group flex items-center gap-1.5 text-xs font-mono font-medium text-muted-foreground hover:text-primary transition-colors">
               <span class="uppercase tracking-wider">View_All</span>
               <span class="icon-[ph--arrow-right] group-hover:translate-x-1 transition-transform"></span>
             </a>
           </div>
-          <div>
-            <List {posts} {type} {heroImageLayout} />
-          </div>
+          <div><List {posts} {type} {heroImageLayout} /></div>
         </div>
 
         {
@@ -187,14 +170,10 @@ const NAV_CARDS = [
             <div class="fade-up" style="animation-delay: 300ms">
               <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-b border-border/40 pb-4">
                 <div class="flex items-center gap-3">
-                  <span class="inline-flex items-center justify-center size-7 rounded-md bg-primary/10 text-primary font-mono text-xs font-bold">
-                    03
-                  </span>
+                  <span class="inline-flex items-center justify-center size-7 rounded-md bg-primary/10 text-primary font-mono text-xs font-bold">03</span>
                   <h2 class="text-xl md:text-2xl font-bold text-foreground tracking-tight">Activity</h2>
                 </div>
-                <span class="text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest hidden sm:inline-block">
-                  // GitHub_Trace
-                </span>
+                <span class="text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest hidden sm:inline-block">// GitHub_Trace</span>
               </div>
               <div class="p-6 sm:p-8 rounded-xl border border-border/40 bg-background/50 hover:bg-muted/10 transition-colors">
                 <GithubContributions username={GITHUB_USERNAME} tooltipEnabled={TOOLTIP_ENABLED} client:visible transition:animate="none" />
@@ -208,14 +187,10 @@ const NAV_CARDS = [
             <div class="fade-up" style="animation-delay: 400ms">
               <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-b border-border/40 pb-4">
                 <div class="flex items-center gap-3">
-                  <span class="inline-flex items-center justify-center size-7 rounded-md bg-primary/10 text-primary font-mono text-xs font-bold">
-                    04
-                  </span>
+                  <span class="inline-flex items-center justify-center size-7 rounded-md bg-primary/10 text-primary font-mono text-xs font-bold">04</span>
                   <h2 class="text-xl md:text-2xl font-bold text-foreground tracking-tight">Tech Stack</h2>
                 </div>
-                <span class="text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest hidden sm:inline-block">
-                  // Skill_Radar
-                </span>
+                <span class="text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest hidden sm:inline-block">// Skill_Radar</span>
               </div>
               <div class="[&_.skill-card]:rounded-xl [&_.skill-card]:border-border/40 [&_.skill-card]:bg-background/50 hover:[&_.skill-card]:bg-primary/5 hover:[&_.skill-card]:border-primary/20 [&_.skill-card]:shadow-sm [&_.skill-card]:transition-all duration-300">
                 <SkillsShowcase skillsData={SKILLS_DATA} />
