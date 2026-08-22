@@ -35,6 +35,7 @@ const { title, description, image, author } = Astro.props
       id="page-transition-loader"
       class="page-transition-loader"
       aria-hidden="true"
+      transition:persist="page-transition-loader"
     >
       <div class="page-transition-loader__content">
         <span class="page-transition-loader__dot"></span>
@@ -47,7 +48,7 @@ const { title, description, image, author } = Astro.props
         <Header />
       </div>
 
-      <main class="relative z-5 fullPage flex-auto bg-background" transition:animate="fade">
+      <main class="relative z-5 fullPage flex-auto bg-background">
         <slot />
       </main>
 
@@ -71,7 +72,7 @@ const { title, description, image, author } = Astro.props
         opacity: 0;
         visibility: hidden;
         pointer-events: none;
-        transition: opacity 300ms ease, visibility 300ms ease;
+        transition: opacity 240ms ease, visibility 240ms ease;
       }
 
       .page-transition-loading .page-transition-loader {
@@ -107,6 +108,7 @@ const { title, description, image, author } = Astro.props
         50% { transform: scale(1); opacity: 1; }
       }
 
+      /* 页面切换期间冻结新页面的飞入动画，避免与加载层同时绘制造成闪烁。 */
       .page-transition-loading .fade-up {
         animation-play-state: paused;
       }
@@ -132,38 +134,50 @@ const { title, description, image, author } = Astro.props
     </style>
 
     <script is:inline>
-      const root = document.documentElement
-      let transitionTimer
-      let finishTimer
+      // ClientRouter 会在导航时复用持久化 loader；防止脚本重复注册事件导致多个计时器互相抢状态。
+      if (!window.__refactxPageTransitionInitialized) {
+        window.__refactxPageTransitionInitialized = true
 
-      const getLoader = () => document.getElementById('page-transition-loader')
+        const root = document.documentElement
+        let transitionTimer = 0
+        let finishTimer = 0
 
-      const showPageLoader = () => {
-        window.clearTimeout(transitionTimer)
-        window.clearTimeout(finishTimer)
-        root.classList.add('page-transition-loading')
-        root.classList.remove('page-transition-ready')
-        getLoader()?.classList.remove('page-transition-loader--done')
+        const clearTimers = () => {
+          window.clearTimeout(transitionTimer)
+          window.clearTimeout(finishTimer)
+        }
+
+        const getLoader = () => document.getElementById('page-transition-loader')
+
+        const showPageLoader = () => {
+          clearTimers()
+          root.classList.add('page-transition-loading')
+          root.classList.remove('page-transition-ready')
+          getLoader()?.classList.remove('page-transition-loader--done')
+        }
+
+        const startPageContentAnimation = () => {
+          clearTimers()
+
+          // 阶段 1：加载层保持可见，确保旧页面已完全退出。
+          transitionTimer = window.setTimeout(() => {
+            // 阶段 2：加载层仍在前景，启动新页面组件飞入动画。
+            root.classList.add('page-transition-ready')
+          }, 400)
+
+          finishTimer = window.setTimeout(() => {
+            // 阶段 3：组件飞入后才移除加载层。
+            getLoader()?.classList.add('page-transition-loader--done')
+            root.classList.remove('page-transition-loading')
+          }, 1000)
+        }
+
+        document.addEventListener('astro:before-preparation', showPageLoader)
+        document.addEventListener('astro:after-swap', () => {
+          window.scrollTo(0, 0)
+          startPageContentAnimation()
+        })
       }
-
-      const startPageContentAnimation = () => {
-        // 先展示加载层，再启动页面组件的飞入动画。
-        transitionTimer = window.setTimeout(() => {
-          root.classList.add('page-transition-ready')
-        }, 450)
-
-        // 组件飞入后，最后淡出加载层完成切换。
-        finishTimer = window.setTimeout(() => {
-          getLoader()?.classList.add('page-transition-loader--done')
-          root.classList.remove('page-transition-loading')
-        }, 1050)
-      }
-
-      document.addEventListener('astro:before-preparation', showPageLoader)
-      document.addEventListener('astro:after-swap', () => {
-        window.scrollTo(0, 0)
-        startPageContentAnimation()
-      })
     </script>
   </body>
 </html>
