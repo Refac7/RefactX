@@ -60,6 +60,77 @@ const { title, description, image, author } = Astro.props
     >
     </div>
 
+    <style is:global>
+      .page-transition-loader {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: grid;
+        place-items: center;
+        background: hsl(var(--background));
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: opacity 300ms ease, visibility 300ms ease;
+      }
+
+      .page-transition-loading .page-transition-loader {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .page-transition-loader--done {
+        opacity: 0 !important;
+        visibility: hidden !important;
+      }
+
+      .page-transition-loader__content {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: hsl(var(--muted-foreground));
+        font: 600 0.6875rem/1 var(--font-geist-mono), monospace;
+        letter-spacing: 0.18em;
+      }
+
+      .page-transition-loader__dot {
+        width: 0.45rem;
+        height: 0.45rem;
+        border-radius: 9999px;
+        background: hsl(var(--primary));
+        animation: pageTransitionPulse 800ms ease-in-out infinite;
+      }
+
+      @keyframes pageTransitionPulse {
+        0%,
+        100% { transform: scale(0.7); opacity: 0.35; }
+        50% { transform: scale(1); opacity: 1; }
+      }
+
+      .page-transition-loading .fade-up {
+        animation-play-state: paused;
+      }
+
+      .page-transition-ready .fade-up {
+        animation-play-state: running;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .page-transition-loader,
+        .page-transition-loader--done {
+          transition: none;
+        }
+
+        .page-transition-loader__dot {
+          animation: none;
+        }
+
+        .page-transition-loading .fade-up {
+          animation-play-state: running;
+        }
+      }
+    </style>
+
     <script is:inline>
       const loader = document.getElementById('page-transition-loader')
       const root = document.documentElement
@@ -73,12 +144,12 @@ const { title, description, image, author } = Astro.props
       }
 
       const startPageContentAnimation = () => {
-        // 先让加载层停留片刻，再启动页面组件的飞入动画。
+        // 先展示加载层，再启动页面组件的飞入动画。
         transitionTimer = window.setTimeout(() => {
           root.classList.add('page-transition-ready')
         }, 450)
 
-        // 等组件飞入动画开始后，再淡出加载层。
+        // 组件飞入后，最后淡出加载层完成切换。
         window.setTimeout(() => {
           loader?.classList.add('page-transition-loader--done')
           root.classList.remove('page-transition-loading')
