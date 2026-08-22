@@ -142,8 +142,8 @@ const pingColor = statusVariant === 'emerald' ? 'bg-emerald-400' : 'bg-primary/6
     </div>
   </div>
 
-  <!-- Bottom stats bar -->
-  <div class="shrink-0 border-t border-border/40 bg-background/50 select-none fade-up animation-delay-200">
+  <!-- Keep desktop stats/contact metadata unchanged; omit it from mobile aside layouts. -->
+  <div class="hidden lg:block shrink-0 border-t border-border/40 bg-background/50 select-none fade-up animation-delay-200">
     <div
       class="p-4 flex items-center justify-between text-xs text-muted-foreground font-mono border-b border-border/20 px-6 lg:px-8 xl:px-12"
     >
