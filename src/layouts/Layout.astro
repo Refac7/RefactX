@@ -66,6 +66,12 @@ const { title, description, image, author } = Astro.props
         border-color: hsl(var(--border) / 0.65) !important;
       }
 
+      /*
+       * The loader is independent from page content animations.
+       * It is persisted between Astro swaps so the old page is never exposed
+       * during navigation and the new page is only revealed after its own
+       * animations have finished.
+       */
       .page-transition-loader {
         position: fixed;
         inset: 0;
@@ -76,21 +82,22 @@ const { title, description, image, author } = Astro.props
         opacity: 0;
         visibility: hidden;
         pointer-events: none;
-        transition: opacity 180ms ease;
+        transition: opacity 220ms ease;
         will-change: opacity;
         contain: strict;
       }
 
-      /* 显示加载层时禁止任何渐变，避免 opacity 从旧状态过渡而产生一帧闪烁。 */
       .page-transition-loading .page-transition-loader {
         opacity: 1;
         visibility: visible;
         transition: none;
+        pointer-events: auto;
       }
 
       .page-transition-loader--done {
-        opacity: 0 !important;
-        visibility: hidden !important;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
       }
 
       .page-transition-loader__content {
@@ -116,18 +123,18 @@ const { title, description, image, author } = Astro.props
         50% { transform: scale(1); opacity: 1; }
       }
 
-      /* 新页面在加载层覆盖期间保持在飞入动画的第一帧，直到加载层交接。 */
+      /* Freeze only while the loader covers the new document. */
       .page-transition-loading .fade-up {
         animation-play-state: paused;
       }
 
+      /* Release the original component animations as one atomic state change. */
       .page-transition-ready .fade-up {
         animation-play-state: running;
       }
 
       @media (prefers-reduced-motion: reduce) {
-        .page-transition-loader,
-        .page-transition-loader--done {
+        .page-transition-loader {
           transition: none !important;
         }
 
@@ -146,48 +153,69 @@ const { title, description, image, author } = Astro.props
         window.__refactxPageTransitionInitialized = true
 
         const root = document.documentElement
-        let transitionTimer = 0
-        let finishTimer = 0
+        let transitionGeneration = 0
+        let releaseFrame = 0
+        let finishFrame = 0
 
-        const clearTimers = () => {
-          window.clearTimeout(transitionTimer)
-          window.clearTimeout(finishTimer)
+        const cancelPendingTransition = () => {
+          transitionGeneration += 1
+          cancelAnimationFrame(releaseFrame)
+          cancelAnimationFrame(finishFrame)
         }
 
         const getLoader = () => document.getElementById('page-transition-loader')
 
-        const showPageLoader = () => {
-          clearTimers()
-
-          // 先同步锁住状态，再让 Astro 执行 DOM swap，避免 swap 前后出现一帧裸页面。
+        const showLoader = () => {
+          cancelPendingTransition()
           root.classList.remove('page-transition-ready')
           root.classList.add('page-transition-loading')
           getLoader()?.classList.remove('page-transition-loader--done')
         }
 
-        const startPageContentAnimation = () => {
-          clearTimers()
+        const revealPage = () => {
+          const generation = transitionGeneration
 
-          // 等待一次绘制，让新页面的 fade-up 从稳定的第一帧开始，而不是在 DOM swap 中抢跑。
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-              if (!root.classList.contains('page-transition-loading')) return
+          // Wait for Astro's swap to be painted before releasing the existing
+          // fade-up animations. No fixed delay is used for the page itself.
+          releaseFrame = requestAnimationFrame(() => {
+            releaseFrame = requestAnimationFrame(() => {
+              if (generation !== transitionGeneration) return
 
               root.classList.add('page-transition-ready')
 
-              // 给组件飞入动画留下完整的 600ms，同时让加载层在最后 180ms 平滑退出。
-              finishTimer = window.setTimeout(() => {
+              const animated = Array.from(document.querySelectorAll('.fade-up'))
+                .filter((element) => getComputedStyle(element).animationName !== 'none')
+
+              if (animated.length === 0) {
                 getLoader()?.classList.add('page-transition-loader--done')
                 root.classList.remove('page-transition-loading')
-              }, 620)
+                return
+              }
+
+              let remaining = animated.length
+              const finish = () => {
+                if (generation !== transitionGeneration) return
+                remaining -= 1
+                if (remaining > 0) return
+
+                finishFrame = requestAnimationFrame(() => {
+                  if (generation !== transitionGeneration) return
+                  getLoader()?.classList.add('page-transition-loader--done')
+                  root.classList.remove('page-transition-loading')
+                })
+              }
+
+              animated.forEach((element) => {
+                element.addEventListener('animationend', finish, { once: true })
+              })
             })
           })
         }
 
-        document.addEventListener('astro:before-preparation', showPageLoader)
+        document.addEventListener('astro:before-preparation', showLoader)
         document.addEventListener('astro:after-swap', () => {
           window.scrollTo(0, 0)
-          startPageContentAnimation()
+          revealPage()
         })
       }
     </script>
