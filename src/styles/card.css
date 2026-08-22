@@ -6,4 +6,12 @@
   ) {
     border-color: hsl(var(--border) / 0.6);
   }
+
+  /* Keep the homepage Recent Logs action on one line on narrow screens. */
+  @media (max-width: 639px) {
+    main a[href='/posts'] {
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+  }
 }
