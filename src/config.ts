@@ -14,7 +14,7 @@ import type {
 // 站点全局配置
 export const SITE: Site = {
   title: 'RefactX Project',
-  description: '又是又是……又是借口 / Another another... Another excuse.',
+  description: '你与光芒 / You & Radiance',
   website: 'https://www.refact.cc/',
   base: '/',
   author: 'Refact',
@@ -157,7 +157,7 @@ export const FRIENDS_CONFIG = {
   title: 'Friends',
   description: '我的朋友们都在这里，欢迎互访～',
   introduce: '已获取星图定位，正在前往友链星系的路上……',
-  enableAdd: false,
+  enableAdd: true,
 }
 
 // 博主专属友链卡片信息
@@ -167,7 +167,7 @@ export const FRIENDS_CONTACT = {
   author: 'Refac7',
   sitelink: 'https://www.refact.cc',
   siteavatar: 'https://img.refact.cc/base/avatar.jpg',
-  description: 'Another, another… another excuse.',
+  description: '你与光芒 / You & Radiance',
 }
 
 // Waline 评论系统配置
