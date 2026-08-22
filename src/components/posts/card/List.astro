@@ -4,21 +4,15 @@ import type { CollectionEntry } from 'astro:content'
 import Card from './Card.astro'
 import { cn } from '~/lib/utils'
 
-export type CardProps = {
-  post: CollectionEntry<'posts'>
-  heroImageLayout?: HeroImageLayout
-  showImage?: boolean
-}
-
 const POST_CARD_COMPONENTS = {
-  'compact': Card,
-  'image': Card,
+  compact: Card,
+  image: Card,
   'time-line': Card,
 } as const
 
 const POST_CARD_SPACING_CLASSES = {
-  'compact': 'space-y-6',
-  'image': 'space-y-8',
+  compact: 'space-y-6',
+  image: 'space-y-8',
   'time-line': 'space-y-0',
 } as const
 
@@ -29,7 +23,7 @@ type Props = {
   heroImageLayout?: HeroImageLayout
 }
 
-const { posts, type, customSpacing, heroImageLayout } = Astro.props
+const { posts, type, customSpacing, heroImageLayout } = Astro.props as Props
 const spacingClass = customSpacing || POST_CARD_SPACING_CLASSES[type]
 const PostCardElement = POST_CARD_COMPONENTS[type]
 ---
