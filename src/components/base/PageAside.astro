@@ -52,6 +52,7 @@ const {
 
 const dotColor = statusVariant === 'emerald' ? 'bg-emerald-500' : 'bg-primary'
 const pingColor = statusVariant === 'emerald' ? 'bg-emerald-400' : 'bg-primary/60'
+const visibleIdentityTags = identityTags.slice(0, 2)
 ---
 
 <aside
@@ -116,9 +117,9 @@ const pingColor = statusVariant === 'emerald' ? 'bg-emerald-400' : 'bg-primary/6
 
       <!-- Identity tags -->
       {
-        identityTags.length > 0 && (
+        visibleIdentityTags.length > 0 && (
           <div class="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-8 font-mono">
-            {identityTags.map((tag, i) => (
+            {visibleIdentityTags.map((tag, i) => (
               <>
                 {i > 0 && <span class="w-1 h-1 rounded-full bg-border" />}
                 <span class="flex items-center gap-1.5">
@@ -135,7 +136,7 @@ const pingColor = statusVariant === 'emerald' ? 'bg-emerald-400' : 'bg-primary/6
       {
         intro && (
           <div class="relative pl-4 border-l-2 border-primary/30 fade-up animation-delay-150">
-            <p class="text-sm md:text-base text-muted-foreground leading-relaxed">{intro}</p>
+          <p class="text-sm md:text-base text-muted-foreground leading-relaxed">{intro}</p>
           </div>
         )
       }
