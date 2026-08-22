@@ -40,20 +40,20 @@ const NAV_CARDS = [
             Building & Exploring
           </div>
           <h1 class="text-4xl sm:text-5xl xl:text-6xl font-bold tracking-tight text-foreground leading-[1.15] mb-4 select-none">Home</h1>
-          <div class="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-            <span class="icon-[ph--house] size-4" />
-            <span>Home Overview</span>
-          </div>
-          <div class="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-8 font-mono">
-            <span class="flex items-center gap-1.5"><span class="icon-[ph--code] size-4"></span> Developer</span><span class="w-1 h-1 rounded-full bg-border"></span><span class="flex items-center gap-1.5"><span class="icon-[ph--pen-nib] size-4"></span> Creator</span>
-          </div>
+          <div class="flex items-center gap-2 text-sm text-muted-foreground mb-4"><span class="icon-[ph--house] size-4" /><span>Home Overview</span></div>
+          <div class="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-8 font-mono"><span class="flex items-center gap-1.5"><span class="icon-[ph--code] size-4"></span> Developer</span><span class="w-1 h-1 rounded-full bg-border"></span><span class="flex items-center gap-1.5"><span class="icon-[ph--pen-nib] size-4"></span> Creator</span></div>
           <div class="relative pl-4 border-l-2 border-primary/30 fade-up animation-delay-150"><p class="text-sm md:text-base text-muted-foreground leading-relaxed">欢迎访问此站点，<br>基于 Astro v6 构建，记录技术、分享生活。</p></div>
         </div>
       </div>
       <div class="hidden lg:block shrink-0 border-t border-border/40 select-none fade-up animation-delay-200">
         <div class="p-4 flex items-center justify-between text-xs text-muted-foreground font-mono border-b border-border/40 px-6 lg:px-8 xl:px-12 bg-background/50"><span>// CONNECT PORTALS</span><span>{SOCIAL_LINKS.length} ACTIVE</span></div>
-        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4 gap-px bg-border/40">
-          {SOCIAL_LINKS.map((item) => (<a href={item.url} target="_blank" class="group flex flex-col items-center justify-center p-6 bg-background hover:bg-primary/5 transition-all duration-300"><div class="group-hover:scale-110 transition-all duration-300 mb-2"><span class={`${item.icon} size-5 text-muted-foreground group-hover:text-primary transition-colors`} /></div><span class="text-[10px] font-mono font-medium text-muted-foreground group-hover:text-primary uppercase tracking-wider transition-colors">{item.name || 'Link'}</span></a>))}
+        <div class="grid grid-cols-1 gap-px bg-border/40">
+          {SOCIAL_LINKS.map((item) => (
+            <a href={item.url} target="_blank" rel="noopener noreferrer" class="group flex items-center gap-4 h-14 px-6 lg:px-8 xl:px-12 bg-background hover:bg-primary/5 transition-all duration-300 text-left">
+              <span class={`${item.icon} size-5 shrink-0 text-muted-foreground group-hover:text-primary transition-colors`} />
+              <span class="text-[10px] font-mono font-medium text-muted-foreground group-hover:text-primary uppercase tracking-wider transition-colors">{item.name || 'Link'}</span>
+            </a>
+          ))}
         </div>
       </div>
     </aside>
@@ -69,10 +69,7 @@ const NAV_CARDS = [
           </div>
         </div>
         <div class="fade-up" style="animation-delay: 200ms">
-          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-b border-border/40 pb-4">
-            <div class="flex items-center gap-3"><span class="inline-flex items-center justify-center size-7 rounded-md bg-primary/10 text-primary font-mono text-xs font-bold">02</span><h2 class="text-xl md:text-2xl font-bold text-foreground tracking-tight">Recent Logs</h2></div>
-            <a href="/posts" class="group hidden lg:flex items-center gap-1.5 text-xs font-mono font-medium text-muted-foreground hover:text-primary transition-colors"><span class="uppercase tracking-wider">View_All</span><span class="icon-[ph--arrow-right] group-hover:translate-x-1 transition-transform"></span></a>
-          </div>
+          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-b border-border/40 pb-4"><div class="flex items-center gap-3"><span class="inline-flex items-center justify-center size-7 rounded-md bg-primary/10 text-primary font-mono text-xs font-bold">02</span><h2 class="text-xl md:text-2xl font-bold text-foreground tracking-tight">Recent Logs</h2></div><a href="/posts" class="group hidden lg:flex items-center gap-1.5 text-xs font-mono font-medium text-muted-foreground hover:text-primary transition-colors"><span class="uppercase tracking-wider">View_All</span><span class="icon-[ph--arrow-right] group-hover:translate-x-1 transition-transform"></span></a></div>
           <div><List {posts} {type} {heroImageLayout} /></div>
         </div>
         {ENABLED && (<div class="fade-up" style="animation-delay: 300ms"><div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-b border-border/40 pb-4"><div class="flex items-center gap-3"><span class="inline-flex items-center justify-center size-7 rounded-md bg-primary/10 text-primary font-mono text-xs font-bold">03</span><h2 class="text-xl md:text-2xl font-bold text-foreground tracking-tight">Activity</h2></div><span class="text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest hidden sm:inline-block">// GitHub_Trace</span></div><div class="p-6 sm:p-8 rounded-xl border border-border/40 bg-background/50 hover:bg-muted/10 transition-colors"><GithubContributions username={GITHUB_USERNAME} tooltipEnabled={TOOLTIP_ENABLED} client:visible transition:animate="none" /></div></div>)}
