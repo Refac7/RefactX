@@ -5,7 +5,7 @@ import PostTag from '~/components/posts/base/PostTag.astro'
 import RecommendBadge from '~/components/posts/base/RecommendBadge.astro'
 import type { PostCardProps } from '~/types'
 
-const { post, heroImageLayout, showImage }: PostCardProps = Astro.props
+const { post, heroImageLayout, showImage } = Astro.props as PostCardProps
 const hasImage = post.data.heroImage !== 'none'
 const imagePosition = post.data.heroImageLayout || heroImageLayout || 'right'
 const isReverse = imagePosition === 'right'
