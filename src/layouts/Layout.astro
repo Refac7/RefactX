@@ -14,7 +14,7 @@ type Props = {
   author?: string
 }
 
-const { title, description, image, author }: Props = Astro.props
+const { title, description, image, author } = Astro.props
 ---
 
 <!doctype html>
@@ -30,6 +30,17 @@ const { title, description, image, author }: Props = Astro.props
   </head>
   <body>
     {HOLIDAY_EFFECTS.enableHolidayEffects && <HolidayTheme />}
+
+    <div
+      id="page-transition-loader"
+      class="page-transition-loader"
+      aria-hidden="true"
+    >
+      <div class="page-transition-loader__content">
+        <span class="page-transition-loader__dot"></span>
+        <span class="page-transition-loader__text">LOADING</span>
+      </div>
+    </div>
 
     <div class="select-text selection:bg-foreground/20 selection:text-foreground">
       <div class="relative z-10 bg-background">
@@ -50,20 +61,34 @@ const { title, description, image, author }: Props = Astro.props
     </div>
 
     <script is:inline>
-      // 性能监测和优化
-      document.addEventListener('astro:before-preparation', () => {
-        // 页面开始切换时，预加载关键资源
-        const prefetchLinks = document.querySelectorAll('link[rel="prefetch"]')
-        prefetchLinks.forEach((link) => {
-          // 确保预加载是激活的
-          link.setAttribute('rel', 'prefetch')
-        })
-      })
+      const loader = document.getElementById('page-transition-loader')
+      const root = document.documentElement
+      let transitionTimer
 
-      // 使用 astro:after-swap 替代 astro:page-load 获得更快的转换反应
+      const showPageLoader = () => {
+        window.clearTimeout(transitionTimer)
+        root.classList.add('page-transition-loading')
+        root.classList.remove('page-transition-ready')
+        loader?.classList.remove('page-transition-loader--done')
+      }
+
+      const startPageContentAnimation = () => {
+        // 先让加载层停留片刻，再启动页面组件的飞入动画。
+        transitionTimer = window.setTimeout(() => {
+          root.classList.add('page-transition-ready')
+        }, 450)
+
+        // 等组件飞入动画开始后，再淡出加载层。
+        window.setTimeout(() => {
+          loader?.classList.add('page-transition-loader--done')
+          root.classList.remove('page-transition-loading')
+        }, 1050)
+      }
+
+      document.addEventListener('astro:before-preparation', showPageLoader)
       document.addEventListener('astro:after-swap', () => {
-        // 重置滚动位置（使用更快的同步操作）
         window.scrollTo(0, 0)
+        startPageContentAnimation()
       })
     </script>
   </body>
