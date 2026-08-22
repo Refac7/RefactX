@@ -70,12 +70,6 @@ const todos: TodoItem[] = aboutData.todos
         { icon: 'icon-[ph--map-pin]', label: 'Earth' },
       ]}
       intro={introduce}
-      statsLabel="// OPERATOR STATUS"
-      statsMeta="2 FIELDS"
-      stats={[
-        { value: 'Carbon-based', label: 'Form' },
-        { value: 'Earth / UTC+8', label: 'Location' },
-      ]}
     />
 
     <main class="w-full lg:w-2/3 z-10 flex flex-col fade-up animation-delay-100">
@@ -88,40 +82,24 @@ const todos: TodoItem[] = aboutData.todos
 
           <div class="flex flex-col md:flex-row gap-8 lg:gap-12 items-start bg-background/50 border border-border/40 rounded-xl p-6 lg:p-8">
             <div class="shrink-0 relative group">
-              <img
-                src={profile.avatar}
-                alt={profile.name}
-                class="w-24 h-24 rounded-full object-cover border border-border/50 group-hover:scale-105 transition-transform duration-500 ease-out"
-              />
+              <img src={profile.avatar} alt={profile.name} class="w-24 h-24 rounded-full object-cover border border-border/50 group-hover:scale-105 transition-transform duration-500 ease-out" />
             </div>
 
             <div class="flex-1 w-full">
               <div class="flex items-center gap-3 mb-1">
                 <h3 class="text-2xl font-bold tracking-tight text-foreground">{profile.name}</h3>
-                <span
-                  class="items-center rounded-full bg-muted/60 px-2.5 py-0.5 text-xs font-medium text-muted-foreground hidden sm:inline-flex"
-                  >Admin</span
-                >
+                <span class="items-center rounded-full bg-muted/60 px-2.5 py-0.5 text-xs font-medium text-muted-foreground hidden sm:inline-flex">Admin</span>
               </div>
               <p class="text-sm font-medium text-foreground/60 mb-4">{profile.role}</p>
-              <div
-                class="prose prose-sm dark:prose-invert prose-p:leading-relaxed prose-p:text-muted-foreground max-w-none font-sans whitespace-pre-wrap"
-              >
-                {profile.bio}
-              </div>
+              <div class="prose prose-sm dark:prose-invert prose-p:leading-relaxed prose-p:text-muted-foreground max-w-none font-sans whitespace-pre-wrap">{profile.bio}</div>
 
               <div class="mt-8 pt-6 border-t border-border/40 grid grid-cols-2 sm:grid-cols-4 gap-3">
-                {
-                  physicalAttributes.map((attr) => (
-                    <div class="flex flex-col p-3 rounded-xl bg-background border border-border/40 hover:bg-muted/30 transition-colors">
-                      <span class="flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground mb-1.5 uppercase tracking-wider select-none">
-                        <span class={`${attr.icon} size-3.5`} />
-                        {attr.label}
-                      </span>
-                      <span class="text-sm font-semibold text-foreground">{attr.value}</span>
-                    </div>
-                  ))
-                }
+                {physicalAttributes.map((attr) => (
+                  <div class="flex flex-col p-3 rounded-xl bg-background border border-border/40 hover:bg-muted/30 transition-colors">
+                    <span class="flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground mb-1.5 uppercase tracking-wider select-none"><span class={`${attr.icon} size-3.5`} />{attr.label}</span>
+                    <span class="text-sm font-semibold text-foreground">{attr.value}</span>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -133,150 +111,71 @@ const todos: TodoItem[] = aboutData.todos
             <span class={SECTION_META_CLASS}>// Capability_Scan</span>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-            {
-              skills.map((skillGroup) => (
-                <div class="p-6 rounded-xl border border-border/40 bg-background/50 hover:bg-muted/20 hover:shadow-sm transition-all group hover:-translate-y-0.5">
-                  <h4 class="text-sm font-semibold text-foreground tracking-tight mb-4 flex items-center gap-2">{skillGroup.category}</h4>
-                  <div class="flex flex-wrap gap-2">
-                    {skillGroup.items.map((item) => (
-                      <span class="inline-flex items-center rounded-lg bg-muted/50 px-2.5 py-1 text-xs font-medium text-muted-foreground border border-border/40 group-hover:bg-background group-hover:text-foreground transition-colors cursor-default">
-                        {item}
-                      </span>
-                    ))}
-                  </div>
+            {skills.map((skillGroup) => (
+              <div class="p-6 rounded-xl border border-border/40 bg-background/50 hover:bg-muted/20 hover:shadow-sm transition-all group hover:-translate-y-0.5">
+                <h4 class="text-sm font-semibold text-foreground tracking-tight mb-4 flex items-center gap-2">{skillGroup.category}</h4>
+                <div class="flex flex-wrap gap-2">
+                  {skillGroup.items.map((item) => (
+                    <span class="inline-flex items-center rounded-lg bg-muted/50 px-2.5 py-1 text-xs font-medium text-muted-foreground border border-border/40 group-hover:bg-background group-hover:text-foreground transition-colors cursor-default">{item}</span>
+                  ))}
                 </div>
-              ))
-            }
+              </div>
+            ))}
           </div>
         </div>
 
         <div class="mb-20 fade-up" style="animation-delay: 250ms">
-          <div class={SECTION_HEADER_CLASS}>
-            <div class="flex items-center">
-              <span class={SECTION_NUM_CLASS}>03</span><h2 class={SECTION_TITLE_CLASS}>Hardware Loadout</h2>
-            </div>
-            <span class={SECTION_META_CLASS}>// Device_Registry</span>
-          </div>
+          <div class={SECTION_HEADER_CLASS}><div class="flex items-center"><span class={SECTION_NUM_CLASS}>03</span><h2 class={SECTION_TITLE_CLASS}>Hardware Loadout</h2></div><span class={SECTION_META_CLASS}>// Device_Registry</span></div>
           <div class="border border-border/40 bg-background/50 rounded-xl overflow-hidden">
-            {
-              equipment.map((item, index) => (
-                <div
-                  class={`flex flex-col sm:flex-row sm:items-center justify-between px-4 py-3  hover:bg-muted/30 transition-all ${index !== equipment.length - 1 ? 'border-b border-border/40' : ''}`}
-                >
-                  <div class="flex items-center gap-4 mb-2 sm:mb-0 shrink-0">
-                    <span class="text-sm font-medium text-muted-foreground/40 w-6">{(index + 1).toString().padStart(2, '0')}</span>
-                    <span class="text-sm font-medium text-foreground w-24">{item.type}</span>
-                  </div>
-                  <div class="flex flex-col sm:items-end sm:text-right pl-10 sm:pl-0 shrink-0">
-                    <span class="text-sm font-semibold text-foreground tracking-tight">{item.name}</span>
-                    <span class="text-xs text-muted-foreground">{item.desc}</span>
-                  </div>
-                </div>
-              ))
-            }
+            {equipment.map((item, index) => (
+              <div class={`flex flex-col sm:flex-row sm:items-center justify-between px-4 py-3 hover:bg-muted/30 transition-all ${index !== equipment.length - 1 ? 'border-b border-border/40' : ''}`}>
+                <div class="flex items-center gap-4 mb-2 sm:mb-0 shrink-0"><span class="text-sm font-medium text-muted-foreground/40 w-6">{(index + 1).toString().padStart(2, '0')}</span><span class="text-sm font-medium text-foreground w-24">{item.type}</span></div>
+                <div class="flex flex-col sm:items-end sm:text-right pl-10 sm:pl-0 shrink-0"><span class="text-sm font-semibold text-foreground tracking-tight">{item.name}</span><span class="text-xs text-muted-foreground">{item.desc}</span></div>
+              </div>
+            ))}
           </div>
         </div>
 
         <div class="mb-20 fade-up" style="animation-delay: 300ms">
-          <div class={SECTION_HEADER_CLASS}>
-            <div class="flex items-center"><span class={SECTION_NUM_CLASS}>04</span><h2 class={SECTION_TITLE_CLASS}>Gaming Log</h2></div>
-            <span class={SECTION_META_CLASS}>// Playback_Archive</span>
-          </div>
+          <div class={SECTION_HEADER_CLASS}><div class="flex items-center"><span class={SECTION_NUM_CLASS}>04</span><h2 class={SECTION_TITLE_CLASS}>Gaming Log</h2></div><span class={SECTION_META_CLASS}>// Playback_Archive</span></div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {
-              games.map((game) => (
-                <div class="p-5 rounded-xl border border-border/40 bg-background/50 hover:bg-muted/20 hover:shadow-sm transition-all flex flex-col justify-between min-h-30 hover:-translate-y-0.5">
-                  <div class="flex justify-between items-start mb-4">
-                    <span class="text-base font-semibold text-foreground tracking-tight">{game.title}</span>
-                    <span class="text-xs font-medium text-muted-foreground bg-muted/60 px-2 py-0.5 rounded-full">{game.hours}</span>
-                  </div>
-                  <div class="flex items-center justify-between mt-auto">
-                    <span class="text-sm text-muted-foreground">{game.platform}</span>
-                    <div class="flex items-center gap-1.5">
-                      <div class={`size-2 rounded-full ${game.color} ${game.status === 'Playing' ? 'animate-pulse' : ''}`} />
-                      <span class="text-xs font-medium text-muted-foreground">{game.status}</span>
-                    </div>
-                  </div>
-                </div>
-              ))
-            }
+            {games.map((game) => (
+              <div class="p-5 rounded-xl border border-border/40 bg-background/50 hover:bg-muted/20 hover:shadow-sm transition-all flex flex-col justify-between min-h-30 hover:-translate-y-0.5">
+                <div class="flex justify-between items-start mb-4"><span class="text-base font-semibold text-foreground tracking-tight">{game.title}</span><span class="text-xs font-medium text-muted-foreground bg-muted/60 px-2 py-0.5 rounded-full">{game.hours}</span></div>
+                <div class="flex items-center justify-between mt-auto"><span class="text-sm text-muted-foreground">{game.platform}</span><div class="flex items-center gap-1.5"><div class={`size-2 rounded-full ${game.color} ${game.status === 'Playing' ? 'animate-pulse' : ''}`} /><span class="text-xs font-medium text-muted-foreground">{game.status}</span></div></div>
+              </div>
+            ))}
           </div>
         </div>
 
         <div class="mb-20 fade-up" style="animation-delay: 350ms">
-          <div class={SECTION_HEADER_CLASS}>
-            <div class="flex items-center"><span class={SECTION_NUM_CLASS}>05</span><h2 class={SECTION_TITLE_CLASS}>Schedule</h2></div>
-            <span class={SECTION_META_CLASS}>// Time_Allocation</span>
-          </div>
+          <div class={SECTION_HEADER_CLASS}><div class="flex items-center"><span class={SECTION_NUM_CLASS}>05</span><h2 class={SECTION_TITLE_CLASS}>Schedule</h2></div><span class={SECTION_META_CLASS}>// Time_Allocation</span></div>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5 gap-4">
-            {
-              courseSchedule.map((dayData) => (
-                <div class="flex flex-col rounded-xl border border-border/40 bg-background/50 hover:shadow-sm transition-all overflow-hidden hover:-translate-y-0.5">
-                  <div class="flex justify-between items-center px-4 py-3 bg-muted/30 border-b border-border/40">
-                    <span class="text-sm font-semibold text-foreground">{dayData.day}</span>
-                    <span class="text-xs font-medium text-muted-foreground">{dayData.label}</span>
-                  </div>
-                  <div class="p-4 flex flex-col gap-4 flex-1">
-                    {dayData.courses.length > 0 ? (
-                      dayData.courses.map((course) => (
-                        <div class="relative pl-3 border-l-2 border-muted-foreground/20 hover:border-primary transition-colors">
-                          <span class="inline-block text-xs font-medium text-muted-foreground mb-1">{course.time}</span>
-                          <span class="block text-sm font-semibold text-foreground leading-tight mb-1">{course.name}</span>
-                          <span class="flex items-center gap-1 text-xs text-muted-foreground">
-                            <span class="icon-[ph--map-pin] size-3" />
-                            {course.location}
-                          </span>
-                        </div>
-                      ))
-                    ) : (
-                      <div class="flex-1 flex flex-col items-center justify-center py-6 select-none">
-                        <span class="icon-[ph--coffee] size-5 mb-2 text-muted-foreground/40" />
-                        <span class="text-xs font-medium text-muted-foreground">Free Time</span>
-                      </div>
-                    )}
-                  </div>
+            {courseSchedule.map((dayData) => (
+              <div class="flex flex-col rounded-xl border border-border/40 bg-background/50 hover:shadow-sm transition-all overflow-hidden hover:-translate-y-0.5">
+                <div class="flex justify-between items-center px-4 py-3 bg-muted/30 border-b border-border/40"><span class="text-sm font-semibold text-foreground">{dayData.day}</span><span class="text-xs font-medium text-muted-foreground">{dayData.label}</span></div>
+                <div class="p-4 flex flex-col gap-4 flex-1">
+                  {dayData.courses.length > 0 ? dayData.courses.map((course) => (
+                    <div class="relative pl-3 border-l-2 border-muted-foreground/20 hover:border-primary transition-colors"><span class="inline-block text-xs font-medium text-muted-foreground mb-1">{course.time}</span><span class="block text-sm font-semibold text-foreground leading-tight mb-1">{course.name}</span><span class="flex items-center gap-1 text-xs text-muted-foreground"><span class="icon-[ph--map-pin] size-3" />{course.location}</span></div>
+                  )) : (
+                    <div class="flex-1 flex flex-col items-center justify-center py-6 select-none"><span class="icon-[ph--coffee] size-5 mb-2 text-muted-foreground/40" /><span class="text-xs font-medium text-muted-foreground">Free Time</span></div>
+                  )}
                 </div>
-              ))
-            }
+              </div>
+            ))}
           </div>
         </div>
 
         <div class="mb-12 fade-up" style="animation-delay: 400ms">
-          <div class={SECTION_HEADER_CLASS}>
-            <div class="flex items-center">
-              <span class={SECTION_NUM_CLASS}>06</span><h2 class={SECTION_TITLE_CLASS}>Active Threads</h2>
-            </div>
-            <span class={SECTION_META_CLASS}>// Task_Queue</span>
-          </div>
+          <div class={SECTION_HEADER_CLASS}><div class="flex items-center"><span class={SECTION_NUM_CLASS}>06</span><h2 class={SECTION_TITLE_CLASS}>Active Threads</h2></div><span class={SECTION_META_CLASS}>// Task_Queue</span></div>
           <div class="rounded-xl border border-border/40 bg-background/50 p-4">
             <div class="space-y-1">
-              {
-                todos.map((todo) => (
-                  <div class="flex items-center justify-between group/todo hover:bg-muted/30 p-2 rounded-xs transition-colors">
-                    <div class="flex items-center gap-3">
-                      <div class="flex items-center justify-center w-5 shrink-0 text-muted-foreground group-hover/todo:text-foreground transition-colors">
-                        {todo.completed ? (
-                          <span class="icon-[ph--check-circle-fill] size-5 text-primary" />
-                        ) : (
-                          <span class="icon-[ph--circle] size-5 text-muted-foreground/40" />
-                        )}
-                      </div>
-                      <span
-                        class={`text-sm ${todo.completed ? 'text-muted-foreground/50 line-through' : 'text-foreground font-medium'} transition-colors`}
-                      >
-                        {todo.task}
-                      </span>
-                    </div>
-                    <div class="ml-4 text-xs hidden sm:block shrink-0">
-                      {todo.completed ? (
-                        <span class="text-muted-foreground/50">Done</span>
-                      ) : (
-                        <span class="text-primary/80 font-medium">Pending</span>
-                      )}
-                    </div>
-                  </div>
-                ))
-              }
+              {todos.map((todo) => (
+                <div class="flex items-center justify-between group/todo hover:bg-muted/30 p-2 rounded-xs transition-colors">
+                  <div class="flex items-center gap-3"><div class="flex items-center justify-center w-5 shrink-0 text-muted-foreground group-hover/todo:text-foreground transition-colors">{todo.completed ? <span class="icon-[ph--check-circle-fill] size-5 text-primary" /> : <span class="icon-[ph--circle] size-5 text-muted-foreground/40" />}</div><span class={`text-sm ${todo.completed ? 'text-muted-foreground/50 line-through' : 'text-foreground font-medium'} transition-colors`}>{todo.task}</span></div>
+                  <div class="ml-4 text-xs hidden sm:block shrink-0">{todo.completed ? <span class="text-muted-foreground/50">Done</span> : <span class="text-primary/80 font-medium">Pending</span>}</div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
