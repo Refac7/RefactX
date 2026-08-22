@@ -12,179 +12,85 @@ export interface IdentityTag {
 }
 
 interface Props {
-  /** Status badge text (e.g. "Alive", "Live Sync") */
-  statusText: string
-  /** Show the animated ping dot */
-  statusHasPing?: boolean
-  /** Badge color variant */
-  statusVariant?: 'emerald' | 'primary'
   /** Main heading */
   title: string
   /** Icon class for the subtitle line */
   subtitleIcon?: string
   /** Text for the subtitle line */
   subtitleText?: string
-  /** Identity tags shown below the title (icon + label with dot separators) */
+  /** Identity tags shown below the title */
   identityTags?: IdentityTag[]
   /** Intro / description paragraph */
   intro?: string
-  /** Label for the bottom stats section */
+  /** @deprecated Kept for backwards-compatible page configuration. */
+  statusText?: string
+  /** @deprecated Kept for backwards-compatible page configuration. */
+  statusHasPing?: boolean
+  /** @deprecated Kept for backwards-compatible page configuration. */
+  statusVariant?: 'emerald' | 'primary'
+  /** @deprecated Bottom stats were removed from the shared aside. */
   statsLabel?: string
-  /** Right-side metadata for the stats section header */
+  /** @deprecated Bottom stats were removed from the shared aside. */
   statsMeta?: string
-  /** Stats cells in the bottom bar (2–3 items) */
-  stats: StatItem[]
+  /** @deprecated Bottom stats were removed from the shared aside. */
+  stats?: StatItem[]
 }
 
-const {
-  statusText,
-  statusHasPing = true,
-  statusVariant = 'emerald',
-  title,
-  subtitleIcon,
-  subtitleText,
-  identityTags = [],
-  intro,
-  statsLabel = '// SYSTEM STATUS',
-  statsMeta,
-  stats,
-} = Astro.props as Props
-
-const dotColor = statusVariant === 'emerald' ? 'bg-emerald-500' : 'bg-primary'
-const pingColor = statusVariant === 'emerald' ? 'bg-emerald-400' : 'bg-primary/60'
+const { title, subtitleIcon, subtitleText, identityTags = [], intro } = Astro.props as Props
 ---
 
 <aside
   class="w-full lg:w-1/3 lg:sticky lg:top-0 lg:h-screen flex flex-col xl:border-r border-border/40 z-20 bg-background/50 backdrop-blur-sm relative overflow-hidden"
 >
-  <!-- Decorative blur circle (matches homepage) -->
   <div
     class="absolute top-0 left-0 w-full h-96 bg-primary/5 rounded-full blur-3xl -z-10 translate-x-[-20%] translate-y-[-20%] pointer-events-none"
-  >
-  </div>
+  />
 
-  <div class="flex flex-1 lg:overflow-y-auto scrollbar-hide flex-col relative z-10">
-    <!-- Logo / brand header -->
-    <div class="p-6 lg:p-8 xl:p-12 pb-0 shrink-0 fade-up flex justify-between items-start">
-      <div class="flex items-center gap-3 select-none">
-        <div class="size-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
-          <span class="icon-[ph--terminal-window-duotone] size-6"></span>
-        </div>
-        <div>
-          <div class="text-sm font-bold tracking-tight">{SITE.title || 'Digital Hub'}</div>
-          <div class="text-[10px] text-muted-foreground uppercase tracking-widest font-mono">System Online</div>
-        </div>
+  <!-- Shared brand header: intentionally identical across every page. -->
+  <header class="shrink-0 p-6 lg:p-8 xl:p-10 flex items-center justify-between gap-4 fade-up">
+    <div class="flex items-center gap-3 select-none min-w-0">
+      <div class="size-9 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
+        <span class="icon-[ph--terminal-window-duotone] size-5" />
       </div>
-      <span
-        class="inline-flex items-center rounded-full border border-primary/20 bg-primary/5 px-2.5 py-1 text-[10px] font-mono text-primary select-none"
-      >
-        v{SITE.version} / Astro
-      </span>
+      <div class="min-w-0">
+        <div class="text-sm font-bold tracking-tight truncate">{SITE.title || 'Digital Hub'}</div>
+        <div class="text-[10px] text-muted-foreground uppercase tracking-widest font-mono">v{SITE.version}</div>
+      </div>
     </div>
+    <span class="text-[10px] font-mono text-muted-foreground shrink-0">Astro</span>
+  </header>
 
-    <!-- Hero area: status + title + identity tags -->
-    <div class="flex-1 flex flex-col justify-center p-6 lg:p-8 xl:p-12 min-h-[50vh] lg:min-h-0 fade-up animation-delay-100">
-      <!-- Status badge -->
-      <div
-        class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted/30 border border-border/50 text-xs font-medium text-muted-foreground mb-8 w-fit select-none"
-      >
-        {
-          statusHasPing && (
-            <span class="relative flex size-2">
-              <span class={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${pingColor}`} />
-              <span class={`relative inline-flex rounded-full size-2 ${dotColor}`} />
-            </span>
-          )
-        }
-        {statusText}
-      </div>
+  <!-- Page identity: no status badge or secondary metrics. -->
+  <div class="flex-1 flex flex-col justify-center p-6 lg:p-8 xl:p-10 pb-10 fade-up animation-delay-100">
+    <div class="max-w-xl">
+      {subtitleIcon && subtitleText && (
+        <div class="flex items-center gap-2 text-sm text-muted-foreground mb-3">
+          <span class={`${subtitleIcon} size-4`} />
+          <span>{subtitleText}</span>
+        </div>
+      )}
 
-      <!-- Main title -->
-      <h1 class="text-4xl sm:text-5xl xl:text-6xl font-bold tracking-tight text-foreground leading-[1.15] mb-4 select-none">
+      <h1 class="text-4xl sm:text-5xl xl:text-6xl font-bold tracking-tight text-foreground leading-[1.1] mb-5 select-none">
         {title}
       </h1>
 
-      <!-- Subtitle -->
-      {
-        subtitleIcon && subtitleText && (
-          <div class="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-            <span class={`${subtitleIcon} size-4`} />
-            <span>{subtitleText}</span>
-          </div>
-        )
-      }
-
-      <!-- Identity tags -->
-      {
-        identityTags.length > 0 && (
-          <div class="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-8 font-mono">
-            {identityTags.map((tag, i) => (
-              <>
-                {i > 0 && <span class="w-1 h-1 rounded-full bg-border" />}
-                <span class="flex items-center gap-1.5">
-                  <span class={`${tag.icon} size-4`} />
-                  {tag.label}
-                </span>
-              </>
-            ))}
-          </div>
-        )
-      }
-
-      <!-- Intro text with left border accent -->
-      {
-        intro && (
-          <div class="relative pl-4 border-l-2 border-primary/30 fade-up animation-delay-150">
-            <p class="text-sm md:text-base text-muted-foreground leading-relaxed">{intro}</p>
-          </div>
-        )
-      }
-    </div>
-  </div>
-
-  <!-- Bottom stats bar -->
-  <div class="shrink-0 border-t border-border/40 bg-background/50 select-none fade-up animation-delay-200">
-    <div
-      class="p-4 flex items-center justify-between text-xs text-muted-foreground font-mono border-b border-border/20 px-6 lg:px-8 xl:px-12"
-    >
-      <span>{statsLabel}</span>
-      {statsMeta && <span>{statsMeta}</span>}
-    </div>
-
-    {
-      stats.length === 2 && (
-        <div class="flex">
-          {stats.map((stat, i) => (
-            <div
-              class={`flex-1 flex flex-col items-start justify-center p-6 lg:p-8 xl:p-10 bg-background/50 hover:bg-primary/5 transition-colors ${i < stats.length - 1 ? 'border-r border-border/40' : ''}`}
-            >
-              <span class="text-2xl font-semibold text-foreground tracking-tight">{stat.value}</span>
-              <span class="text-xs text-muted-foreground mt-1">{stat.label}</span>
-            </div>
+      {identityTags.length > 0 && (
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-2 text-xs text-muted-foreground mb-6 font-mono">
+          {identityTags.map((tag, i) => (
+            <span class="flex items-center gap-1.5">
+              {i > 0 && <span class="w-1 h-1 rounded-full bg-border mr-1.5" />}
+              <span class={`${tag.icon} size-3.5`} />
+              {tag.label}
+            </span>
           ))}
         </div>
-      )
-    }
+      )}
 
-    {
-      stats.length === 3 && (
-        <div class="flex flex-col">
-          <div class="flex">
-            {stats.slice(0, 2).map((stat, i) => (
-              <div
-                class={`flex-1 flex flex-col items-start justify-center p-6 lg:p-8 xl:p-10 bg-background/50 border-b border-border/40 hover:bg-primary/5 transition-colors ${i === 0 ? 'border-r border-border/40' : ''}`}
-              >
-                <span class="text-2xl font-semibold text-foreground tracking-tight">{stat.value}</span>
-                <span class="text-xs text-muted-foreground mt-1">{stat.label}</span>
-              </div>
-            ))}
-          </div>
-          <div class="flex items-center justify-between p-5 lg:p-6 bg-background/50 hover:bg-primary/5 transition-colors">
-            <span class="text-xs text-muted-foreground font-medium">{stats[2].label}</span>
-            <span class="text-sm font-semibold text-foreground">{stats[2].value}</span>
-          </div>
+      {intro && (
+        <div class="relative pl-4 border-l-2 border-primary/30">
+          <p class="text-sm md:text-base text-muted-foreground leading-relaxed">{intro}</p>
         </div>
-      )
-    }
+      )}
+    </div>
   </div>
 </aside>
