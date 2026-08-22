@@ -66,12 +66,13 @@ const { title, description, image, author } = Astro.props
         border-color: hsl(var(--border) / 0.65) !important;
       }
 
-      /*
-       * The loader is independent from page content animations.
-       * It is persisted between Astro swaps so the old page is never exposed
-       * during navigation and the new page is only revealed after its own
-       * animations have finished.
-       */
+      /* 页面切换只保留 Loader，关闭所有页面部件的 fade-up 飞入动画。 */
+      .fade-up {
+        opacity: 1 !important;
+        transform: none !important;
+        animation: none !important;
+      }
+
       .page-transition-loader {
         position: fixed;
         inset: 0;
@@ -123,16 +124,6 @@ const { title, description, image, author } = Astro.props
         50% { transform: scale(1); opacity: 1; }
       }
 
-      /* Freeze only while the loader covers the new document. */
-      .page-transition-loading .fade-up {
-        animation-play-state: paused;
-      }
-
-      /* Release the original component animations as one atomic state change. */
-      .page-transition-ready .fade-up {
-        animation-play-state: running;
-      }
-
       @media (prefers-reduced-motion: reduce) {
         .page-transition-loader {
           transition: none !important;
@@ -140,10 +131,6 @@ const { title, description, image, author } = Astro.props
 
         .page-transition-loader__dot {
           animation: none;
-        }
-
-        .page-transition-loading .fade-up {
-          animation-play-state: running;
         }
       }
     </style>
@@ -154,60 +141,30 @@ const { title, description, image, author } = Astro.props
 
         const root = document.documentElement
         let transitionGeneration = 0
-        let releaseFrame = 0
-        let finishFrame = 0
-
-        const cancelPendingTransition = () => {
-          transitionGeneration += 1
-          cancelAnimationFrame(releaseFrame)
-          cancelAnimationFrame(finishFrame)
-        }
+        let hideFrame = 0
 
         const getLoader = () => document.getElementById('page-transition-loader')
 
+        const cancelPendingTransition = () => {
+          transitionGeneration += 1
+          cancelAnimationFrame(hideFrame)
+        }
+
         const showLoader = () => {
           cancelPendingTransition()
-          root.classList.remove('page-transition-ready')
           root.classList.add('page-transition-loading')
           getLoader()?.classList.remove('page-transition-loader--done')
         }
 
-        const revealPage = () => {
+        const hideLoader = () => {
           const generation = transitionGeneration
 
-          // Wait for Astro's swap to be painted before releasing the existing
-          // fade-up animations. No fixed delay is used for the page itself.
-          releaseFrame = requestAnimationFrame(() => {
-            releaseFrame = requestAnimationFrame(() => {
+          // Let the swapped document paint once before releasing the loader.
+          hideFrame = requestAnimationFrame(() => {
+            hideFrame = requestAnimationFrame(() => {
               if (generation !== transitionGeneration) return
-
-              root.classList.add('page-transition-ready')
-
-              const animated = Array.from(document.querySelectorAll('.fade-up'))
-                .filter((element) => getComputedStyle(element).animationName !== 'none')
-
-              if (animated.length === 0) {
-                getLoader()?.classList.add('page-transition-loader--done')
-                root.classList.remove('page-transition-loading')
-                return
-              }
-
-              let remaining = animated.length
-              const finish = () => {
-                if (generation !== transitionGeneration) return
-                remaining -= 1
-                if (remaining > 0) return
-
-                finishFrame = requestAnimationFrame(() => {
-                  if (generation !== transitionGeneration) return
-                  getLoader()?.classList.add('page-transition-loader--done')
-                  root.classList.remove('page-transition-loading')
-                })
-              }
-
-              animated.forEach((element) => {
-                element.addEventListener('animationend', finish, { once: true })
-              })
+              getLoader()?.classList.add('page-transition-loader--done')
+              root.classList.remove('page-transition-loading')
             })
           })
         }
@@ -215,7 +172,7 @@ const { title, description, image, author } = Astro.props
         document.addEventListener('astro:before-preparation', showLoader)
         document.addEventListener('astro:after-swap', () => {
           window.scrollTo(0, 0)
-          revealPage()
+          hideLoader()
         })
       }
     </script>
