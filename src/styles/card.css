@@ -1,17 +1,14 @@
 @layer components {
-  /* Keep public card surfaces on one border tone regardless of page. */
+  /* Use the same border tone for every public card surface. */
   :where(
     [class~='rounded-xl'][class*='border-border/'],
     [class~='rounded-lg'][class*='border-border/']
   ) {
-    border-color: hsl(var(--border) / 0.6);
+    border-color: hsl(var(--border));
   }
 
-  /* Keep the homepage Recent Logs action on one line on narrow screens. */
-  @media (max-width: 639px) {
-    main a[href='/posts'] {
-      flex-shrink: 0;
-      white-space: nowrap;
-    }
+  /* Recent Logs no longer exposes a separate action link on the homepage. */
+  main > div > div:nth-child(2) a[href='/posts'] {
+    display: none;
   }
 }
