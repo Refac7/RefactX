@@ -15,8 +15,6 @@ interface Props {
   subtitleText?: string
   identityTags?: IdentityTag[]
   intro?: string
-  /** Allow legacy page props while pages are migrated to the simplified aside API. */
-  [key: string]: unknown
 }
 
 const {
@@ -30,61 +28,61 @@ const {
   intro,
 } = Astro.props as Props
 
-const dotColor = statusVariant === 'emerald' ? 'bg-emerald-500' : 'bg-primary'
-const pingColor = statusVariant === 'emerald' ? 'bg-emerald-400' : 'bg-primary/60'
+const statusDotClass = statusVariant === 'emerald' ? 'bg-emerald-500' : 'bg-primary'
+const statusPingClass = statusVariant === 'emerald' ? 'bg-emerald-400' : 'bg-primary/60'
 ---
 
-<aside class="w-full lg:w-1/3 lg:sticky lg:top-0 lg:h-screen flex flex-col xl:border-r border-border/40 z-20 bg-background/70 backdrop-blur-md relative overflow-hidden">
-  <div class="absolute -top-32 -left-32 size-96 rounded-full bg-primary/5 blur-3xl pointer-events-none" />
+<aside class="relative z-10 w-full border-b border-border/40 bg-background lg:sticky lg:top-0 lg:h-[calc(100vh-97px)] lg:w-[34%] lg:max-w-120 lg:shrink-0 lg:self-start lg:overflow-hidden lg:border-b-0 lg:border-r">
+  <div class="relative flex h-full flex-col overflow-hidden">
+    <div class="pointer-events-none absolute -left-32 -top-32 size-96 rounded-full bg-primary/5 blur-3xl" />
 
-  <div class="flex flex-1 flex-col relative z-10">
-    <header class="p-6 lg:p-8 xl:p-10 shrink-0 fade-up">
-      <a href="/" class="inline-flex items-center gap-3 group min-w-0">
-        <div class="size-9 shrink-0 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary group-hover:bg-primary/15 transition-colors">
+    <header class="relative shrink-0 px-6 pb-6 pt-8 lg:px-8 lg:pt-10 xl:px-10">
+      <a href="/" class="group inline-flex max-w-full items-center gap-3">
+        <span class="flex size-9 shrink-0 items-center justify-center rounded-lg border border-primary/20 bg-primary/10 text-primary transition-colors group-hover:bg-primary/15">
           <span class="icon-[ph--terminal-window-duotone] size-5" />
-        </div>
-        <div class="min-w-0">
-          <div class="text-sm font-bold tracking-tight truncate">{SITE.title || 'Digital Hub'}</div>
-          <div class="text-[9px] text-muted-foreground uppercase tracking-[0.18em] font-mono">v{SITE.version}</div>
-        </div>
+        </span>
+        <span class="min-w-0">
+          <span class="block truncate text-sm font-bold tracking-tight">{SITE.title || 'Digital Hub'}</span>
+          <span class="block font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground">v{SITE.version}</span>
+        </span>
       </a>
     </header>
 
-    <div class="flex-1 flex flex-col justify-center p-6 lg:p-8 xl:p-10 pt-4 lg:pt-8 fade-up animation-delay-100">
-      <div>
+    <div class="relative flex min-h-0 flex-1 items-start px-6 pb-8 pt-6 lg:px-8 lg:pb-12 lg:pt-[clamp(2rem,12vh,8rem)] xl:px-10">
+      <div class="w-full max-w-xl fade-up animation-delay-100">
         <div class="inline-flex items-center gap-2 rounded-full border border-border/50 bg-muted/30 px-3 py-1.5 text-xs font-medium text-muted-foreground select-none">
           {statusHasPing && (
-            <span class="relative flex size-2">
-              <span class={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${pingColor}`} />
-              <span class={`relative inline-flex rounded-full size-2 ${dotColor}`} />
+            <span class="relative flex size-2 shrink-0">
+              <span class={`absolute inline-flex size-full animate-ping rounded-full opacity-75 ${statusPingClass}`} />
+              <span class={`relative inline-flex size-2 rounded-full ${statusDotClass}`} />
             </span>
           )}
-          {statusText}
+          <span>{statusText}</span>
         </div>
 
-        <h1 class="mt-5 text-4xl xl:text-5xl font-bold tracking-tight text-foreground leading-[1.1] select-none">{title}</h1>
+        <h1 class="mt-5 text-4xl font-bold leading-[1.05] tracking-tight text-foreground select-none xl:text-5xl">{title}</h1>
 
         {subtitleIcon && subtitleText && (
-          <div class="flex items-center gap-2 mt-3 text-sm text-muted-foreground">
-            <span class={`${subtitleIcon} size-4`} />
+          <div class="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
+            <span class={`${subtitleIcon} size-4 shrink-0`} />
             <span>{subtitleText}</span>
           </div>
         )}
 
         {identityTags.length > 0 && (
-          <div class="flex flex-wrap items-center gap-x-3 gap-y-2 mt-5 text-xs text-muted-foreground font-mono">
-            {identityTags.map((tag, i) => (
-              <span class="flex items-center gap-1.5">
-                {i > 0 && <span class="size-1 rounded-full bg-border mr-1" />}
-                <span class={`${tag.icon} size-3.5`} />
-                {tag.label}
+          <div class="mt-5 flex max-w-xl flex-wrap items-center gap-x-3 gap-y-2 font-mono text-xs text-muted-foreground">
+            {identityTags.map((tag, index) => (
+              <span class="flex items-center gap-1.5" aria-label={tag.label}>
+                {index > 0 && <span class="mr-1 size-1 rounded-full bg-border" aria-hidden="true" />}
+                <span class={`${tag.icon} size-3.5 shrink-0`} />
+                <span>{tag.label}</span>
               </span>
             ))}
           </div>
         )}
 
         {intro && (
-          <div class="mt-6 pl-4 border-l-2 border-primary/30">
+          <div class="mt-6 max-w-xl border-l-2 border-primary/30 pl-4">
             <p class="text-sm leading-relaxed text-muted-foreground">{intro}</p>
           </div>
         )}
