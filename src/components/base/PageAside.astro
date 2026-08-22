@@ -7,22 +7,16 @@ export interface IdentityTag {
 }
 
 interface Props {
-  /** Status badge text */
   statusText: string
-  /** Show the animated ping dot */
   statusHasPing?: boolean
-  /** Badge color variant */
   statusVariant?: 'emerald' | 'primary'
-  /** Main heading */
   title: string
-  /** Icon class for the subtitle line */
   subtitleIcon?: string
-  /** Text for the subtitle line */
   subtitleText?: string
-  /** Identity tags shown below the title */
   identityTags?: IdentityTag[]
-  /** Intro / description paragraph */
   intro?: string
+  /** Allow legacy page props while pages are migrated to the simplified aside API. */
+  [key: string]: unknown
 }
 
 const {
