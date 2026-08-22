@@ -6,9 +6,7 @@ import PostNavigation from '~/components/posts/base/PostNavigation.astro'
 import TocMobile from '~/components/posts/toc/TocMobile.astro'
 import Jap from '~/components/posts/layouts/Jap.astro'
 import { POSTS_CONFIG } from '~/config'
-import { SECTION_NUM_CLASS } from '~/lib/ui'
 import Comments from '~/components/posts/base/Comments.astro'
-import List from '~/components/posts/card/List.astro'
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts')
@@ -44,9 +42,6 @@ const getWordCount = (content: string) => {
   return cn + en
 }
 const wordCount = getWordCount(post.body || '')
-
-// Other posts by the same author (excluding current post, max 3)
-const authorPosts = postsSort(posts.filter((p) => p.data.author === frontmatter.author && p.id !== post.id)).slice(0, 3)
 
 const layoutMap = {
   jap: Jap,
@@ -84,28 +79,9 @@ const PostLayout = layoutMap[layoutKey] || Jap
       {posts.length > 1 && <PostNavigation {prev} {next} />}
     </div>
 
-    {
-      authorPosts.length > 0 && (
-        <div class="px-6 sm:px-8 pb-6 sm:pb-8 mx-auto w-full fade-up animation-delay-175">
-          <div class="border-b border-border/40 pb-4 mb-8 flex items-center gap-3">
-            <span class={SECTION_NUM_CLASS}>+</span>
-            <h2 class="text-xl md:text-2xl font-bold text-foreground tracking-tight">More from {frontmatter.author}</h2>
-            <a
-              href={`/authors/${frontmatter.author}`}
-              class="ml-auto text-xs font-mono text-muted-foreground hover:text-primary transition-colors flex items-center gap-1"
-            >
-              <span class="uppercase tracking-widest">View_All</span>
-              <span class="icon-[ph--arrow-right] size-3" />
-            </a>
-          </div>
-          <List posts={authorPosts} type="compact" />
-        </div>
-      )
-    }
-
     <div class="mt-8 p-6 lg:p-8 xl:p-12 pb-12 mx-auto w-full fade-up animation-delay-200">
       <div class="border-b border-border/40 pb-4 mb-8 flex items-center gap-3">
-        <span class={SECTION_NUM_CLASS}>∞</span>
+        <span class="text-xl md:text-2xl font-bold text-foreground tracking-tight">∞</span>
         <h2 class="text-xl md:text-2xl font-bold text-foreground tracking-tight">Comments</h2>
       </div>
       <Comments />
