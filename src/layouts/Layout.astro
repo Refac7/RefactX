@@ -62,6 +62,11 @@ const { title, description, image, author } = Astro.props
     </div>
 
     <style is:global>
+      /* 统一加深可视卡片边框，同时保留主题色和原有布局。 */
+      [class*="border-border/"][class*="rounded"] {
+        border-color: hsl(var(--border) / 0.65) !important;
+      }
+
       .page-transition-loader {
         position: fixed;
         inset: 0;
