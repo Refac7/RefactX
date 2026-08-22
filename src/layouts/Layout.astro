@@ -132,15 +132,18 @@ const { title, description, image, author } = Astro.props
     </style>
 
     <script is:inline>
-      const loader = document.getElementById('page-transition-loader')
       const root = document.documentElement
       let transitionTimer
+      let finishTimer
+
+      const getLoader = () => document.getElementById('page-transition-loader')
 
       const showPageLoader = () => {
         window.clearTimeout(transitionTimer)
+        window.clearTimeout(finishTimer)
         root.classList.add('page-transition-loading')
         root.classList.remove('page-transition-ready')
-        loader?.classList.remove('page-transition-loader--done')
+        getLoader()?.classList.remove('page-transition-loader--done')
       }
 
       const startPageContentAnimation = () => {
@@ -150,8 +153,8 @@ const { title, description, image, author } = Astro.props
         }, 450)
 
         // 组件飞入后，最后淡出加载层完成切换。
-        window.setTimeout(() => {
-          loader?.classList.add('page-transition-loader--done')
+        finishTimer = window.setTimeout(() => {
+          getLoader()?.classList.add('page-transition-loader--done')
           root.classList.remove('page-transition-loading')
         }, 1050)
       }
