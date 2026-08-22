@@ -124,5 +124,19 @@
     "url": "https://www.leonxie.cn/",
     "avatar": "https://www.leonxie.cn/upload/avatar.jpg",
     "description": "保持热爱，奔赴山海！"
+  },
+  {
+    "name": "语景小站",
+    "author": "RainView",
+    "url": "https://rainview.net/",
+    "avatar": "https://res.rainview.net/images/favicon.png",
+    "description": "没有比脚更长的路，没有比人更高的山。"
+  },
+  {
+    "name": "翟十光的博客",
+    "author": "翟十光",
+    "url": "https://zhaishis.com/",
+    "avatar": "https://zhaishis.com/images/asset/favicon/favicon.svg?original=true&v=1780053761",
+    "description": "安得广厦千万间，人间何处桃花源"
   }
 ]
