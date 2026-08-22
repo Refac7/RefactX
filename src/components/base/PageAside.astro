@@ -15,10 +15,7 @@ interface Props {
   subtitleText?: string
   identityTags?: IdentityTag[]
   intro?: string
-  /**
-   * Temporary compatibility for pages that still pass removed legacy stats props.
-   * These values are intentionally ignored and will be removed when all callers migrate.
-   */
+  /** @deprecated Legacy props are accepted temporarily but intentionally ignored. */
   [key: string]: unknown
 }
 
@@ -37,16 +34,14 @@ const statusDotClass = statusVariant === 'emerald' ? 'bg-emerald-500' : 'bg-prim
 const statusPingClass = statusVariant === 'emerald' ? 'bg-emerald-400' : 'bg-primary/60'
 ---
 
-<aside
-  class="relative z-10 w-full border-b border-border/40 bg-background lg:sticky lg:top-0 lg:h-[calc(100vh-97px)] lg:w-[34%] lg:max-w-120 lg:shrink-0 lg:self-start lg:overflow-hidden lg:border-b-0 lg:border-r"
->
-  <div class="relative flex h-full min-h-0 flex-col overflow-hidden">
+<aside class="relative z-10 w-full border-b border-border/40 bg-background lg:sticky lg:top-0 lg:h-[calc(100vh-97px)] lg:w-[34%] lg:max-w-120 lg:shrink-0 lg:self-start lg:overflow-hidden lg:border-b-0 lg:border-r">
+  <div class="relative flex h-full min-h-0 flex-col">
     <div class="pointer-events-none absolute -left-32 -top-32 size-96 rounded-full bg-primary/5 blur-3xl" />
 
     <header class="relative shrink-0 px-6 pb-6 pt-8 lg:px-8 lg:pt-10 xl:px-10">
-      <a href="/" class="group inline-flex max-w-full items-center gap-3">
+      <a href="/" aria-label={`${SITE.title || 'Digital Hub'} home`} class="group inline-flex max-w-full items-center gap-3">
         <span class="flex size-9 shrink-0 items-center justify-center rounded-lg border border-primary/20 bg-primary/10 text-primary transition-colors group-hover:bg-primary/15">
-          <span class="icon-[ph--terminal-window-duotone] size-5" />
+          <span class="icon-[ph--terminal-window-duotone] size-5" aria-hidden="true" />
         </span>
         <span class="min-w-0">
           <span class="block truncate text-sm font-bold tracking-tight">{SITE.title || 'Digital Hub'}</span>
@@ -55,11 +50,11 @@ const statusPingClass = statusVariant === 'emerald' ? 'bg-emerald-400' : 'bg-pri
       </a>
     </header>
 
-    <div class="relative flex min-h-0 flex-1 items-start overflow-y-auto px-6 pb-8 pt-6 lg:px-8 lg:pb-12 lg:pt-[clamp(2rem,12vh,8rem)] xl:px-10">
+    <div class="relative flex min-h-0 flex-1 flex-col justify-end px-6 pb-8 pt-6 lg:px-8 lg:pb-10 xl:px-10">
       <div class="w-full max-w-xl fade-up animation-delay-100">
         <div class="inline-flex items-center gap-2 rounded-full border border-border/50 bg-muted/30 px-3 py-1.5 text-xs font-medium text-muted-foreground select-none">
           {statusHasPing && (
-            <span class="relative flex size-2 shrink-0">
+            <span class="relative flex size-2 shrink-0" aria-hidden="true">
               <span class={`absolute inline-flex size-full animate-ping rounded-full opacity-75 ${statusPingClass}`} />
               <span class={`relative inline-flex size-2 rounded-full ${statusDotClass}`} />
             </span>
@@ -71,7 +66,7 @@ const statusPingClass = statusVariant === 'emerald' ? 'bg-emerald-400' : 'bg-pri
 
         {subtitleIcon && subtitleText && (
           <div class="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
-            <span class={`${subtitleIcon} size-4 shrink-0`} />
+            <span class={`${subtitleIcon} size-4 shrink-0`} aria-hidden="true" />
             <span>{subtitleText}</span>
           </div>
         )}
@@ -79,9 +74,9 @@ const statusPingClass = statusVariant === 'emerald' ? 'bg-emerald-400' : 'bg-pri
         {identityTags.length > 0 && (
           <div class="mt-5 flex max-w-xl flex-wrap items-center gap-x-3 gap-y-2 font-mono text-xs text-muted-foreground">
             {identityTags.map((tag, index) => (
-              <span class="flex items-center gap-1.5" aria-label={tag.label}>
+              <span class="flex items-center gap-1.5">
                 {index > 0 && <span class="mr-1 size-1 rounded-full bg-border" aria-hidden="true" />}
-                <span class={`${tag.icon} size-3.5 shrink-0`} />
+                <span class={`${tag.icon} size-3.5 shrink-0`} aria-hidden="true" />
                 <span>{tag.label}</span>
               </span>
             ))}
