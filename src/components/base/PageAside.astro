@@ -35,10 +35,10 @@ const statusPingClass = statusVariant === 'emerald' ? 'bg-emerald-400' : 'bg-pri
 ---
 
 <aside class="relative z-10 w-full border-b border-border/40 bg-background lg:sticky lg:top-0 lg:h-[calc(100vh-97px)] lg:w-[34%] lg:max-w-120 lg:shrink-0 lg:self-start lg:overflow-hidden lg:border-b-0 lg:border-r">
-  <div class="relative flex h-full min-h-0 flex-col">
+  <div class="relative h-full min-h-0">
     <div class="pointer-events-none absolute -left-32 -top-32 size-96 rounded-full bg-primary/5 blur-3xl" />
 
-    <header class="relative shrink-0 px-6 pb-6 pt-8 lg:px-8 lg:pt-10 xl:px-10">
+    <header class="relative px-6 pb-6 pt-8 lg:absolute lg:left-0 lg:right-0 lg:top-0 lg:px-8 lg:pt-10 xl:px-10">
       <a href="/" aria-label={`${SITE.title || 'Digital Hub'} home`} class="group inline-flex max-w-full items-center gap-3">
         <span class="flex size-9 shrink-0 items-center justify-center rounded-lg border border-primary/20 bg-primary/10 text-primary transition-colors group-hover:bg-primary/15">
           <span class="icon-[ph--terminal-window-duotone] size-5" aria-hidden="true" />
@@ -50,7 +50,7 @@ const statusPingClass = statusVariant === 'emerald' ? 'bg-emerald-400' : 'bg-pri
       </a>
     </header>
 
-    <div class="relative flex min-h-0 flex-1 flex-col justify-end px-6 pb-8 pt-6 lg:px-8 lg:pb-10 xl:px-10">
+    <div class="relative px-6 pb-8 pt-6 lg:absolute lg:bottom-0 lg:left-0 lg:right-0 lg:max-h-[calc(100%-6rem)] lg:overflow-y-auto lg:px-8 lg:pb-10 lg:pt-12 xl:px-10">
       <div class="w-full max-w-xl fade-up animation-delay-100">
         <div class="inline-flex items-center gap-2 rounded-full border border-border/50 bg-muted/30 px-3 py-1.5 text-xs font-medium text-muted-foreground select-none">
           {statusHasPing && (
