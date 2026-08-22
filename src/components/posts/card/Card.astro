@@ -5,11 +5,8 @@ import PostTag from '~/components/posts/base/PostTag.astro'
 import RecommendBadge from '~/components/posts/base/RecommendBadge.astro'
 import type { CardProps } from './List.astro'
 
-interface Props extends CardProps {}
-
-const { post, heroImageLayout }: Props = Astro.props
+const { post, heroImageLayout, showImage }: CardProps = Astro.props
 const hasImage = post.data.heroImage !== 'none'
-const showImage = Astro.props.showImage
 const imagePosition = post.data.heroImageLayout || heroImageLayout || 'right'
 const isReverse = imagePosition === 'right'
 const defaultHeroImage = POSTS_CONFIG.defaultHeroImage
@@ -17,16 +14,12 @@ const sideWidthClass = 'md:w-[280px] lg:w-[320px]'
 ---
 
 <article
-  class="group relative flex flex-col md:flex-row bg-background/50 border border-border/60 hover:shadow-sm hover:border-primary/30 transition-all duration-300 rounded-xl overflow-hidden mb-8 h-full hover:-translate-y-0.5"
+  class="group relative flex flex-col md:flex-row bg-background/50 border border-border hover:shadow-sm hover:border-primary/30 transition-all duration-300 rounded-xl overflow-hidden mb-8 h-full hover:-translate-y-0.5"
 >
   {
     hasImage && showImage && (
       <div
-        class={`
-\t        hidden md:flex flex-col relative shrink-0 h-auto
-\t        ${sideWidthClass}
-\t        ${isReverse ? 'md:order-2 border-l border-border/60' : 'md:order-1 border-r border-border/60'}
-\t      `}
+        class={`hidden md:flex flex-col relative shrink-0 h-auto ${sideWidthClass} ${isReverse ? 'md:order-2 border-l border-border' : 'md:order-1 border-r border-border'}`}
       >
         <a href={`/posts/${post.id}`} class="block w-full h-full relative overflow-hidden bg-muted group/img">
           <img
@@ -45,12 +38,7 @@ const sideWidthClass = 'md:w-[280px] lg:w-[320px]'
     !hasImage && showImage && (
       <a
         href={`/posts/${post.id}`}
-        class={`
-\t        hidden md:flex shrink-0 h-auto relative overflow-hidden flex-col items-center justify-center p-6 bg-muted/20
-\t        ${sideWidthClass}
-\t        ${isReverse ? 'md:order-2 border-l border-border/60' : 'md:order-1 border-r border-border/60'}
-\t        group/placeholder hover:bg-muted/30 transition-all duration-300 cursor-pointer
-\t      `}
+        class={`hidden md:flex shrink-0 h-auto relative overflow-hidden flex-col items-center justify-center p-6 bg-muted/20 ${sideWidthClass} ${isReverse ? 'md:order-2 border-l border-border' : 'md:order-1 border-r border-border'} group/placeholder hover:bg-muted/30 transition-all duration-300 cursor-pointer`}
       >
         <span class="icon-[ph--image-broken] size-12 text-muted-foreground/30 mb-3 group-hover/placeholder:scale-110 transition-transform duration-500 ease-out" />
         <span class="text-xs font-medium text-muted-foreground/60">No Media</span>
@@ -58,34 +46,25 @@ const sideWidthClass = 'md:w-[280px] lg:w-[320px]'
     )
   }
 
-  <div
-    class={`
-\t      flex flex-col w-full p-6 sm:p-8 flex-1
-\t      ${hasImage && showImage && isReverse ? 'md:order-1' : 'md:order-1'}
-\t    `}
-  >
+  <div class={`flex flex-col w-full p-6 sm:p-8 flex-1 ${hasImage && showImage && isReverse ? 'md:order-1' : 'md:order-1'}`}>
     <div class="flex items-center justify-between mb-2">
       <div class="flex items-center gap-2 text-sm font-medium text-muted-foreground leading-6.5">
         <time>{formatDate(post.data.pubDate)}</time>
         {post.data.updatedDate && <span class="text-border">&bull;</span>}
-        {
-          post.data.updatedDate && (
-            <time class="flex items-center gap-1">
-              <span class="icon-[ph--clock-clockwise] size-3.5" />
-              {formatDate(post.data.updatedDate)}
-            </time>
-          )
-        }
-        {
-          post.data.author && (
-            <>
-              <span class="text-border">&bull;</span>
-              <a href={`/authors/${post.data.author}`} class="hover:text-foreground hover:underline transition-colors">
-                {post.data.author}
-              </a>
-            </>
-          )
-        }
+        {post.data.updatedDate && (
+          <time class="flex items-center gap-1">
+            <span class="icon-[ph--clock-clockwise] size-3.5" />
+            {formatDate(post.data.updatedDate)}
+          </time>
+        )}
+        {post.data.author && (
+          <>
+            <span class="text-border">&bull;</span>
+            <a href={`/authors/${post.data.author}`} class="hover:text-foreground hover:underline transition-colors">
+              {post.data.author}
+            </a>
+          </>
+        )}
       </div>
       {post.data.recommend && <RecommendBadge />}
     </div>
@@ -96,7 +75,7 @@ const sideWidthClass = 'md:w-[280px] lg:w-[320px]'
     </a>
 
     <div class="mt-auto flex flex-wrap items-center gap-2">
-      {post.data.tags?.slice(0, 3).map((tag) => <PostTag tag={tag} class="rounded-xs border-border/60 bg-muted/50 text-xs text-muted-foreground px-2.5 py-1" />)}
+      {post.data.tags?.slice(0, 3).map((tag) => <PostTag tag={tag} class="rounded-xs border-border bg-muted/50 text-xs text-muted-foreground px-2.5 py-1" />)}
       {post.data.tags && post.data.tags.length > 3 && <span class="text-xs text-muted-foreground/60">+{post.data.tags.length - 3}</span>}
     </div>
   </div>
