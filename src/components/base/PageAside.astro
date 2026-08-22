@@ -24,7 +24,7 @@ interface Props {
   subtitleIcon?: string
   /** Text for the subtitle line */
   subtitleText?: string
-  /** Identity tags shown below the title (icon + label with dot separators) */
+  /** Identity tags shown below the title */
   identityTags?: IdentityTag[]
   /** Intro / description paragraph */
   intro?: string
@@ -52,139 +52,114 @@ const {
 
 const dotColor = statusVariant === 'emerald' ? 'bg-emerald-500' : 'bg-primary'
 const pingColor = statusVariant === 'emerald' ? 'bg-emerald-400' : 'bg-primary/60'
+const currentPath = Astro.url.pathname
+
+const NAV_ITEMS = [
+  { label: 'Home', href: '/', icon: 'icon-[ph--house]', code: '01' },
+  { label: 'Posts', href: '/posts', icon: 'icon-[ph--read-cv-logo]', code: '02' },
+  { label: 'Projects', href: '/projects', icon: 'icon-[ph--stack]', code: '03' },
+  { label: 'Tags', href: '/tags', icon: 'icon-[ph--tag]', code: '04' },
+  { label: 'Friends', href: '/friends', icon: 'icon-[ph--planet]', code: '05' },
+  { label: 'About', href: '/about', icon: 'icon-[ph--user]', code: '06' },
+]
+
+const isActive = (href: string) => href === '/' ? currentPath === '/' : currentPath === href || currentPath.startsWith(`${href}/`)
 ---
 
-<aside
-  class="w-full lg:w-1/3 lg:sticky lg:top-0 lg:h-screen flex flex-col xl:border-r border-border/40 z-20 bg-background/50 backdrop-blur-sm relative overflow-hidden"
->
-  <!-- Decorative blur circle (matches homepage) -->
-  <div
-    class="absolute top-0 left-0 w-full h-96 bg-primary/5 rounded-full blur-3xl -z-10 translate-x-[-20%] translate-y-[-20%] pointer-events-none"
-  >
-  </div>
+<aside class="w-full lg:w-1/3 lg:sticky lg:top-0 lg:h-screen flex flex-col xl:border-r border-border/40 z-20 bg-background/70 backdrop-blur-md relative overflow-hidden">
+  <div class="absolute -top-32 -left-32 size-96 rounded-full bg-primary/5 blur-3xl pointer-events-none" />
+  <div class="absolute bottom-0 right-0 size-64 rounded-full bg-primary/[0.03] blur-3xl pointer-events-none" />
 
   <div class="flex flex-1 lg:overflow-y-auto scrollbar-hide flex-col relative z-10">
-    <!-- Logo / brand header -->
-    <div class="p-6 lg:p-8 xl:p-12 pb-0 shrink-0 fade-up flex justify-between items-start">
-      <div class="flex items-center gap-3 select-none">
-        <div class="size-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
-          <span class="icon-[ph--terminal-window-duotone] size-6"></span>
-        </div>
-        <div>
-          <div class="text-sm font-bold tracking-tight">{SITE.title || 'Digital Hub'}</div>
-          <div class="text-[10px] text-muted-foreground uppercase tracking-widest font-mono">System Online</div>
-        </div>
+    <header class="p-6 lg:p-8 xl:p-10 shrink-0 border-b border-border/30 fade-up">
+      <div class="flex items-start justify-between gap-4">
+        <a href="/" class="flex items-center gap-3 group min-w-0">
+          <div class="size-10 shrink-0 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary group-hover:bg-primary/15 transition-colors">
+            <span class="icon-[ph--terminal-window-duotone] size-6" />
+          </div>
+          <div class="min-w-0">
+            <div class="text-sm font-bold tracking-tight truncate">{SITE.title || 'Digital Hub'}</div>
+            <div class="text-[10px] text-muted-foreground uppercase tracking-[0.2em] font-mono">System Online</div>
+          </div>
+        </a>
+        <span class="shrink-0 text-[10px] font-mono text-muted-foreground/60 pt-1">v{SITE.version}</span>
       </div>
-      <span
-        class="inline-flex items-center rounded-full border border-primary/20 bg-primary/5 px-2.5 py-1 text-[10px] font-mono text-primary select-none"
-      >
-        v{SITE.version} / Astro
-      </span>
-    </div>
+    </header>
 
-    <!-- Hero area: status + title + identity tags -->
-    <div class="flex-1 flex flex-col justify-center p-6 lg:p-8 xl:p-12 min-h-[50vh] lg:min-h-0 fade-up animation-delay-100">
-      <!-- Status badge -->
-      <div
-        class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted/30 border border-border/50 text-xs font-medium text-muted-foreground mb-8 w-fit select-none"
-      >
-        {
-          statusHasPing && (
+    <div class="p-6 lg:p-8 xl:p-10 flex flex-col gap-8 fade-up animation-delay-100">
+      <div>
+        <div class="inline-flex items-center gap-2 rounded-full border border-border/50 bg-muted/30 px-3 py-1.5 text-xs font-medium text-muted-foreground select-none">
+          {statusHasPing && (
             <span class="relative flex size-2">
               <span class={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${pingColor}`} />
               <span class={`relative inline-flex rounded-full size-2 ${dotColor}`} />
             </span>
-          )
-        }
-        {statusText}
-      </div>
+          )}
+          {statusText}
+        </div>
 
-      <!-- Main title -->
-      <h1 class="text-4xl sm:text-5xl xl:text-6xl font-bold tracking-tight text-foreground leading-[1.15] mb-4 select-none">
-        {title}
-      </h1>
+        <h1 class="mt-5 text-4xl xl:text-5xl font-bold tracking-tight text-foreground leading-[1.1] select-none">{title}</h1>
 
-      <!-- Subtitle -->
-      {
-        subtitleIcon && subtitleText && (
-          <div class="flex items-center gap-2 text-sm text-muted-foreground mb-4">
+        {subtitleIcon && subtitleText && (
+          <div class="flex items-center gap-2 mt-3 text-sm text-muted-foreground">
             <span class={`${subtitleIcon} size-4`} />
             <span>{subtitleText}</span>
           </div>
-        )
-      }
+        )}
 
-      <!-- Identity tags -->
-      {
-        identityTags.length > 0 && (
-          <div class="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-8 font-mono">
+        {identityTags.length > 0 && (
+          <div class="flex flex-wrap items-center gap-x-3 gap-y-2 mt-5 text-xs text-muted-foreground font-mono">
             {identityTags.map((tag, i) => (
-              <>
-                {i > 0 && <span class="w-1 h-1 rounded-full bg-border" />}
-                <span class="flex items-center gap-1.5">
-                  <span class={`${tag.icon} size-4`} />
-                  {tag.label}
-                </span>
-              </>
+              <span class="flex items-center gap-1.5">
+                {i > 0 && <span class="size-1 rounded-full bg-border mr-1" />}
+                <span class={`${tag.icon} size-3.5`} />
+                {tag.label}
+              </span>
             ))}
           </div>
-        )
-      }
+        )}
 
-      <!-- Intro text with left border accent -->
-      {
-        intro && (
-          <div class="relative pl-4 border-l-2 border-primary/30 fade-up animation-delay-150">
-            <p class="text-sm md:text-base text-muted-foreground leading-relaxed">{intro}</p>
+        {intro && (
+          <div class="mt-6 pl-4 border-l-2 border-primary/30">
+            <p class="text-sm leading-relaxed text-muted-foreground">{intro}</p>
           </div>
-        )
-      }
+        )}
+      </div>
+
+      <nav aria-label="Primary navigation" class="rounded-xl border border-border/40 bg-background/50 overflow-hidden">
+        <div class="px-4 py-3 flex items-center justify-between border-b border-border/30">
+          <span class="text-[10px] font-mono uppercase tracking-[0.18em] text-muted-foreground">// Navigation</span>
+          <span class="text-[10px] font-mono text-muted-foreground/50">{NAV_ITEMS.length} modules</span>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-px bg-border/30">
+          {NAV_ITEMS.map((item) => (
+            <a
+              href={item.href}
+              aria-current={isActive(item.href) ? 'page' : undefined}
+              class={`group flex items-center gap-2.5 px-3 py-3 bg-background/80 transition-all ${isActive(item.href) ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-primary/5 hover:text-foreground'}`}
+            >
+              <span class={`size-4 shrink-0 ${item.icon} ${isActive(item.href) ? 'text-primary' : 'text-muted-foreground/70 group-hover:text-primary'}`} />
+              <span class="text-xs font-medium truncate">{item.label}</span>
+              <span class="ml-auto text-[9px] font-mono text-muted-foreground/30 group-hover:text-muted-foreground/60">{item.code}</span>
+            </a>
+          ))}
+        </div>
+      </nav>
     </div>
   </div>
 
-  <!-- Bottom stats bar -->
-  <div class="shrink-0 border-t border-border/40 bg-background/50 select-none fade-up animation-delay-200">
-    <div
-      class="p-4 flex items-center justify-between text-xs text-muted-foreground font-mono border-b border-border/20 px-6 lg:px-8 xl:px-12"
-    >
+  <footer class="shrink-0 border-t border-border/40 bg-background/60 select-none fade-up animation-delay-200">
+    <div class="px-6 lg:px-8 xl:px-10 py-3 flex items-center justify-between border-b border-border/30 text-[10px] font-mono text-muted-foreground">
       <span>{statsLabel}</span>
       {statsMeta && <span>{statsMeta}</span>}
     </div>
-
-    {
-      stats.length === 2 && (
-        <div class="flex">
-          {stats.map((stat, i) => (
-            <div
-              class={`flex-1 flex flex-col items-start justify-center p-6 lg:p-8 xl:p-10 bg-background/50 hover:bg-primary/5 transition-colors ${i < stats.length - 1 ? 'border-r border-border/40' : ''}`}
-            >
-              <span class="text-2xl font-semibold text-foreground tracking-tight">{stat.value}</span>
-              <span class="text-xs text-muted-foreground mt-1">{stat.label}</span>
-            </div>
-          ))}
+    <div class={stats.length === 3 ? 'grid grid-cols-2' : 'grid grid-cols-2'}>
+      {stats.map((stat, i) => (
+        <div class={`p-4 lg:p-5 bg-background/50 hover:bg-primary/5 transition-colors ${i < stats.length - 1 ? 'border-r border-border/30' : ''} ${stats.length === 3 && i === 2 ? 'col-span-2 border-t border-border/30' : ''}`}>
+          <div class="text-base lg:text-lg font-semibold text-foreground tracking-tight">{stat.value}</div>
+          <div class="text-[10px] text-muted-foreground mt-1 uppercase tracking-wider">{stat.label}</div>
         </div>
-      )
-    }
-
-    {
-      stats.length === 3 && (
-        <div class="flex flex-col">
-          <div class="flex">
-            {stats.slice(0, 2).map((stat, i) => (
-              <div
-                class={`flex-1 flex flex-col items-start justify-center p-6 lg:p-8 xl:p-10 bg-background/50 border-b border-border/40 hover:bg-primary/5 transition-colors ${i === 0 ? 'border-r border-border/40' : ''}`}
-              >
-                <span class="text-2xl font-semibold text-foreground tracking-tight">{stat.value}</span>
-                <span class="text-xs text-muted-foreground mt-1">{stat.label}</span>
-              </div>
-            ))}
-          </div>
-          <div class="flex items-center justify-between p-5 lg:p-6 bg-background/50 hover:bg-primary/5 transition-colors">
-            <span class="text-xs text-muted-foreground font-medium">{stats[2].label}</span>
-            <span class="text-sm font-semibold text-foreground">{stats[2].value}</span>
-          </div>
-        </div>
-      )
-    }
-  </div>
+      ))}
+    </div>
+  </footer>
 </aside>
