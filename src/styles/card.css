@@ -1,0 +1,9 @@
+@layer components {
+  /* Keep public card surfaces on one border tone regardless of page. */
+  :where(
+    [class~='rounded-xl'][class*='border-border/'],
+    [class~='rounded-lg'][class*='border-border/']
+  ) {
+    border-color: hsl(var(--border) / 0.6);
+  }
+}
