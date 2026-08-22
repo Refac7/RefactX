@@ -66,7 +66,7 @@ const { title, description, image, author } = Astro.props
         border-color: hsl(var(--border) / 0.65) !important;
       }
 
-      /* 页面切换只保留 Loader，关闭所有页面部件的 fade-up 飞入动画。 */
+      /* 页面切换只保留 Loader，关闭所有页面部件的飞入动画。 */
       .fade-up {
         opacity: 1 !important;
         transform: none !important;
@@ -83,22 +83,25 @@ const { title, description, image, author } = Astro.props
         opacity: 0;
         visibility: hidden;
         pointer-events: none;
-        transition: opacity 220ms ease;
-        will-change: opacity;
+        transform: translateY(-100%);
+        will-change: transform, opacity;
         contain: strict;
       }
 
       .page-transition-loading .page-transition-loader {
         opacity: 1;
         visibility: visible;
-        transition: none;
         pointer-events: auto;
+        transform: translateY(0);
+        animation: pageTransitionLoaderEnter 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
       }
 
       .page-transition-loader--done {
         opacity: 0;
         visibility: hidden;
         pointer-events: none;
+        transform: translateY(0);
+        transition: opacity 220ms ease, visibility 220ms ease;
       }
 
       .page-transition-loader__content {
@@ -118,14 +121,20 @@ const { title, description, image, author } = Astro.props
         animation: pageTransitionPulse 800ms ease-in-out infinite;
       }
 
+      @keyframes pageTransitionLoaderEnter {
+        from { transform: translateY(-100%); }
+        to { transform: translateY(0); }
+      }
+
       @keyframes pageTransitionPulse {
-        0%,
-        100% { transform: scale(0.7); opacity: 0.35; }
+        0%, 100% { transform: scale(0.7); opacity: 0.35; }
         50% { transform: scale(1); opacity: 1; }
       }
 
       @media (prefers-reduced-motion: reduce) {
         .page-transition-loader {
+          animation: none !important;
+          transform: translateY(0);
           transition: none !important;
         }
 
@@ -159,7 +168,8 @@ const { title, description, image, author } = Astro.props
         const hideLoader = () => {
           const generation = transitionGeneration
 
-          // Let the swapped document paint once before releasing the loader.
+          // Keep the interaction-blocking loader above the new page until it
+          // has received two animation frames and is ready to be revealed.
           hideFrame = requestAnimationFrame(() => {
             hideFrame = requestAnimationFrame(() => {
               if (generation !== transitionGeneration) return
