@@ -1,11 +1,11 @@
 {
   "title": "About",
   "description": "Who am I?",
-  "introduce": "你还想知道些什么？",
+  "introduce": "你还想知道些什么呢？",
   "profileName": "Refac7",
   "profileAvatar": "/avatar.png",
   "profileRole": "Creative Developer / UI Designer",
-  "profileBio": "你与光芒 / Another another... Another excuse. \n\n因抑郁发作休学，高数苦手。喜欢电子音乐，熟悉以下所有技术栈的拼写，熟练使用剪贴板和cmd c和cmd v. 如果你和我有共同爱好，欢迎随时使用你能找到的所有渠道联系我哦～",
+  "profileBio": "你与光芒 / You & Radiance\n\n因抑郁发作休学，高数苦手。喜欢电子音乐，熟悉以下所有技术栈的拼写，熟练使用剪贴板和cmd c和cmd v. 如果你和我有共同爱好，欢迎随时使用你能找到的所有渠道联系我哦～",
   "physicalAttributes": [
     {
       "label": "Height",
