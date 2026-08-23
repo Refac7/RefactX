@@ -4,6 +4,7 @@ import ThemeToggle from '~/components/theme/ThemeToggle'
 import FooterLink from '~/components/base/FooterLink.astro'
 
 const currentYear = new Date().getFullYear()
+const SITE_CREATED_AT = '2025-07-25T17:12:32Z'
 const CONTAINER_CLASS = 'mx-auto px-6 sm:px-8 py-12'
 ---
 
@@ -39,56 +40,56 @@ const CONTAINER_CLASS = 'mx-auto px-6 sm:px-8 py-12'
         <span class="text-sm font-semibold tracking-tight text-foreground block"> Technology </span>
         <ul class="flex flex-col gap-3">
           <li>
-            <a
-              href="https://astro.build"
-              target="_blank"
-              class="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
-              ><span class="icon-[lineicons--astro] size-4"></span>Astro</a
-            >
+            <a href="https://astro.build" target="_blank" class="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"><span class="icon-[lineicons--astro] size-4"></span>Astro</a>
           </li>
           <li>
-            <a
-              href="https://www.vercel.com"
-              target="_blank"
-              class="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
-              ><span class="icon-[simple-icons--vercel] size-3 ml-0.5"></span>Vercel</a
-            >
+            <a href="https://www.vercel.com" target="_blank" class="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"><span class="icon-[simple-icons--vercel] size-3 ml-0.5"></span>Vercel</a>
           </li>
           <li>
-            <a
-              href="https://github.com/Refac7/RefactX"
-              target="_blank"
-              class="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
-              ><span class="icon-[mingcute--github-fill] size-3 ml-0.5"></span>Source Code</a
-            >
+            <a href="https://github.com/Refac7/RefactX" target="_blank" class="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"><span class="icon-[mingcute--github-fill] size-3 ml-0.5"></span>Source Code</a>
           </li>
         </ul>
       </div>
     </div>
 
-    <div
-      class="py-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-[10px] font-mono text-muted-foreground uppercase"
-    >
+    <div class="py-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-[10px] font-mono text-muted-foreground uppercase">
       <div class="flex flex-col sm:flex-row gap-2 sm:gap-6">
         <span>© {currentYear} {SITE.author || 'Refac7'}. All Rights Reserved.</span>
         <span class="hidden sm:inline text-muted-foreground">|</span>
-        <a href="https://icp.gov.moe/?keyword=20252280" target="_blank" class="hover:text-foreground transition-colors">
-          萌ICP备 20252280号
-        </a>
+        <a href="https://icp.gov.moe/?keyword=20252280" target="_blank" class="hover:text-foreground transition-colors">萌ICP备 20252280号</a>
       </div>
 
       <div class="flex w-full sm:w-auto gap-4">
         <div class="flex items-center gap-2">
-          <span class="relative flex h-1.5 w-1.5">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-            <span class="relative inline-flex h-1.5 w-1.5 bg-green-500 rounded-full"></span>
-          </span>
+          <span class="relative flex h-1.5 w-1.5"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span><span class="relative inline-flex h-1.5 w-1.5 bg-green-500 rounded-full"></span></span>
           <span>All Systems Normal</span>
         </div>
-        <div class="flex ml-auto bg-background sm:hidden">
-          <ThemeToggle client:load />
+        <div class="flex items-center gap-2" data-site-age>
+          <span class="text-muted-foreground/60">·</span>
+          <span>Site Age</span>
+          <span class="text-foreground/80 normal-case tabular-nums" data-site-age-value>calculating…</span>
         </div>
+        <div class="flex ml-auto bg-background sm:hidden"><ThemeToggle client:load /></div>
       </div>
     </div>
   </div>
+
+  <script is:inline>
+    const siteCreatedAt = new Date('2025-07-25T17:12:32Z').getTime()
+    const siteAge = document.querySelector('[data-site-age-value]')
+
+    const updateSiteAge = () => {
+      if (!siteAge) return
+      let seconds = Math.max(0, Math.floor((Date.now() - siteCreatedAt) / 1000))
+      const days = Math.floor(seconds / 86400)
+      seconds %= 86400
+      const hours = Math.floor(seconds / 3600)
+      seconds %= 3600
+      const minutes = Math.floor(seconds / 60)
+      siteAge.textContent = `${days}d ${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m`
+    }
+
+    updateSiteAge()
+    window.setInterval(updateSiteAge, 60000)
+  </script>
 </footer>
