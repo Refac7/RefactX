@@ -12,9 +12,7 @@ const CONTAINER_CLASS = 'mx-auto px-6 sm:px-8 py-12'
   <div class={CONTAINER_CLASS}>
     <div class="grid grid-cols-1 md:grid-cols-4 gap-8 lg:gap-12 pb-12 border-b border-border/40">
       <div class="md:col-span-2 space-y-4">
-        <span class="text-sm font-semibold tracking-tight text-foreground block">
-          {SITE.author || 'Refac7'}
-        </span>
+        <span class="text-sm font-semibold tracking-tight text-foreground block">{SITE.author || 'Refac7'}</span>
         <p class="text-sm text-muted-foreground leading-relaxed max-w-sm">
           {SITE.footerText}<br />
           {SITE.footerText2 || 'Minimalist layout, maximum focus. Data persistence guaranteed.'}
@@ -24,30 +22,16 @@ const CONTAINER_CLASS = 'mx-auto px-6 sm:px-8 py-12'
       <div class="space-y-4">
         <span class="text-sm font-semibold tracking-tight text-foreground block"> Navigation </span>
         <ul class="flex flex-col gap-2">
-          {
-            FOOTER_LINKS.map((link) => (
-              <li>
-                <FooterLink href={link.url} class="text-muted-foreground hover:text-foreground transition-colors">
-                  {link.name}
-                </FooterLink>
-              </li>
-            ))
-          }
+          {FOOTER_LINKS.map((link) => <li><FooterLink href={link.url} class="text-muted-foreground hover:text-foreground transition-colors">{link.name}</FooterLink></li>)}
         </ul>
       </div>
 
       <div class="space-y-4">
         <span class="text-sm font-semibold tracking-tight text-foreground block"> Technology </span>
         <ul class="flex flex-col gap-3">
-          <li>
-            <a href="https://astro.build" target="_blank" class="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"><span class="icon-[lineicons--astro] size-4"></span>Astro</a>
-          </li>
-          <li>
-            <a href="https://www.vercel.com" target="_blank" class="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"><span class="icon-[simple-icons--vercel] size-3 ml-0.5"></span>Vercel</a>
-          </li>
-          <li>
-            <a href="https://github.com/Refac7/RefactX" target="_blank" class="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"><span class="icon-[mingcute--github-fill] size-3 ml-0.5"></span>Source Code</a>
-          </li>
+          <li><a href="https://astro.build" target="_blank" class="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"><span class="icon-[lineicons--astro] size-4"></span>Astro</a></li>
+          <li><a href="https://www.vercel.com" target="_blank" class="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"><span class="icon-[simple-icons--vercel] size-3 ml-0.5"></span>Vercel</a></li>
+          <li><a href="https://github.com/Refac7/RefactX" target="_blank" class="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"><span class="icon-[mingcute--github-fill] size-3 ml-0.5"></span>Source Code</a></li>
         </ul>
       </div>
     </div>
@@ -75,21 +59,37 @@ const CONTAINER_CLASS = 'mx-auto px-6 sm:px-8 py-12'
   </div>
 
   <script is:inline>
-    const siteCreatedAt = new Date('2025-07-25T17:12:32Z').getTime()
-    const siteAge = document.querySelector('[data-site-age-value]')
+    (() => {
+      const siteCreatedAt = new Date('2025-07-25T17:12:32Z').getTime()
+      let intervalId
 
-    const updateSiteAge = () => {
-      if (!siteAge) return
-      let seconds = Math.max(0, Math.floor((Date.now() - siteCreatedAt) / 1000))
-      const days = Math.floor(seconds / 86400)
-      seconds %= 86400
-      const hours = Math.floor(seconds / 3600)
-      seconds %= 3600
-      const minutes = Math.floor(seconds / 60)
-      siteAge.textContent = `${days}d ${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m`
-    }
+      const updateSiteAge = () => {
+        const siteAge = document.querySelector('[data-site-age-value]')
+        if (!siteAge) return false
 
-    updateSiteAge()
-    window.setInterval(updateSiteAge, 60000)
+        let seconds = Math.max(0, Math.floor((Date.now() - siteCreatedAt) / 1000))
+        const days = Math.floor(seconds / 86400)
+        seconds %= 86400
+        const hours = Math.floor(seconds / 3600)
+        seconds %= 3600
+        const minutes = Math.floor(seconds / 60)
+        siteAge.textContent = `${days}d ${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m`
+        return true
+      }
+
+      const initSiteAge = () => {
+        updateSiteAge()
+        if (intervalId) window.clearInterval(intervalId)
+        intervalId = window.setInterval(updateSiteAge, 60000)
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initSiteAge, { once: true })
+      } else {
+        initSiteAge()
+      }
+
+      document.addEventListener('astro:after-swap', initSiteAge)
+    })()
   </script>
 </footer>
