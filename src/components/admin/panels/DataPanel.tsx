@@ -6,6 +6,21 @@ export default function DataPanel() {
   const { mobileView, showLeftPanel, handleNewPost, fetchRemoteFiles, loadFile, filename, isLoadingFiles, remoteFiles, stageForDelete } =
     useAdmin()
 
+  const sortedRemoteFiles = [...remoteFiles].sort((a, b) => {
+    const getPostNumber = (name: string) => {
+      const match = name.match(/^post-(\d+)\.md$/i)
+      return match ? Number(match[1]) : null
+    }
+
+    const aNumber = getPostNumber(a.name)
+    const bNumber = getPostNumber(b.name)
+
+    if (aNumber !== null && bNumber !== null) return bNumber - aNumber
+    if (aNumber !== null) return -1
+    if (bNumber !== null) return 1
+    return a.name.localeCompare(b.name)
+  })
+
   return (
     <div
       className={cn(
@@ -50,7 +65,7 @@ export default function DataPanel() {
           {isLoadingFiles ? (
             <div className="p-4 flex justify-center"><span className="icon-[ph--spinner] animate-spin text-muted-foreground size-5" /></div>
           ) : (
-            remoteFiles.map((f) => (
+            sortedRemoteFiles.map((f) => (
               <div key={f.sha} className={cn('group flex justify-between items-center text-sm px-3 py-2 rounded-md cursor-pointer transition-all', filename === f.name ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground hover:bg-muted')}>
                 <div className="flex items-center gap-2.5 overflow-hidden flex-1">
                   <span className={cn('icon-[ph--file-text] size-4 shrink-0', filename === f.name ? 'text-primary' : 'text-muted-foreground/60')} />
