@@ -6,8 +6,8 @@
     "githubUrl": "https://github.com/Refac7/AnonBoard",
     "type": "icon",
     "icon": "icon-[ri--pages-line]",
-    "star": "0",
-    "fork": "0"
+    "star": 0,
+    "fork": 0
   },
   {
     "name": "Cover_Forge",
@@ -16,8 +16,8 @@
     "githubUrl": "https://github.com/refac7/cover-forge",
     "type": "icon",
     "icon": "icon-[ri--pages-line]",
-    "star": "0",
-    "fork": "0"
+    "star": 0,
+    "fork": 0
   },
   {
     "name": "RefactX",
@@ -26,8 +26,8 @@
     "website": "/",
     "type": "icon",
     "icon": "icon-[ri--xing-fill]",
-    "star": "0",
-    "fork": "0"
+    "star": 0,
+    "fork": 0
   },
   {
     "name": "MC服务器状态嵌入式组件",
@@ -36,7 +36,7 @@
     "website": "https://www.neotec.uk/serverstatus.html",
     "type": "icon",
     "icon": "icon-[ri--puzzle-line]",
-    "star": "0",
-    "fork": "0"
+    "star": 0,
+    "fork": 0
   }
 ]
