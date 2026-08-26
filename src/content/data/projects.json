@@ -38,25 +38,5 @@
     "icon": "icon-[ri--puzzle-line]",
     "star": "0",
     "fork": "0"
-  },
-  {
-    "name": "Neotec. 主站",
-    "description": "基于 Vitepress 构建，储存官方文档",
-    "githubUrl": "https://github.com/Refac7/VitePress/",
-    "website": "https://www.neotec.uk/",
-    "type": "icon",
-    "icon": "icon-[ri--terminal-box-line]",
-    "star": "0",
-    "fork": "0"
-  },
-  {
-    "name": "Neotec. 整合包",
-    "description": "Neotec整合包平台是一个以开源、自由、社区驱动为核心的Minecraft模组整合服务。",
-    "githubUrl": null,
-    "website": "https://www.neotec.uk/modpacks.html",
-    "type": "icon",
-    "icon": "icon-[ri--archive-line]",
-    "star": 8,
-    "fork": 1
   }
 ]
