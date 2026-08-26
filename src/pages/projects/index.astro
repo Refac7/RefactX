@@ -18,7 +18,12 @@ interface Project {
   star?: number
   fork?: number
 }
-const ProjectList = rawProjectList as Project[]
+
+const ProjectList = rawProjectList.map((project) => ({
+  ...project,
+  star: typeof project.star === 'number' ? project.star : Number(project.star) || 0,
+  fork: typeof project.fork === 'number' ? project.fork : Number(project.fork) || 0,
+})) as Project[]
 const { title, description, introduce } = PROJECTS_CONFIG
 const totalCount = ProjectList.length.toString().padStart(2, '0')
 ---
