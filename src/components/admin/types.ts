@@ -23,6 +23,7 @@ export type SchemaField = {
   key: string
   label: string
   type: 'text' | 'image' | 'textarea' | 'json'
+  valueType?: 'string' | 'number' | 'boolean' | 'json'
 }
 
 export const SCHEMAS: Record<string, SchemaField[]> = {
@@ -40,8 +41,8 @@ export const SCHEMAS: Record<string, SchemaField[]> = {
     { key: 'githubUrl', label: 'GitHub', type: 'text' },
     { key: 'type', label: 'Type (icon/image)', type: 'text' },
     { key: 'icon', label: 'Icon Class / Image URL', type: 'text' },
-    { key: 'star', label: 'Stars', type: 'text' },
-    { key: 'fork', label: 'Forks', type: 'text' },
+    { key: 'star', label: 'Stars', type: 'text', valueType: 'number' },
+    { key: 'fork', label: 'Forks', type: 'text', valueType: 'number' },
   ],
   'about.json': [
     { key: 'title', label: 'Page Title', type: 'text' },
