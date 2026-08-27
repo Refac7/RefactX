@@ -164,6 +164,12 @@ const { title, description, image, author } = Astro.props
           cancelAnimationFrame(hideFrame)
         }
 
+        const clearLoader = () => {
+          cancelPendingTransition()
+          root.classList.remove('page-transition-loading')
+          getLoader()?.classList.remove('page-transition-loader--done')
+        }
+
         const showLoader = () => {
           cancelPendingTransition()
           root.classList.add('page-transition-loading')
@@ -172,9 +178,6 @@ const { title, description, image, author } = Astro.props
 
         const hideLoader = () => {
           const generation = transitionGeneration
-
-          // Keep the interaction-blocking loader above the new page until it
-          // has received two animation frames and is ready to be revealed.
           hideFrame = requestAnimationFrame(() => {
             hideFrame = requestAnimationFrame(() => {
               if (generation !== transitionGeneration) return
@@ -184,7 +187,38 @@ const { title, description, image, author } = Astro.props
           })
         }
 
-        document.addEventListener('astro:before-preparation', showLoader)
+        const isSamePageLink = (event) => {
+          if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return false
+
+          const target = event.target
+          if (!(target instanceof Element)) return false
+
+          const link = target.closest('a[href]')
+          if (!(link instanceof HTMLAnchorElement)) return false
+          if (link.target && link.target !== '_self') return false
+          if (link.hasAttribute('download')) return false
+
+          return new URL(link.href).href === window.location.href
+        }
+
+        window.addEventListener('click', (event) => {
+          if (event.defaultPrevented || !isSamePageLink(event)) return
+
+          event.preventDefault()
+          event.stopImmediatePropagation()
+          clearLoader()
+        }, true)
+
+        document.addEventListener('astro:before-preparation', (event) => {
+          const target = event?.detail?.to
+          if (target && new URL(target, window.location.href).href === window.location.href) {
+            event.preventDefault()
+            clearLoader()
+            return
+          }
+          showLoader()
+        })
+
         document.addEventListener('astro:after-swap', () => {
           window.scrollTo(0, 0)
           hideLoader()
