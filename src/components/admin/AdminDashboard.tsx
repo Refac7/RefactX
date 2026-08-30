@@ -101,7 +101,7 @@ const DashboardLayout = () => {
               key={v}
               onClick={() => setMobileView(v as any)}
               className={cn(
-                'py-2 text-[10px] font-mono uppercase tracking-widest rounded-md capitalize transition-all',
+                'py-2 text-[10px] font-mono uppercase tracking-widest rounded-md transition-all',
                 mobileView === v ? 'bg-muted text-foreground shadow-xs' : 'text-muted-foreground hover:text-foreground'
               )}
             >
