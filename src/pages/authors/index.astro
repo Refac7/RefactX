@@ -55,7 +55,7 @@ const lastUpdate = new Date().toLocaleDateString('en-US', { month: 'short', day:
               return (
                 <a
                   href={`/authors/${encodeURIComponent(author.name)}`}
-                  class="group relative flex flex-col justify-between p-6 bg-background/50 border border-border/40 rounded-xl hover:bg-muted/30 hover:border-primary/30 hover:shadow-sm transition-all duration-300 h-32 fade-up hover:-translate-y-0.5"
+                  class="group relative flex flex-col justify-between p-6 bg-background/50 border border-border/40 hover:bg-muted/30 hover:border-primary/30 hover:shadow-sm transition-all duration-300 h-32 fade-up hover:-translate-y-0.5"
                   style={`animation-delay: ${index * 50}ms`}
                   rel="noopener noreferrer"
                 >
@@ -63,13 +63,13 @@ const lastUpdate = new Date().toLocaleDateString('en-US', { month: 'short', day:
                     <h3 class="font-semibold text-lg text-foreground group-hover:text-primary transition-colors tracking-tight">
                       {author.name}
                     </h3>
-                    <span class="inline-flex items-center justify-center rounded-full bg-muted/60 px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+                    <span class="inline-flex items-center justify-center bg-muted/60 px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
                       {author.count}
                     </span>
                   </div>
-                  <div class="w-full h-1.5 bg-muted/50 rounded-full overflow-hidden mt-4">
+                  <div class="w-full h-1.5 bg-muted/50 overflow-hidden mt-4">
                     <div
-                      class="h-full bg-primary/60 group-hover:bg-primary transition-all duration-500 ease-out rounded-full"
+                      class="h-full bg-primary/60 group-hover:bg-primary transition-all duration-500 ease-out"
                       style={`width: ${percent}%`}
                     />
                   </div>
@@ -81,7 +81,7 @@ const lastUpdate = new Date().toLocaleDateString('en-US', { month: 'short', day:
 
         {
           authors.length === 0 && (
-            <div class="flex flex-col items-center justify-center py-24 rounded-xl border border-border/40 bg-muted/10 mt-8">
+            <div class="flex flex-col items-center justify-center py-24 border border-border/40 bg-muted/10 mt-8">
               <span class="icon-[ph--warning-circle] size-10 text-muted-foreground/40 mb-4" />
               <p class="text-sm text-muted-foreground">No authors found.</p>
             </div>

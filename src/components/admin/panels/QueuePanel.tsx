@@ -7,7 +7,7 @@ export default function QueuePanel() {
   return (
     <div
       className={cn(
-        'flex-col bg-background/50 rounded-xl border border-border/40 transition-all duration-300 relative overflow-hidden',
+        'flex-col bg-background/50 border border-border/40 transition-all duration-300 relative overflow-hidden',
         mobileView === 'queue' ? 'flex h-[calc(100vh-12rem)] lg:h-auto' : 'hidden',
         showRightPanel ? 'lg:flex lg:col-span-3 xl:col-span-3' : 'lg:hidden'
       )}
@@ -15,12 +15,12 @@ export default function QueuePanel() {
       {/* Header */}
       <div className="h-12 px-4 border-b border-border/40 flex justify-between items-center bg-muted/20">
         <div className="flex items-center gap-2">
-          <span className="inline-flex items-center justify-center size-5 rounded bg-primary/10 text-primary font-mono text-[9px] font-bold">
+          <span className="inline-flex items-center justify-center size-5 bg-primary/10 text-primary font-mono text-[9px] font-bold">
             Q
           </span>
           <span className="text-sm font-semibold text-foreground">Changes Queue</span>
         </div>
-        <span className="text-[10px] font-mono text-muted-foreground bg-muted/50 px-2 py-0.5 rounded-full">{queue.length}</span>
+        <span className="text-[10px] font-mono text-muted-foreground bg-muted/50 px-2 py-0.5">{queue.length}</span>
       </div>
 
       {/* Queue items */}
@@ -34,12 +34,12 @@ export default function QueuePanel() {
           queue.map((item) => (
             <div
               key={item.id}
-              className="relative bg-background border border-border/40 rounded-md p-3 flex flex-col gap-2 group hover:border-primary/30 hover:shadow-sm transition-all"
+              className="relative bg-background border border-border/40 p-3 flex flex-col gap-2 group hover:border-primary/30 hover:shadow-sm transition-all"
             >
               <div className="flex justify-between items-start">
                 <span
                   className={cn(
-                    'text-[9px] font-mono font-semibold uppercase px-2 py-0.5 rounded-md',
+                    'text-[9px] font-mono font-semibold uppercase px-2 py-0.5',
                     item.type === 'delete'
                       ? 'text-red-600 bg-red-50 dark:text-red-400 dark:bg-red-500/10'
                       : 'text-emerald-600 bg-emerald-50 dark:text-emerald-400 dark:bg-emerald-500/10'
@@ -51,7 +51,7 @@ export default function QueuePanel() {
                   {item.type === 'write' && (
                     <button
                       onClick={() => loadFromQueue(item)}
-                      className="p-1 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+                      className="p-1 hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
                       title="Edit"
                     >
                       <span className="icon-[ph--pencil-simple] size-3.5" />
@@ -60,7 +60,7 @@ export default function QueuePanel() {
                   {item.status === 'pending' && (
                     <button
                       onClick={(e) => removeFromQueue(item.id, e)}
-                      className="p-1 rounded-md hover:bg-red-50 text-muted-foreground hover:text-red-500 dark:hover:bg-red-500/10 transition-colors"
+                      className="p-1 hover:bg-red-50 text-muted-foreground hover:text-red-500 dark:hover:bg-red-500/10 transition-colors"
                       title="Remove"
                     >
                       <span className="icon-[ph--x] size-3.5" />
@@ -94,7 +94,7 @@ export default function QueuePanel() {
           onClick={processQueue}
           disabled={isProcessingQueue || queue.length === 0}
           className={cn(
-            'w-full py-2.5 rounded-md text-[10px] font-mono font-semibold uppercase tracking-widest transition-all flex items-center justify-center gap-2',
+            'w-full py-2.5 text-[10px] font-mono font-semibold uppercase tracking-widest transition-all flex items-center justify-center gap-2',
             isProcessingQueue || queue.length === 0
               ? 'bg-muted text-muted-foreground cursor-not-allowed'
               : 'bg-foreground text-background hover:bg-foreground/90 shadow-xs'

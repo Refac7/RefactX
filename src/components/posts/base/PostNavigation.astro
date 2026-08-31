@@ -14,7 +14,7 @@ const { prev, next } = Astro.props
   {
     next && (
       <a href={`/posts/${next.id}`} class="group flex-1 relative">
-        <div class="rounded-xl border border-border/40 bg-background/50 p-5 hover:bg-muted/20 hover:border-primary/30 hover:shadow-sm transition-all duration-300 group-hover:-translate-x-0.5">
+        <div class="border border-border/40 bg-background/50 p-5 hover:bg-muted/20 hover:border-primary/30 hover:shadow-sm transition-all duration-300 group-hover:-translate-x-0.5">
           <div class="flex items-center gap-2 mb-2">
             <span class="icon-[ph--arrow-left] size-3.5 text-muted-foreground/50 group-hover:text-primary group-hover:-translate-x-0.5 transition-all" />
             <span class="text-[10px] font-mono uppercase tracking-widest text-muted-foreground/50">{POSTS_CONFIG.prevPostText}</span>
@@ -28,7 +28,7 @@ const { prev, next } = Astro.props
   {
     prev && (
       <a href={`/posts/${prev.id}`} class="group flex-1 relative">
-        <div class="rounded-xl border border-border/40 bg-background/50 p-5 hover:bg-muted/20 hover:border-primary/30 hover:shadow-sm transition-all duration-300 text-right group-hover:translate-x-0.5">
+        <div class="border border-border/40 bg-background/50 p-5 hover:bg-muted/20 hover:border-primary/30 hover:shadow-sm transition-all duration-300 text-right group-hover:translate-x-0.5">
           <div class="flex items-center justify-end gap-2 mb-2">
             <span class="text-[10px] font-mono uppercase tracking-widest text-muted-foreground/50">{POSTS_CONFIG.nextPostText}</span>
             <span class="icon-[ph--arrow-right] size-3.5 text-muted-foreground/50 group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
