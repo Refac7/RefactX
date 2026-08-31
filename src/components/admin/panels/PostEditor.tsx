@@ -86,7 +86,7 @@ export default function PostEditor({ showPreview, showMetaConfig }: PostEditorPr
               <input
                 value={meta.title}
                 onChange={(e) => setMeta({ ...meta, title: e.target.value })}
-                className="w-full min-w-0 bg-background border border-border/40 rounded-xs px-3 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
+                className="w-full min-w-0 bg-background border border-border/40 px-3 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
                 placeholder="Post Title"
               />
             </div>
@@ -96,12 +96,12 @@ export default function PostEditor({ showPreview, showMetaConfig }: PostEditorPr
                 type="date"
                 value={meta.pubDate}
                 onChange={(e) => setMeta({ ...meta, pubDate: e.target.value })}
-                className="block w-full max-w-full min-w-0 box-border appearance-none bg-background border border-border/40 rounded-xs px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
+                className="block w-full max-w-full min-w-0 box-border appearance-none bg-background border border-border/40 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
               />
             </div>
             <div className="sm:col-span-4 min-w-0">
               <label className="block text-xs font-medium text-muted-foreground mb-1.5">Author</label>
-              <div className="w-full bg-muted/30 border border-border/40 rounded-xs px-3 py-2 text-sm text-muted-foreground font-mono select-all">
+              <div className="w-full bg-muted/30 border border-border/40 px-3 py-2 text-sm text-muted-foreground font-mono select-all">
                 {username || meta.author || '—'}
               </div>
             </div>
@@ -110,7 +110,7 @@ export default function PostEditor({ showPreview, showMetaConfig }: PostEditorPr
               <input
                 value={meta.description}
                 onChange={(e) => setMeta({ ...meta, description: e.target.value })}
-                className="w-full min-w-0 bg-background border border-border/40 rounded-xs px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
+                className="w-full min-w-0 bg-background border border-border/40 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
                 placeholder="Brief summary of the post..."
               />
             </div>
@@ -119,7 +119,7 @@ export default function PostEditor({ showPreview, showMetaConfig }: PostEditorPr
               <input
                 value={meta.tags}
                 onChange={(e) => setMeta({ ...meta, tags: e.target.value })}
-                className="w-full min-w-0 bg-background border border-border/40 rounded-xs px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
+                className="w-full min-w-0 bg-background border border-border/40 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
                 placeholder="tech, life, code"
               />
             </div>
@@ -135,7 +135,7 @@ export default function PostEditor({ showPreview, showMetaConfig }: PostEditorPr
               <input
                 value={meta.heroImage}
                 onChange={(e) => setMeta({ ...meta, heroImage: e.target.value })}
-                className="w-full min-w-0 bg-background border border-border/40 rounded-xs px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
+                className="w-full min-w-0 bg-background border border-border/40 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
                 placeholder="https://..."
               />
             </div>
@@ -145,7 +145,7 @@ export default function PostEditor({ showPreview, showMetaConfig }: PostEditorPr
                   type="checkbox"
                   checked={meta.recommend}
                   onChange={(e) => setMeta({ ...meta, recommend: e.target.checked })}
-                  className="size-4 rounded border-border/40 text-primary focus:ring-primary/20"
+                  className="size-4 border-border/40 text-primary focus:ring-primary/20"
                 />
                 <span className="text-sm font-medium text-foreground">Featured Post</span>
               </label>
@@ -162,7 +162,7 @@ export default function PostEditor({ showPreview, showMetaConfig }: PostEditorPr
               key={i}
               onClick={tool.action}
               title={tool.label}
-              className="p-2 rounded-xs hover:bg-muted text-muted-foreground hover:text-foreground transition-colors flex items-center justify-center"
+              className="p-2 hover:bg-muted text-muted-foreground hover:text-foreground transition-colors flex items-center justify-center"
             >
               <span className={cn('size-4', tool.icon)}></span>
             </button>
@@ -173,7 +173,7 @@ export default function PostEditor({ showPreview, showMetaConfig }: PostEditorPr
       <div className="flex-1 relative flex flex-col min-h-0 bg-background">
         {showPreview ? (
           <div className="absolute inset-0 overflow-y-auto w-full p-6 sm:p-10 custom-scrollbar">
-            <div className="mx-auto prose prose-sm sm:prose-base dark:prose-invert prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-primary prose-img:rounded-lg">
+            <div className="mx-auto prose prose-sm sm:prose-base dark:prose-invert prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-primary">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>{body}</ReactMarkdown>
             </div>
           </div>

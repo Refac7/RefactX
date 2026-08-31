@@ -75,7 +75,7 @@ export default function JsonEditor() {
               onChange(e.target.value)
             }
           }}
-          className="w-full bg-background border border-border/40 p-3 rounded-xs text-sm font-mono focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none min-h-30 transition-all"
+          className="w-full bg-background border border-border/40 p-3 text-sm font-mono focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none min-h-30 transition-all"
           placeholder={`Enter ${field.label.toLowerCase()}...`}
         />
       )
@@ -86,11 +86,11 @@ export default function JsonEditor() {
         <input
           value={value || ''}
           onChange={(e) => onChange(e.target.value)}
-          className="flex-1 bg-background border border-border/40 p-3 rounded-xs text-sm focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+          className="flex-1 bg-background border border-border/40 p-3 text-sm focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
           placeholder={`Enter ${field.label.toLowerCase()}...`}
         />
         {field.type === 'image' && value && !value.startsWith('icon-') && (
-          <div className="size-10 shrink-0 rounded-xs border border-border/40 overflow-hidden bg-muted/20">
+          <div className="size-10 shrink-0 border border-border/40 overflow-hidden bg-muted/20">
             <img src={value} className="size-full object-cover" alt="preview" onError={(e) => (e.currentTarget.style.display = 'none')} />
           </div>
         )}
@@ -143,13 +143,13 @@ export default function JsonEditor() {
           <div className="flex items-center justify-between mb-8 pb-4 border-b border-border/40">
             <button
               onClick={() => setEditingItemIndex(null)}
-              className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5 rounded-xs hover:bg-muted"
+              className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5 hover:bg-muted"
             >
               <span className="icon-[ph--arrow-left] size-4"></span> Back to List
             </button>
             <button
               onClick={() => handleDeleteItem(editingItemIndex)}
-              className="text-sm font-medium text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 px-3 py-1.5 rounded-xs transition-colors"
+              className="text-sm font-medium text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 px-3 py-1.5 transition-colors"
             >
               Delete Item
             </button>
@@ -162,7 +162,7 @@ export default function JsonEditor() {
                   {field.type === 'image' && WALINE_CONFIG.enableImgUpload && (
                     <button
                       onClick={() => triggerUpload(`json____${editingItemIndex}___${field.key}`)}
-                      className="text-xs text-primary hover:text-primary/80 transition-colors bg-primary/10 px-2 py-1 rounded"
+                      className="text-xs text-primary hover:text-primary/80 transition-colors bg-primary/10 px-2 py-1"
                     >
                       Upload Image
                     </button>
@@ -182,7 +182,7 @@ export default function JsonEditor() {
           <span className="text-sm font-semibold text-foreground">Items ({parsedJson.length})</span>
           <button
             onClick={handleAddItem}
-            className="flex items-center gap-1.5 bg-foreground text-background px-3 py-1.5 rounded-xs text-sm font-medium hover:bg-foreground/90 transition-colors shadow-xs"
+            className="flex items-center gap-1.5 bg-foreground text-background px-3 py-1.5 text-sm font-medium hover:bg-foreground/90 transition-colors shadow-xs"
           >
             <span className="icon-[ph--plus] size-4"></span> Add Item
           </button>
@@ -216,10 +216,10 @@ export default function JsonEditor() {
               <div
                 key={idx}
                 onClick={() => setEditingItemIndex(idx)}
-                className="group bg-background border border-border/40 rounded-lg p-4 cursor-pointer hover:border-border hover:shadow-xs hover:bg-muted/10 transition-all flex flex-col justify-between"
+                className="group bg-background border border-border/40 p-4 cursor-pointer hover:border-border hover:shadow-xs hover:bg-muted/10 transition-all flex flex-col justify-between"
               >
                 <div className="flex items-start justify-between mb-4">
-                  <div className="size-12 bg-muted/30 border border-border/40 rounded-xs flex items-center justify-center overflow-hidden">
+                  <div className="size-12 bg-muted/30 border border-border/40 flex items-center justify-center overflow-hidden">
                     {iconEl}
                   </div>
                   <span className="icon-[ph--pencil-simple] size-4 text-muted-foreground/30 group-hover:text-foreground transition-colors"></span>

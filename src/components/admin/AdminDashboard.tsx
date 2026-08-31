@@ -21,7 +21,7 @@ const DashboardLayout = () => {
         <div className="max-w-[1920px] mx-auto p-6 lg:p-8 xl:p-12 h-16 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-3 select-none">
-              <div className="size-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+              <div className="size-8 bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
                 <span className="icon-[ph--terminal-window] size-4" />
               </div>
               <div>
@@ -29,7 +29,7 @@ const DashboardLayout = () => {
                 <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-mono">System Controller</span>
               </div>
             </div>
-            <span className="hidden sm:inline-flex items-center rounded-full border border-primary/20 bg-primary/5 px-2 py-0.5 text-[10px] font-mono text-primary">
+            <span className="hidden sm:inline-flex items-center border border-primary/20 bg-primary/5 px-2 py-0.5 text-[10px] font-mono text-primary">
               {REPO_CONFIG.repo}
             </span>
           </div>
@@ -62,46 +62,46 @@ const DashboardLayout = () => {
       <main className="flex-1 max-w-[1920px] w-full mx-auto p-6 lg:p-8 xl:p-12 flex flex-col h-[calc(100vh-4rem)]">
         {/* Stats cards */}
         <div className="hidden lg:grid grid-cols-3 gap-6 mb-6 shrink-0">
-          <div className="bg-background/50 rounded-xl border border-border/40 p-5 flex items-center justify-between hover:border-primary/30 hover:shadow-sm transition-all">
+          <div className="bg-background/50 border border-border/40 p-5 flex items-center justify-between hover:border-primary/30 hover:shadow-sm transition-all">
             <div>
               <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest mb-1">Total Files</p>
               <h3 className="text-2xl font-bold">{remoteFiles.length}</h3>
             </div>
-            <div className="size-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
+            <div className="size-10 bg-primary/10 border border-primary/20 flex items-center justify-center">
               <span className="icon-[ph--files] size-5 text-primary/70" />
             </div>
           </div>
           <div
-            className="bg-background/50 rounded-xl border border-border/40 p-5 flex items-center justify-between cursor-pointer hover:border-primary/30 hover:shadow-sm transition-all"
+            className="bg-background/50 border border-border/40 p-5 flex items-center justify-between cursor-pointer hover:border-primary/30 hover:shadow-sm transition-all"
             onClick={() => setMobileView('queue')}
           >
             <div>
               <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest mb-1">Pending Changes</p>
               <h3 className={cn('text-2xl font-bold', queue.length > 0 ? 'text-primary' : 'text-foreground')}>{queue.length}</h3>
             </div>
-            <div className="size-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
+            <div className="size-10 bg-primary/10 border border-primary/20 flex items-center justify-center">
               <span className={cn('size-5', queue.length > 0 ? 'text-primary' : 'text-primary/50', 'icon-[ph--queue]')} />
             </div>
           </div>
-          <div className="bg-background/50 rounded-xl border border-border/40 p-5 flex items-center justify-between hover:border-primary/30 hover:shadow-sm transition-all">
+          <div className="bg-background/50 border border-border/40 p-5 flex items-center justify-between hover:border-primary/30 hover:shadow-sm transition-all">
             <div>
               <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest mb-1">Repository</p>
               <h3 className="text-sm font-bold truncate max-w-50">{REPO_CONFIG.repo}</h3>
             </div>
-            <div className="size-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
+            <div className="size-10 bg-primary/10 border border-primary/20 flex items-center justify-center">
               <span className="icon-[ph--git-branch] size-5 text-primary/70" />
             </div>
           </div>
         </div>
 
         {/* Mobile tab nav */}
-        <div className="grid grid-cols-3 mb-4 bg-background/50 rounded-lg border border-border/40 p-1 lg:hidden shrink-0">
+        <div className="grid grid-cols-3 mb-4 bg-background/50 border border-border/40 p-1 lg:hidden shrink-0">
           {['files', 'editor', 'queue'].map((v) => (
             <button
               key={v}
               onClick={() => setMobileView(v as any)}
               className={cn(
-                'py-2 text-[10px] font-mono uppercase tracking-widest rounded-md transition-all',
+                'py-2 text-[10px] font-mono uppercase tracking-widest transition-all',
                 mobileView === v ? 'bg-muted text-foreground shadow-xs' : 'text-muted-foreground hover:text-foreground'
               )}
             >

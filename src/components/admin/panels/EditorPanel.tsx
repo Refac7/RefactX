@@ -26,7 +26,7 @@ export default function EditorPanel() {
   return (
     <div
       className={cn(
-        'flex-col bg-background/50 rounded-xl border border-border/40 lg:flex transition-all duration-300 relative overflow-hidden',
+        'flex-col bg-background/50 border border-border/40 lg:flex transition-all duration-300 relative overflow-hidden',
         mobileView === 'editor' ? 'flex h-[calc(100vh-12rem)] lg:h-auto' : 'hidden',
         showLeftPanel && showRightPanel
           ? 'lg:col-span-6 xl:col-span-7'
@@ -42,7 +42,7 @@ export default function EditorPanel() {
         <div className="flex items-center h-full flex-1 min-w-0">
           <button
             onClick={() => setShowLeftPanel(!showLeftPanel)}
-            className="hidden lg:flex p-1.5 mr-2 rounded-md text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+            className="hidden lg:flex p-1.5 mr-2 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
           >
             <span className={cn('size-4 transition-transform', showLeftPanel ? '' : 'rotate-180', 'icon-[ph--sidebar-simple]')} />
           </button>
@@ -66,7 +66,7 @@ export default function EditorPanel() {
               <button
                 onClick={() => setShowPreview(!showPreview)}
                 className={cn(
-                  'px-3 py-1.5 rounded-md text-[10px] font-mono uppercase tracking-widest transition-colors flex items-center gap-1.5',
+                  'px-3 py-1.5 text-[10px] font-mono uppercase tracking-widest transition-colors flex items-center gap-1.5',
                   showPreview ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
                 )}
               >
@@ -77,7 +77,7 @@ export default function EditorPanel() {
                 disabled={showPreview}
                 onClick={() => setShowMetaConfig(!showMetaConfig)}
                 className={cn(
-                  'px-2 py-0.5 rounded-md transition-colors',
+                  'px-2 py-0.5 transition-colors',
                   showPreview
                     ? 'opacity-30 cursor-not-allowed text-muted-foreground'
                     : cn('text-muted-foreground hover:bg-muted hover:text-foreground', showMetaConfig && 'bg-muted text-foreground')
@@ -90,7 +90,7 @@ export default function EditorPanel() {
           ) : (
             <button
               onClick={() => setEditorMode(editorMode === 'visual' ? 'raw' : 'visual')}
-              className="px-3 py-1.5 rounded-md text-[10px] font-mono bg-muted/50 text-muted-foreground hover:text-foreground uppercase tracking-widest transition-colors"
+              className="px-3 py-1.5 text-[10px] font-mono bg-muted/50 text-muted-foreground hover:text-foreground uppercase tracking-widest transition-colors"
             >
               {editorMode === 'visual' ? 'Raw Code' : 'Visual Edit'}
             </button>
@@ -100,7 +100,7 @@ export default function EditorPanel() {
 
           <button
             onClick={stageForWrite}
-            className="px-4 py-1.5 rounded-md bg-foreground text-background text-[10px] font-mono font-semibold uppercase tracking-widest hover:bg-foreground/90 transition-all flex items-center gap-1.5 shadow-xs"
+            className="px-4 py-1.5 bg-foreground text-background text-[10px] font-mono font-semibold uppercase tracking-widest hover:bg-foreground/90 transition-all flex items-center gap-1.5 shadow-xs"
           >
             <span className="icon-[ph--floppy-disk] size-4" />
             <span className="hidden sm:inline">Save</span>
@@ -108,7 +108,7 @@ export default function EditorPanel() {
 
           <button
             onClick={() => setShowRightPanel(!showRightPanel)}
-            className="hidden lg:flex p-1.5 ml-1 rounded-md text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+            className="hidden lg:flex p-1.5 ml-1 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
           >
             <span className={cn('size-4 transition-transform', showRightPanel ? 'rotate-180' : '', 'icon-[ph--sidebar-simple]')} />
           </button>

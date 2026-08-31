@@ -65,7 +65,7 @@ const Captcha = ({ onVerify, className }: CaptchaProps) => {
     <div
       onClick={handleVerify}
       className={cn(
-        'flex items-center gap-3 p-2 px-3 rounded-xl border border-border/60 bg-background/50 cursor-pointer select-none transition-all',
+        'flex items-center gap-3 p-2 px-3 border border-border/60 bg-background/50 cursor-pointer select-none transition-all',
         status === 'idle' ? 'hover:border-primary/40 hover:bg-muted/30' : 'cursor-default',
         status === 'error' && 'border-red-500/50 bg-red-500/5',
         className

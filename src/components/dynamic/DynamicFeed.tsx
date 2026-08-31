@@ -41,11 +41,11 @@ function FeedItemCard({ item, animationDelay }: { item: FeedItem; animationDelay
 
   return (
     <div
-      className="group relative flex flex-col bg-background/50 border border-border/40 rounded-xl hover:border-primary/30 hover:shadow-sm transition-all duration-300 fade-up"
+      className="group relative flex flex-col bg-background/50 border border-border/40 hover:border-primary/30 hover:shadow-sm transition-all duration-300 fade-up"
       style={{ animationDelay }}
     >
       <div className="p-5 pb-3 flex justify-between items-start gap-4">
-        <span className="inline-flex items-center rounded-full bg-muted/40 px-2.5 py-0.5 text-[11px] font-medium text-foreground tracking-tight select-none">
+        <span className="inline-flex items-center bg-muted/40 px-2.5 py-0.5 text-[11px] font-medium text-foreground tracking-tight select-none">
           {item.mood}
         </span>
         <span className="text-xs text-muted-foreground whitespace-nowrap flex items-center gap-1">
@@ -69,7 +69,7 @@ function FeedItemCard({ item, animationDelay }: { item: FeedItem; animationDelay
         >
           <div
             ref={contentRef}
-            className="prose prose-sm dark:prose-invert max-w-none prose-img:rounded-lg prose-img:border prose-img:border-border/40 prose-a:text-primary prose-p:leading-relaxed"
+            className="prose prose-sm dark:prose-invert max-w-none prose-img:border prose-img:border-border/40 prose-a:text-primary prose-p:leading-relaxed"
           >
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{item.content}</ReactMarkdown>
           </div>
@@ -199,14 +199,14 @@ export default function DynamicFeed() {
         {loading || !isVerified ? (
           <div className="grid grid-cols-1 gap-6">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="flex flex-col bg-background/50 border border-border/40 rounded-xl p-6 min-h-35 animate-pulse">
+              <div key={i} className="flex flex-col bg-background/50 border border-border/40 p-6 min-h-35 animate-pulse">
                 <div className="flex justify-between items-center mb-4">
-                  <div className="h-5 w-16 bg-muted/50 rounded-full"></div>
-                  <div className="h-3 w-20 bg-muted/30 rounded"></div>
+                  <div className="h-5 w-16 bg-muted/50"></div>
+                  <div className="h-3 w-20 bg-muted/30"></div>
                 </div>
                 <div className="space-y-2 flex-1">
-                  <div className="h-4 w-full bg-muted/40 rounded"></div>
-                  <div className="h-4 w-4/5 bg-muted/40 rounded"></div>
+                  <div className="h-4 w-full bg-muted/40"></div>
+                  <div className="h-4 w-4/5 bg-muted/40"></div>
                 </div>
               </div>
             ))}
@@ -223,7 +223,7 @@ export default function DynamicFeed() {
               <div className="mt-10 mb-4 flex justify-center fade-up" style={{ animationDelay: '100ms' }}>
                 <button
                   onClick={() => setVisibleCount((prev) => prev + ITEMS_PER_PAGE)}
-                  className="group flex items-center justify-center gap-2 px-6 py-2.5 rounded-full border border-border/60 bg-background text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted/30 hover:border-primary/40 transition-all select-none"
+                  className="group flex items-center justify-center gap-2 px-6 py-2.5 border border-border/60 bg-background text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted/30 hover:border-primary/40 transition-all select-none"
                 >
                   <span>Load More</span>
                   <span className="icon-[ph--arrow-down] size-3.5 group-hover:translate-y-0.5 transition-transform"></span>

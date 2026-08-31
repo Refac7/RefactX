@@ -54,10 +54,10 @@ export default function LoginScreen() {
 
       {/* Login card */}
       <div className="flex-1 flex flex-col items-center justify-center w-full z-10">
-        <div className="w-full max-w-85 bg-background/50 backdrop-blur-sm rounded-xl border border-border/40 p-8 sm:p-10 relative shadow-sm">
+        <div className="w-full max-w-85 bg-background/50 backdrop-blur-sm border border-border/40 p-8 sm:p-10 relative shadow-sm">
           <div className="mb-8">
             <div className="flex items-center gap-2 mb-1">
-              <span className="inline-flex items-center justify-center size-6 rounded-md bg-primary/10 text-primary font-mono text-[10px] font-bold">
+              <span className="inline-flex items-center justify-center size-6 bg-primary/10 text-primary font-mono text-[10px] font-bold">
                 AUTH
               </span>
               <h1 className="text-xl font-bold tracking-tight text-foreground">Authenticate</h1>
@@ -78,7 +78,7 @@ export default function LoginScreen() {
                 autoFocus
                 autoComplete="username"
                 className={cn(
-                  'w-full px-4 py-2.5 rounded-lg border bg-background text-sm transition-all focus:outline-none focus:ring-2 focus:ring-offset-0',
+                  'w-full px-4 py-2.5 border bg-background text-sm transition-all focus:outline-none focus:ring-2 focus:ring-offset-0',
                   loginError
                     ? 'border-red-500/50 focus:ring-red-500/20 text-red-500'
                     : 'border-border/60 focus:border-primary/50 focus:ring-primary/20'
@@ -97,7 +97,7 @@ export default function LoginScreen() {
                 placeholder="••••••••"
                 autoComplete="current-password"
                 className={cn(
-                  'w-full px-4 py-2.5 rounded-lg border bg-background text-sm transition-all focus:outline-none focus:ring-2 focus:ring-offset-0',
+                  'w-full px-4 py-2.5 border bg-background text-sm transition-all focus:outline-none focus:ring-2 focus:ring-offset-0',
                   loginError
                     ? 'border-red-500/50 focus:ring-red-500/20 text-red-500'
                     : 'border-border/60 focus:border-primary/50 focus:ring-primary/20'
@@ -111,7 +111,7 @@ export default function LoginScreen() {
               onClick={() => captchaToken && performLogin(username.trim(), password, captchaToken)}
               disabled={isValidating || !captchaToken || !username.trim()}
               className={cn(
-                'w-full py-2.5 rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-2',
+                'w-full py-2.5 text-sm font-semibold transition-all flex items-center justify-center gap-2',
                 !captchaToken || !username.trim() || loginError
                   ? 'bg-muted text-muted-foreground border border-border/50 cursor-not-allowed'
                   : 'bg-foreground text-background hover:bg-foreground/90 shadow-sm'

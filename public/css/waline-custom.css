@@ -11,7 +11,7 @@
   --waline-disable-color: hsl(var(--muted-foreground) / 0.5) !important;
   --waline-info-color: hsl(var(--muted-foreground)) !important;
   --waline-code-bg-color: hsl(var(--muted) / 0.4) !important;
-  --waline-border-radius: 0.5rem !important;
+  --waline-border-radius: 0 !important;
   --waline-avatar-radius: 50% !important;
 }
 
@@ -40,7 +40,19 @@
 }
 
 .wl-btn {
-  border-radius: 0.25em !important;
+  border-radius: 0 !important;
+}
+
+/* 蓝图风格：评论组件内部元素统一直角（头像保持圆形） */
+#waline .wl-card,
+#waline .wl-editor,
+#waline .wl-emoji-popup,
+#waline .wl-card .wl-badge,
+#waline .wl-login-nick,
+#waline .wl-reaction-votes,
+#waline .wl-content pre,
+#waline .wl-content :not(pre) > code {
+  border-radius: 0 !important;
 }
 
 .wl-actions {
