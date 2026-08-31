@@ -257,80 +257,16 @@ html.theme-mourning {
   }
 }
 
-/* ===== 蓝图风格（斜线底纹 + 辅助线 + 方框标注） ===== */
-/* 45° 斜线底纹（@utility 以支持 lg: 变体，仅桌面端左侧栏生效） */
+/* ===== 蓝图风格（淡斜线底纹） ===== */
+/* 45° 斜线底纹（@utility 以支持 lg: 变体，仅桌面端左侧栏生效；低透明度保持克制） */
 @utility blueprint-hatch {
   background-image: repeating-linear-gradient(
     45deg,
-    hsl(var(--border) / 0.65) 0,
-    hsl(var(--border) / 0.65) 1px,
+    hsl(var(--border) / 0.28) 0,
+    hsl(var(--border) / 0.28) 1px,
     transparent 1px,
-    transparent 14px
+    transparent 18px
   );
-}
-
-@layer components {
-  /* 十字准星标记（配合 absolute + size-* 使用） */
-  .blueprint-mark {
-    pointer-events: none;
-    background-image:
-      linear-gradient(hsl(var(--border) / 0.9), hsl(var(--border) / 0.9)),
-      linear-gradient(hsl(var(--border) / 0.9), hsl(var(--border) / 0.9));
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size:
-      100% 1px,
-      1px 100%;
-  }
-
-  /* 四角刻度方框 */
-  .blueprint-box {
-    position: relative;
-    --bp-tick: 9px;
-    --bp-tick-w: 1.5px;
-    --bp-tick-c: hsl(var(--foreground) / 0.35);
-    background-image:
-      linear-gradient(var(--bp-tick-c), var(--bp-tick-c)), linear-gradient(var(--bp-tick-c), var(--bp-tick-c)),
-      linear-gradient(var(--bp-tick-c), var(--bp-tick-c)), linear-gradient(var(--bp-tick-c), var(--bp-tick-c)),
-      linear-gradient(var(--bp-tick-c), var(--bp-tick-c)), linear-gradient(var(--bp-tick-c), var(--bp-tick-c)),
-      linear-gradient(var(--bp-tick-c), var(--bp-tick-c)), linear-gradient(var(--bp-tick-c), var(--bp-tick-c));
-    background-position:
-      left top,
-      left top,
-      right top,
-      right top,
-      left bottom,
-      left bottom,
-      right bottom,
-      right bottom;
-    background-size:
-      var(--bp-tick) var(--bp-tick-w),
-      var(--bp-tick-w) var(--bp-tick),
-      var(--bp-tick) var(--bp-tick-w),
-      var(--bp-tick-w) var(--bp-tick),
-      var(--bp-tick) var(--bp-tick-w),
-      var(--bp-tick-w) var(--bp-tick),
-      var(--bp-tick) var(--bp-tick-w),
-      var(--bp-tick-w) var(--bp-tick);
-    background-repeat: no-repeat;
-  }
-
-  /* 方框浮动标签 */
-  .blueprint-label {
-    position: absolute;
-    top: -7px;
-    left: 12px;
-    z-index: 1;
-    padding: 0 6px;
-    background-color: hsl(var(--background));
-    font-family: var(--font-geist-mono);
-    font-size: 9px;
-    line-height: 14px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: hsl(var(--muted-foreground));
-    white-space: nowrap;
-  }
 }
 
 /* ===== 滚动条与工具类 ===== */
