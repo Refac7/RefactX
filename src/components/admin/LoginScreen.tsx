@@ -17,9 +17,6 @@ export default function LoginScreen() {
 
   return (
     <div className="relative min-h-[80vh] flex flex-col p-6 lg:p-12 font-sans overflow-hidden">
-      {/* Decorative blur */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -z-10 translate-x-[30%] translate-y-[-30%] pointer-events-none" />
-
       {/* Top-left status */}
       <div className="absolute top-6 left-6 lg:top-12 lg:left-12 flex items-center gap-3 select-none">
         <div className="flex items-center gap-2">
