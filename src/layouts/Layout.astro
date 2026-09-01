@@ -22,9 +22,15 @@ const { title, description, image, author } = Astro.props
   <head>
     <Head title={`${title} | ${SITE.title}`} {description} {image} {author} />
     <script is:inline>
-      const theme = localStorage.getItem('theme') || 'system'
-      const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
-      document.documentElement.style.backgroundColor = isDark ? '#0a0a0a' : '#fafafa'
+      ;(function () {
+        let theme = 'system'
+        try {
+          theme = localStorage.getItem('theme') || 'system'
+        } catch {}
+
+        const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        document.documentElement.style.backgroundColor = isDark ? '#0a0a0a' : '#fafafa'
+      })()
     </script>
   </head>
   <body>
@@ -88,25 +94,29 @@ const { title, description, image, author } = Astro.props
         opacity: 0;
         visibility: hidden;
         pointer-events: none;
-        transform: translateY(-100%);
+        transform: translate3d(0, -100%, 0);
         will-change: transform, opacity;
         contain: strict;
+        transition:
+          transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
+          opacity 180ms ease;
       }
 
       .page-transition-loading .page-transition-loader {
         opacity: 1;
         visibility: visible;
         pointer-events: auto;
-        transform: translateY(0);
-        animation: pageTransitionLoaderEnter 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
+        transform: translate3d(0, 0, 0);
       }
 
       .page-transition-loader--done {
         opacity: 0;
         visibility: hidden;
         pointer-events: none;
-        transform: translateY(0);
-        transition: opacity 220ms ease, visibility 220ms ease;
+        transform: translate3d(0, -100%, 0);
+        transition:
+          transform 420ms cubic-bezier(0.4, 0, 0.2, 1),
+          opacity 180ms ease;
       }
 
       .page-transition-loader__content {
@@ -126,20 +136,15 @@ const { title, description, image, author } = Astro.props
         animation: pageTransitionPulse 800ms ease-in-out infinite;
       }
 
-      @keyframes pageTransitionLoaderEnter {
-        from { transform: translateY(-100%); }
-        to { transform: translateY(0); }
-      }
-
       @keyframes pageTransitionPulse {
         0%, 100% { transform: scale(0.7); opacity: 0.35; }
         50% { transform: scale(1); opacity: 1; }
       }
 
       @media (prefers-reduced-motion: reduce) {
-        .page-transition-loader {
-          animation: none !important;
-          transform: translateY(0);
+        .page-transition-loader,
+        .page-transition-loader--done {
+          transform: translate3d(0, 0, 0);
           transition: none !important;
         }
 
@@ -164,61 +169,27 @@ const { title, description, image, author } = Astro.props
           cancelAnimationFrame(hideFrame)
         }
 
-        const clearLoader = () => {
-          cancelPendingTransition()
-          root.classList.remove('page-transition-loading')
-          getLoader()?.classList.remove('page-transition-loader--done')
-        }
-
         const showLoader = () => {
           cancelPendingTransition()
+          const loader = getLoader()
+          if (!loader) return
+
+          loader.classList.remove('page-transition-loader--done')
           root.classList.add('page-transition-loading')
-          getLoader()?.classList.remove('page-transition-loader--done')
         }
 
         const hideLoader = () => {
           const generation = transitionGeneration
           hideFrame = requestAnimationFrame(() => {
-            hideFrame = requestAnimationFrame(() => {
-              if (generation !== transitionGeneration) return
-              getLoader()?.classList.add('page-transition-loader--done')
-              root.classList.remove('page-transition-loading')
-            })
+            if (generation !== transitionGeneration) return
+
+            const loader = getLoader()
+            loader?.classList.add('page-transition-loader--done')
+            root.classList.remove('page-transition-loading')
           })
         }
 
-        const isSamePageLink = (event) => {
-          if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return false
-
-          const target = event.target
-          if (!(target instanceof Element)) return false
-
-          const link = target.closest('a[href]')
-          if (!(link instanceof HTMLAnchorElement)) return false
-          if (link.target && link.target !== '_self') return false
-          if (link.hasAttribute('download')) return false
-
-          return new URL(link.href).href === window.location.href
-        }
-
-        window.addEventListener('click', (event) => {
-          if (event.defaultPrevented || !isSamePageLink(event)) return
-
-          event.preventDefault()
-          event.stopImmediatePropagation()
-          clearLoader()
-        }, true)
-
-        document.addEventListener('astro:before-preparation', (event) => {
-          const target = event?.detail?.to
-          if (target && new URL(target, window.location.href).href === window.location.href) {
-            event.preventDefault()
-            clearLoader()
-            return
-          }
-          showLoader()
-        })
-
+        document.addEventListener('astro:before-preparation', showLoader)
         document.addEventListener('astro:after-swap', () => {
           window.scrollTo(0, 0)
           hideLoader()
