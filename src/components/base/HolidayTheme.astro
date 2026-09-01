@@ -11,22 +11,30 @@ import { HOLIDAY_THEMES } from '~/config'
 
 <script define:vars={{ HOLIDAY_THEMES }} is:inline>
   ;(function () {
+    const getOverrideDate = () => {
+      try {
+        return localStorage.getItem('disable-holiday-theme')
+      } catch {
+        return null
+      }
+    }
+
+    const disableHolidayTheme = (date) => {
+      try {
+        localStorage.setItem('disable-holiday-theme', date)
+      } catch {
+        // Firefox private/restricted storage can reject both reads and writes.
+      }
+    }
+
     function applyHolidayTheme() {
       const date = new Date()
-
       const todayStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
-
       const holiday = HOLIDAY_THEMES[todayStr]
 
-      let activeTheme = null
-      let themeMsg = ''
-
-      if (holiday) {
-        activeTheme = holiday.theme
-        themeMsg = holiday.message
-      }
-
-      const overrideDate = localStorage.getItem('disable-holiday-theme')
+      const activeTheme = holiday?.theme ?? null
+      const themeMsg = holiday?.message ?? ''
+      const overrideDate = getOverrideDate()
 
       document.documentElement.classList.remove('theme-mourning', 'theme-red', 'theme-green', 'theme-gold')
 
@@ -44,6 +52,8 @@ import { HOLIDAY_THEMES } from '~/config'
 
     applyHolidayTheme()
     document.addEventListener('astro:after-swap', applyHolidayTheme)
+
+    window.__DISABLE_HOLIDAY_THEME__ = disableHolidayTheme
   })()
 </script>
 
@@ -68,25 +78,23 @@ import { HOLIDAY_THEMES } from '~/config'
   ;(function () {
     function initHolidayBanner() {
       const banner = document.getElementById('holiday-banner')
-
       const msgEl = document.getElementById('holiday-msg')
-
       const closeBtn = document.getElementById('close-holiday-btn')
 
-      if (window.__HOLIDAY_ACTIVE__ && banner && msgEl) {
+      if (window.__HOLIDAY_ACTIVE__ && banner && msgEl && closeBtn) {
         msgEl.textContent = window.__HOLIDAY_MSG__
 
         banner.classList.remove('hidden')
         banner.classList.add('flex')
 
         closeBtn.onclick = () => {
-          document.documentElement.classList.remove(window.__HOLIDAY_CLASS__)
+          const holidayClass = window.__HOLIDAY_CLASS__
+          if (holidayClass) document.documentElement.classList.remove(holidayClass)
 
           banner.classList.add('hidden')
           banner.classList.remove('flex')
 
-          localStorage.setItem('disable-holiday-theme', window.__TODAY_STR__)
-
+          window.__DISABLE_HOLIDAY_THEME__?.(window.__TODAY_STR__)
           window.__HOLIDAY_ACTIVE__ = false
         }
       } else if (banner) {
@@ -96,7 +104,7 @@ import { HOLIDAY_THEMES } from '~/config'
     }
 
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initHolidayBanner)
+      document.addEventListener('DOMContentLoaded', initHolidayBanner, { once: true })
     } else {
       initHolidayBanner()
     }
