@@ -20,30 +20,33 @@ const ogImage = new URL(image || SITE.ogImage, Astro.url)
   ;(function () {
     const STORAGE_KEY = 'theme'
     const root = document.documentElement
-    const saved = localStorage.getItem(STORAGE_KEY) || 'system'
+    const colorScheme = window.matchMedia('(prefers-color-scheme: dark)')
 
-    // 超轻量执行，0 重排 0 阻塞
-    const isDark = saved === 'dark' || (saved === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
-
-    root.dataset.theme = isDark ? 'dark' : 'light'
-    root.classList.toggle('dark', isDark)
-
-    // 只在必要时监听
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-      if (localStorage.getItem(STORAGE_KEY) === 'system') {
-        const nowDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-        root.dataset.theme = nowDark ? 'dark' : 'light'
-        root.classList.toggle('dark', nowDark)
+    const getStoredTheme = () => {
+      try {
+        return localStorage.getItem(STORAGE_KEY) || 'system'
+      } catch {
+        return 'system'
       }
+    }
+
+    const applyTheme = () => {
+      const saved = getStoredTheme()
+      const isDark = saved === 'dark' || (saved === 'system' && colorScheme.matches)
+
+      root.dataset.theme = isDark ? 'dark' : 'light'
+      root.classList.toggle('dark', isDark)
+    }
+
+    // 超轻量执行，且避免受限环境下 localStorage 抛出 SecurityError。
+    applyTheme()
+
+    colorScheme.addEventListener('change', () => {
+      if (getStoredTheme() === 'system') applyTheme()
     })
 
     // Astro 路由同步
-    document.addEventListener('astro:after-swap', () => {
-      const theme = localStorage.getItem(STORAGE_KEY) || 'system'
-      const dark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
-      root.dataset.theme = dark ? 'dark' : 'light'
-      root.classList.toggle('dark', dark)
-    })
+    document.addEventListener('astro:after-swap', applyTheme)
   })()
 </script>
 
