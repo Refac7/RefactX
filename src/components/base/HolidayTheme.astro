@@ -11,7 +11,7 @@ import { HOLIDAY_THEMES } from '~/config'
 
 <script define:vars={{ HOLIDAY_THEMES }} is:inline>
   ;(function () {
-    const getOverrideDate = () => {
+    function getOverrideDate() {
       try {
         return localStorage.getItem('disable-holiday-theme')
       } catch {
@@ -19,19 +19,10 @@ import { HOLIDAY_THEMES } from '~/config'
       }
     }
 
-    const disableHolidayTheme = (date) => {
-      try {
-        localStorage.setItem('disable-holiday-theme', date)
-      } catch {
-        // Firefox private/restricted storage can reject both reads and writes.
-      }
-    }
-
     function applyHolidayTheme() {
       const date = new Date()
       const todayStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
       const holiday = HOLIDAY_THEMES[todayStr]
-
       const activeTheme = holiday?.theme ?? null
       const themeMsg = holiday?.message ?? ''
       const overrideDate = getOverrideDate()
@@ -52,8 +43,6 @@ import { HOLIDAY_THEMES } from '~/config'
 
     applyHolidayTheme()
     document.addEventListener('astro:after-swap', applyHolidayTheme)
-
-    window.__DISABLE_HOLIDAY_THEME__ = disableHolidayTheme
   })()
 </script>
 
@@ -94,7 +83,12 @@ import { HOLIDAY_THEMES } from '~/config'
           banner.classList.add('hidden')
           banner.classList.remove('flex')
 
-          window.__DISABLE_HOLIDAY_THEME__?.(window.__TODAY_STR__)
+          try {
+            localStorage.setItem('disable-holiday-theme', window.__TODAY_STR__)
+          } catch {
+            // Firefox private/restricted storage can reject writes.
+          }
+
           window.__HOLIDAY_ACTIVE__ = false
         }
       } else if (banner) {
