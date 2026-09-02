@@ -51,7 +51,7 @@ export default function LoginScreen() {
 
       {/* Login card */}
       <div className="flex-1 flex flex-col items-center justify-center w-full z-10">
-        <div className="w-full max-w-85 bg-background/50 backdrop-blur-sm border border-border/40 p-8 sm:p-10 relative shadow-sm">
+        <div className="w-full max-w-85 bg-background/50 backdrop-blur-sm border border-border/40 p-8 sm:p-10 relative">
           <div className="mb-8">
             <div className="flex items-center gap-2 mb-1">
               <span className="inline-flex items-center justify-center size-6 bg-primary/10 text-primary font-mono text-[10px] font-bold">
