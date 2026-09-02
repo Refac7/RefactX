@@ -189,7 +189,17 @@ const { title, description, image, author } = Astro.props
           })
         }
 
-        document.addEventListener('astro:before-preparation', showLoader)
+        const handleBeforePreparation = (event) => {
+          const targetUrl = event.detail?.to?.url
+          if (targetUrl && targetUrl.href === window.location.href) {
+            event.preventDefault()
+            return
+          }
+
+          showLoader()
+        }
+
+        document.addEventListener('astro:before-preparation', handleBeforePreparation)
         document.addEventListener('astro:after-swap', () => {
           window.scrollTo(0, 0)
           hideLoader()
