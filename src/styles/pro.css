@@ -3,39 +3,22 @@
 @import 'rehype-callouts/theme/vitepress';
 @import 'katex/dist/katex.min.css';
 
-/* ===== Color Variables | 颜色变量 ===== */
+/* ===== Color Variables | 颜色变量 (MD3 Indigo tonal palette) ===== */
 .markdown {
-  --text: #3f3f46; /* zinc-700 */
-  --text-deep: #09090b; /* zinc-950 */
-  --heading: #09090b; /* zinc-950 */
-  --links: #09090b; /* zinc-950 */
-  --links-border: #e4e4e7; /* zinc-200 */
-  --links-hover-border: #a1a1aa; /* zinc-400 */
-  --anchor: var(--color-primary); /* blue-500 */
-  --hr-color: #e4e4e7; /* zinc-200 */
-  --blockquote-border: #e4e4e7; /* zinc-200 */
-  --blockquote-bg: #fafafa; /* zinc-50 */
-  --table-text: #18181b; /* zinc-900 */
-  --inline-code-bg: #f4f4f5; /* zinc-100 */
-  --inline-code-text: #18181b; /* zinc-900 */
-  --inline-code-border: #e4e4e7; /* zinc-200 */
-}
-
-.dark .markdown {
-  --text: #a1a1aa; /* zinc-400 */
-  --text-deep: #fafafa; /* zinc-50 */
-  --heading: #fafafa; /* zinc-50 */
-  --links: #fafafa; /* zinc-50 */
-  --links-border: #3f3f46; /* zinc-700 */
-  --links-hover-border: #a1a1aa; /* zinc-400 */
-  --anchor: var(--color-primary); /* blue-400 */
-  --hr-color: #27272a; /* zinc-800 */
-  --blockquote-border: #3f3f46; /* zinc-700 */
-  --blockquote-bg: #18181b; /* zinc-900 */
-  --table-text: #fafafa; /* zinc-50 */
-  --inline-code-bg: #27272a; /* zinc-800 */
-  --inline-code-text: #e4e4e7; /* zinc-200 */
-  --inline-code-border: #3f3f46; /* zinc-700 */
+  --text: hsl(var(--on-surface-variant));
+  --text-deep: hsl(var(--on-surface));
+  --heading: hsl(var(--on-surface));
+  --links: hsl(var(--primary));
+  --links-border: hsl(var(--outline-variant));
+  --links-hover-border: hsl(var(--primary));
+  --anchor: hsl(var(--primary));
+  --hr-color: hsl(var(--outline-variant));
+  --blockquote-border: hsl(var(--primary));
+  --blockquote-bg: hsl(var(--secondary-container) / 0.45);
+  --table-text: hsl(var(--on-surface));
+  --inline-code-bg: hsl(var(--secondary-container) / 0.55);
+  --inline-code-text: hsl(var(--on-secondary-container));
+  --inline-code-border: hsl(var(--outline-variant));
 }
 
 /* ===== Base Styles | 基础样式 ===== */

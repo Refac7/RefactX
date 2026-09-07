@@ -28,8 +28,10 @@ const visiblePages = getVisiblePages(page.currentPage, page.lastPage)
   <div class="flex items-center gap-1 sm:gap-2">
     <a
       href={page.url.prev}
-      class={`inline-flex h-8 sm:h-9 items-center gap-0.5 sm:gap-1 px-2 sm:px-4 text-xs sm:text-sm font-medium transition-colors ${
-        page.url.prev ? 'text-foreground hover:bg-muted cursor-pointer' : 'text-muted-foreground/40 cursor-not-allowed pointer-events-none'
+      class={`inline-flex h-9 items-center gap-0.5 sm:gap-1 px-2 sm:px-4 rounded-full text-xs sm:text-sm font-medium transition-colors ${
+        page.url.prev
+          ? 'text-on-surface hover:bg-surface-container-high cursor-pointer'
+          : 'text-on-surface-variant/40 cursor-not-allowed pointer-events-none'
       }`}
     >
       <span class="icon-[ph--caret-left] size-3.5 sm:size-4"></span>
@@ -40,14 +42,14 @@ const visiblePages = getVisiblePages(page.currentPage, page.lastPage)
       {
         visiblePages.map((pageNum) =>
           pageNum === null ? (
-            <span class="w-6 sm:w-9 text-center text-muted-foreground text-xs sm:text-sm">...</span>
+            <span class="w-6 sm:w-9 text-center text-on-surface-variant text-xs sm:text-sm">...</span>
           ) : (
             <a
               href={pageNum === 1 ? baseUrl : `${baseUrl}/${pageNum}`}
-              class={`inline-flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center text-xs sm:text-sm transition-colors ${
+              class={`inline-flex h-9 sm:w-9 items-center justify-center px-2 sm:px-0 text-xs sm:text-sm rounded-full transition-colors ${
                 page.currentPage === pageNum
-                  ? 'text-primary font-medium border-primary/20 border'
-                  : 'text-foreground/80 hover:text-foreground hover:bg-muted'
+                  ? 'text-on-primary-container font-semibold bg-primary-container'
+                  : 'text-on-surface hover:text-on-surface hover:bg-surface-container-high'
               }`}
             >
               {pageNum}
@@ -59,8 +61,10 @@ const visiblePages = getVisiblePages(page.currentPage, page.lastPage)
 
     <a
       href={page.url.next}
-      class={`inline-flex h-8 sm:h-9 items-center gap-0.5 sm:gap-1  px-2 sm:px-4 text-xs sm:text-sm font-medium transition-colors ${
-        page.url.next ? 'text-foreground hover:bg-muted cursor-pointer' : 'text-muted-foreground/40 cursor-not-allowed pointer-events-none'
+      class={`inline-flex h-9 items-center gap-0.5 sm:gap-1 px-2 sm:px-4 rounded-full text-xs sm:text-sm font-medium transition-colors ${
+        page.url.next
+          ? 'text-on-surface hover:bg-surface-container-high cursor-pointer'
+          : 'text-on-surface-variant/40 cursor-not-allowed pointer-events-none'
       }`}
     >
       <span class="hidden sm:inline">{POSTS_CONFIG.nextPageText}</span>

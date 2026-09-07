@@ -65,21 +65,21 @@ const Captcha = ({ onVerify, className }: CaptchaProps) => {
     <div
       onClick={handleVerify}
       className={cn(
-        'flex items-center gap-3 p-2 px-3 border border-border/60 bg-background/50 cursor-pointer select-none transition-all',
-        status === 'idle' ? 'hover:border-primary/40 hover:bg-muted/30' : 'cursor-default',
+        'flex items-center gap-3 rounded-full p-2 px-3 border border-outline-variant bg-surface-container-low cursor-pointer select-none transition-all',
+        status === 'idle' ? 'hover:border-primary/40 hover:bg-surface-container' : 'cursor-default',
         status === 'error' && 'border-red-500/50 bg-red-500/5',
         className
       )}
     >
       <div className="flex items-center justify-center size-5">
-        {status === 'idle' && <span className="icon-[ph--square] size-5 text-muted-foreground/60"></span>}
+        {status === 'idle' && <span className="icon-[ph--square] size-5 text-on-surface-variant/60"></span>}
         {(status === 'loading' || status === 'computing') && (
           <span className="icon-[ph--spinner-gap] size-5 text-primary animate-spin"></span>
         )}
         {status === 'success' && <span className="icon-[ph--check-circle-fill] size-5 text-green-500 animate-in zoom-in-50"></span>}
         {status === 'error' && <span className="icon-[ph--warning-circle-fill] size-5 text-red-500"></span>}
       </div>
-      <span className="text-xs font-medium text-muted-foreground">
+      <span className="text-xs font-medium text-on-surface-variant">
         {status === 'idle'
           ? 'Verify you are human'
           : status === 'loading'

@@ -29,19 +29,14 @@ const { title, description, image, author } = Astro.props
         } catch {}
 
         const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
-        document.documentElement.style.backgroundColor = isDark ? '#0a0a0a' : '#fafafa'
+        document.documentElement.style.backgroundColor = isDark ? '#141218' : '#fef7ff'
       })()
     </script>
   </head>
   <body>
     {HOLIDAY_EFFECTS.enableHolidayEffects && <HolidayTheme />}
 
-    <div
-      id="page-transition-loader"
-      class="page-transition-loader"
-      aria-hidden="true"
-      transition:persist="page-transition-loader"
-    >
+    <div id="page-transition-loader" class="page-transition-loader" aria-hidden="true" transition:persist="page-transition-loader">
       <div class="page-transition-loader__content">
         <span class="page-transition-loader__dot"></span>
         <span class="page-transition-loader__text">LOADING</span>
@@ -67,16 +62,6 @@ const { title, description, image, author } = Astro.props
     </div>
 
     <style is:global>
-      /* Use a classic serif stack for the site's heading typography instead of Lexend. */
-      :root {
-        --font-serif: Georgia, 'Times New Roman', 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', SimSun, serif;
-      }
-
-      /* 统一加深可视卡片边框，同时保留主题色和原有布局。 */
-      [class*="border-border/"][class*="rounded"] {
-        border-color: hsl(var(--border) / 0.65) !important;
-      }
-
       /* 页面切换只保留 Loader，关闭所有页面部件的飞入动画。 */
       .fade-up {
         opacity: 1 !important;
@@ -124,7 +109,9 @@ const { title, description, image, author } = Astro.props
         align-items: center;
         gap: 0.75rem;
         color: hsl(var(--muted-foreground));
-        font: 600 0.6875rem/1 var(--font-geist-mono), monospace;
+        font:
+          600 0.6875rem/1 var(--font-geist-mono),
+          monospace;
         letter-spacing: 0.18em;
       }
 
@@ -137,8 +124,15 @@ const { title, description, image, author } = Astro.props
       }
 
       @keyframes pageTransitionPulse {
-        0%, 100% { transform: scale(0.7); opacity: 0.35; }
-        50% { transform: scale(1); opacity: 1; }
+        0%,
+        100% {
+          transform: scale(0.7);
+          opacity: 0.35;
+        }
+        50% {
+          transform: scale(1);
+          opacity: 1;
+        }
       }
 
       @media (prefers-reduced-motion: reduce) {

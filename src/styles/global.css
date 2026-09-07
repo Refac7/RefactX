@@ -12,16 +12,57 @@
   --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
 
-  --color-border: hsl(var(--border));
-  --color-ring: hsl(var(--ring));
+  /* MD3 shape scale (4 / 8 / 12 / 16 / 28) */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.75rem;
+  --radius-3xl: 1.75rem;
+  --radius-4xl: 1.75rem;
+
+  /* MD3 elevation shadows (level 1–5) */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3), 0 1px 3px 1px rgb(0 0 0 / 0.15);
+  --shadow: 0 1px 2px 0 rgb(0 0 0 / 0.3), 0 2px 6px 2px rgb(0 0 0 / 0.15);
+  --shadow-md: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 4px 8px 3px rgb(0 0 0 / 0.15);
+  --shadow-lg: 0 2px 3px 0 rgb(0 0 0 / 0.3), 0 6px 10px 4px rgb(0 0 0 / 0.15);
+  --shadow-xl: 0 4px 4px 0 rgb(0 0 0 / 0.3), 0 8px 12px 6px rgb(0 0 0 / 0.15);
+
+  /* Semantic surface & palette tokens */
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
+  --color-surface: hsl(var(--surface));
+  --color-on-surface: hsl(var(--on-surface));
+  --color-surface-variant: hsl(var(--surface-variant));
+  --color-on-surface-variant: hsl(var(--on-surface-variant));
+  --color-surface-container-lowest: hsl(var(--surface-container-lowest));
+  --color-surface-container-low: hsl(var(--surface-container-low));
+  --color-surface-container: hsl(var(--surface-container));
+  --color-surface-container-high: hsl(var(--surface-container-high));
+  --color-surface-container-highest: hsl(var(--surface-container-highest));
+
   --color-primary: hsl(var(--primary));
   --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-primary-container: hsl(var(--primary-container));
+  --color-on-primary-container: hsl(var(--on-primary-container));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-container: hsl(var(--secondary-container));
+  --color-on-secondary-container: hsl(var(--on-secondary-container));
+  --color-tertiary: hsl(var(--tertiary));
+  --color-tertiary-container: hsl(var(--tertiary-container));
+  --color-on-tertiary-container: hsl(var(--on-tertiary-container));
+  --color-error: hsl(var(--error));
+  --color-error-container: hsl(var(--error-container));
+  --color-on-error-container: hsl(var(--on-error-container));
+
   --color-accent: hsl(var(--accent));
   --color-accent-foreground: hsl(var(--accent-foreground));
   --color-muted: hsl(var(--muted));
   --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-border: hsl(var(--border));
+  --color-ring: hsl(var(--ring));
+  --color-outline: hsl(var(--outline));
+  --color-outline-variant: hsl(var(--outline-variant));
   --color-tag-bg: hsl(var(--tag-bg));
   --color-tag-bg-hover: hsl(var(--tag-bg-hover));
   --color-tag-border: hsl(var(--tag-border));
@@ -62,47 +103,98 @@
     --font-sans: 'CJKEmDash', 'Numbers', 'ShangguSansSC-VF', ui-sans-serif, system-ui, sans-serif;
     --font-geist-mono: 'GeistMono', 'Input Mono', 'Fira Code', 'ShangguSansSC-VF', monospace;
 
-    --background: 255 100% 100%;
-    --foreground: 225 15% 12%;
-    --accent: 220 25% 94%;
-    --accent-foreground: 225 15% 12%;
-    --primary: 225 15% 12%;
-    --primary-foreground: 220 30% 98%;
-    --muted: 220 25% 92%;
-    --muted-foreground: 225 10% 40%;
-    --border: 220 20% 90%;
-    --ring: 225 15% 12%;
-    --tag-bg: 220 25% 96%;
-    --tag-bg-hover: 220 25% 92%;
-    --tag-border: 220 25% 90%;
-    --tag-text: 225 15% 35%;
-    --scrollbar: 220 20% 80%;
-    --scrollbar-bg: 220 25% 95%;
+    /* MD3 light palette — seed #6750A4 (Indigo) */
+    --background: 293 100% 98%;
+    --foreground: 264 8% 12%;
+    --surface: 293 100% 98%;
+    --on-surface: 264 8% 12%;
+    --surface-variant: 275 24% 90%;
+    --on-surface-variant: 264 7% 29%;
+    --surface-container-lowest: 0 0% 100%;
+    --surface-container-low: 278 44% 96%;
+    --surface-container: 276 38% 95%;
+    --surface-container-high: 276 25% 92%;
+    --surface-container-highest: 280 17% 90%;
+
+    --primary: 256 34% 48%;
+    --primary-foreground: 0 0% 100%;
+    --primary-container: 263 100% 93%;
+    --on-primary-container: 261 100% 18%;
+    --secondary: 259 11% 40%;
+    --secondary-container: 263 65% 92%;
+    --on-secondary-container: 253 26% 13%;
+    --tertiary: 340 21% 41%;
+    --tertiary-container: 342 100% 92%;
+    --on-tertiary-container: 340 43% 19%;
+    --error: 3 71% 41%;
+    --error-container: 4 71% 92%;
+    --on-error-container: 3 71% 15%;
+
+    --accent: 263 65% 92%;
+    --accent-foreground: 253 26% 13%;
+    --muted: 276 38% 95%;
+    --muted-foreground: 264 7% 29%;
+    --border: 270 11% 79%;
+    --ring: 256 34% 48%;
+    --outline: 270 4% 47%;
+    --outline-variant: 270 11% 79%;
+    --tag-bg: 263 65% 92%;
+    --tag-bg-hover: 276 25% 92%;
+    --tag-border: 270 11% 79%;
+    --tag-text: 253 26% 13%;
+    --scrollbar: 270 4% 47%;
+    --scrollbar-bg: 276 38% 95%;
   }
 
   .dark {
-    --background: 0 0% 0%;
-    --foreground: 0 0% 98%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --border: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
-    --tag-bg: 240 20% 13%;
-    --tag-bg-hover: 240 20% 16%;
-    --tag-border: 240 20% 20%;
-    --tag-text: 240 15% 85%;
-    --scrollbar: 240 10% 30%;
-    --scrollbar-bg: 240 10% 15%;
+    --background: 260 14% 8%;
+    --foreground: 280 17% 90%;
+    --surface: 260 14% 8%;
+    --on-surface: 280 17% 90%;
+    --surface-variant: 264 7% 29%;
+    --on-surface-variant: 270 11% 79%;
+    --surface-container-lowest: 260 19% 6%;
+    --surface-container-low: 264 8% 12%;
+    --surface-container: 257 10% 14%;
+    --surface-container-high: 257 8% 17%;
+    --surface-container-highest: 257 6% 22%;
+
+    --primary: 258 100% 87%;
+    --primary-foreground: 259 58% 28%;
+    --primary-container: 257 43% 38%;
+    --on-primary-container: 263 100% 93%;
+    --secondary: 263 27% 81%;
+    --secondary-container: 258 13% 31%;
+    --on-secondary-container: 263 65% 92%;
+    --tertiary: 343 63% 83%;
+    --tertiary-container: 341 25% 31%;
+    --on-tertiary-container: 342 100% 92%;
+    --error: 3 70% 83%;
+    --error-container: 3 71% 32%;
+    --on-error-container: 4 71% 92%;
+
+    --accent: 258 13% 31%;
+    --accent-foreground: 263 65% 92%;
+    --muted: 257 10% 14%;
+    --muted-foreground: 270 11% 79%;
+    --border: 264 7% 29%;
+    --ring: 258 100% 87%;
+    --outline: 264 5% 58%;
+    --outline-variant: 264 7% 29%;
+    --tag-bg: 258 13% 31%;
+    --tag-bg-hover: 257 8% 17%;
+    --tag-border: 264 7% 29%;
+    --tag-text: 263 65% 92%;
+    --scrollbar: 264 5% 58%;
+    --scrollbar-bg: 257 10% 14%;
   }
 
   /* 新年/国庆节 */
   html.theme-red {
     --primary: 350 85% 45%;
     --primary-foreground: 0 0% 100%;
+    --primary-container: 350 80% 95%;
+    --on-primary-container: 350 85% 30%;
     --accent: 350 80% 95%;
     --accent-foreground: 350 85% 45%;
     --ring: 350 85% 45%;
@@ -116,6 +208,8 @@
   html.dark.theme-red {
     --primary: 350 85% 55%;
     --primary-foreground: 0 0% 100%;
+    --primary-container: 350 40% 18%;
+    --on-primary-container: 350 85% 75%;
     --accent: 350 40% 15%;
     --accent-foreground: 350 85% 75%;
     --ring: 350 85% 55%;
@@ -131,6 +225,8 @@
   html.theme-green {
     --primary: 150 70% 35%;
     --primary-foreground: 0 0% 100%;
+    --primary-container: 150 60% 95%;
+    --on-primary-container: 150 70% 25%;
     --accent: 150 60% 95%;
     --accent-foreground: 150 70% 35%;
     --ring: 150 70% 35%;
@@ -144,6 +240,8 @@
   html.dark.theme-green {
     --primary: 150 60% 50%;
     --primary-foreground: 0 0% 100%;
+    --primary-container: 150 40% 18%;
+    --on-primary-container: 150 60% 70%;
     --accent: 150 40% 15%;
     --accent-foreground: 150 60% 70%;
     --ring: 150 60% 50%;
@@ -159,6 +257,8 @@
   html.theme-gold {
     --primary: 35 90% 45%;
     --primary-foreground: 0 0% 100%;
+    --primary-container: 35 80% 95%;
+    --on-primary-container: 35 90% 30%;
     --accent: 35 80% 95%;
     --accent-foreground: 35 90% 45%;
     --ring: 35 90% 45%;
@@ -172,6 +272,8 @@
   html.dark.theme-gold {
     --primary: 35 90% 55%;
     --primary-foreground: 0 0% 100%;
+    --primary-container: 35 40% 18%;
+    --on-primary-container: 35 90% 70%;
     --accent: 35 40% 15%;
     --accent-foreground: 35 90% 70%;
     --ring: 35 90% 55%;
@@ -212,7 +314,7 @@ html.theme-mourning {
   h4,
   h5,
   h6 {
-    @apply font-serif font-medium;
+    @apply font-sans font-semibold tracking-tight;
   }
   a {
     @apply underline-offset-4;
@@ -257,16 +359,18 @@ html.theme-mourning {
   }
 }
 
-/* ===== 蓝图风格（淡斜线底纹） ===== */
-/* 45° 斜线底纹（@utility 以支持 lg: 变体，仅桌面端左侧栏生效；低透明度保持克制） */
+/* ===== MD3 表面色调（左侧栏淡色底纹） ===== */
+@utility md3-surface-tint {
+  background-image:
+    radial-gradient(120% 90% at 0% 0%, hsl(var(--primary-container) / 0.55) 0%, transparent 55%),
+    radial-gradient(120% 90% at 100% 100%, hsl(var(--secondary-container) / 0.5) 0%, transparent 50%);
+}
+
+/* 兼容旧引用：蓝图斜线底纹统一转为 MD3 表面色调 */
 @utility blueprint-hatch {
-  background-image: repeating-linear-gradient(
-    45deg,
-    hsl(var(--border) / 0.28) 0,
-    hsl(var(--border) / 0.28) 1px,
-    transparent 1px,
-    transparent 18px
-  );
+  background-image:
+    radial-gradient(120% 90% at 0% 0%, hsl(var(--primary-container) / 0.45) 0%, transparent 55%),
+    radial-gradient(120% 90% at 100% 100%, hsl(var(--secondary-container) / 0.4) 0%, transparent 50%);
 }
 
 /* ===== 滚动条与工具类 ===== */

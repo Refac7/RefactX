@@ -90,11 +90,11 @@ export default function ProjectStats({ repoUrl, initialStar = 0, initialFork = 0
   return (
     <div className={cn('flex gap-4 transition-all duration-500', loading ? 'opacity-50' : 'opacity-100')}>
       <div className="flex items-center gap-1" title="Stars">
-        <span className={cn('icon-[ph--star-fill] size-3', error ? 'text-muted-foreground' : 'text-yellow-500/80')}></span>
+        <span className={cn('icon-[ph--star-fill] size-3', error ? 'text-on-surface-variant' : 'text-yellow-500/80')}></span>
         <span className="font-mono">{stats.stars}</span>
       </div>
       <div className="flex items-center gap-1" title="Forks">
-        <span className="icon-[ph--git-fork-fill] size-3 text-muted-foreground"></span>
+        <span className="icon-[ph--git-fork-fill] size-3 text-on-surface-variant"></span>
         <span className="font-mono">{stats.forks}</span>
       </div>
     </div>

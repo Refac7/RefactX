@@ -13,7 +13,7 @@ import { CMS_CONFIG } from '~/config'
   <div class="mx-auto flex justify-between px-6 lg:px-8 xl:px-12 py-8 border-b border-border/40">
     <div class="flex gap-3 sm:gap-6 items-center shrink-0">
       <a href="/" class="pointer-events-auto select-none" transition:persist>
-        <Image src={favicon} width={56} height={56} alt="Logo" class="w-8 h-8 border-2 border-transparent" loading="eager" />
+        <Image src={favicon} width={56} height={56} alt="Logo" class="w-8 h-8 rounded-full" loading="eager" />
       </a>
 
       <div class="flex gap-1 md:hidden">
@@ -39,12 +39,12 @@ import { CMS_CONFIG } from '~/config'
               {/* 下拉悬浮面板 */}
               <div
                 id="mobile-menu-dropdown"
-                class="absolute top-full left-0 mt-3 w-30 bg-background/95 backdrop-blur-md border border-border/60 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] opacity-0 invisible -translate-y-2.5 transition-all duration-300 flex flex-col p-1.5 z-100"
+                class="absolute top-full left-0 mt-3 w-30 bg-surface-container rounded-xl border border-outline-variant shadow-lg opacity-0 invisible -translate-y-2.5 transition-all duration-300 flex flex-col p-1.5 z-100"
               >
                 {HEADER_LINKS.slice(2).map((link) => (
                   <a
                     href={link.url}
-                    class="px-4 py-3 text-xs font-mono font-bold uppercase tracking-widest text-muted-foreground hover:text-primary hover:bg-muted/40 hover:border-primary transition-all"
+                    class="px-4 py-2.5 text-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded-lg transition-all"
                   >
                     {link.name}
                   </a>
@@ -70,7 +70,7 @@ import { CMS_CONFIG } from '~/config'
       <a
         href="/rss.xml"
         target="_blank"
-        class="inline-flex items-center justify-center hover:scale-105 duration-200"
+        class="inline-flex items-center justify-center size-9 rounded-full hover:bg-surface-container-high transition-colors"
         aria-label="RSS Feed"
         title="RSS Feed"
       >
@@ -81,7 +81,7 @@ import { CMS_CONFIG } from '~/config'
         CMS_CONFIG.enableCMS && (
           <a
             href="/admin"
-            class="inline-flex items-center justify-center hover:scale-105 duration-200"
+            class="inline-flex items-center justify-center size-9 rounded-full hover:bg-surface-container-high transition-colors"
             aria-label="Admin Dashboard"
             title="Admin Panel"
           >

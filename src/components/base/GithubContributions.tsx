@@ -114,7 +114,7 @@ export default function GithubContributions({ username, tooltipEnabled }: Props)
     }, []) || []
 
   const getLevelClass = (count: number) => {
-    if (count === 0) return 'bg-muted/30 border-border/40'
+    if (count === 0) return 'bg-surface-container border-outline-variant'
     if (count < 5) return 'bg-primary/30 border-primary/20'
     if (count < 10) return 'bg-primary/50 border-primary/30'
     if (count < 20) return 'bg-primary/70 border-primary/50'
@@ -127,7 +127,7 @@ export default function GithubContributions({ username, tooltipEnabled }: Props)
         <div className="flex justify-between items-end w-full px-1 mb-4 opacity-80 hover:opacity-100 transition-opacity duration-300">
           <div className="flex items-center gap-3">
             <div className="flex flex-col">
-              <span className="text-xs text-muted-foreground font-medium">Activity</span>
+              <span className="text-xs text-on-surface-variant font-medium">Activity</span>
               <span className="text-sm font-semibold text-foreground">@{username}</span>
             </div>
           </div>
@@ -135,10 +135,10 @@ export default function GithubContributions({ username, tooltipEnabled }: Props)
           <div className="flex flex-col items-end">
             <div className="flex items-center gap-1.5 mb-0.5">
               <span className={cn('size-1.5 rounded-full', loading ? 'bg-yellow-500' : error ? 'bg-red-500' : 'bg-emerald-500')} />
-              <span className="text-xs text-muted-foreground font-medium">Contributions</span>
+              <span className="text-xs text-on-surface-variant font-medium">Contributions</span>
             </div>
             <span className="text-sm font-semibold text-foreground">
-              {loading ? '---' : totalCount} <span className="text-xs font-normal text-muted-foreground">in last year</span>
+              {loading ? '---' : totalCount} <span className="text-xs font-normal text-on-surface-variant">in last year</span>
             </span>
           </div>
         </div>

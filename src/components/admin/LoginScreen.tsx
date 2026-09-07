@@ -31,40 +31,40 @@ export default function LoginScreen() {
           </span>
           <span className="text-xs font-medium text-foreground tracking-tight">RefactX Admin</span>
         </div>
-        <span className="text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest hidden sm:inline">// Auth_Gate</span>
+        <span className="text-[10px] font-mono text-on-surface-variant/50 uppercase tracking-widest hidden sm:inline">// Auth_Gate</span>
       </div>
 
       {/* Top-right */}
       <div className="absolute top-6 right-6 lg:top-12 lg:right-12 select-none">
-        <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest">Restricted</span>
+        <span className="text-[10px] font-mono text-on-surface-variant uppercase tracking-widest">Restricted</span>
       </div>
 
       {/* Bottom-left */}
       <div className="absolute bottom-6 left-6 lg:bottom-12 lg:left-12 select-none hidden sm:block">
-        <span className="text-[10px] font-mono text-muted-foreground/40 uppercase tracking-widest">Terminal ID: AX-01</span>
+        <span className="text-[10px] font-mono text-on-surface-variant/40 uppercase tracking-widest">Terminal ID: AX-01</span>
       </div>
 
       {/* Bottom-right */}
       <div className="absolute bottom-6 right-6 lg:bottom-12 lg:right-12 select-none">
-        <span className="text-[10px] font-mono text-muted-foreground/40">&copy; {new Date().getFullYear()}</span>
+        <span className="text-[10px] font-mono text-on-surface-variant/40">&copy; {new Date().getFullYear()}</span>
       </div>
 
       {/* Login card */}
       <div className="flex-1 flex flex-col items-center justify-center w-full z-10">
-        <div className="w-full max-w-85 bg-background/50 backdrop-blur-sm border border-border/40 p-8 sm:p-10 relative">
+        <div className="w-full max-w-85 bg-surface-container-low backdrop-blur-sm border border-outline-variant p-8 sm:p-10 relative rounded-2xl">
           <div className="mb-8">
             <div className="flex items-center gap-2 mb-1">
-              <span className="inline-flex items-center justify-center size-6 bg-primary/10 text-primary font-mono text-[10px] font-bold">
+              <span className="inline-flex items-center justify-center size-6 bg-primary-container text-on-primary-container font-mono text-[10px] font-bold rounded-xl">
                 AUTH
               </span>
               <h1 className="text-xl font-bold tracking-tight text-foreground">Authenticate</h1>
             </div>
-            <p className="text-sm text-muted-foreground pl-8">Sign in to the CMS dashboard.</p>
+            <p className="text-sm text-on-surface-variant pl-8">Sign in to the CMS dashboard.</p>
           </div>
 
           <div className="space-y-5">
             <div className="space-y-1.5">
-              <label className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest ml-1">Username</label>
+              <label className="text-[10px] font-mono text-on-surface-variant uppercase tracking-widest ml-1">Username</label>
               <input
                 type="text"
                 value={username}
@@ -75,16 +75,16 @@ export default function LoginScreen() {
                 autoFocus
                 autoComplete="username"
                 className={cn(
-                  'w-full px-4 py-2.5 border bg-background text-sm transition-all focus:outline-none focus:ring-2 focus:ring-offset-0',
+                  'w-full px-4 py-2.5 border bg-background text-sm rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-offset-0',
                   loginError
                     ? 'border-red-500/50 focus:ring-red-500/20 text-red-500'
-                    : 'border-border/60 focus:border-primary/50 focus:ring-primary/20'
+                    : 'border-outline-variant focus:border-primary/50 focus:ring-primary/20'
                 )}
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest ml-1">Passkey</label>
+              <label className="text-[10px] font-mono text-on-surface-variant uppercase tracking-widest ml-1">Passkey</label>
               <input
                 type="password"
                 value={password}
@@ -94,10 +94,10 @@ export default function LoginScreen() {
                 placeholder="••••••••"
                 autoComplete="current-password"
                 className={cn(
-                  'w-full px-4 py-2.5 border bg-background text-sm transition-all focus:outline-none focus:ring-2 focus:ring-offset-0',
+                  'w-full px-4 py-2.5 border bg-background text-sm rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-offset-0',
                   loginError
                     ? 'border-red-500/50 focus:ring-red-500/20 text-red-500'
-                    : 'border-border/60 focus:border-primary/50 focus:ring-primary/20'
+                    : 'border-outline-variant focus:border-primary/50 focus:ring-primary/20'
                 )}
               />
             </div>
@@ -108,10 +108,10 @@ export default function LoginScreen() {
               onClick={() => captchaToken && performLogin(username.trim(), password, captchaToken)}
               disabled={isValidating || !captchaToken || !username.trim()}
               className={cn(
-                'w-full py-2.5 text-sm font-semibold transition-all flex items-center justify-center gap-2',
+                'w-full py-2.5 text-sm font-semibold rounded-full transition-all flex items-center justify-center gap-2',
                 !captchaToken || !username.trim() || loginError
-                  ? 'bg-muted text-muted-foreground border border-border/50 cursor-not-allowed'
-                  : 'bg-foreground text-background hover:bg-foreground/90 shadow-sm'
+                  ? 'bg-surface-container-high text-on-surface-variant border border-outline-variant cursor-not-allowed'
+                  : 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm'
               )}
             >
               {isValidating ? (

@@ -15,21 +15,21 @@
   <div class="absolute left-1/2 top-[12%] -translate-x-1/2 transition-all duration-300 -translate-y-4 search-panel-show w-[92%] max-w-160">
     <div
       id="search-panel"
-      class="flex flex-col max-h-[75vh] w-full bg-background/95 backdrop-blur-xl border border-border/40 shadow-2xl overflow-hidden"
+      class="flex flex-col max-h-[75vh] w-full bg-surface-container-highest/95 backdrop-blur-xl border border-outline-variant shadow-xl rounded-2xl overflow-hidden"
     >
-      <div id="search-bar" class="flex items-center gap-3 px-5 py-4 border-b border-border/40 bg-muted/10 shrink-0">
-        <span class="icon-[material-symbols--manage-search] size-6 text-muted-foreground/60"></span>
+      <div id="search-bar" class="flex items-center gap-3 px-5 py-4 border-b border-outline-variant bg-surface-container shrink-0">
+        <span class="icon-[material-symbols--manage-search] size-6 text-on-surface-variant/60"></span>
         <label class="sr-only" for="search-input">Search</label>
         <input
           type="search"
           id="search-input"
-          class="w-full bg-transparent outline-none text-foreground placeholder:text-muted-foreground/50 font-medium text-base"
+          class="w-full bg-transparent outline-none text-foreground placeholder:text-on-surface-variant/50 font-medium text-base"
           placeholder="Search documentation..."
           autocomplete="off"
         />
         <button
           id="search-exact"
-          class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium border border-border/40 transition-colors select-none shrink-0"
+          class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium border border-outline-variant rounded-full transition-colors select-none shrink-0"
           aria-pressed="false"
           title="Exact Match"
         >
@@ -37,7 +37,7 @@
           Exact
         </button>
         <kbd
-          class="hidden sm:inline-flex items-center justify-center h-6 px-2 text-[10px] font-mono font-semibold text-muted-foreground bg-muted/50 border border-border/40 shrink-0"
+          class="hidden sm:inline-flex items-center justify-center h-6 px-2 text-[10px] font-mono font-semibold text-on-surface-variant bg-surface-container-high border border-outline-variant rounded-md shrink-0"
           >ESC</kbd
         >
       </div>
@@ -68,10 +68,10 @@
     if (!exactToggle) return
     exactToggle.setAttribute('aria-pressed', exactMode ? 'true' : 'false')
     if (exactMode) {
-      exactToggle.classList.add('bg-foreground', 'text-background', 'border-foreground')
+      exactToggle.classList.add('bg-secondary-container', 'text-on-secondary-container', 'border-secondary-container')
       exactToggle.classList.remove('text-muted-foreground', 'bg-transparent')
     } else {
-      exactToggle.classList.remove('bg-foreground', 'text-background', 'border-foreground')
+      exactToggle.classList.remove('bg-secondary-container', 'text-on-secondary-container', 'border-secondary-container')
       exactToggle.classList.add('text-muted-foreground', 'bg-transparent')
     }
   }
@@ -225,7 +225,7 @@
         const resultItem = document.createElement('a')
         resultItem.href = data.url
         resultItem.className =
-          'block p-4 mb-2 bg-background hover:bg-muted/40 border border-transparent hover:border-border/60 transition-all group'
+          'block p-4 mb-2 bg-surface-container-low hover:bg-surface-container rounded-lg border border-transparent hover:border-outline-variant transition-all group'
         resultItem.innerHTML = `
           <h3 class="text-base font-semibold text-foreground group-hover:text-primary transition-colors tracking-tight mb-2">${data.meta.title}</h3>
           <p class="text-sm text-muted-foreground leading-relaxed line-clamp-2">${data.excerpt}</p>
@@ -242,7 +242,7 @@
             const subItem = document.createElement('a')
             subItem.href = subResult.url
             subItem.className =
-              'block p-3 ml-6 mb-2 bg-muted/20 hover:bg-muted/50 border-l-[3px] border-border/60 hover:border-primary transition-all group'
+              'block p-3 ml-6 mb-2 bg-surface-container hover:bg-surface-container-high border-l-[3px] border-outline-variant hover:border-primary rounded-r-lg transition-all group'
             subItem.innerHTML = `
               <h4 class="text-sm font-medium text-foreground opacity-90 group-hover:text-primary transition-colors mb-1 tracking-tight">${cleanTitle}</h4>
               <p class="text-xs text-muted-foreground/80 line-clamp-1">${subResult.excerpt}</p>

@@ -25,33 +25,33 @@ const NAV_CARDS = [
 <Layout title="Home" description={SITE.description}>
   <div class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
     <aside
-      class="lg:blueprint-hatch w-full lg:w-1/3 lg:sticky lg:top-0 lg:h-screen flex flex-col lg:border-r border-border/40 z-20 bg-background/50 backdrop-blur-sm relative overflow-hidden"
+      class="lg:md3-surface-tint w-full lg:w-1/3 lg:sticky lg:top-0 lg:h-screen flex flex-col lg:border-r border-outline-variant z-20 bg-surface-container-lowest/70 backdrop-blur-sm relative overflow-hidden"
     >
       <div class="flex flex-1 lg:overflow-y-auto scrollbar-hide flex-col relative z-10">
         <div
-          class="p-6 lg:p-8 xl:p-12 pb-0 lg:pb-4 shrink-0 fade-up flex justify-between items-start lg:border-b lg:border-dashed lg:border-border/60"
+          class="p-6 lg:p-8 xl:p-12 pb-0 lg:pb-4 shrink-0 fade-up flex justify-between items-start lg:border-b lg:border-outline-variant"
         >
           <div class="flex items-center gap-3 select-none">
-            <div class="size-10 bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+            <div class="size-10 rounded-xl bg-primary-container flex items-center justify-center text-on-primary-container">
               <span class="icon-[ph--terminal-window-duotone] size-6"></span>
             </div>
             <div>
               <div class="text-sm font-bold tracking-tight">{SITE.title || 'Digital Hub'}</div><div
-                class="text-[10px] text-muted-foreground uppercase tracking-widest font-mono"
+                class="text-[10px] text-on-surface-variant uppercase tracking-widest font-mono"
               >
                 System Online
               </div>
             </div>
           </div>
           <span
-            class="inline-flex items-center border border-primary/20 bg-primary/5 px-2.5 py-1 text-[10px] font-mono text-primary select-none"
+            class="inline-flex items-center rounded-full bg-secondary-container text-on-secondary-container px-2.5 py-1 text-[10px] font-mono select-none"
             >v{SITE.version} / Astro</span
           >
         </div>
         <div class="flex-1 flex flex-col justify-center p-6 lg:p-8 xl:p-12 min-h-[50vh] lg:min-h-0 fade-up animation-delay-100">
           <!-- Status badge -->
           <div
-            class="inline-flex items-center gap-2 px-3 py-1.5 bg-muted/30 border border-border/50 text-xs font-medium text-muted-foreground mb-8 w-fit select-none"
+            class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-high text-xs font-medium text-on-surface-variant mb-8 w-fit select-none"
           >
             <span class="relative flex size-2"
               ><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span
@@ -62,49 +62,49 @@ const NAV_CARDS = [
 
           <!-- Main title -->
           <h1
-            class="text-4xl sm:text-5xl xl:text-6xl max-[639px]:text-[2.5rem] font-bold tracking-tight text-foreground leading-[1.15] mb-4 select-none"
+            class="text-4xl sm:text-5xl xl:text-6xl max-[639px]:text-[2.5rem] font-semibold tracking-tight text-foreground leading-[1.15] mb-4 select-none"
           >
             Home
           </h1>
 
           <!-- Subtitle -->
-          <div class="flex items-center gap-2 text-sm text-muted-foreground mb-4">
+          <div class="flex items-center gap-2 text-sm text-on-surface-variant mb-4">
             <span class="icon-[ph--house] size-4"></span><span>Home Overview</span>
           </div>
 
           <!-- Identity tags -->
-          <div class="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-8 font-mono">
+          <div class="flex flex-wrap items-center gap-4 text-sm text-on-surface-variant mb-8 font-mono">
             <span class="flex items-center gap-1.5"><span class="icon-[ph--code] size-4"></span> Developer</span><span
-              class="w-1 h-1 rounded-full bg-border"></span><span class="flex items-center gap-1.5"
+              class="w-1 h-1 rounded-full bg-outline-variant"></span><span class="flex items-center gap-1.5"
               ><span class="icon-[ph--pen-nib] size-4"></span> Creator</span
             >
           </div>
 
           <!-- Intro text with left border accent -->
-          <div class="relative pl-4 border-l-2 border-primary/30 fade-up animation-delay-150">
-            <p class="text-sm md:text-base text-muted-foreground leading-relaxed">
+          <div class="relative pl-4 border-l-2 border-primary/40 fade-up animation-delay-150">
+            <p class="text-sm md:text-base text-on-surface-variant leading-relaxed">
               欢迎访问此站点，<br />基于 Astro v6 构建，记录技术、分享生活。
             </p>
           </div>
         </div>
       </div>
-      <div class="hidden lg:block shrink-0 border-t border-dashed border-border/50 select-none fade-up animation-delay-200 relative">
+      <div class="hidden lg:block shrink-0 border-t border-outline-variant select-none fade-up animation-delay-200 relative">
         <div
-          class="p-4 flex items-center justify-between text-xs text-muted-foreground font-mono border-b border-dashed border-border/50 px-6 lg:px-8 xl:px-12 bg-background/50"
+          class="p-4 flex items-center justify-between text-xs text-on-surface-variant font-mono border-b border-outline-variant px-6 lg:px-8 xl:px-12 bg-surface-container-low/60"
         >
           <span>// CONNECT PORTALS</span><span>{SOCIAL_LINKS.length} ACTIVE</span>
         </div>
-        <div class="grid grid-cols-1 gap-px bg-border/40">
+        <div class="grid grid-cols-1 gap-px bg-outline-variant/40">
           {
             SOCIAL_LINKS.map((item) => (
               <a
                 href={item.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="group flex items-center gap-4 h-14 px-6 lg:px-8 xl:px-12 bg-background hover:bg-primary/5 transition-all duration-300 text-left"
+                class="group flex items-center gap-4 h-14 px-6 lg:px-8 xl:px-12 bg-surface-container-low hover:bg-surface-container transition-all duration-300 text-left"
               >
-                <span class={`${item.icon} size-5 shrink-0 text-muted-foreground group-hover:text-primary transition-colors`} />
-                <span class="text-[10px] font-mono font-medium text-muted-foreground group-hover:text-primary uppercase tracking-wider transition-colors">
+                <span class={`${item.icon} size-5 shrink-0 text-on-surface-variant group-hover:text-primary transition-colors`} />
+                <span class="text-[10px] font-mono font-medium text-on-surface-variant group-hover:text-primary uppercase tracking-wider transition-colors">
                   {item.name || 'Link'}
                 </span>
               </a>
@@ -116,12 +116,14 @@ const NAV_CARDS = [
     <main class="w-full lg:w-2/3 z-10 flex flex-col">
       <div class="px-6 lg:px-8 xl:px-12 lg:py-20 flex-1 flex flex-col gap-20 xl:gap-24 mt-4 lg:mt-0">
         <div>
-          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-b border-border/40 pb-4">
+          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-b border-outline-variant pb-4">
             <div class="flex items-center gap-3">
-              <span class="inline-flex items-center justify-center size-7 bg-primary/10 text-primary font-mono text-xs font-bold">01</span
+              <span
+                class="inline-flex items-center justify-center size-8 rounded-full bg-primary-container text-on-primary-container font-mono text-xs font-bold"
+                >01</span
               ><h2 class="text-xl md:text-2xl font-bold text-foreground tracking-tight">Navigation</h2>
             </div>
-            <span class="text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest hidden sm:inline-block"
+            <span class="text-[10px] font-mono text-on-surface-variant/60 uppercase tracking-widest hidden sm:inline-block"
               >// System_Modules</span
             >
           </div>
@@ -130,7 +132,7 @@ const NAV_CARDS = [
               NAV_CARDS.map((card, i) => (
                 <a
                   href={card.href}
-                  class="group relative flex flex-col justify-between border border-border/40 bg-background/50 p-6 hover:bg-muted/20 hover:border-primary/30 hover:shadow-sm transition-all duration-300"
+                  class="group relative flex flex-col justify-between rounded-2xl border border-outline-variant bg-surface-container-low p-6 hover:bg-surface-container hover:border-primary/40 hover:shadow-md transition-all duration-300"
                   style={`animation-delay: ${i * 50}ms`}
                 >
                   <>
@@ -149,8 +151,10 @@ const NAV_CARDS = [
                         </span>
                       </>
                     </div>
-                    <div class="size-12 flex items-center justify-center bg-primary/5 border border-primary/10 group-hover:bg-primary/10 group-hover:scale-110 transition-all duration-300 mb-8">
-                      <span class={cn('size-6 text-primary/80 group-hover:text-primary transition-colors', card.icon)} />
+                    <div class="size-12 rounded-xl flex items-center justify-center bg-primary-container/60 group-hover:bg-primary-container group-hover:scale-110 transition-all duration-300 mb-8">
+                      <span
+                        class={cn('size-6 text-on-primary-container/80 group-hover:text-on-primary-container transition-colors', card.icon)}
+                      />
                     </div>
                     <div>
                       <>
@@ -170,9 +174,11 @@ const NAV_CARDS = [
           </div>
         </div>
         <div class="fade-up" style="animation-delay: 200ms">
-          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-b border-border/40 pb-4">
+          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-b border-outline-variant pb-4">
             <div class="flex items-center gap-3">
-              <span class="inline-flex items-center justify-center size-7 bg-primary/10 text-primary font-mono text-xs font-bold">02</span
+              <span
+                class="inline-flex items-center justify-center size-8 rounded-full bg-primary-container text-on-primary-container font-mono text-xs font-bold"
+                >02</span
               ><h2 class="text-xl md:text-2xl font-bold text-foreground tracking-tight">Recent Logs</h2>
             </div><a
               href="/posts"
@@ -187,22 +193,22 @@ const NAV_CARDS = [
           ENABLED && (
             <div class="fade-up" style="animation-delay: 300ms">
               <>
-                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-b border-border/40 pb-4">
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-b border-outline-variant pb-4">
                   <>
                     <div class="flex items-center gap-3">
                       <>
-                        <span class="inline-flex items-center justify-center size-7 bg-primary/10 text-primary font-mono text-xs font-bold">
+                        <span class="inline-flex items-center justify-center size-8 rounded-full bg-primary-container text-on-primary-container font-mono text-xs font-bold">
                           03
                         </span>
                         <h2 class="text-xl md:text-2xl font-bold text-foreground tracking-tight">Activity</h2>
                       </>
                     </div>
-                    <span class="text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest hidden sm:inline-block">
+                    <span class="text-[10px] font-mono text-on-surface-variant/60 uppercase tracking-widest hidden sm:inline-block">
                       // GitHub_Trace
                     </span>
                   </>
                 </div>
-                <div class="p-6 sm:p-8 border border-border/40 bg-background/50 hover:bg-muted/10 transition-colors">
+                <div class="p-6 sm:p-8 rounded-2xl border border-outline-variant bg-surface-container-low hover:bg-surface-container transition-colors">
                   <GithubContributions
                     username={GITHUB_USERNAME}
                     tooltipEnabled={TOOLTIP_ENABLED}
@@ -218,22 +224,22 @@ const NAV_CARDS = [
           SKILLS_ENABLED && SKILLS_DATA.length > 0 && (
             <div class="fade-up" style="animation-delay: 400ms">
               <>
-                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-b border-border/40 pb-4">
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-b border-outline-variant pb-4">
                   <>
                     <div class="flex items-center gap-3">
                       <>
-                        <span class="inline-flex items-center justify-center size-7 bg-primary/10 text-primary font-mono text-xs font-bold">
+                        <span class="inline-flex items-center justify-center size-8 rounded-full bg-primary-container text-on-primary-container font-mono text-xs font-bold">
                           04
                         </span>
                         <h2 class="text-xl md:text-2xl font-bold text-foreground tracking-tight">Tech Stack</h2>
                       </>
                     </div>
-                    <span class="text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest hidden sm:inline-block">
+                    <span class="text-[10px] font-mono text-on-surface-variant/60 uppercase tracking-widest hidden sm:inline-block">
                       // Skill_Radar
                     </span>
                   </>
                 </div>
-                <div class="[&_.skill-card]:border-border/40 [&_.skill-card]:bg-background/50 hover:[&_.skill-card]:bg-primary/5 hover:[&_.skill-card]:border-primary/20 [&_.skill-card]:shadow-sm [&_.skill-card]:transition-all duration-300">
+                <div class="[&_.skill-card]:border-outline-variant [&_.skill-card]:bg-surface-container-low [&_.skill-card]:rounded-full hover:[&_.skill-card]:bg-surface-container-high hover:[&_.skill-card]:border-primary/30 [&_.skill-card]:shadow-sm [&_.skill-card]:transition-all duration-300">
                   <SkillsShowcase skillsData={SKILLS_DATA} />
                 </div>
               </>

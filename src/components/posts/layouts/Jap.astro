@@ -16,16 +16,16 @@ const { frontmatter, minutesRead, wordCount, headings } = Astro.props
 <article class="relative w-full">
   <!-- Header -->
   <header
-    class="lg:blueprint-hatch relative w-full min-h-[50vh] flex flex-col justify-center px-6 md:px-12 py-24 border-b border-border/40 overflow-hidden"
+    class="lg:blueprint-hatch relative w-full min-h-[50vh] flex flex-col justify-center px-6 md:px-12 py-24 border-b border-outline-variant overflow-hidden"
   >
     <!-- Top bar: back button + status -->
     <div class="absolute top-8 left-6 md:left-12 right-6 md:right-12 flex items-center justify-between">
       <a
         href="/posts"
-        class="group inline-flex items-center gap-2.5 text-xs font-mono text-muted-foreground hover:text-foreground transition-colors"
+        class="group inline-flex items-center gap-2.5 text-xs font-mono text-on-surface-variant hover:text-foreground transition-colors"
       >
         <span
-          class="inline-flex items-center justify-center size-8 bg-background/50 border border-border/40 text-muted-foreground group-hover:text-foreground group-hover:border-primary/30 group-hover:bg-primary/5 transition-all"
+          class="inline-flex items-center justify-center size-8 rounded-full bg-surface-container-low border border-outline-variant text-on-surface-variant group-hover:text-foreground group-hover:border-primary/30 group-hover:bg-primary-container transition-all"
         >
           <span class="icon-[ph--arrow-left] size-4"></span>
         </span>
@@ -33,7 +33,7 @@ const { frontmatter, minutesRead, wordCount, headings } = Astro.props
       </a>
 
       <span
-        class="inline-flex items-center gap-1.5 bg-muted/30 border border-border/40 px-3 py-1 text-[10px] font-mono text-muted-foreground select-none"
+        class="inline-flex items-center gap-1.5 rounded-full bg-surface-container border border-outline-variant px-3 py-1 text-[10px] font-mono text-on-surface-variant select-none"
       >
         <span class="relative flex size-1.5">
           <span class="relative inline-flex rounded-full size-1.5 bg-emerald-500"></span>
@@ -51,7 +51,7 @@ const { frontmatter, minutesRead, wordCount, headings } = Astro.props
             frontmatter.tags.map((tag: string) => (
               <a
                 href={`/tags/${tag}`}
-                class="text-[11px] font-mono font-medium bg-background/50 backdrop-blur-sm border border-border/40 text-muted-foreground hover:text-foreground hover:border-primary/30 hover:bg-primary/5 px-3 py-1 transition-all"
+                class="text-[11px] font-mono font-medium rounded-full bg-surface-container-low backdrop-blur-sm border border-outline-variant text-on-surface-variant hover:text-foreground hover:border-primary/30 hover:bg-primary-container px-3 py-1 transition-all"
               >
                 #{tag}
               </a>
@@ -61,7 +61,7 @@ const { frontmatter, minutesRead, wordCount, headings } = Astro.props
 
       <!-- Metadata: compact on mobile, full on sm+ -->
       <div
-        class="flex flex-wrap items-center gap-x-2 sm:gap-x-3 gap-y-1 text-[10px] font-mono text-muted-foreground uppercase tracking-widest select-none"
+        class="flex flex-wrap items-center gap-x-2 sm:gap-x-3 gap-y-1 text-[10px] font-mono text-on-surface-variant uppercase tracking-widest select-none"
       >
         {
           frontmatter.author && (
@@ -73,8 +73,8 @@ const { frontmatter, minutesRead, wordCount, headings } = Astro.props
                 <span class="icon-[ph--user] size-3.5" />
                 {frontmatter.author}
               </a>
-              <span class="w-1 h-1 rounded-full bg-border hidden sm:inline" />
-              <span class="w-1 h-1 rounded-full bg-border sm:hidden" />
+              <span class="w-1 h-1 rounded-full bg-outline-variant hidden sm:inline" />
+              <span class="w-1 h-1 rounded-full bg-outline-variant sm:hidden" />
             </>
           )
         }
@@ -82,12 +82,12 @@ const { frontmatter, minutesRead, wordCount, headings } = Astro.props
           <span class="icon-[ph--article] size-3.5"></span>
           {wordCount} words
         </span>
-        <span class="hidden sm:inline w-1 h-1 rounded-full bg-border"></span>
+        <span class="hidden sm:inline w-1 h-1 rounded-full bg-outline-variant"></span>
         <span class="flex items-center gap-1.5">
           <span class="icon-[ph--clock] size-3.5"></span>
           {minutesRead || 'Unknown'}
         </span>
-        <span class="w-1 h-1 rounded-full bg-border"></span>
+        <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
         <span>{formatDate(frontmatter.pubDate)}</span>
       </div>
     </div>
@@ -103,13 +103,13 @@ const { frontmatter, minutesRead, wordCount, headings } = Astro.props
       {
         frontmatter.description && (
           <div class="mt-6 relative">
-            <p class="text-base sm:text-lg text-muted-foreground max-w-2xl leading-relaxed">{frontmatter.description}</p>
+            <p class="text-base sm:text-lg text-on-surface-variant max-w-2xl leading-relaxed">{frontmatter.description}</p>
           </div>
         )
       }
       {
         frontmatter.updatedDate && (
-          <p class="mt-6 text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest flex items-center gap-1.5">
+          <p class="mt-6 text-[10px] font-mono text-on-surface-variant/50 uppercase tracking-widest flex items-center gap-1.5">
             <span class="icon-[ph--clock-clockwise] size-3" />
             Updated {formatDate(frontmatter.updatedDate)}
           </p>

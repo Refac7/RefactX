@@ -25,7 +25,12 @@ const variantClasses = {
 ---
 
 <span
-  class={cn('inline-flex items-center font-medium transition-colors duration-200', sizeClasses[size], variantClasses[variant], className)}
+  class={cn(
+    'inline-flex items-center font-medium transition-colors duration-200 rounded-full',
+    sizeClasses[size],
+    variantClasses[variant],
+    className
+  )}
   title="Recommended post"
 >
   {showIcon && <span class="icon-[ph--sparkle-fill] opacity-70" />}

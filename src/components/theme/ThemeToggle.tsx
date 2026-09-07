@@ -71,7 +71,10 @@ const ThemeToggle = () => {
   // 未挂载前渲染幽灵图标占位，防止排版抖动
   if (!mounted) {
     return (
-      <button className="relative size-5 flex items-center justify-center cursor-pointer" aria-label="Toggle Theme">
+      <button
+        className="relative size-9 rounded-full flex items-center justify-center cursor-pointer hover:bg-surface-container-high transition-colors"
+        aria-label="Toggle Theme"
+      >
         <div className="relative size-5 flex items-center justify-center opacity-0">
           <span className="icon-[tabler--device-desktop-question] size-5"></span>
         </div>
@@ -80,7 +83,11 @@ const ThemeToggle = () => {
   }
 
   return (
-    <button onClick={handleClick} className="relative size-5 flex items-center justify-center cursor-pointer" aria-label="Toggle Theme">
+    <button
+      onClick={handleClick}
+      className="relative size-9 rounded-full flex items-center justify-center cursor-pointer hover:bg-surface-container-high transition-colors"
+      aria-label="Toggle Theme"
+    >
       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.9 }} className="relative size-5 flex items-center justify-center">
         <motion.div
           className="absolute inset-0"

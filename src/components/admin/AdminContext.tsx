@@ -104,7 +104,7 @@ const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
           <div
             key={toast.id}
             onAnimationEnd={() => handleAnimationEnd(toast.id, isLeaving)}
-            className="bg-background border border-border/40 px-4 py-3 text-sm font-medium shadow-lg flex items-center gap-3 pointer-events-auto"
+            className="bg-surface-container-low border border-outline-variant px-4 py-3 text-sm font-medium shadow-lg flex items-center gap-3 pointer-events-auto rounded-full"
             style={{
               animation: isLeaving
                 ? 'geist-toast-slide-out 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards'
@@ -113,7 +113,7 @@ const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
           >
             <span
               className={`flex size-2 rounded-full shrink-0 ${
-                toast.type === 'error' ? 'bg-red-500' : toast.type === 'success' ? 'bg-emerald-500' : 'bg-muted-foreground'
+                toast.type === 'error' ? 'bg-red-500' : toast.type === 'success' ? 'bg-emerald-500' : 'bg-on-surface-variant'
               }`}
             ></span>
             <span className="text-foreground">{toast.msg}</span>

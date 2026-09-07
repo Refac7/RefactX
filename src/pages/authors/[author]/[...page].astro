@@ -63,12 +63,12 @@ const progressPercent = Math.round((page.currentPage / page.lastPage) * 100)
         </div>
 
         <!-- Breadcrumb -->
-        <div class="text-sm text-muted-foreground flex items-center gap-2 flex-wrap -mt-4 mb-6">
+        <div class="text-sm text-on-surface-variant flex items-center gap-2 flex-wrap -mt-4 mb-6">
           <a href="/" class="hover:text-foreground transition-colors">home</a>
-          <span class="text-muted-foreground/40">/</span>
+          <span class="text-on-surface-variant/40">/</span>
           <a href="/authors" class="hover:text-foreground transition-colors">authors</a>
-          <span class="text-muted-foreground/40">/</span>
-          <span class="text-foreground font-medium bg-muted/50 px-2 py-0.5">{author}</span>
+          <span class="text-on-surface-variant/40">/</span>
+          <span class="text-foreground font-medium rounded-full bg-surface-container-high px-2 py-0.5">{author}</span>
         </div>
 
         <div class="space-y-8 min-h-[40vh] flex-1 fade-up animation-delay-200">
@@ -79,16 +79,16 @@ const progressPercent = Math.round((page.currentPage / page.lastPage) * 100)
           />
         </div>
 
-        <div class="pt-8 border-t border-border/40">
-          <div class="flex justify-between text-xs text-muted-foreground mb-3">
+        <div class="pt-8 border-t border-outline-variant">
+          <div class="flex justify-between text-xs text-on-surface-variant mb-3">
             <span>Reading Progress</span><span>{progressPercent}%</span>
           </div>
-          <div class="w-full h-1.5 bg-muted/50 overflow-hidden mb-8">
-            <div class="h-full bg-primary transition-all duration-700 ease-out" style={`width: ${progressPercent}%`}></div>
+          <div class="w-full h-1.5 rounded-full bg-surface-container-high overflow-hidden mb-8">
+            <div class="h-full rounded-full bg-primary transition-all duration-700 ease-out" style={`width: ${progressPercent}%`}></div>
           </div>
           <div class="flex flex-col md:flex-row items-center justify-between gap-6">
             <div class="hidden md:flex flex-col gap-1">
-              <span class="text-sm font-medium text-foreground">Navigation</span><span class="text-xs text-muted-foreground"
+              <span class="text-sm font-medium text-foreground">Navigation</span><span class="text-xs text-on-surface-variant"
                 >Select a page to continue.</span
               >
             </div>
