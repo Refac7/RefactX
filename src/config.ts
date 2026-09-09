@@ -19,7 +19,7 @@ export const SITE: Site = {
   base: '/',
   author: 'Refact',
   ogImage: '/og-image.webp',
-  version: '1.8',
+  version: '1.9',
   footerText: 'Designed and engineered for the digital void.',
   footerText2: 'Minimalist layout, maximum focus. Data persistence guaranteed.',
 }
