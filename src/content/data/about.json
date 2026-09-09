@@ -1,7 +1,7 @@
 {
-  "title": "About",
+  "title": "Profile",
   "description": "Who am I?",
-  "introduce": "你还想知道些什么呢？",
+  "introduce": "欢迎光临喵～你想了解的，我都尽量告诉你哦！(・∀・)",
   "profileName": "Refac7",
   "profileAvatar": "/avatar.png",
   "profileRole": "Creative Developer / UI Designer",
@@ -51,47 +51,23 @@
   "skills": [
     {
       "category": "Frontend // 前端",
-      "items": [
-        "JavaScript",
-        "React",
-        "Astro",
-        "TypeScript",
-        "Tailwind CSS"
-      ]
+      "items": ["JavaScript", "React", "Astro", "TypeScript", "Tailwind CSS"]
     },
     {
       "category": "Backend // 后端",
-      "items": [
-        "Node.js",
-        "Python",
-        "PostgreSQL",
-        "Redis"
-      ]
+      "items": ["Node.js", "Python", "PostgreSQL", "Redis"]
     },
     {
       "category": "Design // 设计",
-      "items": [
-        "Figma",
-        "Photoshop",
-        "AE"
-      ]
+      "items": ["Figma", "Photoshop", "AE"]
     },
     {
       "category": "Others // 杂项",
-      "items": [
-        "VSCode",
-        "Git",
-        "Docker",
-        "Linux"
-      ]
+      "items": ["VSCode", "Git", "Docker", "Linux"]
     },
     {
       "category": "Learning // 学习中",
-      "items": [
-        "Java",
-        "Rust",
-        "Go"
-      ]
+      "items": ["Java", "Rust", "Go"]
     }
   ],
   "equipment": [

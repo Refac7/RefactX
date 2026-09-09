@@ -269,6 +269,13 @@ html.theme-mourning {
   );
 }
 
+/* ===== 空心标题（背景装饰） ===== */
+/* 大字描边：文字透明 + 边框色描边，作为桌面端留白处的背景水印 */
+@utility outline-title {
+  -webkit-text-stroke: 1px hsl(var(--border) / 0.9);
+  color: transparent;
+}
+
 /* ===== 滚动条与工具类 ===== */
 @supports (scrollbar-width: auto) {
   * {

@@ -103,9 +103,9 @@ export const GITHUB_CONFIG: GithubConfig = {
 
 // 文章页面配置
 export const POSTS_CONFIG: PostConfig = {
-  title: 'Posts',
+  title: 'Articles',
   description: 'Refact 的文章',
-  introduce: '不定时更新维护文章，可订阅 RSS 获取最新更新状态。',
+  introduce: '随手记下的小文章喵～偶尔更新，欢迎订阅 RSS 一起围观哦 (・∀・)',
   author: 'Refact',
   homePageConfig: { size: 3, type: 'compact' },
   postPageConfig: { size: 8, type: 'image' },
@@ -126,37 +126,37 @@ export const POSTS_CONFIG: PostConfig = {
 
 // 标签页面配置
 export const TAGS_CONFIG: TagsConfig = {
-  title: 'Tags',
+  title: 'Topics',
   description: '所有文章标签',
-  introduce: '所有文章标签均在此处，点击即可筛选。',
+  introduce: '这里是小标签宇宙喵～点一下就能开启传送门 (・ω・)ノ',
 }
 
 // 作者页面配置
 export const AUTHORS_CONFIG: AuthorsConfig = {
   title: 'Authors',
   description: '所有文章作者',
-  introduce: '浏览不同作者的文章，点击作者名即可筛选其撰写的所有文章。',
+  introduce: '戳一戳作者名字，就能淘到 TA 写的全部文章啦喵 (｡>ω<｡)',
 }
 
 // 项目页面配置
 export const PROJECTS_CONFIG: ProjectConfig = {
-  title: 'Projs',
+  title: 'Projects',
   description: '我的项目案例',
-  introduce: '以下是我的项目案例展示，不定期维护项目。',
+  introduce: '这里陈列着我捣鼓过的小项目喵～正在慢慢生长中 (・∀・)',
 }
 
 // 动态页面配置
 export const DYNAMIC_CONFIG: DynamicConfig = {
   title: 'Dynamic',
   description: '我的动态',
-  introduce: '实时信号、简短想法和开发更新，直接从 Notion 工作区同步。',
+  introduce: '一些碎碎念、小脑洞和开发日常，直接从 Notion 同步过来喵～ (＾▽＾)',
 }
 
 // 友链页面配置
 export const FRIENDS_CONFIG = {
   title: 'Friends',
   description: '我的朋友们都在这里，欢迎互访～',
-  introduce: '已获取星图定位，正在前往友链星系的路上……',
+  introduce: '已锁定星图坐标，正在驶向友链星系喵～欢迎来串门 (・ω・)ノ',
   enableAdd: true,
 }
 
