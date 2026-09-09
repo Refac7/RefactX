@@ -1,11 +1,11 @@
 {
-  "title": "Profile",
+  "title": "Profiles",
   "description": "Who am I?",
   "introduce": "欢迎光临喵～你想了解的，我都尽量告诉你哦！(・∀・)",
   "profileName": "Refac7",
   "profileAvatar": "/avatar.png",
   "profileRole": "Creative Developer / UI Designer",
-  "profileBio": "你与光芒 / You & Radiance\n\n因抑郁发作休学，高数苦手。喜欢电子音乐，熟悉以下所有技术栈的拼写，熟练使用剪贴板和cmd c和cmd v. 如果你和我有共同爱好，欢迎随时使用你能找到的所有渠道联系我哦～",
+  "profileBio": "你与光芒 / You & Radiance\n\n因抑郁发作休学，高数苦手。喜欢电子音乐，熟悉以下所有技术栈的拼写，熟练使用剪贴板和cmd c和cmd v. 如果你想要认识我，欢迎随时使用你能找到的所有渠道联系我哦～",
   "physicalAttributes": [
     {
       "label": "Height",
@@ -51,23 +51,47 @@
   "skills": [
     {
       "category": "Frontend // 前端",
-      "items": ["JavaScript", "React", "Astro", "TypeScript", "Tailwind CSS"]
+      "items": [
+        "JavaScript",
+        "React",
+        "Astro",
+        "TypeScript",
+        "Tailwind CSS"
+      ]
     },
     {
       "category": "Backend // 后端",
-      "items": ["Node.js", "Python", "PostgreSQL", "Redis"]
+      "items": [
+        "Node.js",
+        "Python",
+        "PostgreSQL",
+        "Redis"
+      ]
     },
     {
       "category": "Design // 设计",
-      "items": ["Figma", "Photoshop", "AE"]
+      "items": [
+        "Figma",
+        "Photoshop",
+        "AE"
+      ]
     },
     {
       "category": "Others // 杂项",
-      "items": ["VSCode", "Git", "Docker", "Linux"]
+      "items": [
+        "VSCode",
+        "Git",
+        "Docker",
+        "Linux"
+      ]
     },
     {
       "category": "Learning // 学习中",
-      "items": ["Java", "Rust", "Go"]
+      "items": [
+        "Java",
+        "Rust",
+        "Go"
+      ]
     }
   ],
   "equipment": [
@@ -116,7 +140,7 @@
     {
       "title": "Rhythm Doctor",
       "platform": "PC / Steam",
-      "status": "Playing",
+      "status": "Paused",
       "hours": "100h+",
       "color": "text-yellow-500"
     },
