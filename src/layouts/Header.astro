@@ -9,8 +9,8 @@ import favicon from '../../public/favicon.webp'
 import { CMS_CONFIG } from '~/config'
 ---
 
-<header>
-  <div class="mx-auto flex justify-between px-6 lg:px-8 xl:px-12 py-8 border-b border-border/40">
+<header class="fixed top-0 left-0 right-0 z-40 bg-background/80 backdrop-blur-md border-b border-border/40">
+  <div class="mx-auto flex justify-between px-6 lg:px-8 xl:px-12 py-8">
     <div class="flex gap-3 sm:gap-6 items-center shrink-0">
       <a href="/" class="pointer-events-auto select-none" transition:persist>
         <Image src={favicon} width={56} height={56} alt="Logo" class="w-8 h-8 border-2 border-transparent" loading="eager" />
