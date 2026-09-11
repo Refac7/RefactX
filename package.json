@@ -49,6 +49,7 @@
     "@floating-ui/react": "^0.27.12",
     "@nanostores/react": "^0.8.4",
     "@octokit/rest": "^22.0.1",
+    "@vercel/speed-insights": "^2.0.0",
     "@waline/client": "^3.6.0",
     "astro": "^6.1.5",
     "bcryptjs": "^3.0.3",

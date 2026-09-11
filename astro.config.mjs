@@ -66,7 +66,7 @@ export default defineConfig({
   output: 'static',
 
   adapter: vercel({
-    webAnalytics: { enabled: false },
+    webAnalytics: { enabled: true },
   }),
 
   prefetch: {
