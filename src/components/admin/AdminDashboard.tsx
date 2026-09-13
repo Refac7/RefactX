@@ -17,7 +17,7 @@ const DashboardLayout = () => {
       <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
 
       {/* Header */}
-      <header className="bg-background/80 backdrop-blur-sm border-b border-border/40 sticky top-0 z-20">
+      <header className="bg-background/80 backdrop-blur-sm border-b border-border/40">
         <div className="px-6 lg:px-8 xl:px-12 h-16 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-3 select-none">
