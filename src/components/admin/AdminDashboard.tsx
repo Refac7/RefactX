@@ -18,7 +18,7 @@ const DashboardLayout = () => {
 
       {/* Header */}
       <header className="bg-background/80 backdrop-blur-sm border-b border-border/40 sticky top-0 z-20">
-        <div className="max-w-[1920px] mx-auto p-6 lg:p-8 xl:p-12 h-16 flex items-center justify-between">
+        <div className="px-6 lg:px-8 xl:px-12 h-16 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-3 select-none">
               <div className="size-8 bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
@@ -59,7 +59,7 @@ const DashboardLayout = () => {
       </header>
 
       {/* Main workspace */}
-      <main className="flex-1 max-w-[1920px] w-full mx-auto p-6 lg:p-8 xl:p-12 flex flex-col h-[calc(100vh-4rem)]">
+      <main className="flex-1 px-6 lg:px-8 xl:px-12 py-6 lg:py-8 xl:py-12 flex flex-col h-[calc(100vh-4rem)]">
         {/* Stats cards */}
         <div className="hidden lg:grid grid-cols-3 gap-6 mb-6 shrink-0">
           <div className="bg-background/50 border border-border/40 p-5 flex items-center justify-between hover:border-primary/30 hover:shadow-sm transition-all">
