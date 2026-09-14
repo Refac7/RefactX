@@ -41,7 +41,7 @@
     "preview": "python3 -m http.server --directory dist/client 4321",
     "astro": "astro",
     "format": "prettier . --check --ignore-unknown",
-    "format:write": "prettier . --write --ignore-unknown --cache"
+    "format:write": "prettier . --write --ignore-unknown"
   },
   "dependencies": {
     "@astrojs/react": "5.0.3",
