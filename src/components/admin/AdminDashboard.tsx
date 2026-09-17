@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { CMS_CONFIG } from '~/config'
 import { cn } from '~/lib/utils'
 import AdminProvider, { useAdmin } from './AdminContext'
@@ -9,6 +10,11 @@ import QueuePanel from './panels/QueuePanel'
 
 const DashboardLayout = () => {
   const { isLoggedIn, username, fileInputRef, handleFileChange, mobileView, setMobileView, queue, remoteFiles, handleLogout } = useAdmin()
+
+  // 登录后隐藏 Astro 渲染的左侧 PageAside，使 CMS 面板占满全宽
+  useEffect(() => {
+    document.documentElement.classList.toggle('is-authed', isLoggedIn)
+  }, [isLoggedIn])
 
   if (!isLoggedIn) return <LoginScreen />
 

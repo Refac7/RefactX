@@ -1,6 +1,7 @@
 ---
 import Layout from '~/layouts/Layout.astro'
 import AdminDashboard from '~/components/admin/AdminDashboard'
+import PageAside from '~/components/base/PageAside.astro'
 
 // 不进行SEO优化，禁止搜索引擎索引此页面
 const title = 'System Controller'
@@ -8,5 +9,62 @@ const description = 'Authorized Personnel Only'
 ---
 
 <Layout {title} {description}>
-  <AdminDashboard client:only="react" />
+  <script is:inline>
+    // 已有有效会话时直接展示 CMS 面板，避免登录页闪现
+    ;(function () {
+      var token = null
+      try {
+        token = localStorage.getItem('admin_jwt_token')
+      } catch (e) {}
+      if (token) {
+        try {
+          var payload = JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')))
+          if (payload.exp && payload.exp * 1000 < Date.now()) token = null
+        } catch (e) {
+          token = null
+        }
+      }
+      if (token) {
+        document.documentElement.classList.add('is-authed')
+      }
+    })()
+  </script>
+
+  <div id="cms-login-root" class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
+    <PageAside
+      statusText="Restricted Area"
+      title="Access"
+      subtitleIcon="icon-[ph--lock-key]"
+      subtitleText="CMS Authentication Gateway"
+      identityTags={[
+        { icon: 'icon-[ph--shield-check]', label: 'Verified' },
+        { icon: 'icon-[ph--terminal-window]', label: 'Astro' },
+        { icon: 'icon-[ph--github-logo]', label: 'GitHub' },
+      ]}
+      intro="验证身份以进入 RefactX 内容管理后台——管理文章、配置数据与部署流程喵～ (・ω・)ノ"
+      statsLabel="// SYSTEM_MODULES"
+      statsMeta="3 ACTIVE"
+      stats={[
+        { value: 'Posts', label: 'Markdown pipeline' },
+        { value: 'Data', label: 'JSON content' },
+        { value: 'GitHub', label: 'Backed sync' },
+      ]}
+    />
+
+    <main class="w-full lg:w-2/3 z-10 flex flex-col fade-up animation-delay-100">
+      <AdminDashboard client:only="react" />
+    </main>
+  </div>
+
+  <style is:global>
+    html.is-authed #cms-login-root {
+      display: block;
+    }
+    html.is-authed #cms-login-root > aside {
+      display: none;
+    }
+    html.is-authed #cms-login-root > main {
+      width: 100%;
+    }
+  </style>
 </Layout>
