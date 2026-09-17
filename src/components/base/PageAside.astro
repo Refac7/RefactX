@@ -53,6 +53,7 @@ const {
 const dotColor = statusVariant === 'emerald' ? 'bg-emerald-500' : 'bg-primary'
 const pingColor = statusVariant === 'emerald' ? 'bg-emerald-400' : 'bg-primary/60'
 const visibleIdentityTags = identityTags.slice(0, 2)
+const hasBottomSlot = Astro.slots.has('bottom')
 ---
 
 <aside
@@ -140,7 +141,16 @@ const visibleIdentityTags = identityTags.slice(0, 2)
       {
         intro && (
           <div class="relative pl-4 border-l-2 border-primary/30 fade-up animation-delay-150">
-            <p class="text-sm md:text-base text-muted-foreground leading-relaxed">{intro}</p>
+            <p class="text-sm md:text-base text-muted-foreground leading-relaxed">
+              {
+                intro.split('\n').map((line, i) => (
+                  <>
+                    {i > 0 && <br />}
+                    {line}
+                  </>
+                ))
+              }
+            </p>
           </div>
         )
       }
@@ -159,38 +169,42 @@ const visibleIdentityTags = identityTags.slice(0, 2)
     </div>
 
     {
-      stats.length === 2 && (
-        <div class="flex">
-          {stats.map((stat, i) => (
-            <div
-              class={`flex-1 flex flex-col items-start justify-center p-6 lg:p-8 xl:p-10 bg-background/50 hover:bg-primary/5 transition-colors ${i < stats.length - 1 ? 'border-r border-border/40' : ''}`}
-            >
-              <span class="text-2xl font-semibold text-foreground tracking-tight">{stat.value}</span>
-              <span class="text-xs text-muted-foreground mt-1">{stat.label}</span>
+      hasBottomSlot ? (
+        <slot name="bottom" />
+      ) : (
+        <>
+          {stats.length === 2 && (
+            <div class="flex">
+              {stats.map((stat, i) => (
+                <div
+                  class={`flex-1 flex flex-col items-start justify-center p-6 lg:p-8 xl:p-10 bg-background/50 hover:bg-primary/5 transition-colors ${i < stats.length - 1 ? 'border-r border-border/40' : ''}`}
+                >
+                  <span class="text-2xl font-semibold text-foreground tracking-tight">{stat.value}</span>
+                  <span class="text-xs text-muted-foreground mt-1">{stat.label}</span>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      )
-    }
+          )}
 
-    {
-      stats.length === 3 && (
-        <div class="flex flex-col">
-          <div class="flex">
-            {stats.slice(0, 2).map((stat, i) => (
-              <div
-                class={`flex-1 flex flex-col items-start justify-center p-6 lg:p-8 xl:p-10 bg-background/50 border-b border-border/40 hover:bg-primary/5 transition-colors ${i === 0 ? 'border-r border-border/40' : ''}`}
-              >
-                <span class="text-2xl font-semibold text-foreground tracking-tight">{stat.value}</span>
-                <span class="text-xs text-muted-foreground mt-1">{stat.label}</span>
+          {stats.length === 3 && (
+            <div class="flex flex-col">
+              <div class="flex">
+                {stats.slice(0, 2).map((stat, i) => (
+                  <div
+                    class={`flex-1 flex flex-col items-start justify-center p-6 lg:p-8 xl:p-10 bg-background/50 border-b border-border/40 hover:bg-primary/5 transition-colors ${i === 0 ? 'border-r border-border/40' : ''}`}
+                  >
+                    <span class="text-2xl font-semibold text-foreground tracking-tight">{stat.value}</span>
+                    <span class="text-xs text-muted-foreground mt-1">{stat.label}</span>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-          <div class="flex items-center justify-between p-5 lg:p-6 bg-background/50 hover:bg-primary/5 transition-colors">
-            <span class="text-xs text-muted-foreground font-medium">{stats[2].label}</span>
-            <span class="text-sm font-semibold text-foreground">{stats[2].value}</span>
-          </div>
-        </div>
+              <div class="flex items-center justify-between p-5 lg:p-6 bg-background/50 hover:bg-primary/5 transition-colors">
+                <span class="text-xs text-muted-foreground font-medium">{stats[2].label}</span>
+                <span class="text-sm font-semibold text-foreground">{stats[2].value}</span>
+              </div>
+            </div>
+          )}
+        </>
       )
     }
   </div>
