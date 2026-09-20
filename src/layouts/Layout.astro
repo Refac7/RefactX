@@ -29,7 +29,7 @@ const { title, description, image, author } = Astro.props
         } catch {}
 
         const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
-        document.documentElement.style.backgroundColor = isDark ? '#0a0a0a' : '#fafafa'
+        document.documentElement.style.backgroundColor = isDark ? '#0a0a0a' : '#fefefe'
       })()
     </script>
   </head>
@@ -63,9 +63,9 @@ const { title, description, image, author } = Astro.props
     </div>
 
     <style is:global>
-      /* Use a classic serif stack for the site's heading typography instead of Lexend. */
+      /* Nothing-style technical heading typography: bold geometric sans with tight tracking. */
       :root {
-        --font-serif: Georgia, 'Times New Roman', 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', SimSun, serif;
+        --font-serif: 'Lexend', 'CJKEmDash', 'Numbers', 'ShangguSansSC-VF', ui-sans-serif, system-ui, sans-serif;
       }
 
       /* 统一加深可视卡片边框，同时保留主题色和原有布局。 */

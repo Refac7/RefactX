@@ -65,16 +65,16 @@ const hasBottomSlot = Astro.slots.has('bottom')
       class="p-6 lg:p-8 xl:p-12 pb-0 lg:pb-4 shrink-0 fade-up flex justify-between items-start lg:border-b lg:border-dashed lg:border-border/60"
     >
       <div class="flex items-center gap-3 select-none">
-        <div class="size-10 bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
-          <span class="icon-[ph--terminal-window-duotone] size-6"></span>
+        <div class="size-10 bg-primary text-primary-foreground border border-primary flex items-center justify-center">
+          <span class="icon-[ph--dot-outline-fill] size-6"></span>
         </div>
         <div>
-          <div class="text-sm font-bold tracking-tight">{SITE.title || 'Digital Hub'}</div>
-          <div class="text-[10px] text-muted-foreground uppercase tracking-widest font-mono">System Online</div>
+          <div class="text-sm font-bold tracking-tight text-foreground">{SITE.title || 'Digital Hub'}</div>
+          <div class="text-[10px] text-muted-foreground uppercase tracking-widest font-mono">Nothing · System</div>
         </div>
       </div>
       <span
-        class="inline-flex items-center border border-primary/20 bg-primary/5 px-2.5 py-1 text-[10px] font-mono text-primary select-none"
+        class="inline-flex items-center border border-primary/40 bg-primary/5 px-2.5 py-1 text-[10px] font-mono text-primary select-none"
       >
         v{SITE.version} / Astro
       </span>

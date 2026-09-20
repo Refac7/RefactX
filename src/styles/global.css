@@ -62,41 +62,42 @@
     --font-sans: 'CJKEmDash', 'Numbers', 'ShangguSansSC-VF', ui-sans-serif, system-ui, sans-serif;
     --font-geist-mono: 'GeistMono', 'Input Mono', 'Fira Code', 'ShangguSansSC-VF', monospace;
 
-    --background: 255 100% 100%;
-    --foreground: 225 15% 12%;
-    --accent: 220 25% 94%;
-    --accent-foreground: 225 15% 12%;
-    --primary: 225 15% 12%;
-    --primary-foreground: 220 30% 98%;
-    --muted: 220 25% 92%;
-    --muted-foreground: 225 10% 40%;
-    --border: 220 20% 90%;
-    --ring: 225 15% 12%;
-    --tag-bg: 220 25% 96%;
-    --tag-bg-hover: 220 25% 92%;
-    --tag-border: 220 25% 90%;
-    --tag-text: 225 15% 35%;
-    --scrollbar: 220 20% 80%;
-    --scrollbar-bg: 220 25% 95%;
+    /* Nothing Design · 红白黑（透明感） */
+    --background: 0 0% 99.5%;
+    --foreground: 0 0% 6%;
+    --accent: 0 0% 95%;
+    --accent-foreground: 0 0% 6%;
+    --primary: 3 72% 40%; /* Nothing Red */
+    --primary-foreground: 0 0% 100%;
+    --muted: 0 0% 93%;
+    --muted-foreground: 0 0% 42%;
+    --border: 0 0% 88%;
+    --ring: 3 72% 40%;
+    --tag-bg: 0 0% 95%;
+    --tag-bg-hover: 0 0% 89%;
+    --tag-border: 0 0% 85%;
+    --tag-text: 0 0% 25%;
+    --scrollbar: 0 0% 74%;
+    --scrollbar-bg: 0 0% 94%;
   }
 
   .dark {
-    --background: 0 0% 0%;
-    --foreground: 0 0% 98%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --border: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
-    --tag-bg: 240 20% 13%;
-    --tag-bg-hover: 240 20% 16%;
-    --tag-border: 240 20% 20%;
-    --tag-text: 240 15% 85%;
-    --scrollbar: 240 10% 30%;
-    --scrollbar-bg: 240 10% 15%;
+    --background: 0 0% 4%;
+    --foreground: 0 0% 97%;
+    --accent: 0 0% 13%;
+    --accent-foreground: 0 0% 97%;
+    --primary: 3 78% 48%; /* Nothing Red · dark */
+    --primary-foreground: 0 0% 100%;
+    --muted: 0 0% 13%;
+    --muted-foreground: 0 0% 55%;
+    --border: 0 0% 18%;
+    --ring: 3 78% 48%;
+    --tag-bg: 0 0% 11%;
+    --tag-bg-hover: 0 0% 16%;
+    --tag-border: 0 0% 22%;
+    --tag-text: 0 0% 82%;
+    --scrollbar: 0 0% 30%;
+    --scrollbar-bg: 0 0% 13%;
   }
 
   /* 新年/国庆节 */
@@ -257,16 +258,11 @@ html.theme-mourning {
   }
 }
 
-/* ===== 蓝图风格（淡斜线底纹） ===== */
-/* 45° 斜线底纹（@utility 以支持 lg: 变体，仅桌面端左侧栏生效；低透明度保持克制） */
+/* ===== Nothing 设计 · 点阵底纹 ===== */
+/* 经典 Nothing 点阵网格（低透明度保持克制） */
 @utility blueprint-hatch {
-  background-image: repeating-linear-gradient(
-    45deg,
-    hsl(var(--border) / 0.28) 0,
-    hsl(var(--border) / 0.28) 1px,
-    transparent 1px,
-    transparent 18px
-  );
+  background-image: radial-gradient(hsl(var(--border) / 0.5) 1px, transparent 1px);
+  background-size: 18px 18px;
 }
 
 /* ===== 空心标题（背景装饰） ===== */
