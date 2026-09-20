@@ -272,6 +272,11 @@ html.theme-mourning {
   color: transparent;
 }
 
+/* 深色模式下背景大字描边更淡，降低可见度 */
+.dark .outline-title {
+  -webkit-text-stroke-color: hsl(var(--border) / 0.45);
+}
+
 /* ===== 滚动条与工具类 ===== */
 @supports (scrollbar-width: auto) {
   * {
