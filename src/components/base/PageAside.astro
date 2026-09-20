@@ -142,14 +142,12 @@ const hasBottomSlot = Astro.slots.has('bottom')
         intro && (
           <div class="relative pl-4 border-l-2 border-primary/30 fade-up animation-delay-150">
             <p class="text-sm md:text-base text-muted-foreground leading-relaxed">
-              {
-                intro.split('\n').map((line, i) => (
-                  <>
-                    {i > 0 && <br />}
-                    {line}
-                  </>
-                ))
-              }
+              {intro.split('\n').map((line, i) => (
+                <>
+                  {i > 0 && <br />}
+                  {line}
+                </>
+              ))}
             </p>
           </div>
         )
