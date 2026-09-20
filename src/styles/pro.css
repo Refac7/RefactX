@@ -3,46 +3,46 @@
 @import 'rehype-callouts/theme/vitepress';
 @import 'katex/dist/katex.min.css';
 
-/* ===== Color Variables | 颜色变量 ===== */
+/* ===== Color Variables | 颜色变量（可爱深蓝系） ===== */
 .markdown {
-  --text: #3f3f46; /* zinc-700 */
-  --text-deep: #09090b; /* zinc-950 */
-  --heading: #09090b; /* zinc-950 */
-  --links: #09090b; /* zinc-950 */
-  --links-border: #e4e4e7; /* zinc-200 */
-  --links-hover-border: #a1a1aa; /* zinc-400 */
-  --anchor: var(--color-primary); /* blue-500 */
-  --hr-color: #e4e4e7; /* zinc-200 */
-  --blockquote-border: #e4e4e7; /* zinc-200 */
-  --blockquote-bg: #fafafa; /* zinc-50 */
-  --table-text: #18181b; /* zinc-900 */
-  --inline-code-bg: #f4f4f5; /* zinc-100 */
-  --inline-code-text: #18181b; /* zinc-900 */
-  --inline-code-border: #e4e4e7; /* zinc-200 */
+  --text: #46506b; /* 蓝灰 */
+  --text-deep: #1e2a44; /* 深海蓝 */
+  --heading: #5f86e8; /* 柔和蓝 */
+  --links: #1e2a44; /* 深海蓝 */
+  --links-border: #d4e0f7; /* 浅蓝 */
+  --links-hover-border: #5f86e8; /* 柔和蓝 */
+  --anchor: var(--color-primary);
+  --hr-color: #d4e0f7; /* 浅蓝 */
+  --blockquote-border: #7fa7f2; /* 天空蓝 */
+  --blockquote-bg: #edf3ff; /* 冰蓝 */
+  --table-text: #1e2a44; /* 深海蓝 */
+  --inline-code-bg: #e6effe; /* 嫩蓝 */
+  --inline-code-text: #4a7ce8; /* 柔和宝蓝 */
+  --inline-code-border: #c6d8f8; /* 淡蓝 */
 }
 
 .dark .markdown {
-  --text: #a1a1aa; /* zinc-400 */
-  --text-deep: #fafafa; /* zinc-50 */
-  --heading: #fafafa; /* zinc-50 */
-  --links: #fafafa; /* zinc-50 */
-  --links-border: #3f3f46; /* zinc-700 */
-  --links-hover-border: #a1a1aa; /* zinc-400 */
-  --anchor: var(--color-primary); /* blue-400 */
-  --hr-color: #27272a; /* zinc-800 */
-  --blockquote-border: #3f3f46; /* zinc-700 */
-  --blockquote-bg: #18181b; /* zinc-900 */
-  --table-text: #fafafa; /* zinc-50 */
-  --inline-code-bg: #27272a; /* zinc-800 */
-  --inline-code-text: #e4e4e7; /* zinc-200 */
-  --inline-code-border: #3f3f46; /* zinc-700 */
+  --text: #9fb1d4; /* 浅蓝灰 */
+  --text-deep: #eaf0fb; /* 近白蓝 */
+  --heading: #7da7f5; /* 天空蓝 */
+  --links: #eaf0fb; /* 近白蓝 */
+  --links-border: #39466b; /* 深蓝 */
+  --links-hover-border: #7da7f5; /* 天空蓝 */
+  --anchor: var(--color-primary);
+  --hr-color: #232c47; /* 深蓝 */
+  --blockquote-border: #4a5f99; /* 蓝紫 */
+  --blockquote-bg: #131a2e; /* 深海蓝 */
+  --table-text: #eaf0fb; /* 近白蓝 */
+  --inline-code-bg: #1c2742; /* 深蓝 */
+  --inline-code-text: #7da7f5; /* 天空蓝 */
+  --inline-code-border: #2c3a60; /* 深蓝 */
 }
 
 /* ===== Base Styles | 基础样式 ===== */
 .markdown {
   color: var(--text);
-  font-size: 1rem;
-  line-height: 1.75;
+  font-size: 1.05rem;
+  line-height: 1.85;
   font-family: var(--font-sans);
 }
 
@@ -54,7 +54,7 @@
 .markdown h5,
 .markdown h6 {
   color: var(--heading);
-  font-weight: 600;
+  font-weight: 700;
   margin-top: 2em;
   margin-bottom: 1em;
   line-height: 1.4;
@@ -75,13 +75,13 @@
 }
 .markdown h3 {
   font-size: 1.25em;
-  font-weight: 500;
+  font-weight: 600;
   margin-top: 1.6em;
   margin-bottom: 0.6em;
 }
 .markdown h4 {
   font-size: 1.125em;
-  font-weight: 500;
+  font-weight: 600;
 }
 .markdown h5 {
   font-size: 1em;
@@ -99,7 +99,7 @@
   margin: 1.25em 0;
 }
 .markdown strong {
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-deep);
 }
 .markdown b {
@@ -121,6 +121,7 @@
 }
 .markdown a:hover {
   border-bottom-color: var(--links-hover-border);
+  color: var(--heading);
 }
 .markdown a code {
   color: inherit;
@@ -137,21 +138,18 @@
 .markdown ol > li::before {
   content: counter(list-item, var(--list-counter-style, decimal)) '.';
   position: absolute;
-  font-weight: 500;
-  color: var(--text);
+  font-weight: 700;
+  color: var(--heading);
   left: 0;
 }
 
 .markdown ul > li::before {
-  content: '';
+  content: '💗';
   position: absolute;
-  background-color: var(--text);
-  border-radius: 50%;
-  width: 0.375em;
-  height: 0.375em;
-  top: calc(0.875em - 0.1875em);
-  left: 0.25em;
-  opacity: 0.7;
+  font-size: 0.8em;
+  top: calc(0.875em - 0.32em);
+  left: 0.05em;
+  opacity: 0.75;
 }
 
 .markdown ol,
@@ -181,20 +179,23 @@
   border-color: var(--hr-color);
   border-width: 1px;
   margin: 3em auto;
+  width: 100%;
 }
 
 .markdown blockquote {
+  position: relative;
   font-weight: 400;
   color: var(--text);
-  background-color: var(--blockquote-bg);
-  border-left: 3px solid var(--blockquote-border);
-  border-radius: 0 0.5rem 0.5rem 0;
+  background: var(--blockquote-bg);
+  border: 1px solid var(--blockquote-border);
+  border-left: 5px solid var(--blockquote-border);
+  border-radius: 1rem;
   margin: 1.6em 0;
-  padding: 1em 1.25em;
+  padding: 1.2em 1.4em;
 }
 
 .markdown blockquote > * {
-  opacity: 0.9;
+  opacity: 0.92;
 }
 .markdown blockquote > :first-child {
   margin-top: 0;
@@ -215,9 +216,9 @@
   font-size: 0.875em;
   line-height: 1.7;
   margin: 1.5em 0;
-  border-radius: 0.75rem;
+  border-radius: 1.25rem;
   border: 1px solid var(--hr-color);
-  padding: 1em 1.25em;
+  padding: 1.1em 1.35em;
 }
 
 .markdown pre code {
@@ -245,8 +246,8 @@
   background-color: var(--inline-code-bg);
   color: var(--inline-code-text);
   border: 1px solid var(--inline-code-border);
-  border-radius: 0.375rem;
-  padding: 0.15em 0.4em;
+  border-radius: 0.5rem;
+  padding: 0.2em 0.45em;
   word-wrap: break-word;
 }
 
@@ -258,7 +259,11 @@
   font-size: 0.875em;
   line-height: 1.7;
   margin: 2em 0;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--hr-color);
+  border-radius: 1rem;
+  overflow: hidden;
 }
 
 .markdown thead {
@@ -293,7 +298,7 @@
 /* ===== Media | 媒体 ===== */
 .markdown img {
   margin: 2em auto;
-  border-radius: 0.75rem;
+  border-radius: 1.25rem;
   border: 1px solid var(--hr-color);
   will-change: transform, filter;
 }
@@ -365,13 +370,13 @@
 .markdown details {
   background-color: var(--blockquote-bg);
   border: 1px solid var(--hr-color);
-  border-radius: 0.75rem;
-  padding: 1em;
+  border-radius: 1.25rem;
+  padding: 1em 1.25em;
   margin: 1.5em 0;
 }
 
 .markdown details summary {
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   outline: none;
 }
@@ -393,7 +398,7 @@
 .expressive-code .copy button {
   width: 2rem !important;
   height: 2rem !important;
-  border-radius: 0.375rem !important;
+  border-radius: 0.75rem !important;
 }
 .expressive-code .copy button::after {
   width: 1rem !important;
@@ -430,7 +435,7 @@
   width: 1em;
   height: 1em;
   border: 1px solid var(--hr-color);
-  border-radius: 0.25rem;
+  border-radius: 0.4em;
   cursor: pointer;
   accent-color: var(--anchor);
 }
@@ -509,7 +514,7 @@
 .callout {
   padding-left: 16px;
   font-size: 15px;
-  border-radius: 0.5rem;
+  border-radius: 1rem;
 }
 
 .callout p {
@@ -613,10 +618,10 @@ html:not(.dark) .img-dark {
   }
   .markdown pre {
     padding: 1em;
-    border-radius: 0.5rem;
+    border-radius: 1rem;
   }
   .markdown blockquote {
-    padding: 0.75em 1em;
+    padding: 0.85em 1.1em;
   }
   .markdown table {
     display: block;

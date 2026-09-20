@@ -28,8 +28,10 @@ const visiblePages = getVisiblePages(page.currentPage, page.lastPage)
   <div class="flex items-center gap-1 sm:gap-2">
     <a
       href={page.url.prev}
-      class={`inline-flex h-8 sm:h-9 items-center gap-0.5 sm:gap-1 px-2 sm:px-4 text-xs sm:text-sm font-medium transition-colors ${
-        page.url.prev ? 'text-foreground hover:bg-muted cursor-pointer' : 'text-muted-foreground/40 cursor-not-allowed pointer-events-none'
+      class={`inline-flex h-8 sm:h-9 items-center gap-0.5 sm:gap-1 px-2 sm:px-4 text-xs sm:text-sm font-medium rounded-full transition-all ${
+        page.url.prev
+          ? 'text-foreground hover:bg-accent hover:text-primary cursor-pointer'
+          : 'text-muted-foreground/40 cursor-not-allowed pointer-events-none'
       }`}
     >
       <span class="icon-[ph--caret-left] size-3.5 sm:size-4"></span>
@@ -44,10 +46,10 @@ const visiblePages = getVisiblePages(page.currentPage, page.lastPage)
           ) : (
             <a
               href={pageNum === 1 ? baseUrl : `${baseUrl}/${pageNum}`}
-              class={`inline-flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center text-xs sm:text-sm transition-colors ${
+              class={`inline-flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center text-xs sm:text-sm font-semibold rounded-full transition-all ${
                 page.currentPage === pageNum
-                  ? 'text-primary font-medium border-primary/20 border'
-                  : 'text-foreground/80 hover:text-foreground hover:bg-muted'
+                  ? 'text-primary-foreground bg-primary  scale-105'
+                  : 'text-foreground/80 hover:text-primary hover:bg-accent'
               }`}
             >
               {pageNum}
@@ -59,8 +61,10 @@ const visiblePages = getVisiblePages(page.currentPage, page.lastPage)
 
     <a
       href={page.url.next}
-      class={`inline-flex h-8 sm:h-9 items-center gap-0.5 sm:gap-1  px-2 sm:px-4 text-xs sm:text-sm font-medium transition-colors ${
-        page.url.next ? 'text-foreground hover:bg-muted cursor-pointer' : 'text-muted-foreground/40 cursor-not-allowed pointer-events-none'
+      class={`inline-flex h-8 sm:h-9 items-center gap-0.5 sm:gap-1  px-2 sm:px-4 text-xs sm:text-sm font-medium rounded-full transition-all ${
+        page.url.next
+          ? 'text-foreground hover:bg-accent hover:text-primary cursor-pointer'
+          : 'text-muted-foreground/40 cursor-not-allowed pointer-events-none'
       }`}
     >
       <span class="hidden sm:inline">{POSTS_CONFIG.nextPageText}</span>

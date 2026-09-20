@@ -114,11 +114,11 @@ export default function GithubContributions({ username, tooltipEnabled }: Props)
     }, []) || []
 
   const getLevelClass = (count: number) => {
-    if (count === 0) return 'bg-muted/30 border-border/40'
-    if (count < 5) return 'bg-primary/30 border-primary/20'
-    if (count < 10) return 'bg-primary/50 border-primary/30'
-    if (count < 20) return 'bg-primary/70 border-primary/50'
-    return 'bg-primary border-primary/80'
+    if (count === 0) return 'bg-accent/60 border-primary/10 rounded-[4px]'
+    if (count < 5) return 'bg-primary/30 border-primary/20 rounded-[4px]'
+    if (count < 10) return 'bg-primary/50 border-primary/30 rounded-[4px]'
+    if (count < 20) return 'bg-primary/70 border-primary/50 rounded-[4px]'
+    return 'bg-primary border-primary/80 rounded-[4px]'
   }
 
   return (
@@ -127,18 +127,18 @@ export default function GithubContributions({ username, tooltipEnabled }: Props)
         <div className="flex justify-between items-end w-full px-1 mb-4 opacity-80 hover:opacity-100 transition-opacity duration-300">
           <div className="flex items-center gap-3">
             <div className="flex flex-col">
-              <span className="text-xs text-muted-foreground font-medium">Activity</span>
-              <span className="text-sm font-semibold text-foreground">@{username}</span>
+              <span className="text-xs text-muted-foreground font-semibold">贡献足迹 🐾</span>
+              <span className="text-sm font-bold text-foreground">@{username}</span>
             </div>
           </div>
 
           <div className="flex flex-col items-end">
             <div className="flex items-center gap-1.5 mb-0.5">
               <span className={cn('size-1.5 rounded-full', loading ? 'bg-yellow-500' : error ? 'bg-red-500' : 'bg-emerald-500')} />
-              <span className="text-xs text-muted-foreground font-medium">Contributions</span>
+              <span className="text-xs text-muted-foreground font-semibold">Contributions</span>
             </div>
-            <span className="text-sm font-semibold text-foreground">
-              {loading ? '---' : totalCount} <span className="text-xs font-normal text-muted-foreground">in last year</span>
+            <span className="text-sm font-bold text-foreground">
+              {loading ? '---' : totalCount} <span className="text-xs font-normal text-muted-foreground">近一年</span>
             </span>
           </div>
         </div>

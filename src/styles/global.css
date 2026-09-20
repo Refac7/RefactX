@@ -8,7 +8,7 @@
 
 /* ===== 主题变量 ===== */
 @theme {
-  --font-serif: var(--font-lexend);
+  --font-serif: Georgia, 'Times New Roman', 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', SimSun, serif;
   --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
 
@@ -55,132 +55,134 @@
   }
 }
 
-/* ===== 颜色变量 & 节日主题 ===== */
+/* ===== 颜色变量 & 节日主题（可爱深蓝系） ===== */
 @layer base {
   :root {
     --font-lexend: 'Lexend', 'CJKEmDash', 'Numbers', 'ShangguSansSC-VF', ui-sans-serif, system-ui, sans-serif;
-    --font-sans: 'CJKEmDash', 'Numbers', 'ShangguSansSC-VF', ui-sans-serif, system-ui, sans-serif;
+    --font-sans: 'Lexend', 'CJKEmDash', 'Numbers', 'ShangguSansSC-VF', ui-sans-serif, system-ui, sans-serif;
     --font-geist-mono: 'GeistMono', 'Input Mono', 'Fira Code', 'ShangguSansSC-VF', monospace;
 
-    --background: 255 100% 100%;
-    --foreground: 225 15% 12%;
-    --accent: 220 25% 94%;
-    --accent-foreground: 225 15% 12%;
-    --primary: 225 15% 12%;
-    --primary-foreground: 220 30% 98%;
-    --muted: 220 25% 92%;
-    --muted-foreground: 225 10% 40%;
-    --border: 220 20% 90%;
-    --ring: 225 15% 12%;
-    --tag-bg: 220 25% 96%;
-    --tag-bg-hover: 220 25% 92%;
-    --tag-border: 220 25% 90%;
-    --tag-text: 225 15% 35%;
-    --scrollbar: 220 20% 80%;
-    --scrollbar-bg: 220 25% 95%;
+    /* 冰蓝白底 + 深海蓝文字 + 柔和蓝主色 */
+    --background: 220 45% 98%;
+    --foreground: 225 45% 22%;
+    --accent: 215 60% 94%;
+    --accent-foreground: 220 60% 38%;
+    --primary: 219 62% 60%;
+    --primary-foreground: 0 0% 100%;
+    --muted: 220 45% 94%;
+    --muted-foreground: 222 16% 46%;
+    --border: 222 30% 89%;
+    --ring: 219 62% 66%;
+    --tag-bg: 220 55% 96%;
+    --tag-bg-hover: 220 50% 92%;
+    --tag-border: 220 42% 88%;
+    --tag-text: 222 55% 42%;
+    --scrollbar: 222 28% 79%;
+    --scrollbar-bg: 220 45% 95%;
   }
 
   .dark {
-    --background: 0 0% 0%;
-    --foreground: 0 0% 98%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --border: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
-    --tag-bg: 240 20% 13%;
-    --tag-bg-hover: 240 20% 16%;
-    --tag-border: 240 20% 20%;
-    --tag-text: 240 15% 85%;
-    --scrollbar: 240 10% 30%;
-    --scrollbar-bg: 240 10% 15%;
+    /* 深海蓝底 + 浅蓝文字 + 柔和天蓝主色 */
+    --background: 222 32% 11%;
+    --foreground: 220 30% 95%;
+    --accent: 222 26% 16%;
+    --accent-foreground: 220 30% 95%;
+    --primary: 216 62% 73%;
+    --primary-foreground: 225 40% 12%;
+    --muted: 222 24% 16%;
+    --muted-foreground: 220 14% 66%;
+    --border: 222 18% 22%;
+    --ring: 216 62% 73%;
+    --tag-bg: 222 26% 15%;
+    --tag-bg-hover: 222 24% 21%;
+    --tag-border: 222 18% 25%;
+    --tag-text: 216 55% 80%;
+    --scrollbar: 222 15% 32%;
+    --scrollbar-bg: 222 20% 15%;
   }
 
-  /* 新年/国庆节 */
+  /* 新年/国庆节 — 草莓红 */
   html.theme-red {
-    --primary: 350 85% 45%;
+    --primary: 350 85% 62%;
     --primary-foreground: 0 0% 100%;
-    --accent: 350 80% 95%;
+    --accent: 350 85% 95%;
     --accent-foreground: 350 85% 45%;
-    --ring: 350 85% 45%;
+    --ring: 350 85% 62%;
     --tag-bg: 350 80% 95%;
     --tag-bg-hover: 350 80% 90%;
     --tag-border: 350 80% 85%;
     --tag-text: 350 85% 45%;
-    --scrollbar: 350 30% 78%;
-    --scrollbar-bg: 350 30% 93%;
+    --scrollbar: 350 30% 80%;
+    --scrollbar-bg: 350 30% 94%;
   }
   html.dark.theme-red {
-    --primary: 350 85% 55%;
+    --primary: 350 90% 72%;
     --primary-foreground: 0 0% 100%;
-    --accent: 350 40% 15%;
-    --accent-foreground: 350 85% 75%;
-    --ring: 350 85% 55%;
-    --tag-bg: 350 40% 12%;
-    --tag-bg-hover: 350 40% 18%;
-    --tag-border: 350 40% 25%;
-    --tag-text: 350 85% 75%;
-    --scrollbar: 350 20% 28%;
-    --scrollbar-bg: 350 20% 13%;
+    --accent: 350 40% 17%;
+    --accent-foreground: 350 85% 78%;
+    --ring: 350 90% 72%;
+    --tag-bg: 350 40% 13%;
+    --tag-bg-hover: 350 40% 19%;
+    --tag-border: 350 40% 26%;
+    --tag-text: 350 85% 78%;
+    --scrollbar: 350 20% 30%;
+    --scrollbar-bg: 350 20% 15%;
   }
 
-  /* 端午节 */
+  /* 端午节 — 薄荷绿 */
   html.theme-green {
-    --primary: 150 70% 35%;
+    --primary: 158 65% 52%;
     --primary-foreground: 0 0% 100%;
-    --accent: 150 60% 95%;
-    --accent-foreground: 150 70% 35%;
-    --ring: 150 70% 35%;
-    --tag-bg: 150 60% 95%;
-    --tag-bg-hover: 150 60% 90%;
-    --tag-border: 150 60% 85%;
-    --tag-text: 150 70% 35%;
-    --scrollbar: 150 25% 78%;
-    --scrollbar-bg: 150 25% 93%;
+    --accent: 158 70% 95%;
+    --accent-foreground: 158 65% 32%;
+    --ring: 158 65% 52%;
+    --tag-bg: 158 60% 95%;
+    --tag-bg-hover: 158 60% 90%;
+    --tag-border: 158 60% 85%;
+    --tag-text: 158 65% 32%;
+    --scrollbar: 158 30% 80%;
+    --scrollbar-bg: 158 30% 94%;
   }
   html.dark.theme-green {
-    --primary: 150 60% 50%;
+    --primary: 158 70% 62%;
     --primary-foreground: 0 0% 100%;
-    --accent: 150 40% 15%;
-    --accent-foreground: 150 60% 70%;
-    --ring: 150 60% 50%;
-    --tag-bg: 150 40% 12%;
-    --tag-bg-hover: 150 40% 18%;
-    --tag-border: 150 40% 25%;
-    --tag-text: 150 60% 70%;
-    --scrollbar: 150 20% 28%;
-    --scrollbar-bg: 150 20% 13%;
+    --accent: 158 40% 16%;
+    --accent-foreground: 158 70% 72%;
+    --ring: 158 70% 62%;
+    --tag-bg: 158 40% 13%;
+    --tag-bg-hover: 158 40% 19%;
+    --tag-border: 158 40% 26%;
+    --tag-text: 158 70% 72%;
+    --scrollbar: 158 20% 30%;
+    --scrollbar-bg: 158 20% 15%;
   }
 
-  /* 中秋节 */
+  /* 中秋节 — 蜂蜜黄 */
   html.theme-gold {
-    --primary: 35 90% 45%;
+    --primary: 42 95% 55%;
     --primary-foreground: 0 0% 100%;
-    --accent: 35 80% 95%;
-    --accent-foreground: 35 90% 45%;
-    --ring: 35 90% 45%;
-    --tag-bg: 35 80% 95%;
-    --tag-bg-hover: 35 80% 90%;
-    --tag-border: 35 80% 85%;
-    --tag-text: 35 90% 45%;
-    --scrollbar: 35 25% 78%;
-    --scrollbar-bg: 35 25% 93%;
+    --accent: 42 90% 95%;
+    --accent-foreground: 42 90% 38%;
+    --ring: 42 95% 55%;
+    --tag-bg: 42 85% 95%;
+    --tag-bg-hover: 42 85% 90%;
+    --tag-border: 42 85% 85%;
+    --tag-text: 42 90% 38%;
+    --scrollbar: 42 30% 80%;
+    --scrollbar-bg: 42 30% 94%;
   }
   html.dark.theme-gold {
-    --primary: 35 90% 55%;
+    --primary: 42 95% 65%;
     --primary-foreground: 0 0% 100%;
-    --accent: 35 40% 15%;
-    --accent-foreground: 35 90% 70%;
-    --ring: 35 90% 55%;
-    --tag-bg: 35 40% 12%;
-    --tag-bg-hover: 35 40% 18%;
-    --tag-border: 35 40% 25%;
-    --tag-text: 35 90% 70%;
-    --scrollbar: 35 20% 28%;
-    --scrollbar-bg: 35 20% 13%;
+    --accent: 42 40% 16%;
+    --accent-foreground: 42 90% 72%;
+    --ring: 42 95% 65%;
+    --tag-bg: 42 40% 13%;
+    --tag-bg-hover: 42 40% 19%;
+    --tag-border: 42 40% 26%;
+    --tag-text: 42 90% 72%;
+    --scrollbar: 42 20% 30%;
+    --scrollbar-bg: 42 20% 15%;
   }
 }
 
@@ -212,14 +214,137 @@ html.theme-mourning {
   h4,
   h5,
   h6 {
-    @apply font-serif font-medium;
+    @apply font-serif font-semibold tracking-tight;
   }
   a {
     @apply underline-offset-4;
   }
+  ::selection {
+    background: hsl(var(--primary) / 0.25);
+    color: hsl(var(--foreground));
+  }
   .pro {
     @apply prose prose-zinc dark:prose-invert;
   }
+
+  /* 全站统一：圆角 + 柔和过渡 */
+  :where(a, button, input, textarea, select, [role='button']) {
+    @apply rounded-xl;
+    transition-duration: 0.2s;
+  }
+  :where(a, button, [role='button']):focus-visible {
+    outline: 2px solid hsl(var(--ring) / 0.6);
+    outline-offset: 2px;
+  }
+}
+
+/* ===== 可爱工具类 ===== */
+@utility cute-card {
+  @apply border border-border/60 bg-background/60 backdrop-blur-sm;
+  border-radius: 1.5rem;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    background-color 0.25s ease;
+}
+@utility cute-card-hover {
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    background-color 0.25s ease;
+  &:hover {
+    transform: translateY(-3px);
+    border-color: hsl(var(--primary) / 0.4);
+  }
+}
+@utility cute-gradient-text {
+  background: linear-gradient(115deg, hsl(var(--primary)), hsl(var(--primary) / 0.7) 45%, #60a5fa 80%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+@utility cute-dots {
+  background-image: radial-gradient(hsl(var(--primary) / 0.16) 1px, transparent 1.4px);
+  background-size: 14px 14px;
+}
+
+/* 文章标题衬线体 */
+@utility post-title-serif {
+  font-family: Georgia, 'Times New Roman', 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', SimSun, serif;
+}
+@utility cute-blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(46px);
+  opacity: 0.5;
+  pointer-events: none;
+  background: hsl(var(--primary) / 0.35);
+}
+
+/* 可爱小装饰：星星 ✦ / 爱心 ✿ */
+.cute-sparkle {
+  position: relative;
+  display: inline-block;
+}
+.cute-sparkle::before,
+.cute-sparkle::after {
+  content: '✦';
+  position: absolute;
+  font-size: 0.55em;
+  color: hsl(var(--primary));
+  opacity: 0.7;
+  animation: cuteFloat 3.2s ease-in-out infinite;
+}
+.cute-sparkle::before {
+  top: -0.7em;
+  left: -0.9em;
+}
+.cute-sparkle::after {
+  bottom: -0.75em;
+  right: -0.95em;
+  animation-delay: 1.4s;
+}
+
+/* ===== 可爱动画 ===== */
+@keyframes cuteFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+  50% {
+    transform: translateY(-5px) rotate(12deg) scale(1.12);
+  }
+}
+@utility animate-float {
+  animation: cuteFloat 4s ease-in-out infinite;
+}
+@keyframes cuteWiggle {
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+@utility animate-wiggle {
+  animation: cuteWiggle 0.45s ease-in-out;
+}
+@keyframes cutePop {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.06);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@utility animate-pop {
+  animation: cutePop 0.35s cubic-bezier(0.21, 1.02, 0.73, 1) both;
 }
 
 @layer base {
@@ -257,49 +382,43 @@ html.theme-mourning {
   }
 }
 
-/* ===== 蓝图风格（淡斜线底纹） ===== */
-/* 45° 斜线底纹（@utility 以支持 lg: 变体，仅桌面端左侧栏生效；低透明度保持克制） */
+/* ===== 可爱波点底纹（替代原蓝图斜线） ===== */
 @utility blueprint-hatch {
-  background-image: repeating-linear-gradient(
-    45deg,
-    hsl(var(--border) / 0.28) 0,
-    hsl(var(--border) / 0.28) 1px,
-    transparent 1px,
-    transparent 18px
-  );
+  background-image: radial-gradient(hsl(var(--primary) / 0.14) 1px, transparent 1.4px);
+  background-size: 16px 16px;
 }
 
 /* ===== 空心标题（背景装饰） ===== */
-/* 大字描边：文字透明 + 边框色描边，作为桌面端留白处的背景水印 */
 @utility outline-title {
-  -webkit-text-stroke: 1px hsl(var(--border) / 0.9);
+  -webkit-text-stroke: 1.5px hsl(var(--primary) / 0.4);
   color: transparent;
 }
 
 /* ===== 滚动条与工具类 ===== */
 @supports (scrollbar-width: auto) {
   * {
-    scrollbar-width: auto;
+    scrollbar-width: thin;
     scrollbar-color: hsl(var(--scrollbar)) hsl(var(--scrollbar-bg));
   }
 }
 @supports selector(::-webkit-scrollbar) {
   ::-webkit-scrollbar {
-    width: 8px;
+    width: 10px;
   }
   ::-webkit-scrollbar:horizontal {
-    height: 8px;
+    height: 10px;
   }
   ::-webkit-scrollbar-track {
-    border-radius: 10px;
+    border-radius: 9999px;
     background: hsl(var(--scrollbar-bg));
   }
   ::-webkit-scrollbar-thumb {
-    border-radius: 10px;
+    border: 2px solid hsl(var(--scrollbar-bg));
+    border-radius: 9999px;
     background: hsl(var(--scrollbar));
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--scrollbar) / 0.8);
+    background: hsl(var(--primary) / 0.6);
   }
 }
 .no-scrollbar,
@@ -353,7 +472,7 @@ input[type='search']::-moz-search-cancel-button {
   transition:
     filter 0.3s ease-out,
     opacity 0.3s ease-out;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  background: linear-gradient(90deg, transparent, hsl(var(--primary) / 0.14), transparent);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }

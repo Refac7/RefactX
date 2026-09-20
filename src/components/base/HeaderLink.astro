@@ -15,9 +15,9 @@ const isActive = Astro.url.pathname.startsWith(href)
 <a
   {href}
   class={cn(
-    'text-sm px-4 py-2 font-medium',
-    background && 'transition-colors text-foreground/80 hover:bg-accent hover:text-foreground',
-    isActive && 'text-foreground',
+    'text-sm px-4 py-2 font-semibold rounded-full',
+    background && 'transition-colors text-foreground/80 hover:bg-accent hover:text-primary',
+    isActive && 'text-primary bg-accent',
     className
   )}
   rel="prefetch"

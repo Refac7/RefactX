@@ -20,24 +20,24 @@ const lastUpdate = new Date().toLocaleDateString('en-US', { month: 'short', day:
 <Layout {title} {description}>
   <div class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
     <PageAside
-      statusText="Indexing"
+      statusText="索引中 ✨"
       statusHasPing={false}
       statusVariant="primary"
       {title}
       subtitleIcon="icon-[ph--tag]"
-      subtitleText="Tags Index"
+      subtitleText="标签索引"
       identityTags={[
-        { icon: 'icon-[ph--tag]', label: `${totalTags} Tags` },
-        { icon: 'icon-[ph--article]', label: `${totalPosts} Posts` },
+        { icon: 'icon-[ph--tag]', label: `${totalTags} 个标签` },
+        { icon: 'icon-[ph--article]', label: `${totalPosts} 篇文章` },
         { icon: 'icon-[ph--arrows-clockwise]', label: lastUpdate },
       ]}
       intro={introduce}
-      statsLabel="// INDEX STATUS"
-      statsMeta={`${totalTags} TAGS`}
+      statsLabel="// 索引状态"
+      statsMeta={`${totalTags} 个标签`}
       stats={[
-        { value: totalTags, label: 'Tags' },
-        { value: totalPosts, label: 'Posts' },
-        { value: lastUpdate, label: 'Last Rebuild' },
+        { value: totalTags, label: '标签数' },
+        { value: totalPosts, label: '文章数' },
+        { value: lastUpdate, label: '最近重建' },
       ]}
     />
 
@@ -45,7 +45,7 @@ const lastUpdate = new Date().toLocaleDateString('en-US', { month: 'short', day:
       <div class="px-6 lg:px-8 xl:px-12 lg:py-20 flex-1">
         <div class={SECTION_HEADER_CLASS}>
           <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>All Tags</h2></div>
-          <span class={SECTION_META_CLASS}>// Tag_Cloud</span>
+          <span class={SECTION_META_CLASS}>// 标签云</span>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mt-8 fade-up animation-delay-200">
@@ -55,21 +55,21 @@ const lastUpdate = new Date().toLocaleDateString('en-US', { month: 'short', day:
               return (
                 <a
                   href={`/tags/${tag.name}`}
-                  class="group relative flex flex-col justify-between p-6 bg-background/50 border border-border/40 hover:bg-muted/30 hover:border-primary/30 hover:shadow-sm transition-all duration-300 h-32 fade-up hover:-translate-y-0.5"
+                  class="group relative flex flex-col justify-between p-6 bg-background/60 border border-primary/15 rounded-3xl  hover:bg-accent/50 hover:border-primary/40  transition-all duration-300 h-32 fade-up hover:-translate-y-1"
                   style={`animation-delay: ${index * 50}ms`}
                   rel="noopener noreferrer"
                 >
                   <div class="flex justify-between items-start z-10">
-                    <h3 class="font-semibold text-lg text-foreground group-hover:text-primary transition-colors tracking-tight capitalize">
+                    <h3 class="font-bold text-lg text-foreground group-hover:text-primary transition-colors tracking-tight capitalize">
                       {tag.name}
                     </h3>
-                    <span class="inline-flex items-center justify-center bg-muted/60 px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+                    <span class="inline-flex items-center justify-center bg-accent rounded-full px-2.5 py-0.5 text-xs font-bold text-primary">
                       {tag.count}
                     </span>
                   </div>
-                  <div class="w-full h-1.5 bg-muted/50 overflow-hidden mt-4">
+                  <div class="w-full h-2 bg-accent rounded-full overflow-hidden mt-4">
                     <div
-                      class="h-full bg-primary/60 group-hover:bg-primary transition-all duration-500 ease-out"
+                      class="h-full bg-gradient-to-r from-primary to-sky-400 group-hover:bg-primary transition-all duration-500 ease-out rounded-full"
                       style={`width: ${percent}%`}
                     />
                   </div>
@@ -81,9 +81,9 @@ const lastUpdate = new Date().toLocaleDateString('en-US', { month: 'short', day:
 
         {
           tags.length === 0 && (
-            <div class="flex flex-col items-center justify-center py-24 border border-border/40 bg-muted/10 mt-8">
-              <span class="icon-[ph--warning-circle] size-10 text-muted-foreground/40 mb-4" />
-              <p class="text-sm text-muted-foreground">No tags found.</p>
+            <div class="flex flex-col items-center justify-center py-24 border border-primary/15 bg-accent/40 rounded-3xl mt-8">
+              <span class="icon-[ph--warning-circle] size-10 text-primary/40 mb-4" />
+              <p class="text-sm text-muted-foreground">还没有标签喵～</p>
             </div>
           )
         }

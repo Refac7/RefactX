@@ -31,22 +31,22 @@ const totalCount = ProjectList.length.toString().padStart(2, '0')
 <Layout {title} {description}>
   <div class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
     <PageAside
-      statusText="Online"
+      statusText="在线中 ✨"
       statusVariant="emerald"
       {title}
       subtitleIcon="icon-[ph--stack]"
-      subtitleText="Module Registry"
+      subtitleText="项目档案"
       identityTags={[
-        { icon: 'icon-[ph--cube]', label: `${totalCount} Modules` },
+        { icon: 'icon-[ph--cube]', label: `${totalCount} 个小模块` },
         { icon: 'icon-[mdi--github]', label: 'GitHub' },
-        { icon: 'icon-[ph--arrow-up-right]', label: 'Deployed' },
+        { icon: 'icon-[ph--arrow-up-right]', label: '已部署' },
       ]}
       intro={introduce}
-      statsLabel="// REGISTRY STATUS"
-      statsMeta={`${totalCount} TOTAL`}
+      statsLabel="// 档案状态"
+      statsMeta={`共 ${totalCount} 个`}
       stats={[
-        { value: totalCount, label: 'Total Modules' },
-        { value: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit' }), label: 'Last Update' },
+        { value: totalCount, label: '项目总数' },
+        { value: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit' }), label: '最近更新' },
       ]}
     />
 
@@ -56,7 +56,7 @@ const totalCount = ProjectList.length.toString().padStart(2, '0')
           <div class="flex items-center">
             <span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>Component Sequence</h2>
           </div>
-          <span class={SECTION_META_CLASS}>// Module_Registry</span>
+          <span class={SECTION_META_CLASS}>// 项目档案</span>
         </div>
 
         <div class="grid grid-cols-1 gap-6 mt-8">
@@ -64,17 +64,20 @@ const totalCount = ProjectList.length.toString().padStart(2, '0')
             ProjectList.map((project, index) => {
               return (
                 <div
-                  class="group relative flex flex-col bg-background/50 border border-border/40 hover:bg-muted/20 hover:border-primary/30 hover:shadow-sm transition-all duration-300 fade-up hover:-translate-y-0.5"
+                  class="group relative flex flex-col bg-background/60 border border-primary/15 rounded-3xl  hover:bg-accent/40 hover:border-primary/40  transition-all duration-300 fade-up hover:-translate-y-1"
                   style={`animation-delay: ${index * 100}ms`}
                 >
                   <div class="p-6 pb-2 relative z-10 flex justify-between items-start">
-                    <div class="size-12 flex items-center justify-center bg-muted/30 border border-border/40">
-                      {project.type === 'icon' && <span class={cn('size-6 text-foreground/80', project.icon)} />}
+                    <div class="size-12 flex items-center justify-center bg-accent/70 border border-primary/20 rounded-2xl">
+                      {project.type === 'icon' && <span class={cn('size-6 text-primary', project.icon)} />}
                       {project.type === 'image' && (
                         <img
                           src={project.icon}
                           alt={project.name}
-                          class={cn('size-full object-cover opacity-90 group-hover:opacity-100 transition-opacity', project.imageClass)}
+                          class={cn(
+                            'size-full object-cover opacity-90 group-hover:opacity-100 rounded-xl transition-opacity',
+                            project.imageClass
+                          )}
                         />
                       )}
                     </div>
@@ -83,7 +86,7 @@ const totalCount = ProjectList.length.toString().padStart(2, '0')
                         <a
                           href={project.githubUrl}
                           target="_blank"
-                          class="flex items-center justify-center size-8 bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground transition-all"
+                          class="flex items-center justify-center size-8 bg-accent/60 hover:bg-accent text-muted-foreground hover:text-primary rounded-xl transition-all hover:-translate-y-0.5"
                         >
                           <span class="icon-[mdi--github] size-4" />
                         </a>
@@ -92,7 +95,7 @@ const totalCount = ProjectList.length.toString().padStart(2, '0')
                         <a
                           href={project.website}
                           target="_blank"
-                          class="flex items-center justify-center size-8 bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground transition-all"
+                          class="flex items-center justify-center size-8 bg-accent/60 hover:bg-accent text-muted-foreground hover:text-primary rounded-xl transition-all hover:-translate-y-0.5"
                         >
                           <span class="icon-[ph--arrow-up-right] size-4" />
                         </a>
@@ -101,14 +104,16 @@ const totalCount = ProjectList.length.toString().padStart(2, '0')
                   </div>
                   <div class="p-6 pt-2 flex-1 relative z-10">
                     <a href={project.website || project.githubUrl} target="_blank" class="block">
-                      <h3 class="text-base font-semibold text-foreground tracking-tight">{project.name}</h3>
+                      <h3 class="text-base font-bold text-foreground tracking-tight group-hover:text-primary transition-colors">
+                        {project.name}
+                      </h3>
                     </a>
                     <p class="text-xs text-muted-foreground leading-relaxed line-clamp-3">{project.description}</p>
                   </div>
-                  <div class="mt-auto border-t border-border/40 px-6 py-2 bg-muted/10 flex items-center justify-between">
-                    <span class="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+                  <div class="mt-auto border-t border-primary/15 px-6 py-2 bg-accent/30 flex items-center justify-between">
+                    <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground">
                       <span class="size-1.5 rounded-full bg-emerald-500" />
-                      Stable
+                      状态稳定 🎉
                     </span>
                     {project.githubUrl && (
                       <div class="scale-95 origin-right">

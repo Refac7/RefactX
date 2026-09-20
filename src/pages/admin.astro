@@ -32,22 +32,21 @@ const description = 'Authorized Personnel Only'
 
   <div id="cms-login-root" class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
     <PageAside
-      statusText="Restricted Area"
+      statusText="受限区域 🔒"
       title="Access"
       subtitleIcon="icon-[ph--lock-key]"
-      subtitleText="CMS Authentication Gateway"
+      subtitleText="CMS 身份认证网关"
       identityTags={[
-        { icon: 'icon-[ph--shield-check]', label: 'Verified' },
-        { icon: 'icon-[ph--terminal-window]', label: 'Astro' },
+        { icon: 'icon-[ph--shield-check]', label: '已验证' },
+        { icon: 'icon-[ph--sparkle]', label: 'Astro' },
         { icon: 'icon-[ph--github-logo]', label: 'GitHub' },
       ]}
       intro="验证身份以进入 RefactX 内容管理后台——管理文章、配置数据与部署流程喵～ (・ω・)ノ"
-      statsLabel="// SYSTEM_MODULES"
-      statsMeta="3 ACTIVE"
+      statsLabel="// 系统模块"
+      statsMeta="2 个活跃"
       stats={[
-        { value: 'Posts', label: 'Markdown pipeline' },
-        { value: 'Data', label: 'JSON content' },
-        { value: 'GitHub', label: 'Backed sync' },
+        { value: 'Posts', label: 'Markdown 流水线' },
+        { value: 'Data', label: 'JSON 内容' },
       ]}
     />
 

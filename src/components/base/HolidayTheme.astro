@@ -49,18 +49,18 @@ import { HOLIDAY_THEMES } from '~/config'
 
 <div
   id="holiday-banner"
-  class="hidden relative w-full z-100 bg-primary text-primary-foreground px-4 py-2.5 text-xs sm:text-sm justify-between items-center shadow-md"
+  class="hidden relative w-full z-100 bg-gradient-to-r from-primary via-primary/85 to-primary text-primary-foreground px-4 py-2.5 text-xs sm:text-sm justify-between items-center"
 >
   <div class="flex items-center gap-2 overflow-hidden">
-    <span class="icon-[mdi--information-outline] text-base shrink-0"></span>
-    <span id="holiday-msg" class="truncate font-medium"></span>
+    <span class="icon-[mdi--party-popper] text-base shrink-0"></span>
+    <span id="holiday-msg" class="truncate font-semibold"></span>
   </div>
 
   <button
     id="close-holiday-btn"
-    class="shrink-0 ml-4 hover:bg-background/20 px-2 py-1 transition-colors font-mono text-[10px] uppercase tracking-wider border border-primary-foreground/20 cursor-pointer"
+    class="shrink-0 ml-4 hover:bg-primary-foreground/20 px-3 py-1 rounded-full transition-colors text-[10px] font-semibold uppercase tracking-wider border border-primary-foreground/25 cursor-pointer"
   >
-    恢复默认
+    恢复默认 ✕
   </button>
 </div>
 

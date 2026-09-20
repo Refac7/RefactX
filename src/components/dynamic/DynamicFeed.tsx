@@ -41,11 +41,11 @@ function FeedItemCard({ item, animationDelay }: { item: FeedItem; animationDelay
 
   return (
     <div
-      className="group relative flex flex-col bg-background/50 border border-border/40 hover:border-primary/30 hover:shadow-sm transition-all duration-300 fade-up"
+      className="group relative flex flex-col bg-background/60 border border-primary/15 rounded-3xl  hover:border-primary/40  transition-all duration-300 fade-up"
       style={{ animationDelay }}
     >
       <div className="p-5 pb-3 flex justify-between items-start gap-4">
-        <span className="inline-flex items-center bg-muted/40 px-2.5 py-0.5 text-[11px] font-medium text-foreground tracking-tight select-none">
+        <span className="inline-flex items-center bg-accent rounded-full px-2.5 py-0.5 text-[11px] font-bold text-primary tracking-tight select-none">
           {item.mood}
         </span>
         <span className="text-xs text-muted-foreground whitespace-nowrap flex items-center gap-1">
@@ -55,7 +55,7 @@ function FeedItemCard({ item, animationDelay }: { item: FeedItem; animationDelay
             year: 'numeric',
             hour: '2-digit',
             minute: '2-digit',
-            hour12: false, // 如果你想用AM/PM制，可以改成 true
+            hour12: false,
           })}
         </span>
       </div>
@@ -67,10 +67,7 @@ function FeedItemCard({ item, animationDelay }: { item: FeedItem; animationDelay
             isExpanded ? 'max-h-[3000px]' : 'max-h-40'
           )}
         >
-          <div
-            ref={contentRef}
-            className="prose prose-sm dark:prose-invert max-w-none prose-img:border prose-img:border-border/40 prose-a:text-primary prose-p:leading-relaxed"
-          >
+          <div ref={contentRef} className="markdown">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{item.content}</ReactMarkdown>
           </div>
 
@@ -82,15 +79,15 @@ function FeedItemCard({ item, animationDelay }: { item: FeedItem; animationDelay
         {hasOverflow && (
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="mt-3 inline-flex items-center gap-1 text-[13px] font-medium text-muted-foreground hover:text-foreground transition-colors select-none self-start"
+            className="mt-3 inline-flex items-center gap-1 text-[13px] font-semibold text-muted-foreground hover:text-primary transition-colors select-none self-start"
           >
             {isExpanded ? (
               <>
-                <span className="icon-[ph--caret-up-bold] size-3.5"></span> Show less
+                <span className="icon-[ph--caret-up-bold] size-3.5"></span> 收起一点
               </>
             ) : (
               <>
-                <span className="icon-[ph--caret-down-bold] size-3.5"></span> Read more
+                <span className="icon-[ph--caret-down-bold] size-3.5"></span> 展开阅读更多
               </>
             )}
           </button>
@@ -175,9 +172,9 @@ export default function DynamicFeed() {
     <div className="flex flex-col relative min-h-100">
       {!isVerified && (
         <div className="absolute flex items-center justify-center p-2 animate-in fade-in duration-500 z-10">
-          <div className="flex flex-col items-start text-start mx-auto">
+          <div className="flex flex-col items-start text-start mx-auto bg-background/70 backdrop-blur-sm border border-primary/20 rounded-3xl p-6">
             <span className="icon-[ph--shield-check-bold] size-10 mb-4 text-primary animate-pulse"></span>
-            <h3 className="text-lg font-bold tracking-tight text-foreground mb-2">Attentions</h3>
+            <h3 className="text-lg font-bold tracking-tight text-foreground mb-2">注意啦 ⚠️</h3>
             <p className="text-sm text-muted-foreground leading-relaxed mb-6">
               你真的想要访问这个页面吗？其中可能包括了情绪化信息，未经审查的观点，以及其他一些不适合所有观众的内容。
               <br />
@@ -199,14 +196,14 @@ export default function DynamicFeed() {
         {loading || !isVerified ? (
           <div className="grid grid-cols-1 gap-6">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="flex flex-col bg-background/50 border border-border/40 p-6 min-h-35 animate-pulse">
+              <div key={i} className="flex flex-col bg-background/60 border border-primary/15 rounded-3xl p-6 min-h-35 animate-pulse">
                 <div className="flex justify-between items-center mb-4">
-                  <div className="h-5 w-16 bg-muted/50"></div>
-                  <div className="h-3 w-20 bg-muted/30"></div>
+                  <div className="h-5 w-16 bg-accent rounded-full"></div>
+                  <div className="h-3 w-20 bg-accent rounded-full"></div>
                 </div>
                 <div className="space-y-2 flex-1">
-                  <div className="h-4 w-full bg-muted/40"></div>
-                  <div className="h-4 w-4/5 bg-muted/40"></div>
+                  <div className="h-4 w-full bg-accent rounded-xl"></div>
+                  <div className="h-4 w-4/5 bg-accent rounded-xl"></div>
                 </div>
               </div>
             ))}
@@ -223,9 +220,9 @@ export default function DynamicFeed() {
               <div className="mt-10 mb-4 flex justify-center fade-up" style={{ animationDelay: '100ms' }}>
                 <button
                   onClick={() => setVisibleCount((prev) => prev + ITEMS_PER_PAGE)}
-                  className="group flex items-center justify-center gap-2 px-6 py-2.5 border border-border/60 bg-background text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted/30 hover:border-primary/40 transition-all select-none"
+                  className="group flex items-center justify-center gap-2 px-6 py-2.5 rounded-full border border-primary/25 bg-background/70 text-xs font-bold text-muted-foreground hover:text-primary hover:bg-accent hover:border-primary/40  transition-all select-none"
                 >
-                  <span>Load More</span>
+                  <span>加载更多 🍬</span>
                   <span className="icon-[ph--arrow-down] size-3.5 group-hover:translate-y-0.5 transition-transform"></span>
                 </button>
               </div>
@@ -233,7 +230,7 @@ export default function DynamicFeed() {
 
             {!hasMore && feed.length > 0 && (
               <div className="mt-10 mb-4 flex justify-center fade-up">
-                <span className="text-[11px] font-medium text-muted-foreground/50 select-none">— End of signals —</span>
+                <span className="text-[11px] font-semibold text-primary/50 select-none">— 信号到站啦 ✨ —</span>
               </div>
             )}
           </>

@@ -75,7 +75,7 @@ export default function JsonEditor() {
               onChange(e.target.value)
             }
           }}
-          className="w-full bg-background border border-border/40 p-3 text-sm font-mono focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none min-h-30 transition-all"
+          className="w-full bg-background border border-primary/25 rounded-xl p-3 text-sm font-mono focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none min-h-30 transition-all"
           placeholder={`Enter ${field.label.toLowerCase()}...`}
         />
       )
@@ -86,11 +86,11 @@ export default function JsonEditor() {
         <input
           value={value || ''}
           onChange={(e) => onChange(e.target.value)}
-          className="flex-1 bg-background border border-border/40 p-3 text-sm focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+          className="flex-1 bg-background border border-primary/25 rounded-xl p-3 text-sm focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
           placeholder={`Enter ${field.label.toLowerCase()}...`}
         />
         {field.type === 'image' && value && !value.startsWith('icon-') && (
-          <div className="size-10 shrink-0 border border-border/40 overflow-hidden bg-muted/20">
+          <div className="size-10 shrink-0 border border-primary/25 rounded-xl overflow-hidden bg-accent/40">
             <img src={value} className="size-full object-cover" alt="preview" onError={(e) => (e.currentTarget.style.display = 'none')} />
           </div>
         )}
@@ -143,15 +143,15 @@ export default function JsonEditor() {
           <div className="flex items-center justify-between mb-8 pb-4 border-b border-border/40">
             <button
               onClick={() => setEditingItemIndex(null)}
-              className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5 hover:bg-muted"
+              className="flex items-center gap-2 text-sm font-bold text-muted-foreground hover:text-primary transition-colors px-3 py-1.5 rounded-xl hover:bg-accent"
             >
-              <span className="icon-[ph--arrow-left] size-4"></span> Back to List
+              <span className="icon-[ph--arrow-left] size-4"></span> 返回列表
             </button>
             <button
               onClick={() => handleDeleteItem(editingItemIndex)}
-              className="text-sm font-medium text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 px-3 py-1.5 transition-colors"
+              className="text-sm font-bold text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 px-3 py-1.5 rounded-xl transition-colors"
             >
-              Delete Item
+              删除条目
             </button>
           </div>
           <div className="mx-auto space-y-6 pb-12">
@@ -179,12 +179,12 @@ export default function JsonEditor() {
     return (
       <div className="flex-1 overflow-y-auto p-4 sm:p-6 custom-scrollbar bg-background">
         <div className="flex justify-between items-center mb-6">
-          <span className="text-sm font-semibold text-foreground">Items ({parsedJson.length})</span>
+          <span className="text-sm font-bold text-foreground">条目列表 ({parsedJson.length})</span>
           <button
             onClick={handleAddItem}
-            className="flex items-center gap-1.5 bg-foreground text-background px-3 py-1.5 text-sm font-medium hover:bg-foreground/90 transition-colors shadow-xs"
+            className="flex items-center gap-1.5 bg-primary text-primary-foreground px-3 py-1.5 rounded-xl text-sm font-bold hover:bg-primary/90 transition-colors  "
           >
-            <span className="icon-[ph--plus] size-4"></span> Add Item
+            <span className="icon-[ph--plus] size-4"></span> 添加条目
           </button>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -193,7 +193,7 @@ export default function JsonEditor() {
             let iconEl
             if (typeof iconValue === 'string') {
               if (iconValue.startsWith('icon-') || iconValue.includes('icon-[')) {
-                iconEl = <span className={cn(iconValue, 'text-2xl text-foreground/70')} />
+                iconEl = <span className={cn(iconValue, 'text-2xl text-primary')} />
               } else if (iconValue) {
                 iconEl = (
                   <img
@@ -204,28 +204,28 @@ export default function JsonEditor() {
                   />
                 )
               } else {
-                iconEl = <span className="icon-[ph--cube] text-muted-foreground/50 size-6" />
+                iconEl = <span className="icon-[ph--cube] text-primary/50 size-6" />
               }
             } else if (typeof iconValue === 'object') {
               iconEl = <span className="text-xs font-mono">{iconValue.value}</span>
             } else {
-              iconEl = <span className="icon-[ph--cube] text-muted-foreground/50 size-6" />
+              iconEl = <span className="icon-[ph--cube] text-primary/50 size-6" />
             }
 
             return (
               <div
                 key={idx}
                 onClick={() => setEditingItemIndex(idx)}
-                className="group bg-background border border-border/40 p-4 cursor-pointer hover:border-border hover:shadow-xs hover:bg-muted/10 transition-all flex flex-col justify-between"
+                className="group bg-background border border-primary/15 rounded-2xl p-4 cursor-pointer hover:border-primary/40  hover:bg-accent/40 transition-all flex flex-col justify-between"
               >
                 <div className="flex items-start justify-between mb-4">
-                  <div className="size-12 bg-muted/30 border border-border/40 flex items-center justify-center overflow-hidden">
+                  <div className="size-12 bg-accent/60 border border-primary/20 rounded-xl flex items-center justify-center overflow-hidden">
                     {iconEl}
                   </div>
-                  <span className="icon-[ph--pencil-simple] size-4 text-muted-foreground/30 group-hover:text-foreground transition-colors"></span>
+                  <span className="icon-[ph--pencil-simple] size-4 text-muted-foreground/30 group-hover:text-primary transition-colors"></span>
                 </div>
                 <div>
-                  <div className="text-sm font-semibold truncate text-foreground mb-1">{item.name || item.title || 'Untitled Item'}</div>
+                  <div className="text-sm font-bold truncate text-foreground mb-1">{item.name || item.title || 'Untitled Item'}</div>
                   <div className="text-xs text-muted-foreground truncate">{item.description || item.date || 'No description'}</div>
                 </div>
               </div>

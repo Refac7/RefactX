@@ -79,63 +79,63 @@ export default function PostEditor({ showPreview, showMetaConfig }: PostEditorPr
   return (
     <>
       {showMetaConfig && !showPreview && (
-        <div className="bg-muted/10 border-b border-border/40 p-4 shrink-0 min-w-0 overflow-hidden">
+        <div className="bg-accent/30 border-b border-primary/15 p-4 shrink-0 min-w-0 overflow-hidden">
           <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 min-w-0">
             <div className="sm:col-span-8 min-w-0">
-              <label className="block text-xs font-medium text-muted-foreground mb-1.5">Title</label>
+              <label className="block text-xs font-bold text-primary/70 mb-1.5">标题</label>
               <input
                 value={meta.title}
                 onChange={(e) => setMeta({ ...meta, title: e.target.value })}
-                className="w-full min-w-0 bg-background border border-border/40 px-3 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
-                placeholder="Post Title"
+                className="w-full min-w-0 bg-background border border-primary/25 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
+                placeholder="文章标题"
               />
             </div>
             <div className="sm:col-span-4 min-w-0 overflow-hidden">
-              <label className="block text-xs font-medium text-muted-foreground mb-1.5">Date</label>
+              <label className="block text-xs font-bold text-primary/70 mb-1.5">日期</label>
               <input
                 type="date"
                 value={meta.pubDate}
                 onChange={(e) => setMeta({ ...meta, pubDate: e.target.value })}
-                className="block w-full max-w-full min-w-0 box-border appearance-none bg-background border border-border/40 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
+                className="block w-full max-w-full min-w-0 box-border appearance-none bg-background border border-primary/25 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
               />
             </div>
             <div className="sm:col-span-4 min-w-0">
-              <label className="block text-xs font-medium text-muted-foreground mb-1.5">Author</label>
-              <div className="w-full bg-muted/30 border border-border/40 px-3 py-2 text-sm text-muted-foreground font-mono select-all">
+              <label className="block text-xs font-bold text-primary/70 mb-1.5">作者</label>
+              <div className="w-full bg-background border border-primary/25 rounded-xl px-3 py-2 text-sm text-muted-foreground font-mono select-all">
                 {username || meta.author || '—'}
               </div>
             </div>
             <div className="sm:col-span-8 min-w-0">
-              <label className="block text-xs font-medium text-muted-foreground mb-1.5">Description</label>
+              <label className="block text-xs font-bold text-primary/70 mb-1.5">描述</label>
               <input
                 value={meta.description}
                 onChange={(e) => setMeta({ ...meta, description: e.target.value })}
-                className="w-full min-w-0 bg-background border border-border/40 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
-                placeholder="Brief summary of the post..."
+                className="w-full min-w-0 bg-background border border-primary/25 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
+                placeholder="文章摘要..."
               />
             </div>
             <div className="sm:col-span-6 min-w-0">
-              <label className="block text-xs font-medium text-muted-foreground mb-1.5">Tags (comma separated)</label>
+              <label className="block text-xs font-bold text-primary/70 mb-1.5">标签（逗号分隔）</label>
               <input
                 value={meta.tags}
                 onChange={(e) => setMeta({ ...meta, tags: e.target.value })}
-                className="w-full min-w-0 bg-background border border-border/40 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
+                className="w-full min-w-0 bg-background border border-primary/25 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
                 placeholder="tech, life, code"
               />
             </div>
             <div className="sm:col-span-6 min-w-0">
-              <label className="flex justify-between items-end text-xs font-medium text-muted-foreground mb-1.5">
-                <span>Cover Image</span>
+              <label className="flex justify-between items-end text-xs font-bold text-primary/70 mb-1.5">
+                <span>封面图</span>
                 {WALINE_CONFIG.enableImgUpload && (
                   <span onClick={() => triggerUpload('hero')} className="cursor-pointer text-primary hover:underline">
-                    Upload
+                    上传
                   </span>
                 )}
               </label>
               <input
                 value={meta.heroImage}
                 onChange={(e) => setMeta({ ...meta, heroImage: e.target.value })}
-                className="w-full min-w-0 bg-background border border-border/40 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
+                className="w-full min-w-0 bg-background border border-primary/25 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
                 placeholder="https://..."
               />
             </div>
@@ -145,9 +145,9 @@ export default function PostEditor({ showPreview, showMetaConfig }: PostEditorPr
                   type="checkbox"
                   checked={meta.recommend}
                   onChange={(e) => setMeta({ ...meta, recommend: e.target.checked })}
-                  className="size-4 border-border/40 text-primary focus:ring-primary/20"
+                  className="size-4 rounded border-primary/40 text-primary focus:ring-primary/20"
                 />
-                <span className="text-sm font-medium text-foreground">Featured Post</span>
+                <span className="text-sm font-bold text-foreground">精选文章 ✨</span>
               </label>
             </div>
           </div>
@@ -156,13 +156,13 @@ export default function PostEditor({ showPreview, showMetaConfig }: PostEditorPr
 
       {/* 工具栏 */}
       {!showPreview && (
-        <div className="border-b border-border/40 bg-background shrink-0 px-2 py-1.5 flex items-center gap-1 overflow-x-auto no-scrollbar">
+        <div className="border-b border-primary/15 bg-background shrink-0 px-2 py-1.5 flex items-center gap-1 overflow-x-auto no-scrollbar">
           {TOOLBAR_ITEMS.map((tool, i) => (
             <button
               key={i}
               onClick={tool.action}
               title={tool.label}
-              className="p-2 hover:bg-muted text-muted-foreground hover:text-foreground transition-colors flex items-center justify-center"
+              className="p-2 rounded-lg hover:bg-accent text-muted-foreground hover:text-primary transition-colors flex items-center justify-center"
             >
               <span className={cn('size-4', tool.icon)}></span>
             </button>
@@ -173,7 +173,7 @@ export default function PostEditor({ showPreview, showMetaConfig }: PostEditorPr
       <div className="flex-1 relative flex flex-col min-h-0 bg-background">
         {showPreview ? (
           <div className="absolute inset-0 overflow-y-auto w-full p-6 sm:p-10 custom-scrollbar">
-            <div className="mx-auto prose prose-sm sm:prose-base dark:prose-invert prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-primary">
+            <div className="mx-auto markdown">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>{body}</ReactMarkdown>
             </div>
           </div>

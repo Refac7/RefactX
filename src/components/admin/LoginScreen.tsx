@@ -28,19 +28,26 @@ export default function LoginScreen() {
             <span className={SECTION_NUM_CLASS}>01</span>
             <h2 className={SECTION_TITLE_CLASS}>Authenticate</h2>
           </div>
-          <span className={SECTION_META_CLASS}>// System_Login</span>
+          <span className={SECTION_META_CLASS}>// 管理员登录</span>
         </div>
 
         {/* Login card */}
-        <div className="bg-background/50 border border-border/40 p-6 sm:p-8 mb-6 relative">
-          {/* Top accent line */}
-          <div className="absolute top-0 left-0 right-0 h-0.5 bg-primary/60" />
+        <div className="bg-background/70 border border-primary/15 rounded-3xl overflow-hidden mb-6 relative">
+          {/* Card header */}
+          <div className="relative px-6 sm:px-8 pt-8 pb-6 bg-gradient-to-br from-primary/15 via-accent to-primary/5 border-b border-primary/15">
+            <div className="size-12 rounded-2xl bg-primary text-primary-foreground flex items-center justify-center mb-4">
+              <span className="icon-[ph--lock-key-bold] size-6" />
+            </div>
+            <h3 className="text-lg font-extrabold text-foreground tracking-tight">欢迎回来 🐾</h3>
+            <p className="text-xs text-muted-foreground mt-1">登录 RefactX CMS 管理面板，继续发布你的创作吧～</p>
+          </div>
 
-          <div className="space-y-5">
+          {/* Card body */}
+          <div className="p-6 sm:p-8 space-y-5">
             <div className="space-y-1.5">
-              <label className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest ml-1">Username</label>
+              <label className="text-[10px] font-bold text-primary/70 ml-1">用户名</label>
               <div className="relative">
-                <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/60 icon-[ph--user] size-4" />
+                <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-primary/60 icon-[ph--user] size-4" />
                 <input
                   type="text"
                   value={username}
@@ -51,19 +58,19 @@ export default function LoginScreen() {
                   autoFocus
                   autoComplete="username"
                   className={cn(
-                    'w-full pl-9 pr-4 py-2.5 border bg-background text-sm transition-all focus:outline-none focus:ring-2 focus:ring-offset-0',
+                    'w-full pl-9 pr-4 py-2.5 rounded-2xl border bg-background text-sm transition-all focus:outline-none focus:ring-2 focus:ring-offset-0',
                     loginError
                       ? 'border-red-500/50 focus:ring-red-500/20 text-red-500'
-                      : 'border-border/60 focus:border-primary/50 focus:ring-primary/20'
+                      : 'border-primary/25 focus:border-primary/50 focus:ring-primary/20'
                   )}
                 />
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest ml-1">Passkey</label>
+              <label className="text-[10px] font-bold text-primary/70 ml-1">密码</label>
               <div className="relative">
-                <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/60 icon-[ph--key] size-4" />
+                <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-primary/60 icon-[ph--key] size-4" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   value={password}
@@ -73,17 +80,17 @@ export default function LoginScreen() {
                   placeholder="••••••••"
                   autoComplete="current-password"
                   className={cn(
-                    'w-full pl-9 pr-10 py-2.5 border bg-background text-sm transition-all focus:outline-none focus:ring-2 focus:ring-offset-0',
+                    'w-full pl-9 pr-10 py-2.5 rounded-2xl border bg-background text-sm transition-all focus:outline-none focus:ring-2 focus:ring-offset-0',
                     loginError
                       ? 'border-red-500/50 focus:ring-red-500/20 text-red-500'
-                      : 'border-border/60 focus:border-primary/50 focus:ring-primary/20'
+                      : 'border-primary/25 focus:border-primary/50 focus:ring-primary/20'
                   )}
                 />
                 <button
                   type="button"
                   onMouseDown={(e) => e.preventDefault()}
                   onClick={() => setShowPassword((v) => !v)}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-muted-foreground/60 hover:text-foreground transition-colors"
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 rounded-lg text-muted-foreground/60 hover:text-primary transition-colors"
                   tabIndex={-1}
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
@@ -98,32 +105,32 @@ export default function LoginScreen() {
               onClick={() => canSubmit && performLogin(username.trim(), password, captchaToken!)}
               disabled={isValidating || !canSubmit}
               className={cn(
-                'w-full py-2.5 text-sm font-semibold transition-all flex items-center justify-center gap-2',
+                'w-full py-2.5 rounded-2xl text-sm font-bold transition-all flex items-center justify-center gap-2',
                 canSubmit && !loginError
-                  ? 'bg-foreground text-background hover:bg-foreground/90 shadow-sm'
-                  : 'bg-muted text-muted-foreground border border-border/50 cursor-not-allowed'
+                  ? 'bg-primary text-primary-foreground hover:bg-primary/90'
+                  : 'bg-accent text-muted-foreground border border-primary/20 cursor-not-allowed'
               )}
             >
               {isValidating ? (
                 <>
-                  <span className="icon-[ph--spinner] animate-spin size-4" /> Verifying...
+                  <span className="icon-[ph--spinner] animate-spin size-4" /> 验证中…
                 </>
               ) : (
                 <>
-                  Continue
+                  进入面板 →
                   <span className="icon-[ph--arrow-right] size-4" />
                 </>
               )}
             </button>
-          </div>
 
-          <div className="mt-6 h-4 flex items-center justify-center">
-            {loginError && (
-              <p className="text-[10px] font-mono text-red-500 uppercase tracking-widest flex items-center gap-1.5 animate-in fade-in slide-in-from-bottom-2">
-                <span className="icon-[ph--warning-circle] size-3.5" />
-                Invalid credentials.
-              </p>
-            )}
+            <div className="h-4 flex items-center justify-center">
+              {loginError && (
+                <p className="text-[10px] font-bold text-red-500 flex items-center gap-1.5 animate-in fade-in slide-in-from-bottom-2">
+                  <span className="icon-[ph--warning-circle] size-3.5" />
+                  账号或密码错误，再试一次喵～
+                </p>
+              )}
+            </div>
           </div>
         </div>
       </div>

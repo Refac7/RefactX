@@ -3,39 +3,40 @@ import Layout from '~/layouts/Layout.astro'
 ---
 
 <Layout title="404 Not Found" description="The page could not be found.">
-  <div class="relative min-h-screen flex flex-col p-6 lg:p-12 font-sans overflow-hidden fade-up">
+  <div class="relative min-h-screen flex flex-col p-6 lg:p-12 font-sans overflow-hidden fade-up cute-dots">
     <div class="absolute top-6 left-6 lg:top-12 lg:left-12 flex items-center gap-2">
-      <span class="size-2 rounded-full bg-red-500"></span>
-      <span class="text-xs font-medium text-foreground tracking-tight">System Status</span>
+      <span class="size-2 rounded-full bg-primary"></span>
+      <span class="text-xs font-bold text-foreground tracking-tight">小窝状态 🏡</span>
     </div>
 
     <div class="absolute top-6 right-6 lg:top-12 lg:right-12">
-      <span class="text-xs font-medium text-muted-foreground">Error Code: 404</span>
+      <span class="text-xs font-bold text-muted-foreground">错误代码：404</span>
     </div>
 
     <div class="absolute bottom-6 left-6 lg:bottom-12 lg:left-12 z-20">
       <button
         onclick="history.back()"
-        class="inline-flex items-center justify-center border border-border/40 bg-background px-5 py-2 text-xs font-semibold text-foreground shadow-sm hover:bg-muted/50 transition-colors"
+        class="inline-flex items-center justify-center border border-primary/25 bg-background/70 px-5 py-2 rounded-full text-xs font-bold text-foreground hover:bg-accent hover:text-primary transition-all hover:-translate-y-0.5"
       >
-        Go Back
+        ← 返回上一页
       </button>
     </div>
 
     <div class="absolute bottom-6 right-6 lg:bottom-12 lg:right-12 z-20">
       <a
         href="/"
-        class="inline-flex items-center justify-center bg-foreground px-5 py-2 text-xs font-semibold text-background shadow-sm hover:bg-foreground/90 transition-colors"
+        class="inline-flex items-center justify-center bg-primary px-5 py-2 rounded-full text-xs font-bold text-primary-foreground hover:bg-primary/90 transition-all hover:-translate-y-0.5"
       >
-        Return Home
+        回到首页 🏠
       </a>
     </div>
 
     <div class="flex-1 flex flex-col items-center justify-center max-w-2xl mx-auto z-10 w-full text-center">
-      <h1 class="text-[8rem] sm:text-[12rem] font-bold tracking-tighter text-foreground leading-none mb-4 select-none">404</h1>
-      <h2 class="text-xl sm:text-2xl font-semibold tracking-tight text-foreground mb-4">Page Not Found</h2>
+      <div class="text-6xl mb-6 animate-float select-none">🥺💦</div>
+      <h1 class="text-[7rem] sm:text-[10rem] font-extrabold tracking-tighter cute-gradient-text leading-none mb-4 select-none">404</h1>
+      <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-foreground mb-4">页面跑丢啦！</h2>
       <p class="text-sm sm:text-base text-muted-foreground max-w-md mx-auto leading-relaxed">
-        The page you are looking for doesn't exist, has been moved, or is currently unavailable.
+        你找的页面不存在、被搬走了，或者正在偷偷摸鱼中喵～ <br />要不要回首页逛逛，也许会有意外收获？(・ω・)ノ
       </p>
     </div>
   </div>

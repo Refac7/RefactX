@@ -13,13 +13,15 @@ const { href, class: className, ...props }: Props = Astro.props
 <a
   {href}
   class={cn(
-    'group relative flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-muted-foreground transition-colors hover:text-primary py-1',
+    'group relative flex items-center gap-2 text-xs font-semibold tracking-wide text-muted-foreground transition-colors hover:text-primary py-1',
     className
   )}
   {...props}
 >
-  {/* Hover 时左侧出现的装饰块 */}
-  <span class="h-1.5 w-1.5 bg-primary opacity-0 group-hover:opacity-100 transition-opacity duration-200"></span>
+  {/* Hover 时左侧出现的装饰爱心 */}
+  <span
+    class="icon-[ph--heart-fill] size-2.5 opacity-0 group-hover:opacity-100 group-hover:text-primary transition-all duration-200 group-hover:scale-125"
+  ></span>
   <span class="relative z-10 border-b border-transparent group-hover:border-primary/50 transition-colors">
     <slot />
   </span>

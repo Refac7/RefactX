@@ -17,7 +17,7 @@ const sideWidthClass = 'md:w-[280px] lg:w-[320px]'
 ---
 
 <article
-  class="group relative flex flex-col md:flex-row bg-background/50 border border-border/40 hover:shadow-sm hover:border-primary/30 transition-all duration-300 overflow-hidden h-full hover:-translate-y-0.5"
+  class="group relative flex flex-col md:flex-row bg-background/70 border border-primary/15 rounded-3xl hover:border-primary/40 transition-all duration-300 overflow-hidden h-full hover:-translate-y-1"
 >
   {
     hasImage && showImage && (
@@ -25,7 +25,7 @@ const sideWidthClass = 'md:w-[280px] lg:w-[320px]'
         class={`
 	        hidden md:flex flex-col relative shrink-0 h-auto
 	        ${sideWidthClass}
-	        ${isReverse ? 'md:order-2 border-l border-border/40' : 'md:order-1 border-r border-border/40'}
+	        ${isReverse ? 'md:order-2' : 'md:order-1'}
 	      `}
       >
         <a href={`/posts/${post.id}`} class="block w-full h-full relative overflow-hidden bg-muted group/img">
@@ -34,7 +34,7 @@ const sideWidthClass = 'md:w-[280px] lg:w-[320px]'
             alt={post.data.title}
             loading="eager"
             decoding="async"
-            class="absolute inset-0 w-full h-full object-cover grayscale transition-all duration-500 ease-out group-hover/img:grayscale-0 group-hover/img:scale-105"
+            class="absolute inset-0 w-full h-full object-cover transition-all duration-500 ease-out group-hover/img:scale-110 group-hover/img:rotate-1"
           />
         </a>
       </div>
@@ -46,14 +46,14 @@ const sideWidthClass = 'md:w-[280px] lg:w-[320px]'
       <a
         href={`/posts/${post.id}`}
         class={`
-	        hidden md:flex shrink-0 h-auto relative overflow-hidden flex-col items-center justify-center p-6 bg-muted/20
+	        hidden md:flex shrink-0 h-auto relative overflow-hidden flex-col items-center justify-center p-6 bg-accent/40
 	        ${sideWidthClass}
-	        ${isReverse ? 'md:order-2 border-l border-border/40' : 'md:order-1 border-r border-border/40'}
-	        group/placeholder hover:bg-muted/30 transition-all duration-300 cursor-pointer
+	        ${isReverse ? 'md:order-2' : 'md:order-1'}
+	        group/placeholder hover:bg-accent/70 transition-all duration-300 cursor-pointer
 	      `}
       >
-        <span class="icon-[ph--image-broken] size-12 text-muted-foreground/30 mb-3 group-hover/placeholder:scale-110 transition-transform duration-500 ease-out" />
-        <span class="text-xs font-medium text-muted-foreground/60">No Media</span>
+        <span class="icon-[ph--image-broken] size-12 text-primary/30 mb-3 group-hover/placeholder:scale-110 group-hover/placeholder:rotate-6 transition-transform duration-500 ease-out" />
+        <span class="text-xs font-semibold text-primary/60">No Media</span>
       </a>
     )
   }
@@ -67,7 +67,7 @@ const sideWidthClass = 'md:w-[280px] lg:w-[320px]'
     <div class="flex items-center justify-between mb-2">
       <div class="flex items-center gap-2 text-sm font-medium text-muted-foreground leading-6.5">
         <time>{formatDate(post.data.pubDate)}</time>
-        {post.data.updatedDate && <span class="text-border">&bull;</span>}
+        {post.data.updatedDate && <span class="text-primary/30">&bull;</span>}
         {
           post.data.updatedDate && (
             <time class="flex items-center gap-1">
@@ -80,8 +80,8 @@ const sideWidthClass = 'md:w-[280px] lg:w-[320px]'
           post.data.author && (
             <>
               <>
-                <span class="text-border">&bull;</span>
-                <a href={`/authors/${post.data.author}`} class="hover:text-foreground hover:underline transition-colors">
+                <span class="text-primary/30">&bull;</span>
+                <a href={`/authors/${post.data.author}`} class="hover:text-primary hover:underline transition-colors">
                   {post.data.author}
                 </a>
               </>
@@ -102,11 +102,7 @@ const sideWidthClass = 'md:w-[280px] lg:w-[320px]'
       }
     </a>
     <div class="mt-auto flex flex-wrap items-center gap-2">
-      {
-        post.data.tags
-          ?.slice(0, 3)
-          .map((tag) => <PostTag tag={tag} class="border-border/40 bg-muted/50 text-xs text-muted-foreground px-2.5 py-1" />)
-      }
+      {post.data.tags?.slice(0, 3).map((tag) => <PostTag tag={tag} class="border-primary/20 bg-accent/60 text-primary px-2.5 py-1" />)}
       {post.data.tags && post.data.tags.length > 3 && <span class="text-xs text-muted-foreground/60">+{post.data.tags.length - 3}</span>}
     </div>
   </div>

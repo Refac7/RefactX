@@ -65,30 +65,30 @@ const Captcha = ({ onVerify, className }: CaptchaProps) => {
     <div
       onClick={handleVerify}
       className={cn(
-        'flex items-center gap-3 p-2 px-3 border border-border/60 bg-background/50 cursor-pointer select-none transition-all',
-        status === 'idle' ? 'hover:border-primary/40 hover:bg-muted/30' : 'cursor-default',
+        'flex items-center gap-3 p-2 px-4 rounded-2xl border border-primary/25 bg-background/70 cursor-pointer select-none transition-all',
+        status === 'idle' ? 'hover:border-primary/50 hover:bg-accent  ' : 'cursor-default',
         status === 'error' && 'border-red-500/50 bg-red-500/5',
         className
       )}
     >
       <div className="flex items-center justify-center size-5">
-        {status === 'idle' && <span className="icon-[ph--square] size-5 text-muted-foreground/60"></span>}
+        {status === 'idle' && <span className="icon-[ph--square] size-5 text-primary/60"></span>}
         {(status === 'loading' || status === 'computing') && (
           <span className="icon-[ph--spinner-gap] size-5 text-primary animate-spin"></span>
         )}
         {status === 'success' && <span className="icon-[ph--check-circle-fill] size-5 text-green-500 animate-in zoom-in-50"></span>}
         {status === 'error' && <span className="icon-[ph--warning-circle-fill] size-5 text-red-500"></span>}
       </div>
-      <span className="text-xs font-medium text-muted-foreground">
+      <span className="text-xs font-semibold text-muted-foreground">
         {status === 'idle'
-          ? 'Verify you are human'
+          ? '点击验证你是人类 🙋'
           : status === 'loading'
-            ? 'Connecting to edge...'
+            ? '正在连接中…'
             : status === 'computing'
-              ? 'Securing connection...' // 增加一个计算中的文案
+              ? '正在安全验证…' // 增加一个计算中的文案
               : status === 'success'
-                ? 'Verification complete'
-                : 'Verification failed, retry'}
+                ? '验证完成！✅'
+                : '验证失败，再试一次'}
       </span>
     </div>
   )

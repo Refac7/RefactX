@@ -9,22 +9,22 @@ import PageAside from '~/components/base/PageAside.astro'
 <Layout title={DYNAMIC_CONFIG.title} description={DYNAMIC_CONFIG.introduce}>
   <div class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
     <PageAside
-      statusText="Live Sync"
+      statusText="实时同步 📡"
       statusVariant="emerald"
       title={DYNAMIC_CONFIG.title}
       subtitleIcon="icon-[ph--activity]"
-      subtitleText="Signal Stream"
+      subtitleText="信号流"
       identityTags={[
         { icon: 'icon-[ph--broadcast]', label: 'Notion' },
-        { icon: 'icon-[ph--timer]', label: '30m Cache' },
-        { icon: 'icon-[ph--shield-check]', label: 'Verified' },
+        { icon: 'icon-[ph--timer]', label: '30m 缓存' },
+        { icon: 'icon-[ph--shield-check]', label: '已验证' },
       ]}
       intro={DYNAMIC_CONFIG.introduce}
-      statsLabel="// STREAM STATUS"
-      statsMeta="2 METRICS"
+      statsLabel="// 流状态"
+      statsMeta="2 个指标"
       stats={[
-        { value: 'API', label: 'Data Source' },
-        { value: '30m', label: 'Edge Cache' },
+        { value: 'API', label: '数据源' },
+        { value: '30m', label: '边缘缓存' },
       ]}
     />
 
@@ -35,7 +35,7 @@ import PageAside from '~/components/base/PageAside.astro'
             <span class={SECTION_NUM_CLASS}>01</span>
             <h2 class={SECTION_TITLE_CLASS}>Timeline</h2>
           </div>
-          <span class={SECTION_META_CLASS}>// Signal_Stream</span>
+          <span class={SECTION_META_CLASS}>// 信号流</span>
         </div>
 
         <DynamicFeed client:load />

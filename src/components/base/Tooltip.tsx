@@ -59,7 +59,7 @@ export function TooltipProvider({ children }: { children: ReactNode }) {
           <div
             ref={refs.setFloating}
             style={floatingStyles}
-            className="font-mono z-50 px-2 py-1 text-xs bg-foreground text-zinc-50 dark:text-zinc-900 whitespace-nowrap shadow-lg"
+            className="z-50 px-2.5 py-1.5 text-xs bg-primary text-primary-foreground rounded-lg whitespace-nowrap  "
           >
             {content}
             <div

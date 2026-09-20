@@ -34,22 +34,22 @@ const progressPercent = Math.round((page.currentPage / page.lastPage) * 100)
 <Layout title={`${author} 的文章`} {description}>
   <div class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
     <PageAside
-      statusText="Filter Active"
+      statusText="筛选中 🎯"
       statusHasPing={false}
       statusVariant="primary"
       title={author}
       subtitleIcon="icon-[ph--user]"
-      subtitleText="Author Query"
+      subtitleText="作者查询"
       identityTags={[
-        { icon: 'icon-[ph--folder]', label: 'Directory' },
+        { icon: 'icon-[ph--folder]', label: '归档' },
         { icon: 'icon-[ph--user]', label: author },
-        { icon: 'icon-[ph--article]', label: `${page.total} Posts` },
+        { icon: 'icon-[ph--article]', label: `${page.total} 篇文章` },
       ]}
-      statsLabel="// FILTER STATUS"
-      statsMeta={`${page.total} POSTS`}
+      statsLabel="// 筛选状态"
+      statsMeta={`${page.total} 篇文章`}
       stats={[
-        { value: String(page.total), label: 'Posts' },
-        { value: `${page.currentPage} / ${page.lastPage}`, label: 'Page' },
+        { value: String(page.total), label: '文章数' },
+        { value: `${page.currentPage} / ${page.lastPage}`, label: '当前页' },
       ]}
     />
 
@@ -59,16 +59,16 @@ const progressPercent = Math.round((page.currentPage / page.lastPage) * 100)
           <div class="flex items-center">
             <span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>Posts by {author}</h2>
           </div>
-          <span class={SECTION_META_CLASS}>// Query_Output</span>
+          <span class={SECTION_META_CLASS}>// 查询输出</span>
         </div>
 
         <!-- Breadcrumb -->
         <div class="text-sm text-muted-foreground flex items-center gap-2 flex-wrap -mt-4 mb-6">
-          <a href="/" class="hover:text-foreground transition-colors">home</a>
+          <a href="/" class="hover:text-primary transition-colors">首页</a>
           <span class="text-muted-foreground/40">/</span>
-          <a href="/authors" class="hover:text-foreground transition-colors">authors</a>
+          <a href="/authors" class="hover:text-primary transition-colors">作者</a>
           <span class="text-muted-foreground/40">/</span>
-          <span class="text-foreground font-medium bg-muted/50 px-2 py-0.5">{author}</span>
+          <span class="text-primary font-bold bg-accent rounded-full px-2.5 py-0.5">{author}</span>
         </div>
 
         <div class="space-y-8 min-h-[40vh] flex-1 fade-up animation-delay-200">
@@ -79,17 +79,21 @@ const progressPercent = Math.round((page.currentPage / page.lastPage) * 100)
           />
         </div>
 
-        <div class="pt-8 border-t border-border/40">
+        <div class="pt-8 border-t border-primary/15">
           <div class="flex justify-between text-xs text-muted-foreground mb-3">
-            <span>Reading Progress</span><span>{progressPercent}%</span>
+            <span>阅读进度</span><span>{progressPercent}%</span>
           </div>
-          <div class="w-full h-1.5 bg-muted/50 overflow-hidden mb-8">
-            <div class="h-full bg-primary transition-all duration-700 ease-out" style={`width: ${progressPercent}%`}></div>
+          <div class="w-full h-2 bg-accent rounded-full overflow-hidden mb-8">
+            <div
+              class="h-full bg-gradient-to-r from-primary to-sky-400 rounded-full transition-all duration-700 ease-out"
+              style={`width: ${progressPercent}%`}
+            >
+            </div>
           </div>
           <div class="flex flex-col md:flex-row items-center justify-between gap-6">
             <div class="hidden md:flex flex-col gap-1">
-              <span class="text-sm font-medium text-foreground">Navigation</span><span class="text-xs text-muted-foreground"
-                >Select a page to continue.</span
+              <span class="text-sm font-semibold text-foreground">翻页导航 🧭</span><span class="text-xs text-muted-foreground"
+                >选一页继续读下去吧～</span
               >
             </div>
             <div class="flex-1 w-full md:w-auto flex justify-center md:justify-end">
