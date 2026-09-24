@@ -9,7 +9,7 @@ import EditorPanel from './panels/EditorPanel'
 import QueuePanel from './panels/QueuePanel'
 
 const DashboardLayout = () => {
-  const { isLoggedIn, username, fileInputRef, handleFileChange, mobileView, setMobileView, queue, remoteFiles, handleLogout } = useAdmin()
+  const { isLoggedIn, fileInputRef, handleFileChange, mobileView, setMobileView, queue, remoteFiles, handleLogout } = useAdmin()
 
   // 登录后隐藏 Astro 渲染的左侧 PageAside，使 CMS 面板占满全宽
   useEffect(() => {
@@ -22,50 +22,8 @@ const DashboardLayout = () => {
     <div className="text-foreground font-sans min-h-screen bg-muted/10 flex flex-col relative">
       <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
 
-      {/* Header */}
-      <header className="bg-background/80 backdrop-blur-sm border-b border-border/40">
-        <div className="px-6 lg:px-8 xl:px-12 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-3 select-none">
-              <div className="size-8 bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
-                <span className="icon-[ph--terminal-window] size-4" />
-              </div>
-              <div>
-                <h1 className="text-sm font-bold tracking-tight">RefactX CMS</h1>
-                <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-mono">System Controller</span>
-              </div>
-            </div>
-            <span className="hidden sm:inline-flex items-center border border-primary/20 bg-primary/5 px-2 py-0.5 text-[10px] font-mono text-primary">
-              {REPO_CONFIG.repo}
-            </span>
-          </div>
-          <div className="flex items-center gap-4">
-            <div className="hidden sm:flex items-center gap-2">
-              <span className="relative flex size-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full size-2 bg-emerald-500" />
-              </span>
-              <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest">Online</span>
-            </div>
-            {username && (
-              <>
-                <div className="h-4 w-px bg-border/60 mx-1" />
-                <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest hidden sm:inline">{username}</span>
-              </>
-            )}
-            <div className="h-4 w-px bg-border/60 mx-1" />
-            <button
-              onClick={handleLogout}
-              className="text-[10px] font-mono text-muted-foreground hover:text-foreground uppercase tracking-widest transition-colors flex items-center gap-2"
-            >
-              Sign Out
-            </button>
-          </div>
-        </div>
-      </header>
-
       {/* Main workspace */}
-      <main className="flex-1 px-6 lg:px-8 xl:px-12 py-6 lg:py-8 xl:py-12 flex flex-col h-[calc(100vh-4rem)]">
+      <main className="flex-1 px-6 lg:px-8 xl:px-12 py-6 lg:py-8 xl:py-12 flex flex-col min-h-screen">
         {/* Stats cards */}
         <div className="hidden lg:grid grid-cols-3 gap-6 mb-6 shrink-0">
           <div className="bg-background/50 border border-border/40 p-5 flex items-center justify-between hover:border-primary/30 hover:shadow-sm transition-all">
@@ -123,6 +81,15 @@ const DashboardLayout = () => {
           <QueuePanel />
         </div>
       </main>
+
+      {/* Floating logout */}
+      <button
+        onClick={handleLogout}
+        title="Sign Out"
+        className="fixed bottom-5 right-5 z-30 flex items-center justify-center size-10 bg-background/90 backdrop-blur-md border border-border/60 text-muted-foreground hover:text-foreground hover:border-primary/40 hover:bg-primary/5 shadow-sm hover:shadow-md rounded-full transition-all"
+      >
+        <span className="icon-[ph--sign-out] size-4" />
+      </button>
     </div>
   )
 }
