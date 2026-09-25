@@ -49,49 +49,74 @@ import { HOLIDAY_THEMES } from '~/config'
 
 <div
   id="holiday-banner"
-  class="hidden relative w-full z-100 bg-primary text-primary-foreground px-4 py-2.5 text-xs sm:text-sm justify-between items-center shadow-md"
+  class="holiday-banner hidden fixed bottom-0 left-0 right-0 z-100 bg-primary text-primary-foreground shadow-[0_-4px_24px_rgba(0,0,0,0.15)]"
 >
-  <div class="flex items-center gap-2 overflow-hidden">
-    <span class="icon-[mdi--information-outline] text-base shrink-0"></span>
-    <span id="holiday-msg" class="truncate font-medium"></span>
-  </div>
+  <div id="holiday-banner-inner" class="flex justify-between items-center gap-3 px-4 sm:px-6 py-2.5 text-xs sm:text-sm overflow-hidden">
+    <div class="flex items-center gap-2 overflow-hidden">
+      <span class="icon-[mdi--information-outline] text-base shrink-0"></span>
+      <span id="holiday-msg" class="truncate font-medium"></span>
+    </div>
 
-  <button
-    id="close-holiday-btn"
-    class="shrink-0 ml-4 hover:bg-background/20 px-2 py-1 transition-colors font-mono text-[10px] uppercase tracking-wider border border-primary-foreground/20 cursor-pointer"
-  >
-    恢复默认
-  </button>
+    <button
+      id="close-holiday-btn"
+      class="shrink-0 hover:bg-background/20 px-2 py-1 transition-colors font-mono text-[10px] uppercase tracking-wider border border-primary-foreground/20 cursor-pointer"
+    >
+      恢复默认
+    </button>
+  </div>
 </div>
+
+<style is:global>
+  .holiday-banner {
+    --holiday-banner-h: 64px;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(100%);
+    transition:
+      transform 260ms ease,
+      max-height 260ms ease,
+      opacity 200ms ease;
+  }
+
+  .holiday-banner.is-open {
+    max-height: var(--holiday-banner-h);
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
 
 <script is:inline>
   ;(function () {
     function initHolidayBanner() {
       const banner = document.getElementById('holiday-banner')
-
       const msgEl = document.getElementById('holiday-msg')
-
       const closeBtn = document.getElementById('close-holiday-btn')
 
-      if (window.__HOLIDAY_ACTIVE__ && banner && msgEl) {
-        msgEl.textContent = window.__HOLIDAY_MSG__
+      if (!banner || !msgEl || !closeBtn) return
 
-        banner.classList.remove('hidden')
-        banner.classList.add('flex')
-
-        closeBtn.onclick = () => {
-          document.documentElement.classList.remove(window.__HOLIDAY_CLASS__)
-
-          banner.classList.add('hidden')
-          banner.classList.remove('flex')
-
-          localStorage.setItem('disable-holiday-theme', window.__TODAY_STR__)
-
-          window.__HOLIDAY_ACTIVE__ = false
-        }
-      } else if (banner) {
+      if (!window.__HOLIDAY_ACTIVE__) {
+        banner.classList.remove('is-open')
         banner.classList.add('hidden')
-        banner.classList.remove('flex')
+        return
+      }
+
+      msgEl.textContent = window.__HOLIDAY_MSG__
+
+      banner.classList.remove('hidden')
+      requestAnimationFrame(() => {
+        banner.classList.add('is-open')
+      })
+
+      closeBtn.onclick = () => {
+        document.documentElement.classList.remove(window.__HOLIDAY_CLASS__)
+
+        banner.classList.remove('is-open')
+        banner.classList.add('hidden')
+
+        localStorage.setItem('disable-holiday-theme', window.__TODAY_STR__)
+
+        window.__HOLIDAY_ACTIVE__ = false
       }
     }
 
