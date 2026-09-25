@@ -51,32 +51,58 @@ import { HOLIDAY_THEMES } from '~/config'
   id="holiday-banner"
   class="holiday-banner hidden fixed bottom-0 left-0 right-0 z-100 bg-primary text-primary-foreground shadow-[0_-4px_24px_rgba(0,0,0,0.15)]"
 >
-  <div id="holiday-banner-inner" class="flex justify-between items-center gap-3 px-4 sm:px-6 py-2.5 text-xs sm:text-sm overflow-hidden">
-    <div class="flex items-center gap-2 overflow-hidden">
+  <div
+    id="holiday-banner-inner"
+    class="flex flex-col sm:flex-row justify-center sm:justify-between items-center gap-1 sm:gap-3 px-3 sm:px-6 py-2 text-xs sm:text-sm overflow-hidden"
+  >
+    <div class="flex items-center gap-2 min-w-0 w-full sm:w-auto justify-center sm:justify-start overflow-hidden">
       <span class="icon-[mdi--information-outline] text-base shrink-0"></span>
-      <span id="holiday-msg" class="truncate font-medium"></span>
+      <span id="holiday-msg" class="truncate font-medium whitespace-nowrap"></span>
     </div>
 
-    <button
-      id="close-holiday-btn"
-      class="shrink-0 hover:bg-background/20 px-2 py-1 transition-colors font-mono text-[10px] uppercase tracking-wider border border-primary-foreground/20 cursor-pointer"
-    >
-      恢复默认
-    </button>
+    <div class="flex items-center gap-2 shrink-0">
+      <button
+        id="collapse-holiday-btn"
+        class="shrink-0 hover:bg-background/20 px-2 py-1 transition-colors font-mono text-[10px] uppercase tracking-wider border border-primary-foreground/20 cursor-pointer"
+      >
+        收起
+      </button>
+      <button
+        id="restore-holiday-btn"
+        class="shrink-0 hover:bg-background/20 px-2 py-1 transition-colors font-mono text-[10px] uppercase tracking-wider border border-primary-foreground/20 cursor-pointer"
+      >
+        恢复默认
+      </button>
+    </div>
   </div>
 </div>
 
+<button
+  id="holiday-reopen-btn"
+  class="holiday-reopen hidden fixed bottom-5 right-5 z-100 flex items-center gap-1.5 rounded-full bg-primary text-primary-foreground px-3 py-2 text-xs font-medium shadow-lg hover:opacity-90 transition-opacity cursor-pointer"
+>
+  <span class="icon-[mdi--information-outline] text-sm"></span>
+  <span>节日提示</span>
+</button>
+
 <style is:global>
   .holiday-banner {
-    --holiday-banner-h: 64px;
+    --holiday-banner-h: 92px;
     max-height: 0;
     overflow: hidden;
     opacity: 0;
     transform: translateY(100%);
+    padding-bottom: env(safe-area-inset-bottom);
     transition:
       transform 260ms ease,
       max-height 260ms ease,
       opacity 200ms ease;
+  }
+
+  @media (min-width: 640px) {
+    .holiday-banner {
+      --holiday-banner-h: 64px;
+    }
   }
 
   .holiday-banner.is-open {
@@ -88,36 +114,73 @@ import { HOLIDAY_THEMES } from '~/config'
 
 <script is:inline>
   ;(function () {
+    const COLLAPSE_KEY = 'holiday-banner-collapsed'
+
+    let openBanner = null
+
+    function hideBanner(banner) {
+      banner.classList.remove('is-open')
+      banner.classList.add('hidden')
+    }
+
     function initHolidayBanner() {
       const banner = document.getElementById('holiday-banner')
       const msgEl = document.getElementById('holiday-msg')
-      const closeBtn = document.getElementById('close-holiday-btn')
+      const collapseBtn = document.getElementById('collapse-holiday-btn')
+      const restoreBtn = document.getElementById('restore-holiday-btn')
+      const reopenBtn = document.getElementById('holiday-reopen-btn')
 
-      if (!banner || !msgEl || !closeBtn) return
+      if (!banner || !msgEl || !collapseBtn || !restoreBtn || !reopenBtn) return
+
+      const showReopen = () => {
+        reopenBtn.classList.remove('hidden')
+        reopenBtn.classList.add('flex')
+      }
+      const hideReopen = () => {
+        reopenBtn.classList.add('hidden')
+        reopenBtn.classList.remove('flex')
+      }
+
+      openBanner = function () {
+        msgEl.textContent = window.__HOLIDAY_MSG__
+        banner.classList.remove('hidden')
+        hideReopen()
+        requestAnimationFrame(() => {
+          banner.classList.add('is-open')
+        })
+        localStorage.removeItem(COLLAPSE_KEY)
+      }
 
       if (!window.__HOLIDAY_ACTIVE__) {
-        banner.classList.remove('is-open')
-        banner.classList.add('hidden')
+        hideBanner(banner)
+        hideReopen()
         return
       }
 
-      msgEl.textContent = window.__HOLIDAY_MSG__
+      if (localStorage.getItem(COLLAPSE_KEY) === window.__TODAY_STR__) {
+        hideBanner(banner)
+        showReopen()
+      } else {
+        openBanner()
+      }
 
-      banner.classList.remove('hidden')
-      requestAnimationFrame(() => {
-        banner.classList.add('is-open')
-      })
+      collapseBtn.onclick = () => {
+        hideBanner(banner)
+        showReopen()
+        localStorage.setItem(COLLAPSE_KEY, window.__TODAY_STR__)
+      }
 
-      closeBtn.onclick = () => {
+      restoreBtn.onclick = () => {
         document.documentElement.classList.remove(window.__HOLIDAY_CLASS__)
 
-        banner.classList.remove('is-open')
-        banner.classList.add('hidden')
-
+        hideBanner(banner)
+        hideReopen()
         localStorage.setItem('disable-holiday-theme', window.__TODAY_STR__)
 
         window.__HOLIDAY_ACTIVE__ = false
       }
+
+      reopenBtn.onclick = openBanner
     }
 
     if (document.readyState === 'loading') {
