@@ -8,111 +8,149 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <style type="text/css">
+          /* ===== Nothing Design · 红白黑 ===== */
           :root {
-            /* Vercel Geist 风格字体 */
-            --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-            
-            /* 亮色模式 (Light) */
-            --bg: #ffffff;
-            --bg-card: #fafafa;
-            --bg-icon: #f4f4f5;
-            --fg: #09090b;
-            --muted: #71717a;
-            --border: #e4e4e7;
-            --border-hover: #d4d4d8;
-            --primary: #18181b;
+            --font-serif: 'Lexend', 'CJKEmDash', 'Numbers', ui-sans-serif, system-ui, sans-serif;
+            --font-sans: 'CJKEmDash', 'Numbers', ui-sans-serif, system-ui, sans-serif;
+            --font-mono: 'GeistMono', 'Input Mono', 'Fira Code', ui-monospace, monospace;
+
+            --background: hsl(0 0% 99.5%);
+            --foreground: hsl(0 0% 6%);
+            --accent: hsl(0 0% 95%);
+            --accent-foreground: hsl(0 0% 6%);
+            --primary: hsl(3 72% 40%);
+            --muted: hsl(0 0% 93%);
+            --muted-foreground: hsl(0 0% 42%);
+            --border: hsl(0 0% 88%);
+            --bg-h: 0; --bg-s: 0%; --bg-l: 99.5%;
+            --muted-h: 0; --muted-s: 0%; --muted-l: 93%;
+            --primary-h: 3; --primary-s: 72%; --primary-l: 40%;
           }
 
           @media (prefers-color-scheme: dark) {
             :root {
-              /* 深色模式 (Dark) */
-              --bg: #09090b;
-              --bg-card: #111111;
-              --bg-icon: #18181b;
-              --fg: #fafafa;
-              --muted: #a1a1aa;
-              --border: #27272a;
-              --border-hover: #3f3f46;
-              --primary: #ffffff;
+              --background: hsl(0 0% 4%);
+              --foreground: hsl(0 0% 97%);
+              --accent: hsl(0 0% 13%);
+              --accent-foreground: hsl(0 0% 97%);
+              --primary: hsl(3 78% 48%);
+              --muted: hsl(0 0% 13%);
+              --muted-foreground: hsl(0 0% 55%);
+              --border: hsl(0 0% 18%);
+              --bg-h: 0; --bg-s: 0%; --bg-l: 4%;
+              --muted-h: 0; --muted-s: 0%; --muted-l: 13%;
+              --primary-h: 3; --primary-s: 78%; --primary-l: 48%;
             }
           }
 
           * { margin: 0; padding: 0; box-sizing: border-box; }
 
-          body {
+          html {
+            background-color: var(--background);
             font-family: var(--font-sans);
-            background-color: var(--bg);
-            color: var(--fg);
-            line-height: 1.6;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
           }
 
-          a { text-decoration: none; color: inherit; }
+          body {
+            color: var(--foreground);
+            min-height: 100vh;
+            line-height: 1.6;
+          }
+
+          a {
+            text-decoration: none;
+            color: inherit;
+          }
+
+          /* Nothing 点阵底纹 */
+          .hatch {
+            background-image: radial-gradient(hsl(0 0% 0% / 0.05) 1px, transparent 1px);
+            background-size: 18px 18px;
+          }
+          @media (prefers-color-scheme: dark) {
+            .hatch {
+              background-image: radial-gradient(hsl(0 0% 100% / 0.05) 1px, transparent 1px);
+            }
+          }
 
           .layout {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 4rem 2rem;
+            padding: 6rem 2rem 3rem;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            gap: 4rem;
           }
 
-          /* 头部 Header */
+          @media (max-width: 640px) {
+            .layout { padding: 3rem 1rem 2rem; }
+          }
+
+          /* ===== 头部 ===== */
           .header {
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 2.5rem;
-            margin-bottom: 3rem;
-          }
-
-          @media (min-width: 768px) {
-            .header {
-              flex-direction: row;
-              justify-content: space-between;
-              align-items: flex-start;
-            }
-          }
-
-          .header-info {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-          }
-
-          .header-title {
-            display: flex;
-            align-items: center;
             gap: 1rem;
+            padding-bottom: 1.25rem;
+            border-bottom: 1px solid var(--border);
           }
 
-          .rss-badge {
-            background-color: var(--fg);
-            color: var(--bg);
+          .header-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            background-color: hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.1);
+            color: var(--primary);
+            font-family: var(--font-mono);
             font-size: 0.75rem;
-            font-weight: 600;
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.375rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            font-weight: 700;
           }
 
           h1 {
+            font-family: var(--font-serif);
             font-size: 2rem;
-            font-weight: 700;
+            font-weight: 500;
             letter-spacing: -0.03em;
             line-height: 1.2;
-            color: var(--fg);
+            color: var(--foreground);
           }
-          
+
+          @media (max-width: 640px) {
+            h1 { font-size: 1.5rem; }
+          }
+
+          .header-top {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+          }
+
+          .header-title-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            flex: 1;
+            min-width: 0;
+          }
+
+          .channel-title {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+          }
+
           .channel-desc {
-            color: var(--muted);
+            color: var(--muted-foreground);
             font-size: 0.9375rem;
-            max-width: 500px;
+            max-width: 560px;
+            margin-top: 0.75rem;
           }
 
           .btn-back {
@@ -120,21 +158,72 @@
             align-items: center;
             gap: 0.5rem;
             padding: 0.5rem 1rem;
-            background-color: var(--bg-icon);
+            background-color: var(--muted);
             border: 1px solid var(--border);
-            border-radius: 0.5rem;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--muted);
+            color: var(--muted-foreground);
+            font-family: var(--font-mono);
+            font-size: 0.625rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
             transition: all 0.2s;
           }
 
           .btn-back:hover {
-            color: var(--fg);
-            border-color: var(--border-hover);
+            color: var(--accent-foreground);
+            border-color: var(--primary);
+            background-color: hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.1);
           }
 
-          /* Vercel 风格网格与四角卡片排版 */
+          /* ===== 内容区小标题 ===== */
+          .section-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+          }
+
+          .section-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+          }
+
+          .section-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.75rem;
+            height: 1.75rem;
+            background-color: hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.1);
+            color: var(--primary);
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 700;
+          }
+
+          .section-name {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: var(--foreground);
+            letter-spacing: -0.02em;
+          }
+
+          .section-meta {
+            font-family: var(--font-mono);
+            font-size: 0.625rem;
+            color: var(--muted-foreground);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            opacity: 0.7;
+            white-space: nowrap;
+          }
+
+          /* ===== 卡片网格 ===== */
           .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -145,23 +234,20 @@
             position: relative;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            background-color: var(--bg-card);
+            gap: 1.5rem;
+            background-color: hsl(var(--bg-h) var(--bg-s) var(--bg-l) / 0.5);
             border: 1px solid var(--border);
-            border-radius: 0.75rem;
             padding: 1.5rem;
             min-height: 200px;
             transition: all 0.3s ease;
           }
 
           .card:hover {
-            border-color: var(--border-hover);
-            background-color: var(--bg);
+            border-color: hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.3);
+            background-color: hsl(var(--muted-h) var(--muted-s) var(--muted-l) / 0.2);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-            transform: translateY(-2px);
           }
 
-          /* 卡片顶栏：图标 + 箭头 */
           .card-top {
             display: flex;
             justify-content: space-between;
@@ -174,166 +260,194 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: var(--bg-icon);
-            border: 1px solid var(--border);
-            border-radius: 0.375rem;
-            color: var(--fg);
-            opacity: 0.7;
+            background-color: hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.05);
+            border: 1px solid hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.1);
+            color: var(--primary);
+            opacity: 0.8;
             transition: all 0.3s;
           }
 
           .card:hover .card-icon {
-            border-color: var(--border-hover);
-            opacity: 1;
+            transform: scale(1.1);
+            background-color: hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.1);
           }
 
           .card-arrow {
-            color: var(--muted);
-            opacity: 0.4;
+            color: var(--muted-foreground);
+            opacity: 0.3;
             transition: all 0.3s;
           }
 
           .card:hover .card-arrow {
-            color: var(--fg);
+            color: var(--primary);
             opacity: 1;
+            transform: translate(2px, -2px);
           }
 
-          /* 卡片主体：标题 + 描述 */
           .card-body {
-            margin-top: 1.5rem;
             flex: 1;
           }
 
           .card-title {
-            font-size: 1.125rem;
-            font-weight: 600;
+            font-family: var(--font-serif);
+            font-size: 1rem;
+            font-weight: 500;
             line-height: 1.4;
-            letter-spacing: -0.02em;
-            color: var(--fg);
+            letter-spacing: -0.01em;
+            color: var(--foreground);
             margin-bottom: 0.5rem;
           }
 
           .card-desc {
             font-size: 0.875rem;
-            color: var(--muted);
+            color: var(--muted-foreground);
             line-height: 1.6;
             display: -webkit-box;
-            -webkit-line-clamp: 2;
+            -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
           }
 
-          /* 卡片底栏：元数据 */
           .card-bottom {
-            margin-top: 1.5rem;
-            padding-top: 1rem;
+            margin-top: auto;
+            padding-top: 0.75rem;
             border-top: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 1rem;
             font-family: var(--font-mono);
-            font-size: 0.75rem;
+            font-size: 0.625rem;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--muted);
+            letter-spacing: 0.1em;
+            color: var(--muted-foreground);
           }
 
+          .status { display: inline-flex; align-items: center; gap: 0.5rem; }
+
           .status-dot {
-            display: inline-block;
             width: 6px;
             height: 6px;
             border-radius: 50%;
-            background-color: var(--muted);
-            margin-right: 6px;
+            background-color: var(--muted-foreground);
+            opacity: 0.6;
             transition: background-color 0.3s;
           }
 
           .card:hover .status-dot {
-            background-color: #10b981; /* Green active status */
+            background-color: var(--primary);
+            opacity: 1;
           }
 
-          /* 底部信息 */
+          .card-media {
+            font-family: var(--font-mono);
+            font-size: 0.625rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--primary);
+          }
+
+          .card-time { white-space: nowrap; text-align: right; }
+
+          /* ===== 底部 ===== */
           .footer {
             margin-top: auto;
-            padding-top: 4rem;
-            font-size: 0.875rem;
-            color: var(--muted);
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
             text-align: center;
+            font-family: var(--font-mono);
+            font-size: 0.625rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--muted-foreground);
           }
 
-          @media (max-width: 640px) {
-            .layout { padding: 2rem 1rem; }
-            h1 { font-size: 1.5rem; }
+          .footer-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            display: inline-block;
+            margin-bottom: 0.1em;
           }
         </style>
       </head>
       <body>
         <div class="layout">
-          
           <header class="header">
-            <div class="header-info">
-              <div class="header-title">
-                <span class="rss-badge">RSS</span>
-                <h1><xsl:value-of select="/rss/channel/title"/></h1>
+            <div class="header-top">
+              <div class="header-title-row">
+                <span class="header-badge">RSS</span>
+                <span class="channel-title"><xsl:value-of select="/rss/channel/title"/></span>
               </div>
-              <p class="channel-desc">
-                <xsl:value-of select="/rss/channel/description"/>
-              </p>
+              <a href="{/rss/channel/link}" class="btn-back">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="19" y1="12" x2="5" y2="12"></line>
+                  <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Return to Site
+              </a>
             </div>
-            
-            <a href="{/rss/channel/link}" class="btn-back">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="19" y1="12" x2="5" y2="12"></line>
-                <polyline points="12 19 5 12 12 5"></polyline>
-              </svg>
-              Return to Site
-            </a>
+            <p class="channel-desc">
+              <xsl:value-of select="/rss/channel/description"/>
+            </p>
           </header>
 
-          <main class="grid">
-            <xsl:for-each select="/rss/channel/item">
-              <a class="card" target="_blank" href="{link}">
-                
-                <div class="card-top">
-                  <div class="card-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                      <polyline points="14 2 14 8 20 8"></polyline>
-                      <line x1="16" y1="13" x2="8" y2="13"></line>
-                      <line x1="16" y1="17" x2="8" y2="17"></line>
-                      <polyline points="10 9 9 9 8 9"></polyline>
-                    </svg>
-                  </div>
-                  <div class="card-arrow">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <main class="hatch">
+            <div class="section-head">
+              <div class="section-title">
+                <span class="section-num">01</span>
+                <span class="section-name">Latest Signals</span>
+              </div>
+              <span class="section-meta">// System_Feed</span>
+            </div>
+
+            <div class="grid">
+              <xsl:for-each select="/rss/channel/item">
+                <a class="card" target="_blank" href="{link}">
+                  <div class="card-top">
+                    <div class="card-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                      </svg>
+                    </div>
+                    <svg class="card-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
                       <line x1="7" y1="17" x2="17" y2="7"></line>
                       <polyline points="7 7 17 7 17 17"></polyline>
                     </svg>
                   </div>
-                </div>
 
-                <div class="card-body">
-                  <h2 class="card-title"><xsl:value-of select="title"/></h2>
-                  <div class="card-desc">
-                    <xsl:value-of select="description" disable-output-escaping="yes"/>
+                  <div class="card-body">
+                    <h2 class="card-title"><xsl:value-of select="title"/></h2>
+                    <div class="card-desc">
+                      <xsl:value-of select="description" disable-output-escaping="yes"/>
+                    </div>
                   </div>
-                </div>
 
-                <div class="card-bottom">
-                  <span>
-                    <span class="status-dot"></span>
-                    LOG ENTRY
-                  </span>
-                  <time><xsl:value-of select="substring(pubDate, 0, 17)"/></time>
-                </div>
-              </a>
-            </xsl:for-each>
+                  <div class="card-bottom">
+                    <span class="status">
+                      <span class="status-dot"></span>
+                      Log Entry
+                    </span>
+                    <span class="card-time"><xsl:value-of select="substring(pubDate, 0, 17)"/></span>
+                  </div>
+                </a>
+              </xsl:for-each>
+            </div>
           </main>
-          
+
           <footer class="footer">
-            <p>Generated by Astro RSS Engine</p>
+            <p>
+              <span class="footer-dot"></span>Generated by Astro RSS Engine
+            </p>
           </footer>
-          
         </div>
       </body>
     </html>
