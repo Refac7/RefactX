@@ -172,7 +172,7 @@ export const FRIENDS_CONTACT = {
 
 // Waline 评论系统配置
 export const WALINE_CONFIG = {
-  enableComment: true,
+  enableComment: false,
   serverURL: import.meta.env.PUBLIC_WALINE_SERVER_URL || 'https://waline.refact.cc',
   uploadToken: import.meta.env.PUBLIC_UPLOAD_TOKEN,
   imgbedURL: import.meta.env.PUBLIC_IMG_BED_URL || 'https://img.refact.cc/upload',
