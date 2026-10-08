@@ -77,6 +77,11 @@ export default defineConfig({
     // @ts-ignore
     plugins: [tailwindcss()],
     envDir: '.',
+    // Admin panel is client:only, so Vite cannot discover these deps at startup.
+    // Pre-bundle them to avoid on-demand re-optimization breaking in-flight island hydration.
+    optimizeDeps: {
+      include: ['react-markdown', 'remark-gfm'],
+    },
     build: {
       chunkSizeWarningLimit: 1200,
       minify: 'terser',
