@@ -3,6 +3,7 @@ export const prerender = false
 import type { APIRoute } from 'astro'
 import bcrypt from 'bcryptjs'
 import { cleanupExpiredRecords, getClientIP, checkRateLimit, recordFailedAttempt, clearRecord } from '~/lib/rateLimit'
+import { serverEnv } from '~/lib/serverEnv'
 
 async function getJwt() {
   const imported = await import('jsonwebtoken')
@@ -15,7 +16,7 @@ async function getJwt() {
  * Hash values may be stored as base64 to avoid dotenv-expand $VAR expansion.
  */
 function getUserMap(): Map<string, string> | null {
-  const usersJson = import.meta.env.ADMIN_USERS
+  const usersJson = serverEnv('ADMIN_USERS')
   if (usersJson) {
     try {
       const parsed = JSON.parse(usersJson)
@@ -41,7 +42,7 @@ function getUserMap(): Map<string, string> | null {
     }
   }
   // Backward compatibility: single ADMIN_PASSWORD → default "admin" user
-  const legacyHash = import.meta.env.ADMIN_PASSWORD
+  const legacyHash = serverEnv('ADMIN_PASSWORD')
   if (legacyHash) {
     let hash = legacyHash
     if (!hash.startsWith('$2')) {
@@ -88,7 +89,7 @@ export const POST: APIRoute = async ({ request }) => {
       if (Date.now() - timestamp > 5 * 60 * 1000) throw new Error('Expired')
 
       const encoder = new TextEncoder()
-      const secret = encoder.encode(import.meta.env.CAPTCHA_SECRET || 'refactx-edge-secret')
+      const secret = encoder.encode(serverEnv('CAPTCHA_SECRET') || 'refactx-edge-secret')
       const tokenData = encoder.encode(`verified:${timestamp}`)
       const key = await crypto.subtle.importKey('raw', secret, { name: 'HMAC', hash: 'SHA-256' }, false, ['verify'])
 
@@ -123,7 +124,7 @@ export const POST: APIRoute = async ({ request }) => {
     if (isMatch) {
       clearRecord(clientIP)
       const jwt = await getJwt()
-      const SECRET = import.meta.env.ADMIN_JWT_SECRET || 'default_secret'
+      const SECRET = serverEnv('ADMIN_JWT_SECRET') || 'default_secret'
       const token = jwt.sign({ username: trimmedUsername, ip: clientIP, ts: Date.now() }, SECRET, { expiresIn: '2h' })
       return new Response(JSON.stringify({ success: true, token, username: trimmedUsername }), { status: 200 })
     } else {

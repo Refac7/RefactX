@@ -1,5 +1,6 @@
 export const prerender = false
 import type { APIRoute } from 'astro'
+import { serverEnv } from '~/lib/serverEnv'
 
 const parseRichText = (richTextArr: any[]) => {
   if (!richTextArr || richTextArr.length === 0) return ''
@@ -68,8 +69,8 @@ async function getPageBlocksAsMarkdown(pageId: string, apiKey: string) {
 
 export const GET: APIRoute = async () => {
   try {
-    const apiKey = import.meta.env.NOTION_API_KEY
-    const databaseId = import.meta.env.NOTION_DATABASE_ID
+    const apiKey = serverEnv('NOTION_API_KEY')
+    const databaseId = serverEnv('NOTION_DATABASE_ID')
 
     if (!apiKey || !databaseId) {
       throw new Error('Missing Notion API Key or Database ID in .env file')

@@ -4,6 +4,7 @@ import type { APIRoute } from 'astro'
 import { Octokit } from '@octokit/rest'
 import { cleanupExpiredRecords, getClientIP, checkRateLimit } from '~/lib/rateLimit'
 import { extractJwtUsername, parseAuthorFromContent } from '~/lib/adminAuth'
+import { serverEnv } from '~/lib/serverEnv'
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -27,7 +28,7 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     // GitHub API 调用
-    const GITHUB_TOKEN = import.meta.env.GITHUB_TOKEN
+    const GITHUB_TOKEN = serverEnv('GITHUB_TOKEN')
     if (!GITHUB_TOKEN) {
       console.error('[Config Error] GITHUB_TOKEN is missing')
       return new Response(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 })

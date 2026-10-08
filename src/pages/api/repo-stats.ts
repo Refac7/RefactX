@@ -2,6 +2,7 @@
 export const prerender = false
 
 import type { APIRoute } from 'astro'
+import { serverEnv } from '~/lib/serverEnv'
 
 export const GET: APIRoute = async ({ request }) => {
   const url = new URL(request.url)
@@ -11,7 +12,7 @@ export const GET: APIRoute = async ({ request }) => {
     return new Response(JSON.stringify({ error: 'Missing repo param' }), { status: 400 })
   }
 
-  const GITHUB_TOKEN = import.meta.env.GITHUB_TOKEN
+  const GITHUB_TOKEN = serverEnv('GITHUB_TOKEN')
 
   try {
     const headers: HeadersInit = {

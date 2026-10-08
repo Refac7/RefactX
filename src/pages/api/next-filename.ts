@@ -3,6 +3,7 @@ export const prerender = false
 import type { APIRoute } from 'astro'
 import { Octokit } from '@octokit/rest'
 import { cleanupExpiredRecords, getClientIP, checkRateLimit } from '~/lib/rateLimit'
+import { serverEnv } from '~/lib/serverEnv'
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -25,13 +26,13 @@ export const POST: APIRoute = async ({ request }) => {
       const jwtImport = await import('jsonwebtoken')
       // @ts-ignore
       const jwt = jwtImport.default || jwtImport
-      const SECRET = import.meta.env.ADMIN_JWT_SECRET
+      const SECRET = serverEnv('ADMIN_JWT_SECRET')
       jwt.verify(token, SECRET || 'default_secret')
     } catch (e) {
       return new Response(JSON.stringify({ error: 'Invalid token' }), { status: 401 })
     }
 
-    const GITHUB_TOKEN = import.meta.env.GITHUB_TOKEN
+    const GITHUB_TOKEN = serverEnv('GITHUB_TOKEN')
     if (!GITHUB_TOKEN) return new Response(JSON.stringify({ error: 'Token missing' }), { status: 500 })
 
     const octokit = new Octokit({ auth: GITHUB_TOKEN })

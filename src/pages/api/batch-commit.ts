@@ -4,6 +4,7 @@ import type { APIRoute } from 'astro'
 import { Octokit } from '@octokit/rest'
 import { cleanupExpiredRecords, getClientIP, checkRateLimit } from '~/lib/rateLimit'
 import { extractJwtUsername, parseAuthorFromContent } from '~/lib/adminAuth'
+import { serverEnv } from '~/lib/serverEnv'
 
 // 定义操作的接口类型
 interface FileOperation {
@@ -30,7 +31,7 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ error: 'Invalid or missing token' }), { status: 401 })
     }
 
-    const octokit = new Octokit({ auth: import.meta.env.GITHUB_TOKEN })
+    const octokit = new Octokit({ auth: serverEnv('GITHUB_TOKEN') })
     const { owner, repo, branch, pathPrefix } = config
 
     // 验证每个操作的作者权限
