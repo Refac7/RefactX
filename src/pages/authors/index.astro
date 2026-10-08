@@ -63,11 +63,11 @@ const lastUpdate = new Date().toLocaleDateString('en-US', { month: 'short', day:
                     <h3 class="font-semibold text-lg text-foreground group-hover:text-primary transition-colors tracking-tight">
                       {author.name}
                     </h3>
-                    <span class="inline-flex items-center justify-center bg-muted/60 px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+                    <span class="inline-flex items-center justify-center rounded bg-muted/60 px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
                       {author.count}
                     </span>
                   </div>
-                  <div class="w-full h-1.5 bg-muted/50 overflow-hidden mt-4">
+                  <div class="w-full h-1.5 bg-muted/50 overflow-hidden rounded-full mt-4">
                     <div
                       class="h-full bg-primary/60 group-hover:bg-primary transition-all duration-500 ease-out"
                       style={`width: ${percent}%`}

@@ -224,16 +224,44 @@ html.theme-mourning {
 }
 
 /* ===== 全局圆角 UI ===== */
-/* 为卡片、面板、按钮、表单、媒体等 UI 统一添加圆角。
+/* 为卡片、面板、按钮、链接、表单、媒体、徽章等 UI 统一添加圆角。
    使用 min() 让圆角随元素尺寸自适应：小元素克制，大面板更圆润。
-   仅作用于带完整 `border` 的容器与基础控件/媒体，避免破坏贴边的分隔线。 */
+   贴边分隔线（仅单边边框）保持直角，避免网格/列表出现圆角缺口。 */
 @layer base {
   :root {
     --ui-radius: 0.75rem;
   }
 
-  :where([class~='border'], button, [role='button'], input, textarea, select, img, video, canvas, pre, blockquote, figure, table) {
+  [class~='border'],
+  button,
+  [role='button'],
+  a,
+  summary,
+  details,
+  dialog,
+  input,
+  textarea,
+  select,
+  img,
+  video,
+  canvas,
+  pre,
+  code,
+  kbd,
+  samp,
+  blockquote,
+  figure,
+  table {
     border-radius: min(var(--ui-radius), 30%);
+  }
+
+  [class~='border-t'],
+  [class~='border-b'],
+  [class~='border-l'],
+  [class~='border-r'],
+  [class~='border-x'],
+  [class~='border-y'] {
+    border-radius: 0;
   }
 }
 

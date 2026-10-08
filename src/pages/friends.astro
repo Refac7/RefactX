@@ -88,7 +88,7 @@ const totalLinks = FRIENDS_LIST.length.toString().padStart(2, '0')
                 href="#exchange-section"
                 class="group flex flex-col items-center justify-center p-6 border border-dashed border-border/40 hover:border-primary/30 hover:bg-muted/20 transition-all duration-300 min-h-40"
               >
-                <div class="size-10 flex items-center justify-center bg-muted/50 mb-3 group-hover:bg-foreground group-hover:text-background transition-colors">
+                <div class="size-10 flex items-center justify-center rounded bg-muted/50 mb-3 group-hover:bg-foreground group-hover:text-background transition-colors">
                   <span class="icon-[ph--plus] size-4 text-muted-foreground group-hover:text-background transition-colors" />
                 </div>
                 <span class="text-sm font-semibold text-foreground tracking-tight">Add Connection</span>
@@ -96,7 +96,7 @@ const totalLinks = FRIENDS_LIST.length.toString().padStart(2, '0')
               </a>
             ) : (
               <div class="flex flex-col items-center justify-center p-6 border border-dashed border-border/40 bg-muted/10 min-h-40 select-none">
-                <div class="size-10 flex items-center justify-center bg-background mb-3">
+                <div class="size-10 flex items-center justify-center rounded bg-background mb-3">
                   <span class="icon-[ph--lock-key] size-4 text-muted-foreground/50" />
                 </div>
                 <span class="text-sm font-medium text-muted-foreground/60">Link Locked</span>

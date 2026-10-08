@@ -201,12 +201,12 @@ export default function DynamicFeed() {
             {[1, 2, 3].map((i) => (
               <div key={i} className="flex flex-col bg-background/50 border border-border/40 p-6 min-h-35 animate-pulse">
                 <div className="flex justify-between items-center mb-4">
-                  <div className="h-5 w-16 bg-muted/50"></div>
-                  <div className="h-3 w-20 bg-muted/30"></div>
+                  <div className="h-5 w-16 rounded bg-muted/50"></div>
+                  <div className="h-3 w-20 rounded bg-muted/30"></div>
                 </div>
                 <div className="space-y-2 flex-1">
-                  <div className="h-4 w-full bg-muted/40"></div>
-                  <div className="h-4 w-4/5 bg-muted/40"></div>
+                  <div className="h-4 w-full rounded bg-muted/40"></div>
+                  <div className="h-4 w-4/5 rounded bg-muted/40"></div>
                 </div>
               </div>
             ))}

@@ -28,13 +28,13 @@ const sideWidthClass = 'md:w-[280px] lg:w-[320px]'
 	        ${isReverse ? 'md:order-2 border-l border-border/40' : 'md:order-1 border-r border-border/40'}
 	      `}
       >
-        <a href={`/posts/${post.id}`} class="block w-full h-full relative overflow-hidden bg-muted group/img">
+        <a href={`/posts/${post.id}`} class="block w-full h-full relative overflow-hidden bg-muted group/img rounded-none">
           <img
             src={post.data.heroImage || defaultHeroImage}
             alt={post.data.title}
             loading="eager"
             decoding="async"
-            class="absolute inset-0 w-full h-full object-cover grayscale transition-all duration-500 ease-out group-hover/img:grayscale-0 group-hover/img:scale-105"
+            class="absolute inset-0 w-full h-full object-cover grayscale transition-all duration-500 ease-out group-hover/img:grayscale-0 group-hover/img:scale-105 rounded-none"
           />
         </a>
       </div>

@@ -32,7 +32,7 @@ export default function LoginScreen() {
         </div>
 
         {/* Login card */}
-        <div className="bg-background/50 border border-border/40 p-6 sm:p-8 mb-6 relative">
+        <div className="bg-background/50 border border-border/40 p-6 sm:p-8 mb-6 relative overflow-hidden">
           {/* Top accent line */}
           <div className="absolute top-0 left-0 right-0 h-0.5 bg-primary/60" />
 
