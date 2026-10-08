@@ -8,11 +8,28 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <style type="text/css">
+          /* ===== 字体 ===== */
+          @font-face {
+            font-family: 'Lexend';
+            src: url('/fonts/Lexend-VariableFont_wght.woff2') format('woff2');
+            font-display: swap;
+          }
+          @font-face {
+            font-family: 'GeistMono';
+            src: url('/fonts/GeistMono.woff2') format('woff2');
+            font-display: swap;
+          }
+          @font-face {
+            font-family: 'Numbers';
+            src: url('/fonts/GeistVF.woff2') format('woff2');
+            font-display: swap;
+          }
+
           /* ===== 淡蓝色主题 ===== */
           :root {
-            --font-serif: 'Lexend', 'CJKEmDash', 'Numbers', ui-sans-serif, system-ui, sans-serif;
-            --font-sans: 'CJKEmDash', 'Numbers', ui-sans-serif, system-ui, sans-serif;
-            --font-mono: 'GeistMono', 'Input Mono', 'Fira Code', ui-monospace, monospace;
+            --font-serif: 'Lexend', 'CJKEmDash', 'Numbers', 'ShangguSansSC-VF', ui-sans-serif, system-ui, sans-serif;
+            --font-sans: 'CJKEmDash', 'Numbers', 'ShangguSansSC-VF', ui-sans-serif, system-ui, sans-serif;
+            --font-mono: 'GeistMono', 'Input Mono', 'Fira Code', 'ShangguSansSC-VF', ui-monospace, monospace;
 
             --background: hsl(0 0% 99.5%);
             --foreground: hsl(0 0% 6%);
@@ -63,17 +80,6 @@
             color: inherit;
           }
 
-          /* Nothing 点阵底纹 */
-          .hatch {
-            background-image: radial-gradient(hsl(0 0% 0% / 0.05) 1px, transparent 1px);
-            background-size: 18px 18px;
-          }
-          @media (prefers-color-scheme: dark) {
-            .hatch {
-              background-image: radial-gradient(hsl(0 0% 100% / 0.05) 1px, transparent 1px);
-            }
-          }
-
           .layout {
             max-width: 1200px;
             margin: 0 auto;
@@ -108,6 +114,7 @@
             font-family: var(--font-mono);
             font-size: 0.75rem;
             font-weight: 700;
+            border-radius: 0.625rem;
           }
 
           h1 {
@@ -166,6 +173,7 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.1em;
+            border-radius: 0.625rem;
             transition: all 0.2s;
           }
 
@@ -203,6 +211,7 @@
             font-family: var(--font-mono);
             font-size: 0.75rem;
             font-weight: 700;
+            border-radius: 0.625rem;
           }
 
           .section-name {
@@ -239,6 +248,7 @@
             border: 1px solid var(--border);
             padding: 1.5rem;
             min-height: 200px;
+            border-radius: 0.75rem;
             transition: all 0.3s ease;
           }
 
@@ -246,6 +256,7 @@
             border-color: hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.3);
             background-color: hsl(var(--muted-h) var(--muted-s) var(--muted-l) / 0.2);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            transform: translateY(-2px);
           }
 
           .card-top {
@@ -264,6 +275,7 @@
             border: 1px solid hsl(var(--primary-h) var(--primary-s) var(--primary-l) / 0.1);
             color: var(--primary);
             opacity: 0.8;
+            border-radius: 0.625rem;
             transition: all 0.3s;
           }
 
@@ -396,7 +408,7 @@
             </p>
           </header>
 
-          <main class="hatch">
+          <main>
             <div class="section-head">
               <div class="section-title">
                 <span class="section-num">01</span>
