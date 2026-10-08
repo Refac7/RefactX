@@ -67,10 +67,7 @@ function FeedItemCard({ item, animationDelay }: { item: FeedItem; animationDelay
             isExpanded ? 'max-h-[3000px]' : 'max-h-40'
           )}
         >
-          <div
-            ref={contentRef}
-            className="prose prose-sm dark:prose-invert max-w-none prose-img:border prose-img:border-border/40 prose-a:text-primary prose-p:leading-relaxed"
-          >
+          <div ref={contentRef} className="markdown">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{item.content}</ReactMarkdown>
           </div>
 

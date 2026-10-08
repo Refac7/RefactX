@@ -218,9 +218,6 @@ html.theme-mourning {
   a {
     @apply underline-offset-4;
   }
-  .pro {
-    @apply prose prose-zinc dark:prose-invert;
-  }
 }
 
 /* ===== 全局圆角 UI ===== */
@@ -353,12 +350,6 @@ html.theme-mourning {
 .no-scrollbar::-webkit-scrollbar,
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
-}
-
-.markdown a {
-  overflow-wrap: anywhere;
-  word-break: break-word;
-  white-space: normal;
 }
 
 /* ===== 搜索与图片懒加载 ===== */
