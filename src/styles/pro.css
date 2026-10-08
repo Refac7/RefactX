@@ -19,6 +19,7 @@
   --inline-code-bg: #f4f4f5; /* zinc-100 */
   --inline-code-text: #18181b; /* zinc-900 */
   --inline-code-border: #e4e4e7; /* zinc-200 */
+  --caption: #71717a; /* zinc-500 */
 }
 
 .dark .markdown {
@@ -36,6 +37,7 @@
   --inline-code-bg: #27272a; /* zinc-800 */
   --inline-code-text: #e4e4e7; /* zinc-200 */
   --inline-code-border: #3f3f46; /* zinc-700 */
+  --caption: #a1a1aa; /* zinc-400 */
 }
 
 /* ===== Base Styles | 基础样式 ===== */
@@ -115,6 +117,9 @@
   text-decoration: none;
   font-weight: 500;
   border-bottom: 1px solid var(--links-border);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: normal;
   transition:
     border-color 0.2s ease,
     color 0.2s ease;
@@ -160,14 +165,14 @@
   list-style-type: none;
 }
 
-.markdown > ul > li p {
+.markdown li > p {
   margin: 0.5em 0;
 }
-.markdown > ol > li > *:first-child {
-  margin-top: 1.25em;
+.markdown li > p:first-child {
+  margin-top: 0;
 }
-.markdown > ol > li > *:last-child {
-  margin-bottom: 1.25em;
+.markdown li > p:last-child {
+  margin-bottom: 0;
 }
 .markdown ul ul,
 .markdown ul ol,
@@ -292,6 +297,8 @@
 
 /* ===== Media | 媒体 ===== */
 .markdown img {
+  display: block;
+  max-width: 100%;
   margin: 2em auto;
   border-radius: 0.75rem;
   border: 1px solid var(--hr-color);
@@ -312,7 +319,7 @@
 }
 
 .markdown figure figcaption {
-  color: var(--muted);
+  color: var(--caption);
   font-size: 0.875em;
   line-height: 1.4;
   margin-top: 0.75em;

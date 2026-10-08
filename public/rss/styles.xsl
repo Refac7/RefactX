@@ -8,7 +8,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <style type="text/css">
-          /* ===== Nothing Design · 红白黑 ===== */
+          /* ===== 淡蓝色主题 ===== */
           :root {
             --font-serif: 'Lexend', 'CJKEmDash', 'Numbers', ui-sans-serif, system-ui, sans-serif;
             --font-sans: 'CJKEmDash', 'Numbers', ui-sans-serif, system-ui, sans-serif;
@@ -16,30 +16,30 @@
 
             --background: hsl(0 0% 99.5%);
             --foreground: hsl(0 0% 6%);
-            --accent: hsl(0 0% 95%);
-            --accent-foreground: hsl(0 0% 6%);
-            --primary: hsl(3 72% 40%);
+            --accent: hsl(205 80% 95%);
+            --accent-foreground: hsl(205 85% 40%);
+            --primary: hsl(205 85% 48%);
             --muted: hsl(0 0% 93%);
             --muted-foreground: hsl(0 0% 42%);
             --border: hsl(0 0% 88%);
             --bg-h: 0; --bg-s: 0%; --bg-l: 99.5%;
             --muted-h: 0; --muted-s: 0%; --muted-l: 93%;
-            --primary-h: 3; --primary-s: 72%; --primary-l: 40%;
+            --primary-h: 205; --primary-s: 85%; --primary-l: 48%;
           }
 
           @media (prefers-color-scheme: dark) {
             :root {
               --background: hsl(0 0% 4%);
               --foreground: hsl(0 0% 97%);
-              --accent: hsl(0 0% 13%);
-              --accent-foreground: hsl(0 0% 97%);
-              --primary: hsl(3 78% 48%);
+              --accent: hsl(205 40% 15%);
+              --accent-foreground: hsl(205 85% 80%);
+              --primary: hsl(205 85% 60%);
               --muted: hsl(0 0% 13%);
               --muted-foreground: hsl(0 0% 55%);
               --border: hsl(0 0% 18%);
               --bg-h: 0; --bg-s: 0%; --bg-l: 4%;
               --muted-h: 0; --muted-s: 0%; --muted-l: 13%;
-              --primary-h: 3; --primary-s: 78%; --primary-l: 48%;
+              --primary-h: 205; --primary-s: 85%; --primary-l: 60%;
             }
           }
 

@@ -1,16 +1,16 @@
 ---
-title: '如何自制雌二醇凝胶'
-description: '记录一下我自制雌二醇凝胶的方法'
+title: 如何自制雌二醇凝胶
+description: 从器材、原料到配制步骤，记录一份 0.1% 雌二醇凝胶的自制方法及风险提示。
 pubDate: 2026-09-09
-author: 'refac7'
-tags: ['笔记']
-recommend: false
-heroImage: none
-ogImage: none
-heroImageAspectRatio: '16/9'
+tags:
+  - 雌二醇
+  - 自制
+  - 药理
 ---
 
 > 本文档非专业医疗文档，此文档不完整、不精确、且不具备可重复性，仅供参考。此行为可能会对机体造成重大影响，本文不对任何人的任何不良反应负责，若你不同意以上内容，请立即退出本文。
+
+![](https://img.refact.cc/1790500886373-zq7vsct13oo.jpg)
 
 ## 本配方可能用到的器械（无序列表）：
 

@@ -54,7 +54,7 @@ const progressPercent = Math.round((page.currentPage / page.lastPage) * 100)
           <span class={SECTION_META_CLASS}>// Post_Feed</span>
         </div>
 
-        <div class="relative z-10 flex-1 min-h-100 mt-4 fade-up animation-delay-200">
+        <div class="relative z-10 flex-1 min-h-100 fade-up animation-delay-200">
           <List posts={page.data} type={POSTS_CONFIG.postPageConfig.type} heroImageLayout={POSTS_CONFIG.postPageConfig?.heroImageLayout} />
         </div>
 
@@ -63,7 +63,7 @@ const progressPercent = Math.round((page.currentPage / page.lastPage) * 100)
             <div class="flex justify-between text-xs text-muted-foreground mb-3">
               <span>Reading Progress</span><span>{progressPercent}%</span>
             </div>
-            <div class="w-full h-1.5 bg-muted/50 overflow-hidden">
+            <div class="w-full h-1.5 bg-muted/50 overflow-hidden rounded-full">
               <div class="h-full bg-primary transition-all duration-700 ease-out" style={`width: ${progressPercent}%`}></div>
             </div>
           </div>

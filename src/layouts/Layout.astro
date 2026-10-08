@@ -6,6 +6,7 @@ import Head from '~/components/base/Head.astro'
 import Header from './Header.astro'
 import Footer from './Footer.astro'
 import HolidayTheme from '~/components/base/HolidayTheme.astro'
+import SearchOverlay from '~/components/base/SearchOverlay.astro'
 
 type Props = {
   title: string
@@ -41,6 +42,7 @@ const { title, description, image, author } = Astro.props
         <span class="page-transition-loader__dot"></span>
         <span class="page-transition-loader__text">LOADING</span>
       </div>
+      <button id="page-transition-skip" class="page-transition-loader__skip" type="button">跳过</button>
     </div>
 
     <div class="select-text selection:bg-foreground/20 selection:text-foreground">
@@ -57,6 +59,9 @@ const { title, description, image, author } = Astro.props
         <Footer />
       </div>
     </div>
+
+    <SearchOverlay />
+
     <div
       class="pointer-events-none fixed bottom-0 left-0 h-28 w-full z-0 bg-background mask-[linear-gradient(transparent,hsl(var(--background)))]"
     >
@@ -66,11 +71,6 @@ const { title, description, image, author } = Astro.props
       /* Nothing-style technical heading typography: bold geometric sans with tight tracking. */
       :root {
         --font-serif: 'Lexend', 'CJKEmDash', 'Numbers', 'ShangguSansSC-VF', ui-sans-serif, system-ui, sans-serif;
-      }
-
-      /* 统一加深可视卡片边框，同时保留主题色和原有布局。 */
-      [class*='border-border/'][class*='rounded'] {
-        border-color: hsl(var(--border) / 0.65) !important;
       }
 
       /* 页面切换只保留 Loader，关闭所有页面部件的飞入动画。 */
@@ -134,6 +134,44 @@ const { title, description, image, author } = Astro.props
         animation: pageTransitionPulse 800ms ease-in-out infinite;
       }
 
+      .page-transition-loader__skip {
+        position: absolute;
+        bottom: 2.5rem;
+        left: 50%;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.55rem 1.1rem;
+        border: 1px solid hsl(var(--border) / 0.6);
+        border-radius: 9999px;
+        background: hsl(var(--background) / 0.7);
+        color: hsl(var(--muted-foreground));
+        font:
+          600 0.6875rem/1 var(--font-geist-mono),
+          monospace;
+        letter-spacing: 0.15em;
+        cursor: pointer;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateX(-50%) translateY(0.5rem);
+        transition:
+          opacity 200ms ease,
+          transform 200ms ease,
+          color 200ms ease,
+          border-color 200ms ease;
+      }
+
+      .page-transition-loader--slow .page-transition-loader__skip {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateX(-50%) translateY(0);
+      }
+
+      .page-transition-loader__skip:hover {
+        color: hsl(var(--foreground));
+        border-color: hsl(var(--border));
+      }
+
       @keyframes pageTransitionPulse {
         0%,
         100% {
@@ -166,12 +204,20 @@ const { title, description, image, author } = Astro.props
         const root = document.documentElement
         let transitionGeneration = 0
         let hideFrame = 0
+        let slowTimer = 0
+        const SLOW_THRESHOLD = 3500
 
         const getLoader = () => document.getElementById('page-transition-loader')
 
         const cancelPendingTransition = () => {
           transitionGeneration += 1
           cancelAnimationFrame(hideFrame)
+        }
+
+        const clearSlow = () => {
+          window.clearTimeout(slowTimer)
+          slowTimer = 0
+          getLoader()?.classList.remove('page-transition-loader--slow')
         }
 
         const showLoader = () => {
@@ -181,9 +227,16 @@ const { title, description, image, author } = Astro.props
 
           loader.classList.remove('page-transition-loader--done')
           root.classList.add('page-transition-loading')
+
+          // 加载过久时提供关闭入口，避免用户被一直卡在加载态
+          clearSlow()
+          slowTimer = window.setTimeout(() => {
+            getLoader()?.classList.add('page-transition-loader--slow')
+          }, SLOW_THRESHOLD)
         }
 
         const hideLoader = () => {
+          clearSlow()
           const generation = transitionGeneration
           hideFrame = requestAnimationFrame(() => {
             if (generation !== transitionGeneration) return
@@ -193,6 +246,15 @@ const { title, description, image, author } = Astro.props
             root.classList.remove('page-transition-loading')
           })
         }
+
+        const dismissLoader = () => {
+          cancelPendingTransition()
+          clearSlow()
+          getLoader()?.classList.add('page-transition-loader--done')
+          root.classList.remove('page-transition-loading')
+        }
+
+        document.getElementById('page-transition-skip')?.addEventListener('click', dismissLoader)
 
         document.addEventListener('astro:before-preparation', showLoader)
         document.addEventListener('astro:after-swap', () => {

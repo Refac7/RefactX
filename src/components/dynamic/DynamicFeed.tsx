@@ -45,7 +45,7 @@ function FeedItemCard({ item, animationDelay }: { item: FeedItem; animationDelay
       style={{ animationDelay }}
     >
       <div className="p-5 pb-3 flex justify-between items-start gap-4">
-        <span className="inline-flex items-center bg-muted/40 px-2.5 py-0.5 text-[11px] font-medium text-foreground tracking-tight select-none">
+        <span className="inline-flex items-center rounded bg-muted/40 px-2.5 py-0.5 text-[11px] font-medium text-foreground tracking-tight select-none">
           {item.mood}
         </span>
         <span className="text-xs text-muted-foreground whitespace-nowrap flex items-center gap-1">
@@ -67,10 +67,7 @@ function FeedItemCard({ item, animationDelay }: { item: FeedItem; animationDelay
             isExpanded ? 'max-h-[3000px]' : 'max-h-40'
           )}
         >
-          <div
-            ref={contentRef}
-            className="prose prose-sm dark:prose-invert max-w-none prose-img:border prose-img:border-border/40 prose-a:text-primary prose-p:leading-relaxed"
-          >
+          <div ref={contentRef} className="markdown">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{item.content}</ReactMarkdown>
           </div>
 
@@ -201,12 +198,12 @@ export default function DynamicFeed() {
             {[1, 2, 3].map((i) => (
               <div key={i} className="flex flex-col bg-background/50 border border-border/40 p-6 min-h-35 animate-pulse">
                 <div className="flex justify-between items-center mb-4">
-                  <div className="h-5 w-16 bg-muted/50"></div>
-                  <div className="h-3 w-20 bg-muted/30"></div>
+                  <div className="h-5 w-16 rounded bg-muted/50"></div>
+                  <div className="h-3 w-20 rounded bg-muted/30"></div>
                 </div>
                 <div className="space-y-2 flex-1">
-                  <div className="h-4 w-full bg-muted/40"></div>
-                  <div className="h-4 w-4/5 bg-muted/40"></div>
+                  <div className="h-4 w-full rounded bg-muted/40"></div>
+                  <div className="h-4 w-4/5 rounded bg-muted/40"></div>
                 </div>
               </div>
             ))}

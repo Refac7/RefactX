@@ -62,42 +62,42 @@
     --font-sans: 'CJKEmDash', 'Numbers', 'ShangguSansSC-VF', ui-sans-serif, system-ui, sans-serif;
     --font-geist-mono: 'GeistMono', 'Input Mono', 'Fira Code', 'ShangguSansSC-VF', monospace;
 
-    /* Nothing Design · 红白黑（透明感） */
+    /* 淡蓝色主题 */
     --background: 0 0% 99.5%;
     --foreground: 0 0% 6%;
-    --accent: 0 0% 95%;
-    --accent-foreground: 0 0% 6%;
-    --primary: 3 72% 40%; /* Nothing Red */
+    --accent: 205 80% 95%;
+    --accent-foreground: 205 85% 40%;
+    --primary: 205 85% 48%; /* 淡蓝色 */
     --primary-foreground: 0 0% 100%;
     --muted: 0 0% 93%;
     --muted-foreground: 0 0% 42%;
     --border: 0 0% 88%;
-    --ring: 3 72% 40%;
-    --tag-bg: 0 0% 95%;
-    --tag-bg-hover: 0 0% 89%;
-    --tag-border: 0 0% 85%;
-    --tag-text: 0 0% 25%;
-    --scrollbar: 0 0% 74%;
-    --scrollbar-bg: 0 0% 94%;
+    --ring: 205 85% 48%;
+    --tag-bg: 205 80% 95%;
+    --tag-bg-hover: 205 80% 89%;
+    --tag-border: 205 80% 85%;
+    --tag-text: 205 85% 38%;
+    --scrollbar: 205 30% 74%;
+    --scrollbar-bg: 205 30% 94%;
   }
 
   .dark {
     --background: 0 0% 4%;
     --foreground: 0 0% 97%;
-    --accent: 0 0% 13%;
-    --accent-foreground: 0 0% 97%;
-    --primary: 3 78% 48%; /* Nothing Red · dark */
+    --accent: 205 40% 15%;
+    --accent-foreground: 205 85% 80%;
+    --primary: 205 85% 60%; /* 淡蓝色 · dark */
     --primary-foreground: 0 0% 100%;
     --muted: 0 0% 13%;
     --muted-foreground: 0 0% 55%;
     --border: 0 0% 18%;
-    --ring: 3 78% 48%;
-    --tag-bg: 0 0% 11%;
-    --tag-bg-hover: 0 0% 16%;
-    --tag-border: 0 0% 22%;
-    --tag-text: 0 0% 82%;
-    --scrollbar: 0 0% 30%;
-    --scrollbar-bg: 0 0% 13%;
+    --ring: 205 85% 60%;
+    --tag-bg: 205 40% 13%;
+    --tag-bg-hover: 205 40% 18%;
+    --tag-border: 205 40% 25%;
+    --tag-text: 205 85% 80%;
+    --scrollbar: 205 25% 30%;
+    --scrollbar-bg: 205 25% 13%;
   }
 
   /* 新年/国庆节 */
@@ -218,8 +218,47 @@ html.theme-mourning {
   a {
     @apply underline-offset-4;
   }
-  .pro {
-    @apply prose prose-zinc dark:prose-invert;
+}
+
+/* ===== 全局圆角 UI ===== */
+/* 为卡片、面板、按钮、链接、表单、媒体、徽章等 UI 统一添加圆角。
+   使用 min() 让圆角随元素尺寸自适应：小元素克制，大面板更圆润。
+   贴边分隔线（仅单边边框）保持直角，避免网格/列表出现圆角缺口。 */
+@layer base {
+  :root {
+    --ui-radius: 0.75rem;
+  }
+
+  [class~='border'],
+  button,
+  [role='button'],
+  a,
+  summary,
+  details,
+  dialog,
+  input,
+  textarea,
+  select,
+  img,
+  video,
+  canvas,
+  pre,
+  code,
+  kbd,
+  samp,
+  blockquote,
+  figure,
+  table {
+    border-radius: min(var(--ui-radius), 30%);
+  }
+
+  [class~='border-t'],
+  [class~='border-b'],
+  [class~='border-l'],
+  [class~='border-r'],
+  [class~='border-x'],
+  [class~='border-y'] {
+    border-radius: 0;
   }
 }
 
@@ -311,12 +350,6 @@ html.theme-mourning {
 .no-scrollbar::-webkit-scrollbar,
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
-}
-
-.markdown a {
-  overflow-wrap: anywhere;
-  word-break: break-word;
-  white-space: normal;
 }
 
 /* ===== 搜索与图片懒加载 ===== */

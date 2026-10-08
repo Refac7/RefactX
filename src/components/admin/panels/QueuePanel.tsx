@@ -15,12 +15,12 @@ export default function QueuePanel() {
       {/* Header */}
       <div className="h-12 px-4 border-b border-border/40 flex justify-between items-center bg-muted/20">
         <div className="flex items-center gap-2">
-          <span className="inline-flex items-center justify-center size-5 bg-primary/10 text-primary font-mono text-[9px] font-bold">
+          <span className="inline-flex items-center justify-center rounded size-5 bg-primary/10 text-primary font-mono text-[9px] font-bold">
             Q
           </span>
           <span className="text-sm font-semibold text-foreground">Changes Queue</span>
         </div>
-        <span className="text-[10px] font-mono text-muted-foreground bg-muted/50 px-2 py-0.5">{queue.length}</span>
+        <span className="text-[10px] font-mono text-muted-foreground rounded bg-muted/50 px-2 py-0.5">{queue.length}</span>
       </div>
 
       {/* Queue items */}
@@ -39,7 +39,7 @@ export default function QueuePanel() {
               <div className="flex justify-between items-start">
                 <span
                   className={cn(
-                    'text-[9px] font-mono font-semibold uppercase px-2 py-0.5',
+                    'text-[9px] font-mono font-semibold uppercase rounded px-2 py-0.5',
                     item.type === 'delete'
                       ? 'text-red-600 bg-red-50 dark:text-red-400 dark:bg-red-500/10'
                       : 'text-emerald-600 bg-emerald-50 dark:text-emerald-400 dark:bg-emerald-500/10'

@@ -1,12 +1,11 @@
 ---
-title: '图床配置指南'
-description: '如何在 RefactX v1.6中使用图床以及在Waline 评论系统中启用图片上传'
+title: "图床配置指南"
+description: "基于 Cloudflare R2 与 Worker 搭建私有图床，并让 Waline 评论区支持图片上传的完整配置指南。"
 pubDate: 2025-12-30
-author: 'refac7'
-tags: ['笔记']
-recommend: false
-heroImage: none
-heroImageAspectRatio: '16/9'
+tags:
+  - 图床
+  - Cloudflare
+  - Waline
 ---
 
 注意：启用图床将会禁用图片优化功能。如果你强制在`./astro.config.mjs`的52行处修改为你的图床地址，那大概会被防盗链功能拦截，所以图片优化仅限静态资源。
@@ -218,9 +217,7 @@ Waline评论上传的图片默认统一保存在comment文件夹下。
 
 ```markdown
 // 带描述的图片
-:::image-figure[lighthouse]
-![](https://img.refact.cc/lighthouse.png)(style: width:600px;)
-:::
+![lighthouse](https://img.refact.cc/lighthouse.png)
 ```
 
 更多用法，请到 https://refact-x-template-git-galaxy-msrefs-projects.vercel.app/posts/markdown-extension-syntax 学习。

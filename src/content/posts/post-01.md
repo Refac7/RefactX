@@ -1,11 +1,11 @@
 ---
-title: 'Waline评论系统的部署与配置'
-description: '本文重点指出了在部署 Waline 评论系统时可能遇到的问题。'
+title: "Waline评论系统的部署与配置"
+description: "从后端部署到前端接入，一步步记录 Waline 评论系统的搭建过程，涵盖数据库、邮件通知与常见坑。"
 pubDate: 2025-09-26
-author: 'refac7'
-heroImage: none
-heroImageAspectRatio: '16/9'
-tags: ['笔记']
+tags:
+  - 评论系统
+  - 部署
+  - 前端
 ---
 
 本文使用的是前后端分离的方式，当然可以使用完全嵌入的方式，不过我没成功。
@@ -178,12 +178,12 @@ import Comments from '~/components/posts/base/Comments.astro';
 #### 你必须添加以下环境变量
 
 1. SMTP服务器，SMTP_SERVICE（一般支持主流的邮箱 https://github.com/nodemailer/nodemailer/blob/master/lib/well-known/services.json）
-1. SMTP用户，SMTP_USER（一般是你的邮箱地址）
-1. SMTP密码，SMTP_PASS（获取方法请自行百度）
-1. 网站名称，SITE_NAME（站点名称，用于通知邮件中的名字显示）
-1. 网站地址，SITE_URL（站点链接，用于通知邮件中的超链接）
-1. 你执行评论时用的邮箱，AUTHOR_EMAIL（如果是自己发的评论，不会邮件通知）
-1. SMTP安全连接，SMTP_SECURE（一般情况下设置为 true 就好）
+2. SMTP用户，SMTP_USER（一般是你的邮箱地址）
+3. SMTP密码，SMTP_PASS（获取方法请自行百度）
+4. 网站名称，SITE_NAME（站点名称，用于通知邮件中的名字显示）
+5. 网站地址，SITE_URL（站点链接，用于通知邮件中的超链接）
+6. 你执行评论时用的邮箱，AUTHOR_EMAIL（如果是自己发的评论，不会邮件通知）
+7. SMTP安全连接，SMTP_SECURE（一般情况下设置为 true 就好）
 
 #### 我推荐设置的可选环境变量
 
@@ -219,9 +219,7 @@ MAIL_TEMPLATE_ADMIN
 
 这个模版的效果如下，你必须更改其中的logo链接，或者是直接删除图标。
 
-:::image-figure[评论系统实例图]
-![](https://img.refact.cc/comment.png)(style: width:600px;)(style: width:full;)
-:::
+![评论系统实例图](https://img.refact.cc/comment.png)
 
 ## 结尾
 
