@@ -4,6 +4,19 @@ import { SECTION_HEADER_CLASS, SECTION_TITLE_CLASS, SECTION_NUM_CLASS, SECTION_M
 import { useAdmin } from './AdminContext'
 import Captcha from '~/components/ui/Captcha'
 
+const ACCESS_SPEC = [
+  { label: 'Access Level', value: 'Administrator' },
+  { label: 'Auth Method', value: 'bcrypt · PoW' },
+  { label: 'Session', value: 'JWT · 2h' },
+  { label: 'Scope', value: 'Posts · Data · Deploy' },
+]
+
+const SECURITY_NOTES = [
+  { icon: 'icon-[ph--shield-check-fill]', tone: 'text-primary', text: '仅限授权管理员访问，请使用分配的凭据登录。' },
+  { icon: 'icon-[ph--key-fill]', tone: 'text-primary', text: '登录状态以 JWT 保存，过期后需要重新验证。' },
+  { icon: 'icon-[ph--warning-circle-fill]', tone: 'text-amber-500', text: '请勿在公共设备上保存凭据。' },
+]
+
 export default function LoginScreen() {
   const { performLogin, isValidating, loginError } = useAdmin()
   const [username, setUsername] = useState('')
@@ -21,7 +34,7 @@ export default function LoginScreen() {
 
   return (
     <div className="px-6 lg:px-8 xl:px-12 lg:py-20 flex-1 flex flex-col">
-      <div className="fade-up animation-delay-150">
+      <div className="fade-up">
         {/* Section header in site style */}
         <div className={SECTION_HEADER_CLASS}>
           <div className="flex items-center">
@@ -31,44 +44,60 @@ export default function LoginScreen() {
           <span className={SECTION_META_CLASS}>// System_Login</span>
         </div>
 
-        <div className="grid xl:grid-cols-2 gap-10 mt-6">
+        <div className="grid xl:grid-cols-[minmax(0,1fr)_minmax(0,440px)] gap-10">
           {/* Access information */}
           <div className="flex flex-col">
-            <h3 className="text-lg font-semibold tracking-tight mb-4 text-foreground">Restricted Access</h3>
-            <ul className="space-y-3 text-sm text-muted-foreground">
-              <li className="flex items-start gap-2.5">
-                <span className="icon-[ph--shield-check-fill] size-4 text-primary shrink-0 mt-0.5" />
-                <span>仅限授权管理员访问，请使用分配的凭据登录。</span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <span className="icon-[ph--key-fill] size-4 text-primary shrink-0 mt-0.5" />
-                <span>登录状态以 JWT 保存，过期后需要重新验证。</span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <span className="icon-[ph--warning-circle-fill] size-4 text-amber-500 shrink-0 mt-0.5" />
-                <span>请勿在公共设备上保存凭据。</span>
-              </li>
-            </ul>
+            <div className="relative overflow-hidden rounded-xl border border-border/40 bg-background/50 p-6">
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute -right-4 -top-10 select-none text-[7rem] font-black leading-none tracking-tighter text-foreground/[0.04]"
+              >
+                SEC
+              </span>
 
-            <div className="mt-8 p-6 border border-border/40 bg-muted/10">
-              <span className="text-xs font-semibold text-foreground block mb-2">System Access</span>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                此入口用于管理文章、配置数据与部署流程。所有操作都会提交至 GitHub 仓库并留下记录。
-              </p>
+              <div className="relative z-10 mb-6 flex items-center gap-3">
+                <span className="flex size-11 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
+                  <span className="icon-[ph--lock-key-fill] size-6" />
+                </span>
+                <div>
+                  <p className="text-sm font-bold tracking-tight text-foreground">Restricted Access</p>
+                  <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/70">Authorized personnel only</p>
+                </div>
+              </div>
+
+              <dl className="relative z-10 divide-y divide-border/40 border-y border-border/40">
+                {ACCESS_SPEC.map((row) => (
+                  <div key={row.label} className="flex items-center justify-between gap-4 py-3">
+                    <dt className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/60">{row.label}</dt>
+                    <dd className="text-xs font-medium text-foreground/90">{row.value}</dd>
+                  </div>
+                ))}
+              </dl>
             </div>
+
+            <ul className="mt-6 space-y-3 text-sm text-muted-foreground">
+              {SECURITY_NOTES.map((note) => (
+                <li key={note.icon} className="flex items-start gap-2.5">
+                  <span className={cn('size-4 shrink-0 mt-0.5', note.tone, note.icon)} />
+                  <span>{note.text}</span>
+                </li>
+              ))}
+            </ul>
           </div>
 
           {/* Credentials form */}
           <div className="relative">
-            <div className="border border-border/40 bg-background/50 overflow-hidden flex flex-col h-full">
-              <div className="px-5 py-4 border-b border-border/40 bg-muted/20 flex justify-between items-center">
-                <span className="font-semibold text-sm tracking-tight">Credentials</span>
-                <span className="text-xs font-medium text-muted-foreground bg-background border border-border/40 px-2 py-0.5">JWT</span>
+            <div className="overflow-hidden rounded-xl border border-border/40 bg-background/50">
+              <div className="flex items-center justify-between border-b border-border/40 bg-muted/20 px-5 py-4">
+                <span className="text-sm font-semibold tracking-tight">Credentials</span>
+                <span className="rounded-full border border-border/40 bg-background px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                  JWT
+                </span>
               </div>
 
-              <div className="p-5 space-y-5 flex-1">
+              <div className="space-y-5 p-5">
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest ml-1">Username</label>
+                  <label className="ml-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Username</label>
                   <div className="relative">
                     <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/60 icon-[ph--user] size-4" />
                     <input
@@ -81,9 +110,9 @@ export default function LoginScreen() {
                       autoFocus
                       autoComplete="username"
                       className={cn(
-                        'w-full pl-9 pr-4 py-2.5 border bg-background text-sm transition-all focus:outline-none focus:ring-2 focus:ring-offset-0',
+                        'w-full rounded-lg border bg-background py-2.5 pl-9 pr-4 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-offset-0',
                         loginError
-                          ? 'border-red-500/50 focus:ring-red-500/20 text-red-500'
+                          ? 'border-red-500/50 text-red-500 focus:ring-red-500/20'
                           : 'border-border/60 focus:border-primary/50 focus:ring-primary/20'
                       )}
                     />
@@ -91,7 +120,7 @@ export default function LoginScreen() {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest ml-1">Passkey</label>
+                  <label className="ml-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Passkey</label>
                   <div className="relative">
                     <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/60 icon-[ph--key] size-4" />
                     <input
@@ -103,9 +132,9 @@ export default function LoginScreen() {
                       placeholder="••••••••"
                       autoComplete="current-password"
                       className={cn(
-                        'w-full pl-9 pr-10 py-2.5 border bg-background text-sm transition-all focus:outline-none focus:ring-2 focus:ring-offset-0',
+                        'w-full rounded-lg border bg-background py-2.5 pl-9 pr-10 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-offset-0',
                         loginError
-                          ? 'border-red-500/50 focus:ring-red-500/20 text-red-500'
+                          ? 'border-red-500/50 text-red-500 focus:ring-red-500/20'
                           : 'border-border/60 focus:border-primary/50 focus:ring-primary/20'
                       )}
                     />
@@ -113,7 +142,7 @@ export default function LoginScreen() {
                       type="button"
                       onMouseDown={(e) => e.preventDefault()}
                       onClick={() => setShowPassword((v) => !v)}
-                      className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-muted-foreground/60 hover:text-foreground transition-colors"
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-muted-foreground/60 transition-colors hover:text-foreground"
                       tabIndex={-1}
                       aria-label={showPassword ? 'Hide password' : 'Show password'}
                     >
@@ -128,10 +157,10 @@ export default function LoginScreen() {
                   onClick={() => canSubmit && performLogin(username.trim(), password, captchaToken!)}
                   disabled={isValidating || !canSubmit}
                   className={cn(
-                    'w-full py-2.5 text-sm font-semibold transition-all flex items-center justify-center gap-2',
+                    'flex w-full items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-semibold transition-all',
                     canSubmit && !loginError
-                      ? 'bg-foreground text-background hover:bg-foreground/90 shadow-sm'
-                      : 'bg-muted text-muted-foreground border border-border/50 cursor-not-allowed'
+                      ? 'bg-primary text-primary-foreground shadow-sm hover:bg-primary/90'
+                      : 'cursor-not-allowed border border-border/50 bg-muted text-muted-foreground'
                   )}
                 >
                   {isValidating ? (
@@ -146,9 +175,9 @@ export default function LoginScreen() {
                   )}
                 </button>
 
-                <div className="h-4 flex items-center justify-center">
+                <div className="flex h-4 items-center justify-center">
                   {loginError && (
-                    <p className="text-[10px] font-mono text-red-500 uppercase tracking-widest flex items-center gap-1.5 animate-in fade-in slide-in-from-bottom-2">
+                    <p className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-red-500 animate-in fade-in slide-in-from-bottom-2">
                       <span className="icon-[ph--warning-circle] size-3.5" />
                       Invalid credentials.
                     </p>
@@ -156,6 +185,10 @@ export default function LoginScreen() {
                 </div>
               </div>
             </div>
+
+            <p className="mt-4 text-center font-mono text-[10px] uppercase tracking-widest text-muted-foreground/50">
+              Protected by HMAC CAPTCHA · bcrypt
+            </p>
           </div>
         </div>
       </div>
