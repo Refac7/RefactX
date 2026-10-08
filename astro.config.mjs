@@ -65,6 +65,12 @@ export default defineConfig({
 
   output: 'static',
 
+  // The dev toolbar entrypoint can return `504 Outdated Optimize Dep` after Vite
+  // re-optimizes deps (withastro/astro#16766). Disable it to avoid the console error.
+  devToolbar: {
+    enabled: false,
+  },
+
   adapter: vercel({
     webAnalytics: { enabled: true },
   }),
