@@ -35,222 +35,247 @@
 </div>
 
 <script>
-  const searchInput = document.getElementById('search-input') as HTMLInputElement
-  const searchMask = document.getElementById('search-mask')
-  const searchSwitch = document.getElementById('search-switch')
-  const searchResults = document.getElementById('search-results')
-  const exactToggle = document.getElementById('search-exact') as HTMLButtonElement | null
-  const searchPanelShow = document.querySelector('.search-panel-show') as HTMLElement
+  // 使用事件委托 + 每次实时查询节点，兼容 View Transitions 替换 DOM 的情况。
+  ;(function () {
+    if ((window as any).__refactxSearchInitialized) return
+    ;(window as any).__refactxSearchInitialized = true
 
-  let searchReqId = 0
-  let isPagefindLoaded = false
-  let isPagefindLoading = false
+    const getMask = () => document.getElementById('search-mask')
+    const getInput = () => document.getElementById('search-input') as HTMLInputElement | null
+    const getResults = () => document.getElementById('search-results')
+    const getPanel = () => document.querySelector('.search-panel-show') as HTMLElement | null
+    const getExactToggle = () => document.getElementById('search-exact') as HTMLButtonElement | null
 
-  let exactMode = false
-  try {
-    exactMode = localStorage.getItem('search-exact') === '1'
-  } catch {}
+    let searchReqId = 0
+    let isPagefindLoaded = false
+    let isPagefindLoading = false
 
-  const updateExactUI = () => {
-    if (!exactToggle) return
-    exactToggle.setAttribute('aria-pressed', exactMode ? 'true' : 'false')
-    if (exactMode) {
-      exactToggle.classList.add('bg-foreground', 'text-background', 'border-foreground')
-      exactToggle.classList.remove('text-muted-foreground', 'bg-transparent')
-    } else {
-      exactToggle.classList.remove('bg-foreground', 'text-background', 'border-foreground')
-      exactToggle.classList.add('text-muted-foreground', 'bg-transparent')
-    }
-  }
-  updateExactUI()
-
-  exactToggle?.addEventListener('click', () => {
-    exactMode = !exactMode
+    let exactMode = false
     try {
-      localStorage.setItem('search-exact', exactMode ? '1' : '0')
+      exactMode = localStorage.getItem('search-exact') === '1'
     } catch {}
-    updateExactUI()
-    searchInput?.dispatchEvent(new Event('input'))
-  })
 
-  // 按需加载 Pagefind 引擎
-  const initPagefind = async () => {
-    if (isPagefindLoaded || isPagefindLoading || !import.meta.env.PROD) return
-
-    isPagefindLoading = true
-    if (searchInput) searchInput.placeholder = 'Initializing search engine...'
-
-    try {
-      // 核心修复：通过拼接字符串绕过 Vite 静态依赖解析，防止开发环境报错
-      const path = '/pagefind/' + 'pagefind.js'
-      const pagefind = await import(/* @vite-ignore */ path)
-
-      await pagefind.options({
-        excerptLength: 25,
-        showSubResults: true,
-      })
-      await pagefind.init()
-      ;(window as any).pagefind = pagefind
-      isPagefindLoaded = true
-
-      if (searchInput) {
-        searchInput.placeholder = 'Search documentation...'
-        if (searchInput.value.trim() !== '') {
-          searchInput.dispatchEvent(new Event('input'))
-        }
-      }
-    } catch (e) {
-      console.error('Failed to load pagefind:', e)
-      if (searchInput) searchInput.placeholder = 'Engine failed to load'
-    } finally {
-      isPagefindLoading = false
-    }
-  }
-
-  const openSearch = () => {
-    // 批量修改 CSS 类，避免多次重排
-    searchMask?.classList.remove('hidden')
-    // 使用 requestAnimationFrame 将样式变化和重排分离
-    requestAnimationFrame(() => {
-      searchMask?.classList.remove('opacity-0')
-      searchPanelShow?.classList.remove('-translate-y-4')
-      searchPanelShow?.classList.add('translate-y-0')
-    })
-    searchInput?.focus()
-
-    // 打开面板的瞬间去加载庞大的 WASM
-    initPagefind()
-  }
-
-  const closeSearch = () => {
-    searchMask?.classList.add('opacity-0')
-    searchPanelShow?.classList.remove('translate-y-0')
-    searchPanelShow?.classList.add('-translate-y-4')
-    setTimeout(() => {
-      searchMask?.classList.add('hidden')
-      if (searchInput) searchInput.value = ''
-      if (searchResults) searchResults.innerHTML = ''
-    }, 300)
-  }
-
-  searchSwitch?.addEventListener('click', openSearch)
-  searchMask?.addEventListener('click', (e) => {
-    if (e.target === searchMask) closeSearch()
-  })
-
-  const handleKeydown = (e: KeyboardEvent) => {
-    if (e.key === 'Escape' && !searchMask?.classList.contains('hidden')) {
-      closeSearch()
-    }
-    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
-      e.preventDefault()
-      if (searchMask?.classList.contains('hidden')) {
-        openSearch()
+    const updateExactUI = () => {
+      const exactToggle = getExactToggle()
+      if (!exactToggle) return
+      exactToggle.setAttribute('aria-pressed', exactMode ? 'true' : 'false')
+      if (exactMode) {
+        exactToggle.classList.add('bg-foreground', 'text-background', 'border-foreground')
+        exactToggle.classList.remove('text-muted-foreground', 'bg-transparent')
       } else {
-        closeSearch()
+        exactToggle.classList.remove('bg-foreground', 'text-background', 'border-foreground')
+        exactToggle.classList.add('text-muted-foreground', 'bg-transparent')
       }
     }
-  }
 
-  // 使用 astro:after-swap 确保正确的事件绑定
-  if (document.readyState === 'loading') {
-    document.addEventListener('keydown', handleKeydown)
-  }
+    // 按需加载 Pagefind 引擎
+    const initPagefind = async () => {
+      if (isPagefindLoaded || isPagefindLoading || !import.meta.env.PROD) return
 
-  document.addEventListener('astro:after-swap', () => {
-    // 移除旧的监听器
-    document.removeEventListener('keydown', handleKeydown)
-    // 重新添加以确保正确的作用域
-    document.addEventListener('keydown', handleKeydown)
-  })
+      isPagefindLoading = true
+      const input = getInput()
+      if (input) input.placeholder = 'Initializing search engine...'
 
-  document.addEventListener('keydown', handleKeydown)
+      try {
+        // 核心修复：通过拼接字符串绕过 Vite 静态依赖解析，防止开发环境报错
+        const path = '/pagefind/' + 'pagefind.js'
+        const pagefind = await import(/* @vite-ignore */ path)
 
-  const handleInput = async (e: Event) => {
-    if (searchResults) searchResults.innerHTML = ''
-    const target = e.target as HTMLInputElement
-    const q = target.value.trim()
-    const reqId = ++searchReqId
+        await pagefind.options({
+          excerptLength: 25,
+          showSubResults: true,
+        })
+        await pagefind.init()
+        ;(window as any).pagefind = pagefind
+        isPagefindLoaded = true
 
-    if (q === '') {
-      searchResults?.insertAdjacentHTML(
-        'beforeend',
-        `
+        const freshInput = getInput()
+        if (freshInput) {
+          freshInput.placeholder = 'Search documentation...'
+          if (freshInput.value.trim() !== '') {
+            freshInput.dispatchEvent(new Event('input'))
+          }
+        }
+      } catch (e) {
+        console.error('Failed to load pagefind:', e)
+        const freshInput = getInput()
+        if (freshInput) freshInput.placeholder = 'Engine failed to load'
+      } finally {
+        isPagefindLoading = false
+      }
+    }
+
+    const openSearch = () => {
+      const mask = getMask()
+      const panel = getPanel()
+      // 批量修改 CSS 类，避免多次重排
+      mask?.classList.remove('hidden')
+      // 使用 requestAnimationFrame 将样式变化和重排分离
+      requestAnimationFrame(() => {
+        mask?.classList.remove('opacity-0')
+        panel?.classList.remove('-translate-y-4')
+        panel?.classList.add('translate-y-0')
+      })
+      getInput()?.focus()
+
+      // 打开面板的瞬间去加载庞大的 WASM
+      initPagefind()
+    }
+
+    const closeSearch = () => {
+      const mask = getMask()
+      const panel = getPanel()
+      mask?.classList.add('opacity-0')
+      panel?.classList.remove('translate-y-0')
+      panel?.classList.add('-translate-y-4')
+      setTimeout(() => {
+        getMask()?.classList.add('hidden')
+        const input = getInput()
+        if (input) input.value = ''
+        const results = getResults()
+        if (results) results.innerHTML = ''
+      }, 300)
+    }
+
+    const handleInput = async (e: Event) => {
+      const results = getResults()
+      if (results) results.innerHTML = ''
+      const target = e.target as HTMLInputElement
+      const q = target.value.trim()
+      const reqId = ++searchReqId
+
+      if (q === '') {
+        results?.insertAdjacentHTML(
+          'beforeend',
+          `
         <div class="py-16 flex flex-col items-center justify-center gap-3 select-none opacity-50">
           <span class="icon-[ph--keyboard] size-10 text-muted-foreground"></span>
           <span class="text-sm font-medium text-muted-foreground">Type to start searching</span>
         </div>
       `
-      )
-      return
-    }
+        )
+        return
+      }
 
-    if (import.meta.env.PROD) {
-      if (!isPagefindLoaded) return
+      if (import.meta.env.PROD) {
+        if (!isPagefindLoaded) return
 
-      const pagefindQuery = exactMode ? `"${q}"` : q
-      const search = await (window as any).pagefind.debouncedSearch(pagefindQuery)
+        const pagefindQuery = exactMode ? `"${q}"` : q
+        const search = await (window as any).pagefind.debouncedSearch(pagefindQuery)
 
-      if (reqId !== searchReqId || searchInput?.value.trim() !== q) return
+        if (reqId !== searchReqId || getInput()?.value.trim() !== q) return
 
-      if (!search?.results || search.results.length === 0) {
-        searchResults?.insertAdjacentHTML(
-          'beforeend',
-          `
+        if (!search?.results || search.results.length === 0) {
+          results?.insertAdjacentHTML(
+            'beforeend',
+            `
           <div class="py-16 flex flex-col items-center justify-center gap-3 select-none opacity-60">
             <span class="icon-[ph--magnifying-glass-minus] size-10 text-muted-foreground"></span>
             <span class="text-sm font-medium text-muted-foreground">No results found for "${q}"</span>
           </div>
         `
-        )
-        return
-      }
+          )
+          return
+        }
 
-      for (const result of search.results) {
-        const data = await result.data()
+        for (const result of search.results) {
+          const data = await result.data()
 
-        const resultItem = document.createElement('a')
-        resultItem.href = data.url
-        resultItem.className =
-          'block p-4 mb-2 bg-background hover:bg-muted/40 border border-transparent hover:border-border/60 transition-all group'
-        resultItem.innerHTML = `
+          const resultItem = document.createElement('a')
+          resultItem.href = data.url
+          resultItem.className =
+            'block p-4 mb-2 bg-background hover:bg-muted/40 border border-transparent hover:border-border/60 transition-all group'
+          resultItem.innerHTML = `
           <h3 class="text-base font-semibold text-foreground group-hover:text-primary transition-colors tracking-tight mb-2">${data.meta.title}</h3>
           <p class="text-sm text-muted-foreground leading-relaxed line-clamp-2">${data.excerpt}</p>
         `
-        resultItem.addEventListener('click', closeSearch)
-        searchResults?.appendChild(resultItem)
+          results?.appendChild(resultItem)
 
-        if (data.sub_results) {
-          for (const subResult of data.sub_results) {
-            if (subResult.excerpt === data.excerpt) continue
-            const cleanTitle = subResult.title.replace(/\s*[Hh][1-6]$/g, '')
-            if (!cleanTitle) continue
+          if (data.sub_results) {
+            for (const subResult of data.sub_results) {
+              if (subResult.excerpt === data.excerpt) continue
+              const cleanTitle = subResult.title.replace(/\s*[Hh][1-6]$/g, '')
+              if (!cleanTitle) continue
 
-            const subItem = document.createElement('a')
-            subItem.href = subResult.url
-            subItem.className =
-              'block p-3 ml-6 mb-2 bg-muted/20 hover:bg-muted/50 border-l-[3px] border-border/60 hover:border-primary transition-all group'
-            subItem.innerHTML = `
+              const subItem = document.createElement('a')
+              subItem.href = subResult.url
+              subItem.className =
+                'block p-3 ml-6 mb-2 bg-muted/20 hover:bg-muted/50 border-l-[3px] border-border/60 hover:border-primary transition-all group'
+              subItem.innerHTML = `
               <h4 class="text-sm font-medium text-foreground opacity-90 group-hover:text-primary transition-colors mb-1 tracking-tight">${cleanTitle}</h4>
               <p class="text-xs text-muted-foreground/80 line-clamp-1">${subResult.excerpt}</p>
             `
-            subItem.addEventListener('click', closeSearch)
-            searchResults?.appendChild(subItem)
+              results?.appendChild(subItem)
+            }
           }
         }
-      }
-    } else {
-      searchResults?.insertAdjacentHTML(
-        'beforeend',
-        `
+      } else {
+        results?.insertAdjacentHTML(
+          'beforeend',
+          `
         <div class="py-16 flex flex-col items-center justify-center gap-3 select-none opacity-60">
           <span class="icon-[ph--warning-circle] size-10 text-amber-500/80"></span>
           <span class="text-sm font-medium text-muted-foreground text-center">Search requires Pagefind.<br/>Not available in dev mode.</span>
         </div>
       `
-      )
+        )
+      }
     }
-  }
 
-  searchInput?.addEventListener('input', handleInput)
+    // 事件委托：即使 View Transitions 替换了按钮/输入框节点也能正常工作
+    document.addEventListener('click', (e) => {
+      const target = e.target instanceof Element ? e.target : null
+      if (!target) return
+
+      if (target.closest('#search-switch')) {
+        openSearch()
+        return
+      }
+
+      if (target.closest('#search-exact')) {
+        exactMode = !exactMode
+        try {
+          localStorage.setItem('search-exact', exactMode ? '1' : '0')
+        } catch {}
+        updateExactUI()
+        getInput()?.dispatchEvent(new Event('input'))
+        return
+      }
+
+      // 点击搜索结果时关闭面板
+      if (target.closest('#search-results a')) {
+        closeSearch()
+        return
+      }
+
+      if (target.id === 'search-mask') closeSearch()
+    })
+
+    document.addEventListener('input', (e) => {
+      const target = e.target as HTMLElement | null
+      if (target && target.id === 'search-input') handleInput(e)
+    })
+
+    const handleKeydown = (e: KeyboardEvent) => {
+      const mask = getMask()
+      if (e.key === 'Escape' && !mask?.classList.contains('hidden')) {
+        closeSearch()
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault()
+        if (mask?.classList.contains('hidden')) {
+          openSearch()
+        } else {
+          closeSearch()
+        }
+      }
+    }
+    document.addEventListener('keydown', handleKeydown)
+
+    // 页面切换后同步新节点的状态（如 Exact 按钮）
+    const sync = () => updateExactUI()
+    sync()
+    document.addEventListener('astro:after-swap', sync)
+    document.addEventListener('astro:page-load', sync)
+  })()
 </script>
