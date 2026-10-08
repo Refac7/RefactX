@@ -11,108 +11,116 @@ interface Props {
 }
 
 const { frontmatter, minutesRead, wordCount, headings } = Astro.props
+
+const meta = [
+  {
+    label: 'Author',
+    value: frontmatter.author,
+    icon: 'icon-[ph--user]',
+    href: frontmatter.author ? `/authors/${frontmatter.author}` : undefined,
+  },
+  { label: 'Published', value: formatDate(frontmatter.pubDate), icon: 'icon-[ph--calendar-blank]' },
+  { label: 'Reading', value: minutesRead || 'Unknown', icon: 'icon-[ph--clock]' },
+  { label: 'Words', value: wordCount ? String(wordCount) : undefined, icon: 'icon-[ph--article]' },
+  {
+    label: 'Updated',
+    value: frontmatter.updatedDate ? formatDate(frontmatter.updatedDate) : undefined,
+    icon: 'icon-[ph--clock-clockwise]',
+  },
+].filter((item) => item.value)
 ---
 
 <article class="relative w-full">
   <!-- Header -->
-  <header class="relative w-full min-h-[50vh] flex flex-col justify-center px-6 md:px-12 py-24 border-b border-border/40 overflow-hidden">
-    <!-- Top bar: back button + status -->
-    <div class="absolute top-8 left-6 md:left-12 right-6 md:right-12 flex items-center justify-between">
-      <a
-        href="/posts"
-        class="group inline-flex items-center gap-2.5 text-xs font-mono text-muted-foreground hover:text-foreground transition-colors"
-      >
-        <span
-          class="inline-flex items-center justify-center size-8 bg-background/50 border border-border/40 text-muted-foreground group-hover:text-foreground group-hover:border-primary/30 group-hover:bg-primary/5 transition-all"
+  <header class="relative w-full border-b border-border/40 overflow-hidden">
+    <div class="relative w-full max-w-[1920px] mx-auto px-6 md:px-12 pt-12 md:pt-20 pb-12 md:pb-16">
+      <!-- Top bar: back button + status -->
+      <div class="flex items-center justify-between gap-4">
+        <a
+          href="/posts"
+          class="group inline-flex items-center gap-2.5 text-xs font-mono text-muted-foreground hover:text-foreground transition-colors"
         >
-          <span class="icon-[ph--arrow-left] size-4"></span>
-        </span>
-        <span class="hidden sm:inline uppercase tracking-widest">// Return_Index</span>
-      </a>
+          <span
+            class="inline-flex items-center justify-center size-8 rounded-lg border border-border/40 bg-background/50 text-muted-foreground transition-all group-hover:border-primary/30 group-hover:bg-primary/5 group-hover:text-primary"
+          >
+            <span class="icon-[ph--arrow-left] size-4"></span>
+          </span>
+          <span class="hidden sm:inline uppercase tracking-widest">// Return_Index</span>
+        </a>
 
-      <span
-        class="inline-flex items-center gap-1.5 bg-muted/30 border border-border/40 px-3 py-1 text-[10px] font-mono text-muted-foreground select-none"
-      >
-        <span class="relative flex size-1.5">
-          <span class="relative inline-flex rounded-full size-1.5 bg-emerald-500"></span>
+        <span
+          class="inline-flex items-center gap-1.5 rounded-full border border-border/40 bg-muted/30 px-3 py-1 text-[10px] font-mono text-muted-foreground select-none"
+        >
+          <span class="relative flex size-1.5">
+            <span class="relative inline-flex size-1.5 rounded-full bg-emerald-500"></span>
+          </span>
+          Published
         </span>
-        Published
-      </span>
-    </div>
-
-    <!-- Bottom bar: tags (left) + metadata (right) -->
-    <div class="absolute bottom-8 left-6 md:left-12 right-6 md:right-12 flex flex-wrap items-center gap-x-4 gap-y-2 justify-between">
-      <!-- Tags -->
-      <div class="flex flex-wrap gap-2">
-        {
-          frontmatter.tags &&
-            frontmatter.tags.map((tag: string) => (
-              <a
-                href={`/tags/${tag}`}
-                class="text-[11px] font-mono font-medium bg-background/50 backdrop-blur-sm border border-border/40 text-muted-foreground hover:text-foreground hover:border-primary/30 hover:bg-primary/5 px-3 py-1 transition-all"
-              >
-                #{tag}
-              </a>
-            ))
-        }
       </div>
 
-      <!-- Metadata: compact on mobile, full on sm+ -->
-      <div
-        class="flex flex-wrap items-center gap-x-2 sm:gap-x-3 gap-y-1 text-[10px] font-mono text-muted-foreground uppercase tracking-widest select-none"
-      >
-        {
-          frontmatter.author && (
-            <>
-              <a
-                href={`/authors/${frontmatter.author}`}
-                class="flex items-center gap-1.5 hover:text-foreground hover:underline transition-colors"
-              >
-                <span class="icon-[ph--user] size-3.5" />
-                {frontmatter.author}
-              </a>
-              <span class="w-1 h-1 rounded-full bg-border hidden sm:inline" />
-              <span class="w-1 h-1 rounded-full bg-border sm:hidden" />
-            </>
-          )
-        }
-        <span class="hidden sm:flex items-center gap-1.5">
-          <span class="icon-[ph--article] size-3.5"></span>
-          {wordCount} words
-        </span>
-        <span class="hidden sm:inline w-1 h-1 rounded-full bg-border"></span>
-        <span class="flex items-center gap-1.5">
-          <span class="icon-[ph--clock] size-3.5"></span>
-          {minutesRead || 'Unknown'}
-        </span>
-        <span class="w-1 h-1 rounded-full bg-border"></span>
-        <span>{formatDate(frontmatter.pubDate)}</span>
-      </div>
-    </div>
-
-    <!-- Title + description -->
-    <div class="max-w-4xl mx-auto z-10 w-full">
-      <h1
-        class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-foreground leading-tight sm:leading-[1.1]"
-        data-pagefind-body
-      >
-        {frontmatter.title}
-      </h1>
-      {
-        frontmatter.description && (
-          <div class="mt-6 relative">
-            <p class="text-base sm:text-lg text-muted-foreground max-w-2xl leading-relaxed">{frontmatter.description}</p>
+      <!-- Title (left) + metadata spec sheet (right) -->
+      <div class="mt-12 md:mt-16 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-end">
+        <div class="lg:col-span-8">
+          <div class="mb-5 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground/70 select-none">
+            <span class="size-1.5 rounded-full bg-primary"></span>
+            <span>Article</span>
+            <span class="h-px w-8 bg-border"></span>
+            <span>{frontmatter.tags?.[0] || 'Notes'}</span>
           </div>
-        )
-      }
-      {
-        frontmatter.updatedDate && (
-          <p class="mt-6 text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest flex items-center gap-1.5">
-            <span class="icon-[ph--clock-clockwise] size-3" />
-            Updated {formatDate(frontmatter.updatedDate)}
-          </p>
-        )
-      }
+
+          <h1
+            data-pagefind-body
+            class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-foreground leading-tight sm:leading-[1.08]"
+          >
+            {frontmatter.title}
+          </h1>
+
+          {
+            frontmatter.description && (
+              <p class="mt-6 max-w-2xl text-base sm:text-lg leading-relaxed text-muted-foreground">{frontmatter.description}</p>
+            )
+          }
+        </div>
+
+        <div class="lg:col-span-4 w-full">
+          <dl class="overflow-hidden rounded-xl border border-border/40 bg-background/50 divide-y divide-border/40">
+            {
+              meta.map((item) => (
+                <div class="flex items-center justify-between gap-4 px-4 py-3">
+                  <dt class="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground/60">
+                    <span class={`${item.icon} size-3.5`} />
+                    {item.label}
+                  </dt>
+                  <dd class="text-xs font-medium text-foreground/90">
+                    {item.href ? (
+                      <a href={item.href} class="transition-colors hover:text-primary">
+                        {item.value}
+                      </a>
+                    ) : (
+                      item.value
+                    )}
+                  </dd>
+                </div>
+              ))
+            }
+          </dl>
+
+          {
+            frontmatter.tags && frontmatter.tags.length > 0 && (
+              <div class="mt-4 flex flex-wrap gap-2">
+                {frontmatter.tags.map((tag: string) => (
+                  <a
+                    href={`/tags/${tag}`}
+                    class="inline-flex items-center rounded-full border border-border/40 bg-background/50 px-3 py-1 text-[11px] font-mono font-medium text-muted-foreground backdrop-blur-sm transition-all hover:border-primary/30 hover:bg-primary/5 hover:text-primary"
+                  >
+                    #{tag}
+                  </a>
+                ))}
+              </div>
+            )
+          }
+        </div>
+      </div>
     </div>
   </header>
 
