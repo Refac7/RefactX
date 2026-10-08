@@ -1,6 +1,5 @@
 ---
 import { formatDate } from '~/lib/utils'
-import { POSTS_CONFIG } from '~/config'
 import PostTag from '~/components/posts/base/PostTag.astro'
 import RecommendBadge from '~/components/posts/base/RecommendBadge.astro'
 import type { CardProps } from './List.astro'
@@ -8,11 +7,10 @@ import type { CardProps } from './List.astro'
 interface Props extends CardProps {}
 
 const { post, heroImageLayout }: Props = Astro.props
-const hasImage = post.data.heroImage !== 'none'
+const hasImage = Boolean(post.data.heroImage) && post.data.heroImage !== 'none'
 const showImage = Astro.props.showImage
 const imagePosition = post.data.heroImageLayout || heroImageLayout || 'right'
 const isReverse = imagePosition === 'right'
-const defaultHeroImage = POSTS_CONFIG.defaultHeroImage
 const sideWidthClass = 'md:w-[280px] lg:w-[320px]'
 ---
 
@@ -30,7 +28,7 @@ const sideWidthClass = 'md:w-[280px] lg:w-[320px]'
       >
         <a href={`/posts/${post.id}`} class="block w-full h-full relative overflow-hidden bg-muted group/img rounded-none">
           <img
-            src={post.data.heroImage || defaultHeroImage}
+            src={post.data.heroImage || ''}
             alt={post.data.title}
             loading="eager"
             decoding="async"
@@ -41,29 +39,7 @@ const sideWidthClass = 'md:w-[280px] lg:w-[320px]'
     )
   }
 
-  {
-    !hasImage && showImage && (
-      <a
-        href={`/posts/${post.id}`}
-        class={`
-	        hidden md:flex shrink-0 h-auto relative overflow-hidden flex-col items-center justify-center p-6 bg-muted/20
-	        ${sideWidthClass}
-	        ${isReverse ? 'md:order-2 border-l border-border/40' : 'md:order-1 border-r border-border/40'}
-	        group/placeholder hover:bg-muted/30 transition-all duration-300 cursor-pointer
-	      `}
-      >
-        <span class="icon-[ph--image-broken] size-12 text-muted-foreground/30 mb-3 group-hover/placeholder:scale-110 transition-transform duration-500 ease-out" />
-        <span class="text-xs font-medium text-muted-foreground/60">No Media</span>
-      </a>
-    )
-  }
-
-  <div
-    class={`
-	      flex flex-col w-full p-6 flex-1
-	      ${hasImage && showImage && isReverse ? 'md:order-1' : 'md:order-1'}
-	    `}
-  >
+  <div class="flex flex-col w-full p-6 flex-1">
     <div class="flex items-center justify-between mb-2">
       <div class="flex items-center gap-2 text-sm font-medium text-muted-foreground leading-6.5">
         <time>{formatDate(post.data.pubDate)}</time>

@@ -1,12 +1,11 @@
 ---
-title: '从 JavaScript 前端开发到 Electron 框架跨平台开发'
-description: '本文主要描述了 JavaScript 和 Electron 的发展，关系，以及对于软件开发和原生开发可能存在的影响进行了分析。'
+title: "从 JavaScript 前端开发到 Electron 框架跨平台开发"
+description: "从 JavaScript 的诞生讲到 Electron 的跨平台实践，梳理二者的关系，以及它们对软件开发与原生开发格局的影响。"
 pubDate: 2026-01-02
-author: 'refac7'
-tags: ['笔记']
-recommend: true
-heroImage: none
-heroImageAspectRatio: '16/9'
+tags:
+  - JavaScript
+  - Electron
+  - 跨平台
 ---
 
 **关键词**：全栈开发、JavaScript、Electron等。
