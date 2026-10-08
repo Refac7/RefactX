@@ -38,5 +38,15 @@
     "icon": "icon-[ri--puzzle-line]",
     "star": 0,
     "fork": 0
+  },
+  {
+    "name": "Lumen",
+    "description": "基于 Astro 的个人主页，卡片式布局搭配 oklch 色相驱动的主题，支持亮/暗模式与毛玻璃壁纸背景。",
+    "githubUrl": "https://github.com/Refac7/Lumen",
+    "website": "https://lumen-sepia-eight.vercel.app",
+    "type": "icon",
+    "icon": "icon-[ri--sun-line]",
+    "star": 0,
+    "fork": 0
   }
 ]
