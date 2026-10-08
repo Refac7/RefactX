@@ -45,7 +45,7 @@ function FeedItemCard({ item, animationDelay }: { item: FeedItem; animationDelay
       style={{ animationDelay }}
     >
       <div className="p-5 pb-3 flex justify-between items-start gap-4">
-        <span className="inline-flex items-center bg-muted/40 px-2.5 py-0.5 text-[11px] font-medium text-foreground tracking-tight select-none">
+        <span className="inline-flex items-center rounded bg-muted/40 px-2.5 py-0.5 text-[11px] font-medium text-foreground tracking-tight select-none">
           {item.mood}
         </span>
         <span className="text-xs text-muted-foreground whitespace-nowrap flex items-center gap-1">
