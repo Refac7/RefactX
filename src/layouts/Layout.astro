@@ -1,7 +1,7 @@
 ---
 import '~/styles/global.css'
 import '~/styles/pro.css'
-import { SITE, HOLIDAY_EFFECTS } from '~/config'
+import { SITE, HOLIDAY_EFFECTS, PAGE_LOADER_CONFIG } from '~/config'
 import Head from '~/components/base/Head.astro'
 import Header from './Header.astro'
 import Footer from './Footer.astro'
@@ -19,7 +19,7 @@ const { title, description, image, author } = Astro.props
 ---
 
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" class:list={[PAGE_LOADER_CONFIG.enablePageLoader && 'page-transition-enabled']}>
   <head>
     <Head title={`${title} | ${SITE.title}`} {description} {image} {author} />
     <script is:inline>
@@ -37,13 +37,19 @@ const { title, description, image, author } = Astro.props
   <body>
     {HOLIDAY_EFFECTS.enableHolidayEffects && <HolidayTheme />}
 
-    <div id="page-transition-loader" class="page-transition-loader" aria-hidden="true" transition:persist="page-transition-loader">
-      <div class="page-transition-loader__content">
-        <span class="page-transition-loader__dot"></span>
-        <span class="page-transition-loader__text">LOADING</span>
-      </div>
-      <button id="page-transition-skip" class="page-transition-loader__skip" type="button">跳过</button>
-    </div>
+    {
+      PAGE_LOADER_CONFIG.enablePageLoader && (
+        <div id="page-transition-loader" class="page-transition-loader" aria-hidden="true" transition:persist="page-transition-loader">
+          <div class="page-transition-loader__content">
+            <span class="page-transition-loader__dot" />
+            <span class="page-transition-loader__text">LOADING</span>
+          </div>
+          <button id="page-transition-skip" class="page-transition-loader__skip" type="button">
+            跳过
+          </button>
+        </div>
+      )
+    }
 
     <div class="select-text selection:bg-foreground/20 selection:text-foreground">
       <div class="relative z-10 bg-background">
@@ -74,7 +80,7 @@ const { title, description, image, author } = Astro.props
       }
 
       /* 页面切换只保留 Loader，关闭所有页面部件的飞入动画。 */
-      .fade-up {
+      html.page-transition-enabled .fade-up {
         opacity: 1 !important;
         transform: none !important;
         animation: none !important;

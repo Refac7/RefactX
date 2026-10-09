@@ -196,6 +196,12 @@ export const HOLIDAY_EFFECTS = {
   enableHolidayEffects: true,
 }
 
+// 页面切换加载动画配置
+// false 时关闭全站页面跳转的 LOADING 遮罩动画
+export const PAGE_LOADER_CONFIG = {
+  enablePageLoader: true,
+}
+
 // src/config.ts
 
 export const HOLIDAY_THEMES = {
