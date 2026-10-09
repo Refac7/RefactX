@@ -126,6 +126,18 @@ export interface DynamicConfig {
   introduce: string
 }
 
+/**
+ * 留言板配置接口 / Messageboard configuration interface
+ * @property {string} title - 留言板标题 / Messageboard page title
+ * @property {string} description - 留言板描述 / Messageboard page description
+ * @property {string} introduce - 留言板介绍 / Messageboard page introduce
+ */
+export interface MessageboardConfig {
+  title: string
+  description: string
+  introduce: string
+}
+
 export interface Skill {
   icon: string
   name: string

@@ -4,6 +4,7 @@ import type {
   PostConfig,
   ProjectConfig,
   DynamicConfig,
+  MessageboardConfig,
   Site,
   SkillsShowcaseConfig,
   SocialLink,
@@ -29,6 +30,7 @@ export const HEADER_LINKS: Link[] = [
   { name: '文章', url: '/posts' },
   { name: '动态', url: '/dynamic' },
   { name: '项目', url: '/projects' },
+  { name: '留言板', url: '/messageboard' },
   { name: '关于', url: '/about' },
 ]
 
@@ -38,6 +40,7 @@ export const FOOTER_LINKS: Link[] = [
   { name: '文章', url: '/posts' },
   { name: '动态', url: '/dynamic' },
   { name: '项目', url: '/projects' },
+  { name: '留言板', url: '/messageboard' },
   { name: '标签', url: '/tags' },
   { name: '作者', url: '/authors' },
   { name: '友链', url: '/friends' },
@@ -150,6 +153,13 @@ export const DYNAMIC_CONFIG: DynamicConfig = {
   title: 'Dynamic',
   description: '我的动态',
   introduce: '一些碎碎念、小脑洞和开发日常，直接从 Notion 同步过来喵～ (＾▽＾)',
+}
+
+// 留言板页面配置
+export const MESSAGEBOARD_CONFIG: MessageboardConfig = {
+  title: 'Message Board',
+  description: '留言板',
+  introduce: '欢迎来到留言板喵～在这里留下一句话、一个建议或者单纯的问候都可以 (・∀・)',
 }
 
 // 友链页面配置
