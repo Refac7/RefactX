@@ -149,7 +149,7 @@ export default function JsonEditor() {
             </button>
             <button
               onClick={() => handleDeleteItem(editingItemIndex)}
-              className="text-sm font-medium text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 px-3 py-1.5 transition-colors"
+              className="text-sm font-medium text-danger hover:text-danger/80 hover:bg-danger/10 px-3 py-1.5 transition-colors"
             >
               Delete Item
             </button>

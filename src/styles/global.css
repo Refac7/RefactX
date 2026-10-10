@@ -28,6 +28,16 @@
   --color-tag-text: hsl(var(--tag-text));
   --color-scrollbar: hsl(var(--scrollbar));
   --color-scrollbar-bg: hsl(var(--scrollbar-bg));
+
+  /* 语义色 · 成功 / 警告 / 危险 / 信息 */
+  --color-success: hsl(var(--success));
+  --color-success-foreground: hsl(var(--success-foreground));
+  --color-warning: hsl(var(--warning));
+  --color-warning-foreground: hsl(var(--warning-foreground));
+  --color-danger: hsl(var(--danger));
+  --color-danger-foreground: hsl(var(--danger-foreground));
+  --color-info: hsl(var(--info));
+  --color-info-foreground: hsl(var(--info-foreground));
 }
 
 /* ===== 字体配置 ===== */
@@ -63,41 +73,61 @@
     --font-geist-mono: 'GeistMono', 'Input Mono', 'Fira Code', 'ShangguSansSC-VF', monospace;
 
     /* 淡蓝色主题 */
-    --background: 0 0% 99.5%;
-    --foreground: 0 0% 6%;
-    --accent: 205 80% 95%;
-    --accent-foreground: 205 85% 40%;
-    --primary: 205 85% 48%; /* 淡蓝色 */
+    --background: 210 20% 99%;
+    --foreground: 215 30% 11%;
+    --accent: 205 72% 96%;
+    --accent-foreground: 205 82% 34%;
+    --primary: 205 88% 43%; /* 淡蓝色 */
     --primary-foreground: 0 0% 100%;
-    --muted: 0 0% 93%;
-    --muted-foreground: 0 0% 42%;
-    --border: 0 0% 88%;
-    --ring: 205 85% 48%;
-    --tag-bg: 205 80% 95%;
-    --tag-bg-hover: 205 80% 89%;
-    --tag-border: 205 80% 85%;
-    --tag-text: 205 85% 38%;
-    --scrollbar: 205 30% 74%;
-    --scrollbar-bg: 205 30% 94%;
+    --muted: 213 17% 95%;
+    --muted-foreground: 215 14% 43%;
+    --border: 214 18% 89%;
+    --ring: 205 88% 43%;
+    --tag-bg: 205 72% 96%;
+    --tag-bg-hover: 205 72% 90%;
+    --tag-border: 205 60% 85%;
+    --tag-text: 205 82% 34%;
+    --scrollbar: 205 20% 72%;
+    --scrollbar-bg: 205 22% 94%;
+
+    /* 语义色 · 成功 / 警告 / 危险 / 信息 */
+    --success: 152 64% 34%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 42%;
+    --warning-foreground: 0 0% 100%;
+    --danger: 0 72% 48%;
+    --danger-foreground: 0 0% 100%;
+    --info: 205 88% 43%;
+    --info-foreground: 0 0% 100%;
   }
 
   .dark {
-    --background: 0 0% 4%;
-    --foreground: 0 0% 97%;
-    --accent: 205 40% 15%;
-    --accent-foreground: 205 85% 80%;
-    --primary: 205 85% 60%; /* 淡蓝色 · dark */
+    --background: 216 24% 7%;
+    --foreground: 210 20% 96%;
+    --accent: 205 40% 16%;
+    --accent-foreground: 205 85% 78%;
+    --primary: 205 88% 62%; /* 淡蓝色 · dark */
     --primary-foreground: 0 0% 100%;
-    --muted: 0 0% 13%;
-    --muted-foreground: 0 0% 55%;
-    --border: 0 0% 18%;
-    --ring: 205 85% 60%;
-    --tag-bg: 205 40% 13%;
-    --tag-bg-hover: 205 40% 18%;
-    --tag-border: 205 40% 25%;
-    --tag-text: 205 85% 80%;
-    --scrollbar: 205 25% 30%;
-    --scrollbar-bg: 205 25% 13%;
+    --muted: 215 17% 14%;
+    --muted-foreground: 215 15% 60%;
+    --border: 215 16% 20%;
+    --ring: 205 88% 62%;
+    --tag-bg: 205 38% 14%;
+    --tag-bg-hover: 205 38% 19%;
+    --tag-border: 205 34% 26%;
+    --tag-text: 205 85% 78%;
+    --scrollbar: 205 18% 32%;
+    --scrollbar-bg: 205 20% 14%;
+
+    /* 语义色 · 成功 / 警告 / 危险 / 信息 */
+    --success: 152 58% 58%;
+    --success-foreground: 216 30% 8%;
+    --warning: 40 92% 62%;
+    --warning-foreground: 216 30% 8%;
+    --danger: 0 80% 68%;
+    --danger-foreground: 216 30% 8%;
+    --info: 205 85% 66%;
+    --info-foreground: 216 30% 8%;
   }
 
   /* 新年/国庆节 */

@@ -562,17 +562,17 @@ html:not(.dark) .img-dark {
   color: white;
   font-size: 0.75rem;
   font-weight: 500;
-  background-color: var(--badge-color-light, #a8a29e);
+  background-color: var(--badge-color-light, hsl(var(--muted-foreground)));
 }
 
 .dark .rds-badge {
   color: black;
-  background-color: var(--badge-color-dark, #a8a29e);
+  background-color: var(--badge-color-dark, hsl(var(--muted-foreground)));
 }
 
 [data-badge='n'] {
-  --badge-color-light: #ef4444;
-  --badge-color-dark: #fca5a5;
+  --badge-color-light: hsl(var(--danger));
+  --badge-color-dark: hsl(var(--danger));
 }
 
 .new-tab-icon {

@@ -30,7 +30,7 @@ const { title, description, image, author } = Astro.props
         } catch {}
 
         const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
-        document.documentElement.style.backgroundColor = isDark ? '#0a0a0a' : '#fefefe'
+        document.documentElement.style.backgroundColor = isDark ? '#0e1116' : '#fcfcfd'
       })()
     </script>
   </head>

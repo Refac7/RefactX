@@ -40,9 +40,7 @@ export default function QueuePanel() {
                 <span
                   className={cn(
                     'text-[9px] font-mono font-semibold uppercase rounded px-2 py-0.5',
-                    item.type === 'delete'
-                      ? 'text-red-600 bg-red-50 dark:text-red-400 dark:bg-red-500/10'
-                      : 'text-emerald-600 bg-emerald-50 dark:text-emerald-400 dark:bg-emerald-500/10'
+                    item.type === 'delete' ? 'text-danger bg-danger/10' : 'text-success bg-success/10'
                   )}
                 >
                   {item.type === 'delete' ? 'Delete' : 'Write'} • {item.isDataFile ? 'JSON' : 'MD'}
@@ -60,7 +58,7 @@ export default function QueuePanel() {
                   {item.status === 'pending' && (
                     <button
                       onClick={(e) => removeFromQueue(item.id, e)}
-                      className="p-1 hover:bg-red-50 text-muted-foreground hover:text-red-500 dark:hover:bg-red-500/10 transition-colors"
+                      className="p-1 hover:bg-danger/10 text-muted-foreground hover:text-danger transition-colors"
                       title="Remove"
                     >
                       <span className="icon-[ph--x] size-3.5" />
@@ -76,7 +74,7 @@ export default function QueuePanel() {
                   <div
                     className={cn(
                       'text-[10px] mt-1 font-mono uppercase tracking-widest',
-                      item.status === 'done' ? 'text-emerald-500' : 'text-yellow-500 animate-pulse'
+                      item.status === 'done' ? 'text-success' : 'text-warning animate-pulse'
                     )}
                   >
                     {item.status === 'done' ? 'Completed' : 'Processing...'}

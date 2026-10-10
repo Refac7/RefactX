@@ -113,7 +113,7 @@ const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
           >
             <span
               className={`flex size-2 rounded-full shrink-0 ${
-                toast.type === 'error' ? 'bg-red-500' : toast.type === 'success' ? 'bg-emerald-500' : 'bg-muted-foreground'
+                toast.type === 'error' ? 'bg-danger' : toast.type === 'success' ? 'bg-success' : 'bg-muted-foreground'
               }`}
             ></span>
             <span className="text-foreground">{toast.msg}</span>

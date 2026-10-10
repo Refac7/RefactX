@@ -14,7 +14,7 @@ const ACCESS_SPEC = [
 const SECURITY_NOTES = [
   { icon: 'icon-[ph--shield-check-fill]', tone: 'text-primary', text: '仅限授权管理员访问，请使用分配的凭据登录。' },
   { icon: 'icon-[ph--key-fill]', tone: 'text-primary', text: '登录状态以 JWT 保存，过期后需要重新验证。' },
-  { icon: 'icon-[ph--warning-circle-fill]', tone: 'text-amber-500', text: '请勿在公共设备上保存凭据。' },
+  { icon: 'icon-[ph--warning-circle-fill]', tone: 'text-warning', text: '请勿在公共设备上保存凭据。' },
 ]
 
 export default function LoginScreen() {
@@ -112,7 +112,7 @@ export default function LoginScreen() {
                       className={cn(
                         'w-full rounded-lg border bg-background py-2.5 pl-9 pr-4 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-offset-0',
                         loginError
-                          ? 'border-red-500/50 text-red-500 focus:ring-red-500/20'
+                          ? 'border-danger/50 text-danger focus:ring-danger/20'
                           : 'border-border/60 focus:border-primary/50 focus:ring-primary/20'
                       )}
                     />
@@ -134,7 +134,7 @@ export default function LoginScreen() {
                       className={cn(
                         'w-full rounded-lg border bg-background py-2.5 pl-9 pr-10 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-offset-0',
                         loginError
-                          ? 'border-red-500/50 text-red-500 focus:ring-red-500/20'
+                          ? 'border-danger/50 text-danger focus:ring-danger/20'
                           : 'border-border/60 focus:border-primary/50 focus:ring-primary/20'
                       )}
                     />
@@ -177,7 +177,7 @@ export default function LoginScreen() {
 
                 <div className="flex h-4 items-center justify-center">
                   {loginError && (
-                    <p className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-red-500 animate-in fade-in slide-in-from-bottom-2">
+                    <p className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-danger animate-in fade-in slide-in-from-bottom-2">
                       <span className="icon-[ph--warning-circle] size-3.5" />
                       Invalid credentials.
                     </p>

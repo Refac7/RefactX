@@ -67,7 +67,7 @@ const Captcha = ({ onVerify, className }: CaptchaProps) => {
       className={cn(
         'flex items-center gap-3 p-2 px-3 border border-border/60 bg-background/50 cursor-pointer select-none transition-all',
         status === 'idle' ? 'hover:border-primary/40 hover:bg-muted/30' : 'cursor-default',
-        status === 'error' && 'border-red-500/50 bg-red-500/5',
+        status === 'error' && 'border-danger/50 bg-danger/5',
         className
       )}
     >
@@ -76,8 +76,8 @@ const Captcha = ({ onVerify, className }: CaptchaProps) => {
         {(status === 'loading' || status === 'computing') && (
           <span className="icon-[ph--spinner-gap] size-5 text-primary animate-spin"></span>
         )}
-        {status === 'success' && <span className="icon-[ph--check-circle-fill] size-5 text-green-500 animate-in zoom-in-50"></span>}
-        {status === 'error' && <span className="icon-[ph--warning-circle-fill] size-5 text-red-500"></span>}
+        {status === 'success' && <span className="icon-[ph--check-circle-fill] size-5 text-success animate-in zoom-in-50"></span>}
+        {status === 'error' && <span className="icon-[ph--warning-circle-fill] size-5 text-danger"></span>}
       </div>
       <span className="text-xs font-medium text-muted-foreground">
         {status === 'idle'

@@ -113,7 +113,7 @@ export default function DataPanel() {
                     e.stopPropagation()
                     stageForDelete(f)
                   }}
-                  className="text-muted-foreground/40 hover:text-red-500 p-1 hover:bg-red-500/10 transition-colors shrink-0"
+                  className="text-muted-foreground/40 hover:text-danger p-1 hover:bg-danger/10 transition-colors shrink-0"
                   title="Delete"
                   aria-label={`Delete ${f.name}`}
                 >

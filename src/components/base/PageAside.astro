@@ -17,7 +17,7 @@ interface Props {
   /** Show the animated ping dot */
   statusHasPing?: boolean
   /** Badge color variant */
-  statusVariant?: 'emerald' | 'primary'
+  statusVariant?: 'success' | 'primary'
   /** Main heading */
   title: string
   /** Icon class for the subtitle line */
@@ -39,7 +39,7 @@ interface Props {
 const {
   statusText,
   statusHasPing = true,
-  statusVariant = 'emerald',
+  statusVariant = 'success',
   title,
   subtitleIcon,
   subtitleText,
@@ -50,8 +50,8 @@ const {
   stats,
 } = Astro.props as Props
 
-const dotColor = statusVariant === 'emerald' ? 'bg-emerald-500' : 'bg-primary'
-const pingColor = statusVariant === 'emerald' ? 'bg-emerald-400' : 'bg-primary/60'
+const dotColor = statusVariant === 'success' ? 'bg-success' : 'bg-primary'
+const pingColor = statusVariant === 'success' ? 'bg-success/70' : 'bg-primary/60'
 const visibleIdentityTags = identityTags.slice(0, 2)
 const hasBottomSlot = Astro.slots.has('bottom')
 ---

@@ -23,7 +23,7 @@ const totalLinks = FRIENDS_LIST.length.toString().padStart(2, '0')
   <div class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
     <PageAside
       statusText="Connected"
-      statusVariant="emerald"
+      statusVariant="success"
       {title}
       subtitleIcon="icon-[ph--planet]"
       subtitleText="Network & Signals"
@@ -137,7 +137,7 @@ const totalLinks = FRIENDS_LIST.length.toString().padStart(2, '0')
                           <span>优先考虑科技、设计与独立博客。</span>
                         </li>
                         <li class="flex items-start gap-2.5">
-                          <span class="icon-[ph--warning-circle-fill] size-4 text-amber-500 shrink-0 mt-0.5" />
+                          <span class="icon-[ph--warning-circle-fill] size-4 text-warning shrink-0 mt-0.5" />
                           <span>不活跃的节点将被定期清理。</span>
                         </li>
                       </ul>
@@ -245,13 +245,13 @@ const totalLinks = FRIENDS_LIST.length.toString().padStart(2, '0')
             if (text) text.textContent = 'Copied!'
 
             newBtn.classList.remove('bg-foreground', 'text-background')
-            newBtn.classList.add('bg-emerald-500', 'text-white')
+            newBtn.classList.add('bg-success', 'text-success-foreground')
 
             setTimeout(() => {
               if (icon) icon.className = 'icon-[ph--copy] size-4'
               if (text) text.textContent = 'Copy Configuration'
               newBtn.classList.add('bg-foreground', 'text-background')
-              newBtn.classList.remove('bg-emerald-500', 'text-white')
+              newBtn.classList.remove('bg-success', 'text-success-foreground')
             }, 2000)
           })
           .catch(console.error)

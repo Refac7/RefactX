@@ -87,10 +87,10 @@ const NAV_CARDS = [
                     <div class="absolute right-4 top-4 flex items-center gap-1.5 opacity-60 transition-opacity group-hover:opacity-100">
                       <span class="relative flex size-1.5">
                         {card.status === 'Active' && (
-                          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-success/70 opacity-75" />
                         )}
                         <span
-                          class={`relative inline-flex rounded-full size-1.5 ${card.status === 'Active' ? 'bg-emerald-500' : 'bg-primary/50'}`}
+                          class={`relative inline-flex rounded-full size-1.5 ${card.status === 'Active' ? 'bg-success' : 'bg-primary/50'}`}
                         />
                       </span>
                       <span class="text-[10px] font-mono uppercase tracking-wider text-muted-foreground transition-colors group-hover:text-foreground">
@@ -128,10 +128,10 @@ const NAV_CARDS = [
                       <span class="inline-flex items-center gap-1.5">
                         <span class="relative flex size-1.5">
                           {card.status === 'Active' && (
-                            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-success/70 opacity-75" />
                           )}
                           <span
-                            class={`relative inline-flex size-1.5 rounded-full ${card.status === 'Active' ? 'bg-emerald-500' : 'bg-primary/50'}`}
+                            class={`relative inline-flex size-1.5 rounded-full ${card.status === 'Active' ? 'bg-success' : 'bg-primary/50'}`}
                           />
                         </span>
                         <span class="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/70">{card.status}</span>

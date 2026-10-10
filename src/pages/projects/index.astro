@@ -32,7 +32,7 @@ const totalCount = ProjectList.length.toString().padStart(2, '0')
   <div class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
     <PageAside
       statusText="Online"
-      statusVariant="emerald"
+      statusVariant="success"
       {title}
       subtitleIcon="icon-[ph--stack]"
       subtitleText="Module Registry"
@@ -107,7 +107,7 @@ const totalCount = ProjectList.length.toString().padStart(2, '0')
                   </div>
                   <div class="mt-auto border-t border-border/40 px-6 py-2 bg-muted/10 flex items-center justify-between">
                     <span class="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
-                      <span class="size-1.5 rounded-full bg-emerald-500" />
+                      <span class="size-1.5 rounded-full bg-success" />
                       Stable
                     </span>
                     {project.githubUrl && (
