@@ -7,12 +7,13 @@ import type { CardProps } from './List.astro'
 
 interface Props extends CardProps {}
 
-const { post, heroImageLayout }: Props = Astro.props
+const { post, heroImageLayout, index = 0, showIndex = false }: Props = Astro.props
 const showImage = Astro.props.showImage
 const hasImage = Boolean(post.data.heroImage) && post.data.heroImage !== 'none'
 const imagePosition = post.data.heroImageLayout || heroImageLayout || 'right'
 const isReverse = imagePosition === 'right'
 const sideWidthClass = 'md:w-[280px] lg:w-[320px]'
+const watermarkIndex = String(index).padStart(2, '0')
 ---
 
 <article
@@ -40,9 +41,21 @@ const sideWidthClass = 'md:w-[280px] lg:w-[320px]'
     )
   }
 
-  <div class="flex flex-col w-full p-6 flex-1">
+  <div class="relative flex flex-col w-full p-6 flex-1 overflow-hidden">
+    <!-- Ghost index watermark -->
+    {
+      showIndex && (
+        <span
+          aria-hidden="true"
+          class="pointer-events-none absolute -bottom-8 -right-2 hidden select-none text-[8rem] font-black leading-none tracking-tighter text-foreground/[0.04] transition-colors duration-300 group-hover:text-primary/[0.06] md:block"
+        >
+          {watermarkIndex}
+        </span>
+      )
+    }
+
     <!-- Meta row -->
-    <div class="flex items-center justify-between gap-4 mb-4">
+    <div class="relative z-10 flex items-center justify-between gap-4 mb-4">
       <div class="flex flex-wrap items-center gap-x-2.5 gap-y-1 font-mono text-[11px] tracking-wide text-muted-foreground/70">
         <time>{formatDate(post.data.pubDate)}</time>
         {
@@ -71,7 +84,7 @@ const sideWidthClass = 'md:w-[280px] lg:w-[320px]'
     </div>
 
     <!-- Title + description -->
-    <a href={`/posts/${post.id}`} class="group/title block outline-none">
+    <a href={`/posts/${post.id}`} class="group/title relative z-10 block outline-none">
       <h2
         class="text-xl md:text-2xl font-bold leading-snug tracking-tight text-foreground transition-colors group-hover/title:text-primary"
       >
@@ -85,7 +98,7 @@ const sideWidthClass = 'md:w-[280px] lg:w-[320px]'
     </a>
 
     <!-- Footer: tags + read more -->
-    <div class="mt-auto flex flex-wrap items-center justify-between gap-3 pt-6">
+    <div class="relative z-10 mt-auto flex flex-wrap items-center justify-between gap-3 pt-6">
       <div class="flex flex-wrap items-center gap-2">
         {
           post.data.tags
