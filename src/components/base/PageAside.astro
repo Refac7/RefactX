@@ -155,6 +155,15 @@ const hasBottomSlot = Astro.slots.has('bottom')
     </div>
   </div>
 
+  <!-- Mobile-only slot (replaces the hidden bottom bar on small screens) -->
+  {
+    Astro.slots.has('mobile') && (
+      <div class="lg:hidden shrink-0 border-t border-dashed border-border/50 bg-background/50 select-none fade-up animation-delay-200">
+        <slot name="mobile" />
+      </div>
+    )
+  }
+
   <!-- Bottom stats bar -->
   <div
     class="hidden lg:block shrink-0 border-t border-dashed border-border/50 bg-background/50 select-none fade-up animation-delay-200 relative"
