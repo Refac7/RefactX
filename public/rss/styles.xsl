@@ -27,9 +27,9 @@
 
           /* ===== 淡蓝色主题 ===== */
           :root {
-            --font-serif: 'Lexend', 'CJKEmDash', 'Numbers', 'ShangguSansSC-VF', ui-sans-serif, system-ui, sans-serif;
-            --font-sans: 'CJKEmDash', 'Numbers', 'ShangguSansSC-VF', ui-sans-serif, system-ui, sans-serif;
-            --font-mono: 'GeistMono', 'Input Mono', 'Fira Code', 'ShangguSansSC-VF', ui-monospace, monospace;
+            --font-serif: 'Lexend', 'CJKEmDash', 'Numbers', ui-sans-serif, system-ui, sans-serif;
+            --font-sans: 'CJKEmDash', 'Numbers', ui-sans-serif, system-ui, sans-serif;
+            --font-mono: 'GeistMono', 'Input Mono', 'Fira Code', ui-monospace, monospace;
 
             --background: hsl(0 0% 99.5%);
             --foreground: hsl(0 0% 6%);

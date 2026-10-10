@@ -59,6 +59,12 @@
     font-display: swap;
   }
   @font-face {
+    font-family: 'Fraunces';
+    src: url('/fonts/Fraunces-VariableFont.woff2') format('woff2');
+    font-weight: 300 700;
+    font-display: swap;
+  }
+  @font-face {
     font-family: 'GeistMono';
     src: url('/fonts/GeistMono.woff2') format('woff2');
     font-display: swap;
@@ -68,9 +74,9 @@
 /* ===== 颜色变量 & 节日主题 ===== */
 @layer base {
   :root {
-    --font-lexend: 'Lexend', 'CJKEmDash', 'Numbers', 'ShangguSansSC-VF', ui-sans-serif, system-ui, sans-serif;
-    --font-sans: 'CJKEmDash', 'Numbers', 'ShangguSansSC-VF', ui-sans-serif, system-ui, sans-serif;
-    --font-geist-mono: 'GeistMono', 'Input Mono', 'Fira Code', 'ShangguSansSC-VF', monospace;
+    --font-lexend: 'Fraunces', 'Lexend', 'CJKEmDash', 'Numbers', ui-sans-serif, system-ui, sans-serif;
+    --font-sans: 'CJKEmDash', 'Numbers', ui-sans-serif, system-ui, sans-serif;
+    --font-geist-mono: 'GeistMono', 'Input Mono', 'Fira Code', monospace;
 
     /* 淡蓝色主题 */
     --background: 210 20% 99%;
@@ -102,7 +108,7 @@
   }
 
   .dark {
-    --background: 216 24% 7%;
+    --background: 0 0% 0%;
     --foreground: 210 20% 96%;
     --accent: 205 40% 16%;
     --accent-foreground: 205 85% 78%;

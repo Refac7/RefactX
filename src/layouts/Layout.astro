@@ -74,9 +74,9 @@ const { title, description, image, author } = Astro.props
     </div>
 
     <style is:global>
-      /* Nothing-style technical heading typography: bold geometric sans with tight tracking. */
+      /* Heading typography: Fraunces display serif with CJK + system fallbacks. */
       :root {
-        --font-serif: 'Lexend', 'CJKEmDash', 'Numbers', 'ShangguSansSC-VF', ui-sans-serif, system-ui, sans-serif;
+        --font-serif: 'Fraunces', 'Lexend', 'CJKEmDash', 'Numbers', ui-sans-serif, system-ui, sans-serif;
       }
 
       /* 页面切换只保留 Loader，关闭所有页面部件的飞入动画。 */
