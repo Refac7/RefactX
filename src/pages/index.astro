@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content'
-import { SITE, SKILLSSHOWCASE_CONFIG, SOCIAL_LINKS, GITHUB_CONFIG, POSTS_CONFIG } from '~/config.ts'
+import { SITE, SKILLSSHOWCASE_CONFIG, SOCIAL_LINKS, GITHUB_CONFIG, POSTS_CONFIG, BUILD_INFO_CONFIG } from '~/config.ts'
 import { cn, postsSort } from '~/lib/utils'
 
 import Layout from '~/layouts/Layout.astro'
@@ -8,10 +8,12 @@ import PageAside from '~/components/base/PageAside.astro'
 import GithubContributions from '~/components/base/GithubContributions.tsx'
 import List from '~/components/posts/card/List.astro'
 import SkillsShowcase from '~/components/base/SkillsShowcase.astro'
+import BuildInfo from '~/components/base/BuildInfo.astro'
 
 const { ENABLED, GITHUB_USERNAME, TOOLTIP_ENABLED } = GITHUB_CONFIG
 const { size, type, heroImageLayout } = POSTS_CONFIG.homePageConfig
 const { SKILLS_ENABLED, SKILLS_DATA } = SKILLSSHOWCASE_CONFIG
+const { ENABLED: BUILD_INFO_ENABLED, COMPONENTS: BUILD_COMPONENTS } = BUILD_INFO_CONFIG
 const allPosts = await getCollection('posts')
 const posts = postsSort(allPosts).slice(0, size)
 
@@ -226,6 +228,24 @@ const NAV_CARDS = [
                   <SkillsShowcase skillsData={SKILLS_DATA} />
                 </div>
               </>
+            </div>
+          )
+        }
+        {
+          BUILD_INFO_ENABLED && BUILD_COMPONENTS.length > 0 && (
+            <div class="fade-up" style="animation-delay: 500ms">
+              <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-b border-border/40 pb-4">
+                <div class="flex items-center gap-3">
+                  <span class="inline-flex items-center justify-center rounded-md size-7 bg-primary/10 text-primary font-mono text-xs font-bold">
+                    05
+                  </span>
+                  <h2 class="text-xl md:text-2xl font-bold text-foreground tracking-tight">Build Info</h2>
+                </div>
+                <span class="text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest hidden sm:inline-block">
+                  // Component_Manifest
+                </span>
+              </div>
+              <BuildInfo components={BUILD_COMPONENTS} />
             </div>
           )
         }

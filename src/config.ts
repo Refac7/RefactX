@@ -1,4 +1,5 @@
 import type {
+  BuildInfoConfig,
   GithubConfig,
   Link,
   PostConfig,
@@ -94,6 +95,23 @@ export const SKILLSSHOWCASE_CONFIG: SkillsShowcaseConfig = {
         { name: 'Vercel', icon: 'icon-[lineicons--vercel]' },
       ],
     },
+  ],
+}
+
+// 站点构建信息配置（首页展示技术构建构件与版本）
+export const BUILD_INFO_CONFIG: BuildInfoConfig = {
+  ENABLED: true, // 是否启用首页构建信息区
+  SHOW_BUILD_TIME: true, // 是否展示构建时间
+  SHOW_RUNTIME: true, // 是否展示运行环境信息
+  COMPONENTS: [
+    { name: 'Astro', packageName: 'astro', icon: 'icon-[lineicons--astro]', category: 'Framework', status: 'Stable' },
+    { name: 'React', packageName: 'react', icon: 'icon-[mdi--react]', category: 'Runtime', status: 'Stable' },
+    { name: 'TypeScript', packageName: 'typescript', icon: 'icon-[mdi--language-typescript]', category: 'Language', status: 'Stable' },
+    { name: 'Tailwind CSS', packageName: 'tailwindcss', icon: 'icon-[mdi--tailwind]', category: 'Styling', status: 'Stable' },
+    { name: 'Nanostores', packageName: 'nanostores', icon: 'icon-[ph--atom]', category: 'State', status: 'Active' },
+    { name: 'Framer Motion', packageName: 'framer-motion', icon: 'icon-[ph--waves]', category: 'Motion', status: 'Active' },
+    { name: 'Sharp', packageName: 'sharp', icon: 'icon-[ph--image-square]', category: 'Imaging', status: 'Active' },
+    { name: 'Pagefind', packageName: 'pagefind', icon: 'icon-[ph--magnifying-glass]', category: 'Search', status: 'Active' },
   ],
 }
 

@@ -1,0 +1,75 @@
+---
+import pkg from '../../../package.json'
+import { BUILD_INFO_CONFIG } from '~/config'
+import { cn } from '~/lib/utils'
+import type { BuildComponent } from '~/types'
+
+interface Props {
+  components: BuildComponent[]
+}
+
+const { components }: Props = Astro.props
+
+const { SHOW_BUILD_TIME, SHOW_RUNTIME } = BUILD_INFO_CONFIG
+
+const deps: Record<string, string> = { ...pkg.dependencies, ...pkg.devDependencies }
+const resolveVersion = (packageName?: string) => {
+  if (!packageName) return '—'
+  const raw = deps[packageName]
+  return raw ? raw.replace(/^[\^~]/, '') : '—'
+}
+
+const buildTime = new Date().toISOString().replace('T', ' ').slice(0, 16)
+const runtime = `Node ${process.version.replace(/^v/, '')}`
+const buildTarget = 'Static · Vercel'
+---
+
+<div class="border border-border/40 bg-background/50">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 divide-y divide-border/40 sm:divide-x">
+    {
+      components.map((component) => (
+        <div class="group flex items-center justify-between gap-4 p-5 hover:bg-muted/10 transition-colors">
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="flex size-10 shrink-0 items-center justify-center rounded-lg border border-primary/15 bg-primary/[0.06] transition-all duration-300 group-hover:scale-110 group-hover:bg-primary/10">
+              <span class={cn('size-5 text-primary/80 transition-colors group-hover:text-primary', component.icon)} />
+            </div>
+            <div class="min-w-0">
+              <div class="truncate text-sm font-semibold tracking-tight text-foreground">{component.name}</div>
+              <div class="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/60">{component.category}</div>
+            </div>
+          </div>
+          <div class="flex shrink-0 flex-col items-end gap-1">
+            <span class="font-mono text-xs font-medium text-foreground">v{resolveVersion(component.packageName)}</span>
+            <span class="inline-flex items-center gap-1.5">
+              <span class={cn('size-1.5 rounded-full', component.status === 'Active' ? 'bg-emerald-500' : 'bg-primary/50')} />
+              <span class="font-mono text-[10px] uppercase tracking-wider text-muted-foreground/70">{component.status || 'Stable'}</span>
+            </span>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+
+  {
+    (SHOW_BUILD_TIME || SHOW_RUNTIME) && (
+      <div class="flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-dashed border-border/50 px-5 py-3 font-mono text-[10px] uppercase tracking-widest text-muted-foreground/60">
+        {SHOW_BUILD_TIME && (
+          <span class="inline-flex items-center gap-2">
+            <span class="icon-[ph--clock] size-3.5" />
+            Build {buildTime}
+          </span>
+        )}
+        {SHOW_RUNTIME && (
+          <span class="inline-flex items-center gap-2">
+            <span class="icon-[ph--cpu] size-3.5" />
+            {runtime}
+          </span>
+        )}
+        <span class="inline-flex items-center gap-2">
+          <span class="icon-[ph--cube] size-3.5" />
+          {buildTarget}
+        </span>
+      </div>
+    )
+  }
+</div>

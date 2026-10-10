@@ -163,6 +163,36 @@ export interface SkillsShowcaseConfig {
 }
 
 /**
+ * 站点构建构件项 / Site build component item
+ * @property {string} name - 构件名称 / Component name
+ * @property {string} [packageName] - 依赖包名，用于自动解析版本号 / Dependency package name for auto version resolution
+ * @property {string} icon - 图标类名 / Icon class name
+ * @property {string} category - 构件分类 / Component category
+ * @property {string} [status] - 构件状态 / Component status
+ */
+export interface BuildComponent {
+  name: string
+  packageName?: string
+  icon: string
+  category: string
+  status?: string
+}
+
+/**
+ * 站点构建信息配置接口 / Build info configuration interface
+ * @property {boolean} ENABLED - 是否启用首页构建信息区 / Whether to enable the home build info section
+ * @property {boolean} SHOW_BUILD_TIME - 是否展示构建时间 / Whether to show build time
+ * @property {boolean} SHOW_RUNTIME - 是否展示运行环境信息 / Whether to show runtime environment info
+ * @property {BuildComponent[]} COMPONENTS - 构建构件列表 / Build component list
+ */
+export interface BuildInfoConfig {
+  ENABLED: boolean
+  SHOW_BUILD_TIME: boolean
+  SHOW_RUNTIME: boolean
+  COMPONENTS: BuildComponent[]
+}
+
+/**
  * GitHub配置类型 / GitHub configuration type
  * @property {boolean} ENABLED - 是否启用GitHub功能 / Whether to enable GitHub features
  * @property {string} GITHUB_USERNAME - GITHUB用户名 / GitHub username
