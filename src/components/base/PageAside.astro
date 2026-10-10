@@ -175,7 +175,7 @@ const hasBottomSlot = Astro.slots.has('bottom')
             <div class="flex">
               {stats.map((stat, i) => (
                 <div
-                  class={`flex-1 flex flex-col items-start justify-center p-6 lg:p-8 xl:p-10 bg-background/50 hover:bg-primary/5 transition-colors ${i < stats.length - 1 ? 'border-r border-border/40' : ''}`}
+                  class={`flex-1 flex flex-col items-start justify-center py-6 lg:py-8 xl:py-10 px-6 lg:px-8 xl:px-12 bg-background/50 hover:bg-primary/5 transition-colors ${i < stats.length - 1 ? 'border-r border-border/40' : ''}`}
                 >
                   <span class="text-2xl font-semibold text-foreground tracking-tight">{stat.value}</span>
                   <span class="text-xs text-muted-foreground mt-1">{stat.label}</span>
@@ -189,14 +189,14 @@ const hasBottomSlot = Astro.slots.has('bottom')
               <div class="flex">
                 {stats.slice(0, 2).map((stat, i) => (
                   <div
-                    class={`flex-1 flex flex-col items-start justify-center p-6 lg:p-8 xl:p-10 bg-background/50 border-b border-border/40 hover:bg-primary/5 transition-colors ${i === 0 ? 'border-r border-border/40' : ''}`}
+                    class={`flex-1 flex flex-col items-start justify-center py-6 lg:py-8 xl:py-10 px-6 lg:px-8 xl:px-12 bg-background/50 border-b border-border/40 hover:bg-primary/5 transition-colors ${i === 0 ? 'border-r border-border/40' : ''}`}
                   >
                     <span class="text-2xl font-semibold text-foreground tracking-tight">{stat.value}</span>
                     <span class="text-xs text-muted-foreground mt-1">{stat.label}</span>
                   </div>
                 ))}
               </div>
-              <div class="flex items-center justify-between p-5 lg:p-6 bg-background/50 hover:bg-primary/5 transition-colors">
+              <div class="flex items-center justify-between py-5 lg:py-6 px-6 lg:px-8 xl:px-12 bg-background/50 hover:bg-primary/5 transition-colors">
                 <span class="text-xs text-muted-foreground font-medium">{stats[2].label}</span>
                 <span class="text-sm font-semibold text-foreground">{stats[2].value}</span>
               </div>
