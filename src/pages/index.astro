@@ -69,6 +69,29 @@ const NAV_CARDS = [
           ))
         }
       </div>
+
+      <div slot="mobile" class="p-6">
+        <div class="flex items-center justify-between font-mono text-[10px] uppercase tracking-widest text-muted-foreground/70">
+          <span>// Connect Portals</span>
+          <span>{SOCIAL_LINKS.length} Active</span>
+        </div>
+        <div class="mt-4 grid grid-cols-2 gap-3">
+          {
+            SOCIAL_LINKS.map((item) => (
+              <a
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="group flex items-center gap-2.5 border border-border/40 bg-background/50 px-4 py-3 transition-all duration-300 hover:border-primary/30 hover:bg-primary/5"
+              >
+                <span class={`${item.icon} size-5 shrink-0 text-muted-foreground transition-colors group-hover:text-primary`} />
+                <span class="truncate text-xs font-medium tracking-tight text-foreground">{item.name}</span>
+                <span class="icon-[ph--arrow-up-right] ml-auto size-3.5 shrink-0 text-muted-foreground/30 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary" />
+              </a>
+            ))
+          }
+        </div>
+      </div>
     </PageAside>
     <main class="w-full lg:w-2/3 z-10 flex flex-col">
       <div class="px-6 lg:px-8 xl:px-12 lg:py-20 flex-1 flex flex-col gap-20 xl:gap-24 mt-4 lg:mt-0">
