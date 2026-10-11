@@ -10,25 +10,15 @@
         <style type="text/css">
           /* ===== 字体 ===== */
           @font-face {
-            font-family: 'Lexend';
-            src: url('/fonts/Lexend-VariableFont_wght.woff2') format('woff2');
-            font-display: swap;
-          }
-          @font-face {
             font-family: 'GeistMono';
             src: url('/fonts/GeistMono.woff2') format('woff2');
-            font-display: swap;
-          }
-          @font-face {
-            font-family: 'Numbers';
-            src: url('/fonts/GeistVF.woff2') format('woff2');
             font-display: swap;
           }
 
           /* ===== 淡蓝色主题 ===== */
           :root {
-            --font-serif: 'Lexend', 'CJKEmDash', 'Numbers', ui-sans-serif, system-ui, sans-serif;
-            --font-sans: 'CJKEmDash', 'Numbers', ui-sans-serif, system-ui, sans-serif;
+            --font-serif: ui-sans-serif, system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            --font-sans: ui-sans-serif, system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
             --font-mono: 'GeistMono', 'Input Mono', 'Fira Code', ui-monospace, monospace;
 
             --background: hsl(0 0% 99.5%);

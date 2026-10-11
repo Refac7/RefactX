@@ -1,4 +1,5 @@
 ---
+import '~/styles/fonts.css'
 import '~/styles/global.css'
 import '~/styles/pro.css'
 import { SITE, HOLIDAY_EFFECTS, PAGE_LOADER_CONFIG } from '~/config'
@@ -74,11 +75,6 @@ const { title, description, image, author } = Astro.props
     </div>
 
     <style is:global>
-      /* Heading typography: Fraunces display serif with CJK + system fallbacks. */
-      :root {
-        --font-serif: 'Fraunces', 'Lexend', 'CJKEmDash', 'Numbers', ui-sans-serif, system-ui, sans-serif;
-      }
-
       /* 页面切换只保留 Loader，关闭所有页面部件的飞入动画。 */
       html.page-transition-enabled .fade-up {
         opacity: 1 !important;

@@ -8,7 +8,7 @@
 
 /* ===== 主题变量 ===== */
 @theme {
-  --font-serif: var(--font-lexend);
+  --font-serif: var(--font-sans);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
 
@@ -54,17 +54,6 @@
     font-display: swap;
   }
   @font-face {
-    font-family: 'Lexend';
-    src: url('/fonts/Lexend-VariableFont_wght.woff2') format('woff2');
-    font-display: swap;
-  }
-  @font-face {
-    font-family: 'Fraunces';
-    src: url('/fonts/Fraunces-VariableFont.woff2') format('woff2');
-    font-weight: 300 700;
-    font-display: swap;
-  }
-  @font-face {
     font-family: 'GeistMono';
     src: url('/fonts/GeistMono.woff2') format('woff2');
     font-display: swap;
@@ -74,8 +63,7 @@
 /* ===== 颜色变量 & 节日主题 ===== */
 @layer base {
   :root {
-    --font-lexend: 'Fraunces', 'Lexend', 'CJKEmDash', 'Numbers', ui-sans-serif, system-ui, sans-serif;
-    --font-sans: 'CJKEmDash', 'Numbers', ui-sans-serif, system-ui, sans-serif;
+    --font-sans: 'MiSans VF', 'CJKEmDash', 'Numbers', ui-sans-serif, system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
     --font-geist-mono: 'GeistMono', 'Input Mono', 'Fira Code', monospace;
 
     /* 淡蓝色主题 */
