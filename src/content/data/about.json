@@ -1,11 +1,11 @@
 {
   "title": "Profiles",
   "description": "Who am I?",
-  "introduce": "欢迎光临喵～你想了解的，我都尽量告诉你哦！(・∀・)",
+  "introduce": "欢迎光临喵～一只正在毛坯房里悄悄装修的小猫，你想了解的，我都在努力告诉你哦！(・∀・)",
   "profileName": "Refac7",
   "profileAvatar": "/avatar.png",
-  "profileRole": "Creative Developer / UI Designer",
-  "profileBio": "你与光芒 / You & Radiance\n\n因抑郁发作休学，高数苦手。喜欢电子音乐，熟悉以下所有技术栈的拼写，熟练使用剪贴板和cmd c和cmd v. 如果你想要认识我，欢迎随时使用你能找到的所有渠道联系我哦～",
+  "profileRole": "Transgender Girl / Creative Developer",
+  "profileBio": "你与光芒 / You & Radiance\n\n因重度抑郁发作，休学养病中（第5个月）。一只正在经历青春期和激素治疗的跨性别女孩（MtF）。高数苦手，但正在努力学习和解。日常靠补佳乐、色普龙、抗抑郁药、大鲨鱼玩偶和电子音乐续命。会煮白米饭，擅长抱鲨鲨和ruarua大肥鱼。如果你想要认识我，欢迎随时使用你能找到的所有渠道联系我哦～",
   "physicalAttributes": [
     {
       "label": "Height",
@@ -34,7 +34,7 @@
     },
     {
       "label": "Gender",
-      "value": "Male-to-Female",
+      "value": "MtF (跨性别女孩)",
       "icon": "icon-[ph--gender-transgender]"
     },
     {
@@ -43,8 +43,8 @@
       "icon": "icon-[ph--map-pin]"
     },
     {
-      "label": "status",
-      "value": "Single",
+      "label": "Status",
+      "value": "休学康复中 / Single",
       "icon": "icon-[ph--heart]"
     }
   ],
@@ -68,6 +68,10 @@
     {
       "category": "Learning // 学习中",
       "items": ["Java", "Rust", "Go"]
+    },
+    {
+      "category": "Life // 生活技能",
+      "items": ["煮白米饭", "抱鲨鲨", "ruarua大肥鱼", "按时吃药"]
     }
   ],
   "equipment": [
@@ -244,6 +248,14 @@
     {
       "task": "活着（到目前为止）",
       "completed": true
+    },
+    {
+      "task": "把今天的药（度洛西汀、丁螺环酮等）和补佳乐乖乖吃掉",
+      "completed": false
+    },
+    {
+      "task": "抱紧大鲨鱼睡个午觉",
+      "completed": false
     }
   ]
 }
