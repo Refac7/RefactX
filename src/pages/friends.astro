@@ -48,7 +48,7 @@ const totalLinks = FRIENDS_LIST.length.toString().padStart(2, '0')
           <span class={SECTION_META_CLASS}>// Node_Registry</span>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 mt-4 fade-up animation-delay-200">
+        <div class="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3 gap-3 sm:gap-4 mt-4 fade-up animation-delay-200">
           {
             FRIENDS_LIST.map((friend, index) => {
               return (
@@ -56,29 +56,29 @@ const totalLinks = FRIENDS_LIST.length.toString().padStart(2, '0')
                   href={friend.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="friend-card group relative flex flex-col justify-between border border-border/40 bg-background/50 p-6 hover:bg-muted/20 hover:border-primary/30 hover:shadow-sm transition-all duration-300 min-h-40 hover:-translate-y-0.5 overflow-hidden"
+                  class="friend-card group relative block border border-border/40 bg-background/50 p-4 sm:p-5 hover:bg-muted/20 hover:border-primary/30 hover:shadow-sm transition-all duration-300 min-h-[104px] hover:-translate-y-0.5 overflow-hidden"
                   style={`animation-delay: ${index * 50}ms`}
                 >
                   <span
                     aria-hidden="true"
-                    class="pointer-events-none absolute -bottom-6 -right-1 hidden select-none text-[7rem] font-black leading-none tracking-tighter text-foreground/[0.04] transition-colors duration-300 group-hover:text-primary/[0.06] md:block"
+                    class="pointer-events-none absolute -bottom-4 right-1 hidden select-none text-6xl font-black leading-none tracking-tighter text-foreground/[0.04] transition-colors duration-300 group-hover:text-primary/[0.06] md:block"
                   >
                     {String(index + 1).padStart(2, '0')}
                   </span>
-                  <div class="friend-content relative z-10 flex flex-col h-full w-full">
-                    <div class="flex items-start justify-between mb-3">
-                      <img
-                        src={friend.avatar}
-                        alt={friend.name}
-                        class="size-10 rounded-full object-cover ring-1 ring-border/50 bg-muted/30"
-                        loading="lazy"
-                      />
-                      <span class="icon-[ph--arrow-up-right] size-4 text-muted-foreground/30 group-hover:text-primary transition-colors mt-1" />
-                    </div>
-                    <div class="flex flex-col flex-1">
-                      <h3 class="font-semibold text-base text-foreground tracking-tight line-clamp-1">{friend.name}</h3>
-                      <div class="text-xs font-medium text-muted-foreground line-clamp-1 mt-0.5 mb-3">{friend.author}</div>
-                      <p class="text-sm text-muted-foreground leading-relaxed line-clamp-2 mt-auto">
+                  <div class="friend-content relative z-10 flex h-full items-center gap-4">
+                    <img
+                      src={friend.avatar}
+                      alt={friend.name}
+                      class="size-12 shrink-0 rounded-xl object-cover ring-1 ring-border/50 bg-muted/30"
+                      loading="lazy"
+                    />
+                    <div class="flex min-w-0 flex-1 flex-col">
+                      <div class="flex items-center justify-between gap-2">
+                        <h3 class="font-semibold text-sm text-foreground tracking-tight line-clamp-1">{friend.name}</h3>
+                        <span class="icon-[ph--arrow-up-right] size-4 shrink-0 text-muted-foreground/30 group-hover:text-primary transition-colors" />
+                      </div>
+                      <div class="text-xs font-medium text-muted-foreground line-clamp-1 mt-0.5">{friend.author}</div>
+                      <p class="text-xs text-muted-foreground leading-relaxed line-clamp-2 mt-1.5">
                         {friend.description || 'No description provided.'}
                       </p>
                     </div>
@@ -92,7 +92,7 @@ const totalLinks = FRIENDS_LIST.length.toString().padStart(2, '0')
             enableAdd ? (
               <a
                 href="#exchange-section"
-                class="group flex flex-col items-center justify-center p-6 border border-dashed border-border/40 hover:border-primary/30 hover:bg-muted/20 transition-all duration-300 min-h-40"
+                class="group flex flex-col items-center justify-center p-4 sm:p-5 border border-dashed border-border/40 hover:border-primary/30 hover:bg-muted/20 transition-all duration-300 min-h-[104px]"
               >
                 <div class="size-10 flex items-center justify-center rounded bg-muted/50 mb-3 group-hover:bg-foreground group-hover:text-background transition-colors">
                   <span class="icon-[ph--plus] size-4 text-muted-foreground group-hover:text-background transition-colors" />
@@ -101,7 +101,7 @@ const totalLinks = FRIENDS_LIST.length.toString().padStart(2, '0')
                 <span class="text-xs text-muted-foreground mt-1">Submit your node</span>
               </a>
             ) : (
-              <div class="flex flex-col items-center justify-center p-6 border border-dashed border-border/40 bg-muted/10 min-h-40 select-none">
+              <div class="flex flex-col items-center justify-center p-4 sm:p-5 border border-dashed border-border/40 bg-muted/10 min-h-[104px] select-none">
                 <div class="size-10 flex items-center justify-center rounded bg-background mb-3">
                   <span class="icon-[ph--lock-key] size-4 text-muted-foreground/50" />
                 </div>
