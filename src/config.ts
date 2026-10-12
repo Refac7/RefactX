@@ -201,6 +201,7 @@ export const FRIENDS_CONTACT = {
 // Waline 评论系统配置
 export const WALINE_CONFIG = {
   enableComment: true,
+  enableCaptcha: true, // true: 每次提交评论前需通过 PoW 人机验证 / false: 不验证
   serverURL: import.meta.env.PUBLIC_WALINE_SERVER_URL || 'https://waline.refact.cc',
   uploadToken: import.meta.env.PUBLIC_UPLOAD_TOKEN,
   imgbedURL: import.meta.env.PUBLIC_IMG_BED_URL || 'https://img.refact.cc/upload',

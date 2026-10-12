@@ -40,10 +40,11 @@ const { class: className } = Astro.props
           uploadToken: WALINE_CONFIG.uploadToken,
           imgbedURL: WALINE_CONFIG.imgbedURL,
           enableImgUpload: WALINE_CONFIG.enableImgUpload,
+          enableCaptcha: WALINE_CONFIG.enableCaptcha,
         }}
       >
         window.__walineServerUrl = serverURL; window.__walineUploadToken = uploadToken; window.__walineImgBedUrl = imgbedURL;
-        window.__walineEnableImgUpload = enableImgUpload;
+        window.__walineEnableImgUpload = enableImgUpload; window.__walineEnableCaptcha = enableCaptcha;
       </script>
     </>
   )
