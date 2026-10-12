@@ -139,6 +139,19 @@ export default function PostEditor({ showPreview, showMetaConfig }: PostEditorPr
                 placeholder="https://..."
               />
             </div>
+            <div className="sm:col-span-12 min-w-0">
+              <label className="block text-xs font-medium text-muted-foreground mb-1.5">
+                Content Warning
+                <span className="text-muted-foreground/50 font-normal"> (optional · fullscreen gate on the post)</span>
+              </label>
+              <textarea
+                value={meta.contentWarning}
+                onChange={(e) => setMeta({ ...meta, contentWarning: e.target.value })}
+                rows={2}
+                className="w-full min-w-0 resize-none bg-background border border-border/40 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
+                placeholder="本文涉及……请酌情阅读"
+              />
+            </div>
             <div className="sm:col-span-12 flex items-center mt-1">
               <label className="flex items-center gap-2 cursor-pointer select-none">
                 <input

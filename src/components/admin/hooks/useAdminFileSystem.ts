@@ -59,6 +59,7 @@ export function useAdminFileSystem(
         heroImage: extract('heroImage', false) === 'none' ? '' : extract('heroImage', false),
         ogImage: extract('ogImage', false) === 'none' ? '' : extract('ogImage', false),
         heroImageAspectRatio: extract('heroImageAspectRatio') || '16/9',
+        contentWarning: extract('contentWarning'),
       }
       return { meta: { ...DEFAULT_META, ...newMeta }, body: bodyContent }
     } catch (e) {
@@ -175,13 +176,15 @@ export function useAdminFileSystem(
         return
       }
       finalFilename = editor.filename.endsWith('.md') ? editor.filename : `${editor.filename}.md`
+      const contentWarning = editor.meta.contentWarning?.trim()
+      const contentWarningLine = contentWarning ? `\ncontentWarning: '${contentWarning.replace(/'/g, "''")}'` : ''
       content = `---\ntitle: '${editor.meta.title.replace(/'/g, "''")}'\ndescription: '${editor.meta.description.replace(/'/g, "''")}'\npubDate: ${editor.meta.pubDate}\nauthor: '${editor.meta.author}'\ntags: [${editor.meta.tags
         .split(/[,，]/)
         .map((t: string) => `'${t.trim()}'`)
         .filter(Boolean)
         .join(
           ', '
-        )}]\nrecommend: ${editor.meta.recommend}\nheroImage: ${editor.meta.heroImage || 'none'}\nogImage: ${editor.meta.ogImage || 'none'}\nheroImageAspectRatio: '${editor.meta.heroImageAspectRatio}'\n---\n\n${editor.body}`
+        )}]\nrecommend: ${editor.meta.recommend}\nheroImage: ${editor.meta.heroImage || 'none'}\nogImage: ${editor.meta.ogImage || 'none'}\nheroImageAspectRatio: '${editor.meta.heroImageAspectRatio}'${contentWarningLine}\n---\n\n${editor.body}`
     } else {
       if (!editor.filename) {
         showToast('Filename is required', 'error')

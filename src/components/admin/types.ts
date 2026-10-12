@@ -71,6 +71,7 @@ export const DEFAULT_META = {
   heroImage: '',
   ogImage: '',
   heroImageAspectRatio: '16/9',
+  contentWarning: '',
 }
 
 // --- Types ---
@@ -100,4 +101,5 @@ export interface MetaType {
   heroImage: string
   ogImage: string
   heroImageAspectRatio: string
+  contentWarning: string
 }

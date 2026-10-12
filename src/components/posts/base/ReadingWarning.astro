@@ -1,0 +1,110 @@
+---
+interface Props {
+  message: string
+  id: string
+}
+
+const { message, id } = Astro.props
+const storageKey = `reading-warning:${id}`
+---
+
+<div
+  data-reading-warning
+  data-warning-key={storageKey}
+  role="alertdialog"
+  aria-modal="true"
+  aria-labelledby="reading-warning-title"
+  class="fixed inset-0 z-[9998] flex items-center justify-center bg-background/80 p-6 backdrop-blur-md"
+>
+  <div class="relative w-full max-w-lg overflow-hidden border border-warning/40 bg-background shadow-2xl fade-up">
+    <span class="absolute inset-x-0 top-0 h-1 bg-warning/70" aria-hidden="true"></span>
+    <div class="p-7 sm:p-9">
+      <div class="mb-5 flex items-center gap-3">
+        <span class="inline-flex size-10 shrink-0 items-center justify-center rounded-lg bg-warning/10 text-warning">
+          <span class="icon-[ph--warning-fill] size-5"></span>
+        </span>
+        <div>
+          <div class="font-mono text-[10px] uppercase tracking-widest text-warning select-none">Content Warning</div>
+          <div id="reading-warning-title" class="text-base font-semibold tracking-tight text-foreground">阅读前请留意</div>
+        </div>
+      </div>
+
+      <p class="mb-7 text-sm leading-relaxed text-muted-foreground">{message}</p>
+
+      <button
+        type="button"
+        data-warning-dismiss
+        class="inline-flex w-full items-center justify-center gap-2 bg-foreground px-4 py-2.5 text-sm font-semibold text-background transition-colors hover:bg-foreground/90"
+      >
+        <span class="icon-[ph--eye] size-4"></span>
+        我已了解，继续阅读
+      </button>
+    </div>
+  </div>
+</div>
+
+<script is:inline data-astro-rerun>
+  // 立即执行：若该文章已被用户确认过，直接移除遮罩，避免闪现
+  document.querySelectorAll('[data-reading-warning]').forEach(function (el) {
+    try {
+      if (localStorage.getItem(el.getAttribute('data-warning-key')) === 'dismissed') {
+        el.remove()
+      }
+    } catch (e) {}
+  })
+</script>
+
+<script>
+  const WARNING_STATE = 'dismissed'
+
+  const lockScroll = () => {
+    document.documentElement.style.overflow = 'hidden'
+    document.body.style.overflow = 'hidden'
+  }
+
+  const unlockScroll = () => {
+    document.documentElement.style.removeProperty('overflow')
+    document.body.style.removeProperty('overflow')
+  }
+
+  const readState = (key: string) => {
+    try {
+      return localStorage.getItem(key)
+    } catch {
+      return null
+    }
+  }
+
+  const writeState = (key: string, value: string) => {
+    try {
+      localStorage.setItem(key, value)
+    } catch {}
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    const warning = document.querySelector('[data-reading-warning]') as HTMLElement | null
+    if (!warning) return
+
+    const storageKey = warning.dataset.warningKey || ''
+
+    // 已确认过的文章不再显示遮罩
+    if (readState(storageKey) === WARNING_STATE) {
+      warning.remove()
+      return
+    }
+
+    lockScroll()
+
+    const dismissBtn = warning.querySelector('[data-warning-dismiss]')
+    dismissBtn?.addEventListener('click', () => {
+      writeState(storageKey, WARNING_STATE)
+
+      warning.style.transition = 'opacity 0.3s ease'
+      warning.style.opacity = '0'
+      unlockScroll()
+      window.setTimeout(() => warning.remove(), 300)
+    })
+  })
+
+  document.addEventListener('astro:before-swap', unlockScroll)
+</script>

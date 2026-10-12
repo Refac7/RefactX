@@ -7,6 +7,7 @@ import TocMobile from '~/components/posts/toc/TocMobile.astro'
 import Jap from '~/components/posts/layouts/Jap.astro'
 import { POSTS_CONFIG } from '~/config'
 import Comments from '~/components/posts/base/Comments.astro'
+import ReadingWarning from '~/components/posts/base/ReadingWarning.astro'
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts')
@@ -57,6 +58,8 @@ const PostLayout = layoutMap[layoutKey] || Jap
   image={frontmatter.ogImage}
   author={frontmatter.author}
 >
+  {frontmatter.contentWarning && <ReadingWarning message={frontmatter.contentWarning} id={post.id} />}
+
   <button
     id="hud-btt-btn"
     class="fixed bottom-6 left-6 md:bottom-10 md:left-10 z-100 group flex items-center gap-2 bg-background/80 backdrop-blur-sm border border-border/40 text-foreground px-4 py-2.5 shadow-lg hover:shadow-xl hover:border-primary/30 hover:-translate-y-1 opacity-0 translate-y-4 pointer-events-none transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"

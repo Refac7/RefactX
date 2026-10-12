@@ -56,6 +56,7 @@ const posts = defineCollection({
     heroImageAspectRatio: z.string().default(POSTS_CONFIG.defaultHeroImageAspectRatio),
     tags: z.array(z.string()),
     postType: z.string().optional(),
+    contentWarning: z.string().optional(),
   }),
 })
 
