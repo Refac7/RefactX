@@ -183,12 +183,14 @@ export interface BuildComponent {
  * @property {boolean} ENABLED - 是否启用首页构建信息区 / Whether to enable the home build info section
  * @property {boolean} SHOW_BUILD_TIME - 是否展示构建时间 / Whether to show build time
  * @property {boolean} SHOW_RUNTIME - 是否展示运行环境信息 / Whether to show runtime environment info
+ * @property {boolean} SHOW_TOTAL_WORDS - 是否展示文章总字数 / Whether to show total article word count
  * @property {BuildComponent[]} COMPONENTS - 构建构件列表 / Build component list
  */
 export interface BuildInfoConfig {
   ENABLED: boolean
   SHOW_BUILD_TIME: boolean
   SHOW_RUNTIME: boolean
+  SHOW_TOTAL_WORDS: boolean
   COMPONENTS: BuildComponent[]
 }
 

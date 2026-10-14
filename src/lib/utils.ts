@@ -22,3 +22,18 @@ export const formatDate = (date: Date) =>
     month: 'long',
     day: 'numeric',
   })
+
+// 统计文章字数（中文按字、英文按词）
+export function getWordCount(content: string) {
+  if (!content) return 0
+  let cleanContent = content
+  cleanContent = cleanContent.replace(/^---[\s\S]*?---\s*/, '')
+  cleanContent = cleanContent.replace(/```[\s\S]*?```/g, '')
+  cleanContent = cleanContent.replace(/<[^>]+>/g, '')
+  cleanContent = cleanContent.replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+  cleanContent = cleanContent.replace(/!\[.*?\]\(.*?\)/g, '')
+  cleanContent = cleanContent.replace(/[*#>`~\-\[\]]/g, '')
+  const cn = (cleanContent.match(/[一-龥]/g) || []).length
+  const en = (cleanContent.replace(/[一-龥]/g, ' ').match(/[a-zA-Z0-9_\-]+/g) || []).length
+  return cn + en
+}

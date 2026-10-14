@@ -1,6 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content'
-import { postsSort } from '~/lib/utils'
+import { getWordCount, postsSort } from '~/lib/utils'
 import Layout from '~/layouts/Layout.astro'
 import PostNavigation from '~/components/posts/base/PostNavigation.astro'
 import TocMobile from '~/components/posts/toc/TocMobile.astro'
@@ -29,19 +29,6 @@ const { Content, headings, remarkPluginFrontmatter } = await render(post)
 
 const filterHeadings = headings.filter((heading) => heading.slug !== 'footnote-label')
 
-const getWordCount = (content: string) => {
-  if (!content) return 0
-  let cleanContent = content
-  cleanContent = cleanContent.replace(/^---[\s\S]*?---\s*/, '')
-  cleanContent = cleanContent.replace(/```[\s\S]*?```/g, '')
-  cleanContent = cleanContent.replace(/<[^>]+>/g, '')
-  cleanContent = cleanContent.replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
-  cleanContent = cleanContent.replace(/!\[.*?\]\(.*?\)/g, '')
-  cleanContent = cleanContent.replace(/[*#>`~\-\[\]]/g, '')
-  const cn = (cleanContent.match(/[一-龥]/g) || []).length
-  const en = (cleanContent.replace(/[一-龥]/g, ' ').match(/[a-zA-Z0-9_\-]+/g) || []).length
-  return cn + en
-}
 const wordCount = getWordCount(post.body || '')
 
 const layoutMap = {

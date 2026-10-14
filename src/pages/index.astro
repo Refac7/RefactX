@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content'
 import { SITE, SKILLSSHOWCASE_CONFIG, SOCIAL_LINKS, GITHUB_CONFIG, POSTS_CONFIG, BUILD_INFO_CONFIG } from '~/config.ts'
-import { cn, postsSort } from '~/lib/utils'
+import { cn, getWordCount, postsSort } from '~/lib/utils'
 
 import Layout from '~/layouts/Layout.astro'
 import PageAside from '~/components/base/PageAside.astro'
@@ -16,6 +16,7 @@ const { SKILLS_ENABLED, SKILLS_DATA } = SKILLSSHOWCASE_CONFIG
 const { ENABLED: BUILD_INFO_ENABLED, COMPONENTS: BUILD_COMPONENTS } = BUILD_INFO_CONFIG
 const allPosts = await getCollection('posts')
 const posts = postsSort(allPosts).slice(0, size)
+const totalWords = allPosts.reduce((sum, post) => sum + getWordCount(post.body || ''), 0)
 
 const NAV_CARDS = [
   {
@@ -290,7 +291,7 @@ const NAV_CARDS = [
                   // Component_Manifest
                 </span>
               </div>
-              <BuildInfo components={BUILD_COMPONENTS} />
+              <BuildInfo components={BUILD_COMPONENTS} totalWords={totalWords} />
             </div>
           )
         }

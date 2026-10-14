@@ -103,6 +103,7 @@ export const BUILD_INFO_CONFIG: BuildInfoConfig = {
   ENABLED: true, // 是否启用首页构建信息区
   SHOW_BUILD_TIME: true, // 是否展示构建时间
   SHOW_RUNTIME: true, // 是否展示运行环境信息
+  SHOW_TOTAL_WORDS: true, // 是否展示文章总字数
   COMPONENTS: [
     { name: 'Astro', packageName: 'astro', icon: 'icon-[lineicons--astro]', category: 'Framework', status: 'Stable' },
     { name: 'React', packageName: 'react', icon: 'icon-[mdi--react]', category: 'Runtime', status: 'Stable' },

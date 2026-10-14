@@ -6,11 +6,12 @@ import type { BuildComponent } from '~/types'
 
 interface Props {
   components: BuildComponent[]
+  totalWords?: number
 }
 
-const { components }: Props = Astro.props
+const { components, totalWords }: Props = Astro.props
 
-const { SHOW_BUILD_TIME, SHOW_RUNTIME } = BUILD_INFO_CONFIG
+const { SHOW_BUILD_TIME, SHOW_RUNTIME, SHOW_TOTAL_WORDS } = BUILD_INFO_CONFIG
 
 const deps: Record<string, string> = { ...pkg.dependencies, ...pkg.devDependencies }
 const resolveVersion = (packageName?: string) => {
@@ -22,6 +23,8 @@ const resolveVersion = (packageName?: string) => {
 const buildTime = new Date().toISOString().replace('T', ' ').slice(0, 16)
 const runtime = `Node ${process.version.replace(/^v/, '')}`
 const buildTarget = 'Static · Vercel'
+const formattedTotalWords = (totalWords ?? 0).toLocaleString('en-US')
+const showTotalWords = SHOW_TOTAL_WORDS && totalWords !== undefined
 ---
 
 <div class="border border-border/40 bg-background/50 mb-6">
@@ -53,8 +56,14 @@ const buildTarget = 'Static · Vercel'
   </div>
 
   {
-    (SHOW_BUILD_TIME || SHOW_RUNTIME) && (
+    (SHOW_BUILD_TIME || SHOW_RUNTIME || showTotalWords) && (
       <div class="flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-dashed border-border/50 px-5 py-3 font-mono text-[10px] uppercase tracking-widest text-muted-foreground/60">
+        {showTotalWords && (
+          <span class="inline-flex items-center gap-2">
+            <span class="icon-[ph--article] size-3.5" />
+            {formattedTotalWords} Words
+          </span>
+        )}
         {SHOW_BUILD_TIME && (
           <span class="inline-flex items-center gap-2">
             <span class="icon-[ph--clock] size-3.5" />
