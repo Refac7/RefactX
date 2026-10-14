@@ -20,7 +20,7 @@ const resolveVersion = (packageName?: string) => {
   return raw ? raw.replace(/^[\^~]/, '') : '—'
 }
 
-const buildTime = new Date().toISOString().replace('T', ' ').slice(0, 16)
+const buildTime = new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Shanghai' }).slice(0, 16)
 const runtime = `Node ${process.version.replace(/^v/, '')}`
 const buildTarget = 'Static · Vercel'
 const formattedTotalWords = (totalWords ?? 0).toLocaleString('en-US')
@@ -67,7 +67,7 @@ const showTotalWords = SHOW_TOTAL_WORDS && totalWords !== undefined
         {SHOW_BUILD_TIME && (
           <span class="inline-flex items-center gap-2">
             <span class="icon-[ph--clock] size-3.5" />
-            Build {buildTime}
+            Build {buildTime} UTC+8
           </span>
         )}
         {SHOW_RUNTIME && (
