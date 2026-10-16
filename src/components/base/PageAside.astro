@@ -101,8 +101,11 @@ const hasBottomSlot = Astro.slots.has('bottom')
       </div>
 
       <!-- Main title -->
-      <h1 class="text-[2.5rem] sm:text-5xl xl:text-6xl font-bold tracking-tight text-foreground leading-[1.15] mb-4 select-none">
-        {title}
+      <h1
+        class="relative w-fit text-[2.5rem] sm:text-5xl xl:text-6xl font-bold tracking-tight text-foreground leading-[1.15] mb-4 select-none"
+      >
+        <span aria-hidden="true" class="absolute inset-x-0 bottom-[0.08em] h-[0.16em] bg-primary"></span>
+        <span class="relative">{title}</span>
       </h1>
 
       <!-- Subtitle -->
