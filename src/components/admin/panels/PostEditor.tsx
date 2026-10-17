@@ -3,6 +3,7 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { cn } from '~/lib/utils'
 import { WALINE_CONFIG } from '~/config'
+import MarkdownTable from '~/components/base/MarkdownTable'
 import { useAdmin } from '../AdminContext'
 
 interface PostEditorProps {
@@ -187,7 +188,9 @@ export default function PostEditor({ showPreview, showMetaConfig }: PostEditorPr
         {showPreview ? (
           <div className="absolute inset-0 overflow-y-auto w-full p-6 sm:p-10 custom-scrollbar">
             <div className="mx-auto markdown">
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>{body}</ReactMarkdown>
+              <ReactMarkdown remarkPlugins={[remarkGfm]} components={{ table: MarkdownTable }}>
+                {body}
+              </ReactMarkdown>
             </div>
           </div>
         ) : (

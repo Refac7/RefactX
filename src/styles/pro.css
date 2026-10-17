@@ -256,6 +256,14 @@
 }
 
 /* ===== Tables | 表格 ===== */
+.markdown .table-wrapper {
+  width: 100%;
+  margin: 2em 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
 .markdown table {
   width: 100%;
   table-layout: auto;
@@ -264,6 +272,10 @@
   line-height: 1.7;
   margin: 2em 0;
   border-collapse: collapse;
+}
+
+.markdown .table-wrapper table {
+  margin: 0;
 }
 
 .markdown thead {
@@ -366,6 +378,15 @@
 }
 .markdown > :last-child {
   margin-bottom: 0;
+}
+
+.markdown hr + .table-wrapper,
+.markdown h2 + .table-wrapper,
+.markdown h3 + .table-wrapper,
+.markdown h4 + .table-wrapper,
+.markdown h5 + .table-wrapper,
+.markdown h6 + .table-wrapper {
+  margin-top: 0;
 }
 
 /* ===== Interactive Elements | 交互元素 ===== */
@@ -625,7 +646,7 @@ html:not(.dark) .img-dark {
   .markdown blockquote {
     padding: 0.75em 1em;
   }
-  .markdown table {
+  .markdown > table {
     display: block;
     overflow-x: auto;
   }

@@ -11,6 +11,7 @@ import rehypeSlug from 'rehype-slug'
 import rehypeUnwrapImages from 'rehype-unwrap-images'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeCallouts from 'rehype-callouts'
+import rehypeTableWrapper from './rehype-table-wrapper'
 import rehypeExternalLinks from 'rehype-external-links'
 import rehypeKatex from 'rehype-katex'
 
@@ -85,6 +86,7 @@ export const rehypePlugins = [
     },
   ],
   [rehypeCallouts, { theme: 'vitepress' }],
+  rehypeTableWrapper,
   [
     rehypeExternalLinks,
     {

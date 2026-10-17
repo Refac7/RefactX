@@ -3,6 +3,7 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { cn } from '~/lib/utils'
 import Captcha from '~/components/ui/Captcha'
+import MarkdownTable from '~/components/base/MarkdownTable'
 
 interface FeedItem {
   id: string
@@ -68,7 +69,9 @@ function FeedItemCard({ item, animationDelay }: { item: FeedItem; animationDelay
           )}
         >
           <div ref={contentRef} className="markdown">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>{item.content}</ReactMarkdown>
+            <ReactMarkdown remarkPlugins={[remarkGfm]} components={{ table: MarkdownTable }}>
+              {item.content}
+            </ReactMarkdown>
           </div>
 
           {!isExpanded && hasOverflow && (
