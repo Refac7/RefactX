@@ -186,7 +186,7 @@ export default function LoginScreen() {
               </div>
             </div>
 
-            <p className="mt-4 text-center font-mono text-[10px] uppercase tracking-widest text-muted-foreground/50">
+            <p className="mt-4 mb-4 text-center font-mono text-[10px] uppercase tracking-widest text-muted-foreground/50">
               Protected by HMAC CAPTCHA · bcrypt
             </p>
           </div>
