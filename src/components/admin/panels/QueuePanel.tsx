@@ -2,7 +2,8 @@ import { cn } from '~/lib/utils'
 import { useAdmin } from '../AdminContext'
 
 export default function QueuePanel() {
-  const { mobileView, showRightPanel, queue, loadFromQueue, removeFromQueue, processQueue, isProcessingQueue } = useAdmin()
+  const { mobileView, showRightPanel, queue, loadFromQueue, removeFromQueue, processQueue, isProcessingQueue, handleLogout } =
+    useAdmin()
 
   return (
     <div
@@ -20,7 +21,16 @@ export default function QueuePanel() {
           </span>
           <span className="text-sm font-semibold text-foreground">Changes Queue</span>
         </div>
-        <span className="text-[10px] font-mono text-muted-foreground rounded bg-muted/50 px-2 py-0.5">{queue.length}</span>
+        <div className="flex items-center gap-2">
+          <span className="text-[10px] font-mono text-muted-foreground rounded bg-muted/50 px-2 py-0.5">{queue.length}</span>
+          <button
+            onClick={handleLogout}
+            title="Sign Out"
+            className="p-1 -mr-1 rounded text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+          >
+            <span className="icon-[ph--sign-out] size-4" />
+          </button>
+        </div>
       </div>
 
       {/* Queue items */}

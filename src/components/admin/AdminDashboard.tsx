@@ -9,7 +9,7 @@ import EditorPanel from './panels/EditorPanel'
 import QueuePanel from './panels/QueuePanel'
 
 const DashboardLayout = () => {
-  const { isLoggedIn, fileInputRef, handleFileChange, mobileView, setMobileView, queue, remoteFiles, handleLogout } = useAdmin()
+  const { isLoggedIn, fileInputRef, handleFileChange, mobileView, setMobileView, queue, remoteFiles } = useAdmin()
 
   // 登录后隐藏 Astro 渲染的左侧 PageAside，使 CMS 面板占满全宽
   useEffect(() => {
@@ -81,15 +81,6 @@ const DashboardLayout = () => {
           <QueuePanel />
         </div>
       </main>
-
-      {/* Floating logout */}
-      <button
-        onClick={handleLogout}
-        title="Sign Out"
-        className="fixed bottom-5 right-5 z-30 flex items-center justify-center size-10 bg-background/90 backdrop-blur-md border border-border/60 text-muted-foreground hover:text-foreground hover:border-primary/40 hover:bg-primary/5 shadow-sm hover:shadow-md rounded-full transition-all"
-      >
-        <span className="icon-[ph--sign-out] size-4" />
-      </button>
     </div>
   )
 }
