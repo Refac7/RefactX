@@ -1,0 +1,2 @@
+# Exclude generated font-face declarations from GitHub language statistics
+src/styles/fonts.css linguist-generated=true
