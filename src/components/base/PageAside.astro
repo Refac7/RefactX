@@ -64,13 +64,13 @@ const hasBottomSlot = Astro.slots.has('bottom')
     <div
       class="p-6 lg:p-8 xl:p-12 pb-0 lg:pb-4 mt-4 lg:mt-8 shrink-0 fade-up flex justify-between items-start lg:border-b lg:border-dashed lg:border-border/60"
     >
-      <div class="flex items-center gap-3 select-none">
-        <div class="size-10 bg-primary text-primary-foreground border border-primary flex items-center justify-center">
+      <div class="flex items-center gap-3 min-w-0 select-none">
+        <div class="size-10 shrink-0 bg-primary text-primary-foreground border border-primary flex items-center justify-center">
           <span class="icon-[ph--dot-outline-fill] size-6"></span>
         </div>
-        <div>
-          <div class="text-sm font-bold tracking-tight text-foreground">{SITE.title || 'Digital Hub'}</div>
-          <div class="text-[10px] text-muted-foreground uppercase tracking-widest font-mono">You & Radiance</div>
+        <div class="min-w-0">
+          <div class="truncate text-sm font-bold tracking-tight text-foreground">{SITE.title || 'Digital Hub'}</div>
+          <div class="truncate font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">You & Radiance</div>
         </div>
       </div>
     </div>
@@ -84,10 +84,12 @@ const hasBottomSlot = Astro.slots.has('bottom')
     </div>
 
     <!-- Hero area: status + title + identity tags -->
-    <div class="relative flex-1 flex flex-col justify-center p-6 lg:p-8 xl:p-12 min-h-[50vh] lg:min-h-0 fade-up animation-delay-100">
+    <div
+      class="relative flex flex-1 flex-col justify-center px-6 lg:px-8 xl:px-12 py-10 lg:py-12 min-h-[50vh] lg:min-h-0 fade-up animation-delay-100"
+    >
       <!-- Status badge -->
       <div
-        class="inline-flex items-center gap-2 px-3 py-1.5 bg-muted/30 border border-border/50 text-xs font-medium text-muted-foreground mb-8 w-fit select-none"
+        class="inline-flex w-fit select-none items-center gap-2 border border-border/50 bg-muted/30 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground mb-8 lg:mt-auto"
       >
         {
           statusHasPing && (
@@ -102,7 +104,7 @@ const hasBottomSlot = Astro.slots.has('bottom')
 
       <!-- Main title -->
       <h1
-        class="relative w-fit text-[2.5rem] sm:text-5xl xl:text-6xl font-bold tracking-tight text-foreground leading-[1.15] mb-4 select-none"
+        class="relative w-fit text-[2.5rem] sm:text-5xl xl:text-6xl font-bold tracking-tight text-foreground leading-[1.1] mb-5 select-none"
       >
         <span aria-hidden="true" class="absolute inset-x-0 bottom-[0.08em] h-[0.16em] bg-primary"></span>
         <span class="relative">{title}</span>
@@ -111,8 +113,8 @@ const hasBottomSlot = Astro.slots.has('bottom')
       <!-- Subtitle -->
       {
         subtitleIcon && subtitleText && (
-          <div class="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-            <span class={`${subtitleIcon} size-4`} />
+          <div class="mb-4 flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
+            <span class={`${subtitleIcon} size-4 shrink-0`} />
             <span>{subtitleText}</span>
           </div>
         )
@@ -121,12 +123,12 @@ const hasBottomSlot = Astro.slots.has('bottom')
       <!-- Identity tags -->
       {
         visibleIdentityTags.length > 0 && (
-          <div class="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-8 font-mono">
+          <div class="mb-7 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
             {visibleIdentityTags.map((tag, i) => (
               <>
-                {i > 0 && <span class="w-1 h-1 rounded-full bg-border" />}
+                {i > 0 && <span class="size-1 rounded-full bg-border" />}
                 <span class="flex items-center gap-1.5">
-                  <span class={`${tag.icon} size-4`} />
+                  <span class={`${tag.icon} size-4 shrink-0`} />
                   {tag.label}
                 </span>
               </>
@@ -138,7 +140,7 @@ const hasBottomSlot = Astro.slots.has('bottom')
       <!-- Intro text with left border accent -->
       {
         intro && (
-          <div class="relative pl-4 border-l-2 border-primary/30 fade-up animation-delay-150">
+          <div class="relative max-w-[24rem] border-l-2 border-primary/30 pl-4 fade-up animation-delay-150">
             <p class="text-sm md:text-base text-muted-foreground leading-relaxed">
               {intro.split('\n').map((line, i) => (
                 <>
