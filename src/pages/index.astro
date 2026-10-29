@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content'
-import { SITE, SKILLSSHOWCASE_CONFIG, SOCIAL_LINKS, GITHUB_CONFIG, POSTS_CONFIG, BUILD_INFO_CONFIG } from '~/config.ts'
+import { SITE, SKILLSSHOWCASE_CONFIG, GITHUB_CONFIG, POSTS_CONFIG, BUILD_INFO_CONFIG } from '~/config.ts'
 import { cn, getWordCount, postsSort } from '~/lib/utils'
 
 import Layout from '~/layouts/Layout.astro'
@@ -35,66 +35,10 @@ const NAV_CARDS = [
 ---
 
 <Layout title="Overview" description={SITE.description}>
-  <div class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
-    <PageAside
-      statusText="Building & Exploring"
-      statusHasPing
-      statusVariant="primary"
-      title="Overview"
-      subtitleIcon="icon-[ph--house]"
-      subtitleText="Home Overview"
-      identityTags={[
-        { icon: 'icon-[ph--code]', label: 'Developer' },
-        { icon: 'icon-[ph--pen-nib]', label: 'Creator' },
-      ]}
-      intro="欢迎光临喵～ (・ω・)ノ，本站基于 Astro v6 构建，记录技术、分享生活。"
-      statsLabel="// CONNECT PORTALS"
-      statsMeta={`${SOCIAL_LINKS.length} ACTIVE`}
-      stats={[]}
-    >
-      <div slot="bottom" class="grid grid-cols-1 gap-px bg-border/40">
-        {
-          SOCIAL_LINKS.map((item) => (
-            <a
-              href={item.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="group flex items-center gap-4 h-14 px-6 lg:px-8 xl:px-12 rounded-none bg-background hover:bg-primary/5 transition-all duration-300 text-left"
-            >
-              <span class={`${item.icon} size-5 shrink-0 text-muted-foreground group-hover:text-primary transition-colors`} />
-              <span class="text-[10px] font-mono font-medium text-muted-foreground group-hover:text-primary uppercase tracking-wider transition-colors">
-                {item.name || 'Link'}
-              </span>
-            </a>
-          ))
-        }
-      </div>
-
-      <div slot="mobile" class="p-6">
-        <div class="flex items-center justify-between font-mono text-[10px] uppercase tracking-widest text-muted-foreground/70">
-          <span>// Connect Portals</span>
-          <span>{SOCIAL_LINKS.length} Active</span>
-        </div>
-        <div class="mt-4 grid grid-cols-2 gap-3">
-          {
-            SOCIAL_LINKS.map((item) => (
-              <a
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="group flex items-center gap-2.5 border border-border/40 bg-background/50 px-4 py-3 transition-all duration-300 hover:border-primary/30 hover:bg-primary/5"
-              >
-                <span class={`${item.icon} size-5 shrink-0 text-muted-foreground transition-colors group-hover:text-primary`} />
-                <span class="truncate text-xs font-medium tracking-tight text-foreground">{item.name}</span>
-                <span class="icon-[ph--arrow-up-right] ml-auto size-3.5 shrink-0 text-muted-foreground/30 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary" />
-              </a>
-            ))
-          }
-        </div>
-      </div>
-    </PageAside>
-    <main class="w-full lg:w-2/3 z-10 flex flex-col">
-      <div class="px-6 lg:px-8 xl:px-12 lg:py-20 flex-1 flex flex-col gap-20 xl:gap-24 mt-4 lg:mt-0">
+  <div class="relative mx-auto flex min-h-screen max-w-[1920px] flex-col font-sans lg:flex-row lg:flex-nowrap">
+    <PageAside showSocialLinks />
+    <main class="z-10 flex w-full min-w-0 flex-col lg:w-1/2 lg:basis-1/2 lg:shrink-0 lg:grow-0">
+      <div class="mt-4 flex flex-1 flex-col gap-14 px-5 sm:gap-16 sm:px-6 lg:mt-0 lg:gap-20 lg:px-8 lg:py-20 xl:gap-24 xl:px-12">
         <div>
           <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-b border-border/40 pb-4">
             <div class="flex items-center gap-3">
@@ -107,7 +51,7 @@ const NAV_CARDS = [
               >// System_Modules</span
             >
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 lg:gap-6">
             {
               NAV_CARDS.map((card) => (
                 <>

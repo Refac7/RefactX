@@ -1,5 +1,5 @@
 ---
-import { SITE } from '~/config'
+import { SITE, SOCIAL_LINKS } from '~/config'
 
 export interface StatItem {
   value: string
@@ -12,207 +12,457 @@ export interface IdentityTag {
 }
 
 interface Props {
-  /** Status badge text (e.g. "Alive", "Live Sync") */
-  statusText: string
+  /** Status badge text */
+  statusText?: string
   /** Show the animated ping dot */
   statusHasPing?: boolean
   /** Badge color variant */
   statusVariant?: 'success' | 'primary'
   /** Main heading */
-  title: string
+  title?: string
   /** Icon class for the subtitle line */
   subtitleIcon?: string
   /** Text for the subtitle line */
   subtitleText?: string
-  /** Identity tags shown below the title (icon + label with dot separators) */
+  /** Identity tags shown below the title */
   identityTags?: IdentityTag[]
   /** Intro / description paragraph */
   intro?: string
   /** Label for the bottom stats section */
   statsLabel?: string
-  /** Right-side metadata for the stats section header */
+  /** Right-side metadata for the stats section header (auto-derived from social links if omitted) */
   statsMeta?: string
   /** Stats cells in the bottom bar (2–3 items) */
-  stats: StatItem[]
+  stats?: StatItem[]
+  /** Built-in social link list (defaults to site config) */
+  socialLinks?: typeof SOCIAL_LINKS
+  /** Toggle the built-in social link list when no slot overrides it (opt-in) */
+  showSocialLinks?: boolean
 }
 
 const {
-  statusText,
+  statusText = 'Building & Exploring',
   statusHasPing = true,
-  statusVariant = 'success',
-  title,
-  subtitleIcon,
-  subtitleText,
-  identityTags = [],
-  intro,
-  statsLabel = '// SYSTEM STATUS',
+  statusVariant = 'primary',
+  title = 'Overview',
+  subtitleIcon = 'icon-[ph--house]',
+  subtitleText = 'Home Overview',
+  identityTags = [
+    { icon: 'icon-[ph--code]', label: 'Developer' },
+    { icon: 'icon-[ph--pen-nib]', label: 'Creator' },
+  ],
+  intro = '欢迎光临喵～ (・ω・)ノ，本站基于 Astro v6 构建，记录技术、分享生活。',
+  statsLabel = '// CONNECT PORTALS',
   statsMeta,
-  stats,
+  stats = [],
+  socialLinks = SOCIAL_LINKS,
+  showSocialLinks = false,
 } = Astro.props as Props
 
 const dotColor = statusVariant === 'success' ? 'bg-success' : 'bg-primary'
 const pingColor = statusVariant === 'success' ? 'bg-success/70' : 'bg-primary/60'
 const visibleIdentityTags = identityTags.slice(0, 2)
 const hasBottomSlot = Astro.slots.has('bottom')
+const hasMobileSlot = Astro.slots.has('mobile')
+
+const hasBuiltinSocial = showSocialLinks && socialLinks.length > 0
+const resolvedStatsMeta = statsMeta ?? `${socialLinks.length} ACTIVE`
 ---
 
 <aside
-  class="w-full lg:w-1/3 lg:sticky lg:top-[96px] lg:h-[calc(100vh-96px)] flex flex-col lg:border-r border-border/40 z-20 bg-background/50 backdrop-blur-sm relative overflow-hidden"
+  class="editorial-aside relative z-20 flex w-full min-w-0 flex-col overflow-hidden border-border/40 bg-background/50 backdrop-blur-sm lg:sticky lg:top-[96px] lg:h-[calc(100vh-96px)] lg:w-1/2 lg:basis-1/2 lg:shrink-0 lg:grow-0 lg:border-r"
 >
-  <div class="flex flex-1 lg:overflow-y-auto scrollbar-hide flex-col relative z-10">
-    <!-- Logo / brand header -->
-    <div
-      class="p-6 lg:p-8 xl:p-12 pb-0 lg:pb-4 mt-4 lg:mt-8 shrink-0 fade-up flex justify-between items-start lg:border-b lg:border-dashed lg:border-border/60"
+  <!-- Main content -->
+  <div class="relative z-10 flex flex-1 flex-col lg:overflow-y-auto scrollbar-hide">
+    <!-- Brand header: original mobile layout, editorial layout on desktop -->
+    <header
+      class="fade-up mt-4 flex shrink-0 items-start justify-between gap-3 px-6 pb-0 pt-6 lg:mt-8 lg:border-b lg:border-dashed lg:border-border/60 lg:p-8 lg:pb-4 xl:p-12 xl:pb-4"
     >
-      <div class="flex items-center gap-3 min-w-0 select-none">
-        <div class="size-10 shrink-0 bg-primary text-primary-foreground border border-primary flex items-center justify-center">
+      <div class="flex min-w-0 select-none items-center gap-3">
+        <div
+          class="brand-mark flex size-10 shrink-0 items-center justify-center border border-primary bg-primary text-primary-foreground"
+        >
           <span class="icon-[ph--dot-outline-fill] size-6"></span>
         </div>
+
         <div class="min-w-0">
-          <div class="truncate text-sm font-bold tracking-tight text-foreground">{SITE.title || 'Digital Hub'}</div>
-          <div class="truncate font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">You & Radiance</div>
+          <div class="truncate text-sm font-bold tracking-tight text-foreground">
+            {SITE.title || 'Digital Hub'}
+          </div>
+          <div
+            class="truncate font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground"
+          >
+            You & Radiance
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Decorative hollow background title -->
-    <div aria-hidden="true" class="hidden 2xl:block pointer-events-none select-none absolute inset-0 z-0 overflow-hidden">
       <span
-        class="outline-title absolute right-2 top-1/2 -translate-y-1/2 [writing-mode:vertical-rl] text-[9rem] xl:text-[11rem] leading-none font-black tracking-[0.05em] whitespace-nowrap opacity-100"
-        >{title}</span
+        aria-hidden="true"
+        class="ml-3 mt-1 hidden shrink-0 font-mono text-[9px] tracking-[0.12em] text-muted-foreground/70 lg:inline"
       >
-    </div>
+        01—01
+      </span>
+    </header>
 
-    <!-- Hero area: status + title + identity tags -->
-    <div
-      class="relative flex flex-1 flex-col justify-center px-6 lg:px-8 xl:px-12 py-10 lg:py-12 min-h-[50vh] lg:min-h-0 fade-up animation-delay-100"
+    <!-- Hero -->
+    <section
+      class="editorial-hero relative flex min-h-[50vh] flex-1 flex-col justify-center px-6 py-10 fade-up animation-delay-100 lg:min-h-0 lg:justify-start lg:px-8 lg:py-12 xl:px-12"
     >
-      <!-- Status badge -->
+      <!-- Oversized background typography (editorial / desktop only) -->
       <div
-        class="inline-flex w-fit select-none items-center gap-2 border border-border/50 bg-muted/30 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground mb-8 lg:mt-auto"
+        aria-hidden="true"
+        class="editorial-watermark pointer-events-none absolute inset-x-0 top-[10%] z-0 hidden select-none overflow-hidden lg:block"
       >
-        {
-          statusHasPing && (
-            <span class="relative flex size-2">
-              <span class={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${pingColor}`} />
-              <span class={`relative inline-flex rounded-full size-2 ${dotColor}`} />
-            </span>
-          )
-        }
+        <span class="block whitespace-nowrap font-black uppercase leading-[0.78] tracking-[-0.09em]">
+          {title}
+        </span>
+      </div>
+
+      <!-- Status -->
+      <div
+        class="relative z-10 mb-8 inline-flex w-fit select-none items-center gap-2 border border-border/50 bg-muted/30 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground lg:mt-auto lg:border-border/60 lg:bg-background/80 lg:backdrop-blur-sm"
+      >
+        {statusHasPing && (
+          <span class="relative flex size-2">
+            <span
+              class={`absolute inline-flex size-full animate-ping rounded-full opacity-75 ${pingColor}`}
+            ></span>
+            <span class={`relative inline-flex size-2 rounded-full ${dotColor}`}></span>
+          </span>
+        )}
         {statusText}
       </div>
 
-      <!-- Main title -->
-      <h1
-        class="relative w-fit text-[2.5rem] sm:text-5xl xl:text-6xl font-bold tracking-tight text-foreground leading-[1.1] mb-5 select-none"
-      >
-        <span aria-hidden="true" class="absolute inset-x-0 bottom-[0.08em] h-[0.16em] bg-primary"></span>
-        <span class="relative">{title}</span>
-      </h1>
+      <!-- Title: original mobile treatment, editorial treatment on desktop -->
+      <div class="relative z-10 lg:mb-6">
+        <div
+          aria-hidden="true"
+          class="mb-4 hidden items-center gap-3 font-mono text-[10px] uppercase tracking-[0.18em] text-primary lg:flex"
+        >
+          <span class="h-[3px] w-8 bg-primary"></span>
+          <span>Independent / Digital</span>
+        </div>
+
+        <h1
+          class="editorial-title relative mb-5 w-fit select-none text-[2.5rem] font-bold leading-[1.1] tracking-tight text-foreground sm:text-5xl lg:w-auto lg:font-black"
+        >
+          <span
+            aria-hidden="true"
+            class="absolute inset-x-0 bottom-[0.08em] h-[0.16em] bg-primary lg:hidden"
+          ></span>
+          <span class="editorial-title-text">{title}</span>
+          <span aria-hidden="true" class="editorial-title-period hidden lg:inline">.</span>
+        </h1>
+      </div>
 
       <!-- Subtitle -->
-      {
-        subtitleIcon && subtitleText && (
-          <div class="mb-4 flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
-            <span class={`${subtitleIcon} size-4 shrink-0`} />
-            <span>{subtitleText}</span>
-          </div>
-        )
-      }
+      {subtitleIcon && subtitleText && (
+        <div
+          class="relative z-10 mb-4 flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground"
+        >
+          <span class={`${subtitleIcon} size-4 shrink-0`}></span>
+          <span>{subtitleText}</span>
+        </div>
+      )}
 
       <!-- Identity tags -->
-      {
-        visibleIdentityTags.length > 0 && (
-          <div class="mb-7 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
-            {visibleIdentityTags.map((tag, i) => (
+      {visibleIdentityTags.length > 0 && (
+        <div
+          class="relative z-10 mb-7 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[11px] uppercase tracking-wider text-muted-foreground"
+        >
+          {visibleIdentityTags.map((tag, i) => (
+            <>
+              {i > 0 && (
+                <span aria-hidden="true" class="size-1 rounded-full bg-border lg:rounded-none lg:bg-primary/60"></span>
+              )}
+              <span class="flex items-center gap-1.5">
+                <span class={`${tag.icon} size-4 shrink-0`}></span>
+                {tag.label}
+              </span>
+            </>
+          ))}
+        </div>
+      )}
+
+      <!-- Intro -->
+      {intro && (
+        <div class="editorial-intro relative z-10 max-w-[24rem] border-l-2 border-primary/30 pl-4 fade-up animation-delay-150">
+          <p class="text-sm leading-relaxed text-muted-foreground md:text-base">
+            {intro.split('\n').map((line, i) => (
               <>
-                {i > 0 && <span class="size-1 rounded-full bg-border" />}
-                <span class="flex items-center gap-1.5">
-                  <span class={`${tag.icon} size-4 shrink-0`} />
-                  {tag.label}
-                </span>
+                {i > 0 && <br />}
+                {line}
               </>
             ))}
-          </div>
-        )
-      }
+          </p>
+        </div>
+      )}
 
-      <!-- Intro text with left border accent -->
-      {
-        intro && (
-          <div class="relative max-w-[24rem] border-l-2 border-primary/30 pl-4 fade-up animation-delay-150">
-            <p class="text-sm md:text-base text-muted-foreground leading-relaxed">
-              {intro.split('\n').map((line, i) => (
-                <>
-                  {i > 0 && <br />}
-                  {line}
-                </>
-              ))}
-            </p>
-          </div>
-        )
-      }
-    </div>
+      <!-- Bottom editorial marker -->
+      <div
+        aria-hidden="true"
+        class="relative z-10 mt-8 hidden items-center gap-3 font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground/60 lg:flex"
+      >
+        <span class="h-px w-8 bg-border"></span>
+        <span>Scroll to explore</span>
+      </div>
+    </section>
   </div>
 
-  <!-- Mobile-only slot (replaces the hidden bottom bar on small screens) -->
-  {
-    Astro.slots.has('mobile') && (
-      <div class="lg:hidden shrink-0 border-t border-dashed border-border/50 bg-background/50 select-none fade-up animation-delay-200">
+  <!-- Mobile slot / built-in mobile social links -->
+  {(hasMobileSlot || hasBuiltinSocial) && (
+    <div
+      class="fade-up animation-delay-200 shrink-0 select-none border-t border-dashed border-border/50 bg-background/50 lg:hidden"
+    >
+      {hasMobileSlot ? (
         <slot name="mobile" />
-      </div>
-    )
-  }
+      ) : (
+        <div class="p-6">
+          <div class="flex items-center justify-between font-mono text-[10px] uppercase tracking-widest text-muted-foreground/70">
+            <span>{statsLabel}</span>
+            <span>{resolvedStatsMeta}</span>
+          </div>
+          <div class="mt-4 grid grid-cols-2 gap-3">
+            {socialLinks.map((item) => (
+              <a
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="group flex items-center gap-2.5 border border-border/40 bg-background/50 px-4 py-3 transition-all duration-300 hover:border-primary/30 hover:bg-primary/5"
+              >
+                <span class={`${item.icon} size-5 shrink-0 text-muted-foreground transition-colors group-hover:text-primary`} />
+                <span class="truncate text-xs font-medium tracking-tight text-foreground">{item.name}</span>
+                <span class="icon-[ph--arrow-up-right] ml-auto size-3.5 shrink-0 text-muted-foreground/30 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary" />
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  )}
 
-  <!-- Bottom stats bar -->
-  <div
-    class="hidden lg:block shrink-0 border-t border-dashed border-border/50 bg-background/50 select-none fade-up animation-delay-200 relative"
+  <!-- Bottom stats / built-in desktop social links -->
+  <footer
+    class="relative hidden shrink-0 select-none border-t border-dashed border-border/50 bg-background/50 fade-up animation-delay-200 lg:block"
   >
     <div
-      class="p-4 flex items-center justify-between text-xs text-muted-foreground font-mono border-b border-dashed border-border/50 px-6 lg:px-8 xl:px-12"
+      class="flex items-center justify-between border-b border-dashed border-border/50 px-6 py-4 font-mono text-xs text-muted-foreground lg:px-8 xl:px-12"
     >
       <span>{statsLabel}</span>
-      {statsMeta && <span>{statsMeta}</span>}
+      {resolvedStatsMeta && <span>{resolvedStatsMeta}</span>}
     </div>
 
-    {
-      hasBottomSlot ? (
-        <slot name="bottom" />
-      ) : (
-        <>
-          {stats.length === 2 && (
+    {hasBottomSlot ? (
+      <slot name="bottom" />
+    ) : hasBuiltinSocial ? (
+      <div class="grid grid-cols-1 gap-px bg-border/40">
+        {socialLinks.map((item) => (
+          <a
+            href={item.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group flex items-center gap-4 h-14 px-6 lg:px-8 xl:px-12 rounded-none bg-background hover:bg-primary/5 transition-all duration-300 text-left"
+          >
+            <span class={`${item.icon} size-5 shrink-0 text-muted-foreground group-hover:text-primary transition-colors`} />
+            <span class="text-[10px] font-mono font-medium text-muted-foreground group-hover:text-primary uppercase tracking-wider transition-colors">
+              {item.name || 'Link'}
+            </span>
+          </a>
+        ))}
+      </div>
+    ) : (
+      <>
+        {stats.length === 2 && (
+          <div class="flex">
+            {stats.map((stat, i) => (
+              <div
+                class={`stat-cell flex flex-1 flex-col items-start justify-center bg-background/50 px-6 py-6 transition-colors hover:bg-primary/5 lg:px-8 lg:py-8 xl:px-12 xl:py-10 ${i < stats.length - 1 ? 'border-r border-border/40' : ''}`}
+              >
+                <span class="stat-value font-black tracking-[-0.06em] text-foreground">
+                  {stat.value}
+                </span>
+                <span class="mt-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+                  {stat.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {stats.length === 3 && (
+          <div class="flex flex-col">
             <div class="flex">
-              {stats.map((stat, i) => (
+              {stats.slice(0, 2).map((stat, i) => (
                 <div
-                  class={`flex-1 flex flex-col items-start justify-center py-6 lg:py-8 xl:py-10 px-6 lg:px-8 xl:px-12 bg-background/50 hover:bg-primary/5 transition-colors ${i < stats.length - 1 ? 'border-r border-border/40' : ''}`}
+                  class={`stat-cell flex flex-1 flex-col items-start justify-center border-b border-border/40 bg-background/50 px-6 py-6 transition-colors hover:bg-primary/5 lg:px-8 lg:py-8 xl:px-12 xl:py-10 ${i === 0 ? 'border-r border-border/40' : ''}`}
                 >
-                  <span class="text-2xl font-semibold text-foreground tracking-tight">{stat.value}</span>
-                  <span class="text-xs text-muted-foreground mt-1">{stat.label}</span>
+                  <span class="stat-value font-black tracking-[-0.06em] text-foreground">
+                    {stat.value}
+                  </span>
+                  <span class="mt-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+                    {stat.label}
+                  </span>
                 </div>
               ))}
             </div>
-          )}
 
-          {stats.length === 3 && (
-            <div class="flex flex-col">
-              <div class="flex">
-                {stats.slice(0, 2).map((stat, i) => (
-                  <div
-                    class={`flex-1 flex flex-col items-start justify-center py-6 lg:py-8 xl:py-10 px-6 lg:px-8 xl:px-12 bg-background/50 border-b border-border/40 hover:bg-primary/5 transition-colors ${i === 0 ? 'border-r border-border/40' : ''}`}
-                  >
-                    <span class="text-2xl font-semibold text-foreground tracking-tight">{stat.value}</span>
-                    <span class="text-xs text-muted-foreground mt-1">{stat.label}</span>
-                  </div>
-                ))}
-              </div>
-              <div class="flex items-center justify-between py-5 lg:py-6 px-6 lg:px-8 xl:px-12 bg-background/50 hover:bg-primary/5 transition-colors">
-                <span class="text-xs text-muted-foreground font-medium">{stats[2].label}</span>
-                <span class="text-sm font-semibold text-foreground">{stats[2].value}</span>
-              </div>
+            <div class="flex items-center justify-between bg-background/50 px-6 py-5 transition-colors hover:bg-primary/5 lg:px-8 lg:py-6 xl:px-12">
+              <span class="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+                {stats[2].label}
+              </span>
+              <span class="text-sm font-black tracking-tight text-foreground">
+                {stats[2].value}
+              </span>
             </div>
-          )}
-        </>
-      )
-    }
-  </div>
+          </div>
+        )}
+      </>
+    )}
+  </footer>
 </aside>
+
+<style>
+  .editorial-aside {
+    --editorial-blue: hsl(var(--primary));
+  }
+
+  .editorial-hero {
+    isolation: isolate;
+  }
+
+  .editorial-watermark {
+    color: var(--editorial-blue);
+    opacity: 0.045;
+  }
+
+  .editorial-watermark span {
+    font-size: clamp(4.5rem, 12vw, 13rem);
+  }
+
+  .editorial-title-text {
+    position: relative;
+    z-index: 1;
+  }
+
+  .editorial-title-period {
+    color: var(--editorial-blue);
+    letter-spacing: -0.1em;
+  }
+
+  .stat-value {
+    font-size: clamp(1.75rem, 2.8vw, 3rem);
+    line-height: 0.95;
+    overflow-wrap: anywhere;
+  }
+
+  /* Editorial treatment only applies from the desktop breakpoint up;
+     below that, the original mobile design is preserved. */
+  @media (min-width: 1024px) {
+    .editorial-title {
+      font-size: clamp(3rem, 4.8vw, 5.75rem);
+      line-height: 0.86;
+      letter-spacing: -0.085em;
+      overflow-wrap: anywhere;
+      text-wrap: balance;
+    }
+
+    .editorial-watermark span {
+      font-size: clamp(6rem, 9vw, 10rem);
+    }
+
+    .editorial-intro {
+      border-left: 3px solid var(--editorial-blue);
+    }
+
+    .brand-mark {
+      box-shadow: 4px 4px 0 hsl(var(--primary) / 0.15);
+    }
+  }
+
+  /* Short browser windows: preserve the oversized title without
+     forcing the entire sidebar to exceed the viewport unnecessarily. */
+  @media (min-width: 1024px) and (max-height: 760px) {
+    .editorial-title {
+      font-size: clamp(2.75rem, 4vw, 4.25rem);
+    }
+
+    .editorial-hero {
+      padding-top: 1.75rem;
+      padding-bottom: 1.75rem;
+    }
+
+    .editorial-hero .mb-8 {
+      margin-bottom: 1.25rem;
+    }
+
+    .editorial-hero .mb-6 {
+      margin-bottom: 1rem;
+    }
+
+    .editorial-hero .mb-7 {
+      margin-bottom: 1rem;
+    }
+
+    .editorial-hero .mt-8 {
+      margin-top: 1rem;
+    }
+
+    .stat-cell {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+
+    .editorial-watermark span {
+      font-size: 6rem;
+    }
+  }
+
+  @media (min-width: 1024px) and (max-height: 600px) {
+    .editorial-title {
+      font-size: clamp(2.25rem, 3.5vw, 3.25rem);
+    }
+
+    .editorial-hero {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+
+    .editorial-hero .mb-8 {
+      margin-bottom: 0.75rem;
+    }
+
+    .editorial-hero .mb-6,
+    .editorial-hero .mb-7 {
+      margin-bottom: 0.625rem;
+    }
+
+    .editorial-hero .mt-8 {
+      margin-top: 0.625rem;
+    }
+
+    .editorial-hero .editorial-intro p {
+      font-size: 0.8125rem;
+      line-height: 1.5;
+    }
+
+    .editorial-hero > .flex {
+      display: none;
+    }
+
+    .stat-value {
+      font-size: 1.5rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .editorial-aside *,
+    .editorial-aside *::before,
+    .editorial-aside *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
