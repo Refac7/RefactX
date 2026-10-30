@@ -74,14 +74,12 @@ const resolvedStatsMeta = statsMeta ?? `${socialLinks.length} ACTIVE`
 >
   <!-- Main content -->
   <div class="relative z-10 flex flex-1 flex-col lg:overflow-y-auto scrollbar-hide">
-    <!-- Brand header: original mobile layout, editorial layout on desktop -->
+    <!-- Brand header -->
     <header
-      class="fade-up mt-4 flex shrink-0 items-start justify-between gap-3 px-6 pb-0 pt-6 lg:mt-8 lg:border-b lg:border-dashed lg:border-border/60 lg:p-8 lg:pb-4 xl:p-12 xl:pb-4"
+      class="fade-up mt-4 flex shrink-0 items-start justify-between gap-3 border-b border-dashed border-border/60 px-6 pb-5 pt-6 sm:px-8 md:mt-0 md:px-10 md:pb-5 md:pt-7 lg:mt-8 lg:p-8 lg:pb-4 xl:p-12 xl:pb-4"
     >
       <div class="flex min-w-0 select-none items-center gap-3">
-        <div
-          class="brand-mark flex size-10 shrink-0 items-center justify-center border border-primary bg-primary text-primary-foreground"
-        >
+        <div class="brand-mark flex size-10 shrink-0 items-center justify-center border border-primary bg-primary text-primary-foreground">
           <span class="icon-[ph--dot-outline-fill] size-6"></span>
         </div>
 
@@ -89,120 +87,107 @@ const resolvedStatsMeta = statsMeta ?? `${socialLinks.length} ACTIVE`
           <div class="truncate text-sm font-bold tracking-tight text-foreground">
             {SITE.title || 'Digital Hub'}
           </div>
-          <div
-            class="truncate font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground"
-          >
-            You & Radiance
-          </div>
+          <div class="truncate font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">You & Radiance</div>
         </div>
       </div>
 
-      <span
-        aria-hidden="true"
-        class="ml-3 mt-1 hidden shrink-0 font-mono text-[9px] tracking-[0.12em] text-muted-foreground/70 lg:inline"
-      >
+      <span aria-hidden="true" class="ml-3 mt-1 inline shrink-0 font-mono text-[9px] tracking-[0.12em] text-muted-foreground/70">
         01—01
       </span>
     </header>
 
     <!-- Hero -->
     <section
-      class="editorial-hero relative flex min-h-[50vh] flex-1 flex-col justify-center px-6 py-10 fade-up animation-delay-100 lg:min-h-0 lg:justify-start lg:px-8 lg:py-12 xl:px-12"
+      class="editorial-hero relative flex min-h-[50vh] flex-1 flex-col justify-start px-6 py-10 fade-up animation-delay-100 sm:min-h-[42vh] sm:px-8 sm:py-12 md:grid md:min-h-[38vh] md:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] md:content-center md:items-end md:gap-x-12 md:px-10 md:py-14 lg:flex lg:min-h-0 lg:flex-col lg:items-stretch lg:justify-start lg:px-8 lg:py-12 xl:px-12"
     >
-      <!-- Oversized background typography (editorial / desktop only) -->
-      <div
-        aria-hidden="true"
-        class="editorial-watermark pointer-events-none absolute inset-x-0 top-[10%] z-0 hidden select-none overflow-hidden lg:block"
-      >
+      <!-- Oversized background typography -->
+      <div aria-hidden="true" class="editorial-watermark pointer-events-none absolute inset-x-0 top-[10%] z-0 select-none overflow-hidden">
         <span class="block whitespace-nowrap font-black uppercase leading-[0.78] tracking-[-0.09em]">
           {title}
         </span>
       </div>
 
-      <!-- Status -->
-      <div
-        class="relative z-10 mb-8 inline-flex w-fit select-none items-center gap-2 border border-border/50 bg-muted/30 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground lg:mt-auto lg:border-border/60 lg:bg-background/80 lg:backdrop-blur-sm"
-      >
-        {statusHasPing && (
-          <span class="relative flex size-2">
-            <span
-              class={`absolute inline-flex size-full animate-ping rounded-full opacity-75 ${pingColor}`}
-            ></span>
-            <span class={`relative inline-flex size-2 rounded-full ${dotColor}`}></span>
-          </span>
-        )}
-        {statusText}
-      </div>
-
-      <!-- Title: original mobile treatment, editorial treatment on desktop -->
-      <div class="relative z-10 lg:mb-6">
+      <!-- On tablets the cover becomes a two-column composition:
+           identity on the left, intro on the right. -->
+      <div class="md:contents">
+        <!-- Status -->
         <div
-          aria-hidden="true"
-          class="mb-4 hidden items-center gap-3 font-mono text-[10px] uppercase tracking-[0.18em] text-primary lg:flex"
+          class="relative z-10 mb-8 inline-flex w-fit select-none items-center gap-2 border border-border/60 bg-background/80 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground backdrop-blur-sm md:col-start-1 md:row-start-1 md:mb-6 lg:mt-auto lg:mb-8"
         >
-          <span class="h-[3px] w-8 bg-primary"></span>
-          <span>Independent / Digital</span>
-        </div>
-
-        <h1
-          class="editorial-title relative mb-5 w-fit select-none text-[2.5rem] font-bold leading-[1.1] tracking-tight text-foreground sm:text-5xl lg:w-auto lg:font-black"
-        >
-          <span
-            aria-hidden="true"
-            class="absolute inset-x-0 bottom-[0.08em] h-[0.16em] bg-primary lg:hidden"
-          ></span>
-          <span class="editorial-title-text">{title}</span>
-          <span aria-hidden="true" class="editorial-title-period hidden lg:inline">.</span>
-        </h1>
-      </div>
-
-      <!-- Subtitle -->
-      {subtitleIcon && subtitleText && (
-        <div
-          class="relative z-10 mb-4 flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground"
-        >
-          <span class={`${subtitleIcon} size-4 shrink-0`}></span>
-          <span>{subtitleText}</span>
-        </div>
-      )}
-
-      <!-- Identity tags -->
-      {visibleIdentityTags.length > 0 && (
-        <div
-          class="relative z-10 mb-7 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[11px] uppercase tracking-wider text-muted-foreground"
-        >
-          {visibleIdentityTags.map((tag, i) => (
-            <>
-              {i > 0 && (
-                <span aria-hidden="true" class="size-1 rounded-full bg-border lg:rounded-none lg:bg-primary/60"></span>
-              )}
-              <span class="flex items-center gap-1.5">
-                <span class={`${tag.icon} size-4 shrink-0`}></span>
-                {tag.label}
+          {
+            statusHasPing && (
+              <span class="relative flex size-2">
+                <span class={`absolute inline-flex size-full animate-ping rounded-full opacity-75 ${pingColor}`} />
+                <span class={`relative inline-flex size-2 rounded-full ${dotColor}`} />
               </span>
-            </>
-          ))}
+            )
+          }
+          {statusText}
         </div>
-      )}
+
+        <!-- Title -->
+        <div class="relative z-10 md:col-start-1 md:row-start-2 lg:mb-6">
+          <div aria-hidden="true" class="mb-4 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.18em] text-primary">
+            <span class="h-[3px] w-8 bg-primary"></span>
+            <span>Independent / Digital</span>
+          </div>
+
+          <h1
+            class="editorial-title relative mb-5 w-fit max-w-full select-none font-black text-foreground md:max-w-[calc(100%-1rem)] lg:w-auto lg:max-w-none"
+          >
+            <span class="editorial-title-text">{title}</span>
+            <span aria-hidden="true" class="editorial-title-period">.</span>
+          </h1>
+        </div>
+
+        <!-- Subtitle -->
+        {
+          subtitleIcon && subtitleText && (
+            <div class="relative z-10 mb-4 flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground md:col-start-1 md:row-start-3">
+              <span class={`${subtitleIcon} size-4 shrink-0`} />
+              <span>{subtitleText}</span>
+            </div>
+          )
+        }
+
+        <!-- Identity tags -->
+        {
+          visibleIdentityTags.length > 0 && (
+            <div class="relative z-10 mb-7 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[11px] uppercase tracking-wider text-muted-foreground md:col-start-1 md:row-start-4 md:mb-0 lg:mb-7">
+              {visibleIdentityTags.map((tag, i) => (
+                <>
+                  {i > 0 && <span aria-hidden="true" class="size-1 bg-primary/60" />}
+                  <span class="flex items-center gap-1.5">
+                    <span class={`${tag.icon} size-4 shrink-0`} />
+                    {tag.label}
+                  </span>
+                </>
+              ))}
+            </div>
+          )
+        }
+      </div>
 
       <!-- Intro -->
-      {intro && (
-        <div class="editorial-intro relative z-10 max-w-[24rem] border-l-2 border-primary/30 pl-4 fade-up animation-delay-150">
-          <p class="text-sm leading-relaxed text-muted-foreground md:text-base">
-            {intro.split('\n').map((line, i) => (
-              <>
-                {i > 0 && <br />}
-                {line}
-              </>
-            ))}
-          </p>
-        </div>
-      )}
+      {
+        intro && (
+          <div class="editorial-intro relative z-10 max-w-[24rem] pl-4 fade-up animation-delay-150 sm:max-w-[30rem] md:col-start-2 md:row-span-4 md:row-start-1 md:max-w-none md:self-end md:pl-5 lg:max-w-[24rem] lg:self-auto">
+            <p class="text-sm leading-relaxed text-muted-foreground md:text-base">
+              {intro.split('\n').map((line, i) => (
+                <>
+                  {i > 0 && <br />}
+                  {line}
+                </>
+              ))}
+            </p>
+          </div>
+        )
+      }
 
       <!-- Bottom editorial marker -->
       <div
         aria-hidden="true"
-        class="relative z-10 mt-8 hidden items-center gap-3 font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground/60 lg:flex"
+        class="relative z-10 mt-8 flex items-center gap-3 font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground/60"
       >
         <span class="h-px w-8 bg-border"></span>
         <span>Scroll to explore</span>
@@ -211,38 +196,38 @@ const resolvedStatsMeta = statsMeta ?? `${socialLinks.length} ACTIVE`
   </div>
 
   <!-- Mobile slot / built-in mobile social links -->
-  {(hasMobileSlot || hasBuiltinSocial) && (
-    <div
-      class="fade-up animation-delay-200 shrink-0 select-none border-t border-dashed border-border/50 bg-background/50 lg:hidden"
-    >
-      {hasMobileSlot ? (
-        <slot name="mobile" />
-      ) : (
-        <div class="p-6">
-          <div class="flex items-center justify-between font-mono text-[10px] uppercase tracking-widest text-muted-foreground/70">
-            <span>{statsLabel}</span>
-            <span>{resolvedStatsMeta}</span>
+  {
+    (hasMobileSlot || hasBuiltinSocial) && (
+      <div class="fade-up animation-delay-200 shrink-0 select-none border-t border-dashed border-border/50 bg-background/50 lg:hidden">
+        {hasMobileSlot ? (
+          <slot name="mobile" />
+        ) : (
+          <div class="p-6">
+            <div class="flex items-center justify-between font-mono text-[10px] uppercase tracking-widest text-muted-foreground/70">
+              <span>{statsLabel}</span>
+              <span>{resolvedStatsMeta}</span>
+            </div>
+            <div class="mt-4 grid grid-cols-2 gap-3">
+              {socialLinks.map((item) => (
+                <a
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="group flex items-center gap-2.5 border border-border/40 bg-background/50 px-4 py-3 transition-all duration-300 hover:border-primary/30 hover:bg-primary/5"
+                >
+                  <span class={`${item.icon} size-5 shrink-0 text-muted-foreground transition-colors group-hover:text-primary`} />
+                  <span class="truncate text-xs font-medium tracking-tight text-foreground">{item.name}</span>
+                  <span class="icon-[ph--arrow-up-right] ml-auto size-3.5 shrink-0 text-muted-foreground/30 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary" />
+                </a>
+              ))}
+            </div>
           </div>
-          <div class="mt-4 grid grid-cols-2 gap-3">
-            {socialLinks.map((item) => (
-              <a
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="group flex items-center gap-2.5 border border-border/40 bg-background/50 px-4 py-3 transition-all duration-300 hover:border-primary/30 hover:bg-primary/5"
-              >
-                <span class={`${item.icon} size-5 shrink-0 text-muted-foreground transition-colors group-hover:text-primary`} />
-                <span class="truncate text-xs font-medium tracking-tight text-foreground">{item.name}</span>
-                <span class="icon-[ph--arrow-up-right] ml-auto size-3.5 shrink-0 text-muted-foreground/30 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary" />
-              </a>
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
-  )}
+        )}
+      </div>
+    )
+  }
 
-  <!-- Bottom stats / built-in desktop social links -->
+  <!-- Bottom stats / built-in social links -->
   <footer
     class="relative hidden shrink-0 select-none border-t border-dashed border-border/50 bg-background/50 fade-up animation-delay-200 lg:block"
   >
@@ -253,72 +238,62 @@ const resolvedStatsMeta = statsMeta ?? `${socialLinks.length} ACTIVE`
       {resolvedStatsMeta && <span>{resolvedStatsMeta}</span>}
     </div>
 
-    {hasBottomSlot ? (
-      <slot name="bottom" />
-    ) : hasBuiltinSocial ? (
-      <div class="grid grid-cols-1 gap-px bg-border/40">
-        {socialLinks.map((item) => (
-          <a
-            href={item.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="group flex items-center gap-4 h-14 px-6 lg:px-8 xl:px-12 rounded-none bg-background hover:bg-primary/5 transition-all duration-300 text-left"
-          >
-            <span class={`${item.icon} size-5 shrink-0 text-muted-foreground group-hover:text-primary transition-colors`} />
-            <span class="text-[10px] font-mono font-medium text-muted-foreground group-hover:text-primary uppercase tracking-wider transition-colors">
-              {item.name || 'Link'}
-            </span>
-          </a>
-        ))}
-      </div>
-    ) : (
-      <>
-        {stats.length === 2 && (
-          <div class="flex">
-            {stats.map((stat, i) => (
-              <div
-                class={`stat-cell flex flex-1 flex-col items-start justify-center bg-background/50 px-6 py-6 transition-colors hover:bg-primary/5 lg:px-8 lg:py-8 xl:px-12 xl:py-10 ${i < stats.length - 1 ? 'border-r border-border/40' : ''}`}
-              >
-                <span class="stat-value font-black tracking-[-0.06em] text-foreground">
-                  {stat.value}
-                </span>
-                <span class="mt-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                  {stat.label}
-                </span>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {stats.length === 3 && (
-          <div class="flex flex-col">
+    {
+      hasBottomSlot ? (
+        <slot name="bottom" />
+      ) : hasBuiltinSocial ? (
+        <div class="grid grid-cols-1 gap-px bg-border/40">
+          {socialLinks.map((item) => (
+            <a
+              href={item.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group flex items-center gap-4 h-14 px-6 lg:px-8 xl:px-12 rounded-none bg-background hover:bg-primary/5 transition-all duration-300 text-left"
+            >
+              <span class={`${item.icon} size-5 shrink-0 text-muted-foreground group-hover:text-primary transition-colors`} />
+              <span class="text-[10px] font-mono font-medium text-muted-foreground group-hover:text-primary uppercase tracking-wider transition-colors">
+                {item.name || 'Link'}
+              </span>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <>
+          {stats.length === 2 && (
             <div class="flex">
-              {stats.slice(0, 2).map((stat, i) => (
+              {stats.map((stat, i) => (
                 <div
-                  class={`stat-cell flex flex-1 flex-col items-start justify-center border-b border-border/40 bg-background/50 px-6 py-6 transition-colors hover:bg-primary/5 lg:px-8 lg:py-8 xl:px-12 xl:py-10 ${i === 0 ? 'border-r border-border/40' : ''}`}
+                  class={`stat-cell flex flex-1 flex-col items-start justify-center bg-background/50 px-6 py-6 transition-colors hover:bg-primary/5 lg:px-8 lg:py-8 xl:px-12 xl:py-10 ${i < stats.length - 1 ? 'border-r border-border/40' : ''}`}
                 >
-                  <span class="stat-value font-black tracking-[-0.06em] text-foreground">
-                    {stat.value}
-                  </span>
-                  <span class="mt-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                    {stat.label}
-                  </span>
+                  <span class="stat-value font-black tracking-[-0.06em] text-foreground">{stat.value}</span>
+                  <span class="mt-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">{stat.label}</span>
                 </div>
               ))}
             </div>
+          )}
 
-            <div class="flex items-center justify-between bg-background/50 px-6 py-5 transition-colors hover:bg-primary/5 lg:px-8 lg:py-6 xl:px-12">
-              <span class="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
-                {stats[2].label}
-              </span>
-              <span class="text-sm font-black tracking-tight text-foreground">
-                {stats[2].value}
-              </span>
+          {stats.length === 3 && (
+            <div class="flex flex-col">
+              <div class="flex">
+                {stats.slice(0, 2).map((stat, i) => (
+                  <div
+                    class={`stat-cell flex flex-1 flex-col items-start justify-center border-b border-border/40 bg-background/50 px-6 py-6 transition-colors hover:bg-primary/5 lg:px-8 lg:py-8 xl:px-12 xl:py-10 ${i === 0 ? 'border-r border-border/40' : ''}`}
+                  >
+                    <span class="stat-value font-black tracking-[-0.06em] text-foreground">{stat.value}</span>
+                    <span class="mt-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">{stat.label}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div class="flex items-center justify-between bg-background/50 px-6 py-5 transition-colors hover:bg-primary/5 lg:px-8 lg:py-6 xl:px-12">
+                <span class="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">{stats[2].label}</span>
+                <span class="text-sm font-black tracking-tight text-foreground">{stats[2].value}</span>
+              </div>
             </div>
-          </div>
-        )}
-      </>
-    )}
+          )}
+        </>
+      )
+    }
   </footer>
 </aside>
 
@@ -340,6 +315,13 @@ const resolvedStatsMeta = statsMeta ?? `${socialLinks.length} ACTIVE`
     font-size: clamp(4.5rem, 12vw, 13rem);
   }
 
+  .editorial-title {
+    font-size: clamp(2.5rem, 9vw, 3.25rem);
+    line-height: 0.92;
+    font-weight: 900;
+    letter-spacing: -0.075em;
+  }
+
   .editorial-title-text {
     position: relative;
     z-index: 1;
@@ -350,14 +332,21 @@ const resolvedStatsMeta = statsMeta ?? `${socialLinks.length} ACTIVE`
     letter-spacing: -0.1em;
   }
 
+  .editorial-intro {
+    border-left: 3px solid var(--editorial-blue);
+  }
+
+  .brand-mark {
+    box-shadow: 4px 4px 0 hsl(var(--primary) / 0.15);
+  }
+
   .stat-value {
     font-size: clamp(1.75rem, 2.8vw, 3rem);
     line-height: 0.95;
     overflow-wrap: anywhere;
   }
 
-  /* Editorial treatment only applies from the desktop breakpoint up;
-     below that, the original mobile design is preserved. */
+  /* Editorial typography scales up with the available width. */
   @media (min-width: 1024px) {
     .editorial-title {
       font-size: clamp(3rem, 4.8vw, 5.75rem);
@@ -369,14 +358,6 @@ const resolvedStatsMeta = statsMeta ?? `${socialLinks.length} ACTIVE`
 
     .editorial-watermark span {
       font-size: clamp(6rem, 9vw, 10rem);
-    }
-
-    .editorial-intro {
-      border-left: 3px solid var(--editorial-blue);
-    }
-
-    .brand-mark {
-      box-shadow: 4px 4px 0 hsl(var(--primary) / 0.15);
     }
   }
 
