@@ -33,7 +33,7 @@ export default function LoginScreen() {
   }
 
   return (
-    <div className="px-6 lg:px-8 xl:px-12 lg:py-20 flex-1 flex flex-col">
+    <div className="flex flex-1 flex-col px-5 py-10 sm:px-8 lg:px-10 lg:py-14 xl:px-12">
       <div className="fade-up">
         {/* Section header in site style */}
         <div className={SECTION_HEADER_CLASS}>
@@ -41,7 +41,7 @@ export default function LoginScreen() {
             <span className={SECTION_NUM_CLASS}>01</span>
             <h2 className={SECTION_TITLE_CLASS}>Authenticate</h2>
           </div>
-          <span className={SECTION_META_CLASS}>// System_Login</span>
+          <span className={SECTION_META_CLASS}>System / Login</span>
         </div>
 
         <div className="grid xl:grid-cols-[minmax(0,1fr)_minmax(0,440px)] gap-10">

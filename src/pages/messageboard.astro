@@ -21,7 +21,7 @@ const { title, description, introduce } = MESSAGEBOARD_CONFIG
         { icon: 'icon-[ph--globe-hemisphere-west]', label: 'Public' },
       ]}
       intro={introduce}
-      statsLabel="// TRANSMISSION"
+      statsLabel="TRANSMISSION"
       statsMeta="OPEN"
       stats={[
         { value: '24/7', label: 'Uptime' },
@@ -29,14 +29,16 @@ const { title, description, introduce } = MESSAGEBOARD_CONFIG
       ]}
     />
 
-    <main class="w-full lg:w-2/3 z-10 flex flex-col fade-up animation-delay-150">
-      <div class="px-6 lg:px-8 xl:px-12 lg:py-20 flex-1 flex flex-col">
+    <main class="w-full lg:w-1/2 lg:flex-1 z-10 flex flex-col fade-up animation-delay-150">
+      <div class="px-5 py-10 sm:px-8 lg:px-10 lg:py-14 xl:px-12 flex-1 flex flex-col">
         <div class={SECTION_HEADER_CLASS}>
           <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>Leave a Message</h2></div>
-          <span class={SECTION_META_CLASS}>// Guest_Signals</span>
+          <span class={SECTION_META_CLASS}>Guest_Signals</span>
         </div>
 
-        <p class="text-sm md:text-base text-muted-foreground leading-relaxed max-w-2xl mb-10 fade-up animation-delay-200">
+        <p
+          class="mb-10 max-w-2xl border-l-2 border-primary pl-4 text-sm leading-relaxed text-muted-foreground fade-up animation-delay-200 md:text-base"
+        >
           {introduce}
         </p>
 

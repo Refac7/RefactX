@@ -33,7 +33,7 @@ const totalLinks = FRIENDS_LIST.length.toString().padStart(2, '0')
         { icon: 'icon-[ph--globe]', label: 'Web Ring' },
       ]}
       intro={introduce}
-      statsLabel="// NETWORK STATUS"
+      statsLabel="NETWORK STATUS"
       statsMeta={`${totalLinks} ACTIVE`}
       stats={[
         { value: totalLinks, label: 'Active Nodes' },
@@ -41,11 +41,11 @@ const totalLinks = FRIENDS_LIST.length.toString().padStart(2, '0')
       ]}
     />
 
-    <main class="w-full lg:w-2/3 z-10 flex flex-col fade-up animation-delay-150">
-      <div class="px-6 lg:px-8 xl:px-12 lg:py-20 flex-1 flex flex-col">
+    <main class="w-full lg:w-1/2 lg:flex-1 z-10 flex flex-col fade-up animation-delay-150">
+      <div class="px-5 py-10 sm:px-8 lg:px-10 lg:py-14 xl:px-12 flex-1 flex flex-col">
         <div class={SECTION_HEADER_CLASS}>
           <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>Directory</h2></div>
-          <span class={SECTION_META_CLASS}>// Node_Registry</span>
+          <span class={SECTION_META_CLASS}>Node_Registry</span>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3 gap-3 sm:gap-4 fade-up animation-delay-200">
@@ -56,12 +56,12 @@ const totalLinks = FRIENDS_LIST.length.toString().padStart(2, '0')
                   href={friend.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="friend-card group relative block border border-border/40 bg-background/50 p-4 sm:p-5 hover:bg-muted/20 hover:border-primary/30 hover:shadow-sm transition-all duration-300 min-h-[104px] hover:-translate-y-0.5 overflow-hidden"
-                  style={`animation-delay: ${index * 50}ms`}
+                  class="friend-card group relative block min-h-[104px] overflow-hidden border border-foreground/25 bg-background p-4 transition-colors duration-200 hover:border-primary hover:bg-muted/40 sm:p-5"
+                  style={`animation-delay: ${index * 40}ms`}
                 >
                   <span
                     aria-hidden="true"
-                    class="pointer-events-none absolute -bottom-4 right-1 hidden select-none text-6xl font-black leading-none tracking-tighter text-foreground/[0.04] transition-colors duration-300 group-hover:text-primary/[0.06] md:block"
+                    class="pointer-events-none absolute -bottom-4 right-1 hidden select-none font-mono text-6xl font-bold leading-none tracking-[-0.08em] text-foreground/[0.05] transition-colors duration-200 group-hover:text-primary/[0.1] md:block"
                   >
                     {String(index + 1).padStart(2, '0')}
                   </span>
@@ -69,16 +69,18 @@ const totalLinks = FRIENDS_LIST.length.toString().padStart(2, '0')
                     <img
                       src={friend.avatar}
                       alt={friend.name}
-                      class="size-12 shrink-0 rounded-xl object-cover ring-1 ring-border/50 bg-muted/30"
+                      class="size-12 shrink-0 border border-foreground/20 bg-muted object-cover grayscale transition-all duration-300 group-hover:grayscale-0"
                       loading="lazy"
                     />
                     <div class="flex min-w-0 flex-1 flex-col">
                       <div class="flex items-center justify-between gap-2">
-                        <h3 class="font-semibold text-sm text-foreground tracking-tight line-clamp-1">{friend.name}</h3>
-                        <span class="icon-[ph--arrow-up-right] size-4 shrink-0 text-muted-foreground/30 group-hover:text-primary transition-colors" />
+                        <h3 class="line-clamp-1 text-sm font-bold tracking-[-0.02em] text-foreground transition-colors group-hover:text-primary">
+                          {friend.name}
+                        </h3>
+                        <span class="icon-[ph--arrow-up-right] size-4 shrink-0 text-muted-foreground/30 transition-colors group-hover:text-primary" />
                       </div>
-                      <div class="text-xs font-medium text-muted-foreground line-clamp-1 mt-0.5">{friend.author}</div>
-                      <p class="text-xs text-muted-foreground leading-relaxed line-clamp-2 mt-1.5">
+                      <div class="mt-1 font-mono text-[9px] uppercase tracking-[0.14em] text-muted-foreground">{friend.author}</div>
+                      <p class="mt-1.5 line-clamp-2 text-xs leading-relaxed text-muted-foreground">
                         {friend.description || 'No description provided.'}
                       </p>
                     </div>
@@ -92,20 +94,20 @@ const totalLinks = FRIENDS_LIST.length.toString().padStart(2, '0')
             enableAdd ? (
               <a
                 href="#exchange-section"
-                class="group flex flex-col items-center justify-center p-4 sm:p-5 border border-dashed border-border/40 hover:border-primary/30 hover:bg-muted/20 transition-all duration-300 min-h-[104px]"
+                class="group flex min-h-[104px] flex-col items-center justify-center border border-dashed border-foreground/30 p-4 transition-colors duration-200 hover:border-primary hover:bg-muted/40 sm:p-5"
               >
-                <div class="size-10 flex items-center justify-center rounded bg-muted/50 mb-3 group-hover:bg-foreground group-hover:text-background transition-colors">
-                  <span class="icon-[ph--plus] size-4 text-muted-foreground group-hover:text-background transition-colors" />
+                <div class="mb-3 flex size-9 items-center justify-center border border-foreground/30 transition-colors group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground">
+                  <span class="icon-[ph--plus] size-4" />
                 </div>
-                <span class="text-sm font-semibold text-foreground tracking-tight">Add Connection</span>
-                <span class="text-xs text-muted-foreground mt-1">Submit your node</span>
+                <span class="text-sm font-bold tracking-[-0.02em] text-foreground">Add Connection</span>
+                <span class="mt-1 font-mono text-[9px] uppercase tracking-[0.14em] text-muted-foreground">Submit your node</span>
               </a>
             ) : (
-              <div class="flex flex-col items-center justify-center p-4 sm:p-5 border border-dashed border-border/40 bg-muted/10 min-h-[104px] select-none">
-                <div class="size-10 flex items-center justify-center rounded bg-background mb-3">
+              <div class="flex flex-col items-center justify-center border border-dashed border-foreground/20 bg-transparent p-4 select-none sm:p-5 min-h-[104px]">
+                <div class="mb-3 flex size-9 items-center justify-center border border-foreground/15">
                   <span class="icon-[ph--lock-key] size-4 text-muted-foreground/50" />
                 </div>
-                <span class="text-sm font-medium text-muted-foreground/60">Link Locked</span>
+                <span class="font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground/60">Link Locked</span>
               </div>
             )
           }
@@ -122,7 +124,7 @@ const totalLinks = FRIENDS_LIST.length.toString().padStart(2, '0')
                       <h2 class={SECTION_TITLE_CLASS}>Exchange Protocol</h2>
                     </>
                   </div>
-                  <span class={SECTION_META_CLASS}>// Handshake_Config</span>
+                  <span class={SECTION_META_CLASS}>Handshake_Config</span>
                 </div>
                 <div class="grid xl:grid-cols-2 gap-10 mt-6">
                   {/* 规则与联系方式 */}
@@ -149,29 +151,29 @@ const totalLinks = FRIENDS_LIST.length.toString().padStart(2, '0')
                       </ul>
                     </div>
 
-                    <div class="mt-8 p-6 border border-border/40 bg-muted/10">
-                      <span class="text-xs font-semibold text-foreground block mb-2">Direct Contact</span>
+                    <div class="mt-8 border border-foreground/25 bg-muted/20 p-5">
+                      <span class="mb-3 block font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground">Direct Contact</span>
                       <a
                         href={`mailto:${email}`}
-                        class="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors group"
+                        class="group inline-flex items-center gap-2 text-sm text-foreground transition-colors hover:text-primary"
                       >
-                        <span class="icon-[ph--envelope-simple] size-4 group-hover:text-primary transition-colors" />
-                        <span class="font-medium">{email}</span>
+                        <span class="icon-[ph--envelope-simple] size-4 text-primary" />
+                        <span class="font-mono text-xs">{email}</span>
                       </a>
                     </div>
                   </div>
 
                   {/* 右侧：站点配置信息 */}
                   <div class="relative">
-                    <div class="border border-border/40 bg-background overflow-hidden flex flex-col h-full">
-                      <div class="px-5 py-4 border-b border-border/40 bg-muted/20 flex justify-between items-center">
-                        <span class="font-semibold text-sm tracking-tight">Site Configuration</span>
-                        <span class="text-xs font-medium text-muted-foreground bg-background border border-border/40 px-2 py-0.5">
+                    <div class="flex h-full flex-col overflow-hidden border border-foreground/25 bg-background">
+                      <div class="flex items-center justify-between border-b border-foreground/20 bg-muted/30 px-5 py-3">
+                        <span class="text-sm font-bold tracking-[-0.02em]">Site Configuration</span>
+                        <span class="border border-foreground/25 bg-background px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
                           JSON
                         </span>
                       </div>
 
-                      <div class="p-5 space-y-3 flex-1">
+                      <div class="flex-1">
                         {[
                           { label: 'Name', value: sitename },
                           { label: 'Author', value: author },
@@ -179,17 +181,19 @@ const totalLinks = FRIENDS_LIST.length.toString().padStart(2, '0')
                           { label: 'Avatar', value: siteavatar },
                           { label: 'Description', value: myDescription },
                         ].map((item) => (
-                          <div class="flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-4 p-2 hover:bg-muted/30 transition-colors">
-                            <span class="text-muted-foreground text-xs font-medium w-20 shrink-0 pt-0.5 select-none">{item.label}</span>
-                            <span class="text-foreground text-sm font-mono break-all select-all">{item.value}</span>
+                          <div class="flex flex-col gap-1 border-b border-foreground/10 px-5 py-3 transition-colors last:border-b-0 hover:bg-muted/40 sm:flex-row sm:items-start sm:gap-4">
+                            <span class="w-20 shrink-0 select-none pt-0.5 font-mono text-[9px] uppercase tracking-[0.14em] text-muted-foreground">
+                              {item.label}
+                            </span>
+                            <span class="select-all break-all font-mono text-xs text-foreground">{item.value}</span>
                           </div>
                         ))}
                       </div>
 
-                      <div class="p-5 pt-0 mt-auto">
+                      <div class="mt-auto border-t border-foreground/20 p-4">
                         <button
                           id="copy-btn"
-                          class="copy-trigger w-full py-2.5 bg-foreground text-background hover:bg-foreground/90 transition-all text-sm font-semibold flex items-center justify-center gap-2"
+                          class="copy-trigger flex w-full items-center justify-center gap-2 bg-foreground py-2.5 text-sm font-bold text-background transition-colors hover:bg-primary hover:text-primary-foreground"
                           data-sitename={sitename}
                           data-author={author}
                           data-sitelink={sitelink}

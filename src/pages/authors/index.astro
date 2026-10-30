@@ -32,7 +32,7 @@ const lastUpdate = new Date().toLocaleDateString('en-US', { month: 'short', day:
         { icon: 'icon-[ph--arrows-clockwise]', label: lastUpdate },
       ]}
       intro={introduce}
-      statsLabel="// INDEX STATUS"
+      statsLabel="INDEX STATUS"
       statsMeta={`${totalAuthors} AUTHORS`}
       stats={[
         { value: totalAuthors, label: 'Authors' },
@@ -41,11 +41,11 @@ const lastUpdate = new Date().toLocaleDateString('en-US', { month: 'short', day:
       ]}
     />
 
-    <main class="w-full lg:w-2/3 z-10 flex flex-col fade-up animation-delay-150">
-      <div class="px-6 lg:px-8 xl:px-12 lg:py-20 flex-1">
+    <main class="w-full lg:w-1/2 lg:flex-1 z-10 flex flex-col fade-up animation-delay-150">
+      <div class="px-5 py-10 sm:px-8 lg:px-10 lg:py-14 xl:px-12 flex-1">
         <div class={SECTION_HEADER_CLASS}>
           <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>All Authors</h2></div>
-          <span class={SECTION_META_CLASS}>// Author_Cloud</span>
+          <span class={SECTION_META_CLASS}>Author_Cloud</span>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mt-8 fade-up animation-delay-200">
@@ -55,23 +55,20 @@ const lastUpdate = new Date().toLocaleDateString('en-US', { month: 'short', day:
               return (
                 <a
                   href={`/authors/${encodeURIComponent(author.name)}`}
-                  class="group relative flex flex-col justify-between p-6 bg-background/50 border border-border/40 hover:bg-muted/30 hover:border-primary/30 hover:shadow-sm transition-all duration-300 h-32 fade-up hover:-translate-y-0.5"
-                  style={`animation-delay: ${index * 50}ms`}
+                  class="group relative flex h-32 flex-col justify-between border border-foreground/25 bg-background p-5 transition-colors duration-200 fade-up hover:bg-foreground hover:text-background"
+                  style={`animation-delay: ${index * 40}ms`}
                   rel="noopener noreferrer"
                 >
-                  <div class="flex justify-between items-start z-10">
-                    <h3 class="font-semibold text-lg text-foreground group-hover:text-primary transition-colors tracking-tight">
+                  <div class="z-10 flex items-start justify-between">
+                    <h3 class="text-lg font-bold tracking-[-0.03em] text-current transition-colors group-hover:text-primary">
                       {author.name}
                     </h3>
-                    <span class="inline-flex items-center justify-center rounded bg-muted/60 px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+                    <span class="inline-flex items-center justify-center border border-current/30 px-2 py-0.5 font-mono text-[10px] tabular-nums text-current">
                       {author.count}
                     </span>
                   </div>
-                  <div class="w-full h-1.5 bg-muted/50 overflow-hidden rounded-full mt-4">
-                    <div
-                      class="h-full bg-primary/60 group-hover:bg-primary transition-all duration-500 ease-out"
-                      style={`width: ${percent}%`}
-                    />
+                  <div class="mt-4 h-1 w-full overflow-hidden bg-muted group-hover:bg-background/15">
+                    <div class="h-full bg-primary transition-all duration-500 ease-out" style={`width: ${percent}%`} />
                   </div>
                 </a>
               )
@@ -81,9 +78,9 @@ const lastUpdate = new Date().toLocaleDateString('en-US', { month: 'short', day:
 
         {
           authors.length === 0 && (
-            <div class="flex flex-col items-center justify-center py-24 border border-border/40 bg-muted/10 mt-8">
-              <span class="icon-[ph--warning-circle] size-10 text-muted-foreground/40 mb-4" />
-              <p class="text-sm text-muted-foreground">No authors found.</p>
+            <div class="mt-8 flex flex-col items-center justify-center border border-foreground/25 bg-transparent py-24">
+              <span class="icon-[ph--warning-circle] mb-4 size-8 text-muted-foreground/40" />
+              <p class="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">No authors found.</p>
             </div>
           )
         }

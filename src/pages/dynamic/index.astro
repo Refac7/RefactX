@@ -20,7 +20,7 @@ import PageAside from '~/components/base/PageAside.astro'
         { icon: 'icon-[ph--shield-check]', label: 'Verified' },
       ]}
       intro={DYNAMIC_CONFIG.introduce}
-      statsLabel="// STREAM STATUS"
+      statsLabel="STREAM STATUS"
       statsMeta="2 METRICS"
       stats={[
         { value: 'API', label: 'Data Source' },
@@ -28,14 +28,14 @@ import PageAside from '~/components/base/PageAside.astro'
       ]}
     />
 
-    <main class="w-full lg:w-2/3 z-10 flex flex-col fade-up animation-delay-100">
-      <div class="px-6 lg:px-8 xl:px-12 lg:py-20 flex-1">
+    <main class="w-full lg:w-1/2 lg:flex-1 z-10 flex flex-col fade-up animation-delay-100">
+      <div class="px-5 py-10 sm:px-8 lg:px-10 lg:py-14 xl:px-12 flex-1">
         <div class={SECTION_HEADER_CLASS}>
           <div class="flex items-center">
             <span class={SECTION_NUM_CLASS}>01</span>
             <h2 class={SECTION_TITLE_CLASS}>Timeline</h2>
           </div>
-          <span class={SECTION_META_CLASS}>// Signal_Stream</span>
+          <span class={SECTION_META_CLASS}>Signal_Stream</span>
         </div>
 
         <DynamicFeed client:load />

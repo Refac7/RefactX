@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content'
 import { SITE, SKILLSSHOWCASE_CONFIG, GITHUB_CONFIG, POSTS_CONFIG, BUILD_INFO_CONFIG } from '~/config.ts'
-import { cn, getWordCount, postsSort } from '~/lib/utils'
+import { getWordCount, postsSort } from '~/lib/utils'
 
 import Layout from '~/layouts/Layout.astro'
 import PageAside from '~/components/base/PageAside.astro'
@@ -30,7 +30,7 @@ const NAV_CARDS = [
   },
   { id: '02', title: 'Links', desc: 'Signal network', href: '/friends', icon: 'icon-[ph--planet]', status: 'Connected' },
   { id: '03', title: 'Projects', desc: 'Deployed modules', href: '/projects', icon: 'icon-[ph--stack]', status: 'Stable' },
-  { id: '04', title: 'Tags', desc: 'Core filters', href: '/tags', icon: 'icon-[ph--tag]', status: 'Verified' },
+  { id: '04', title: 'Tags', desc: 'Core filters', href: '/tags', icon: 'icon-[ph--tag]', status: 'Verified', wide: true },
 ]
 ---
 
@@ -38,205 +38,117 @@ const NAV_CARDS = [
   <div class="relative mx-auto flex min-h-screen max-w-[1920px] flex-col font-sans lg:flex-row lg:flex-nowrap">
     <PageAside showSocialLinks />
     <main class="z-10 flex w-full min-w-0 flex-col lg:w-1/2 lg:basis-1/2 lg:shrink-0 lg:grow-0">
-      <div class="mt-4 flex flex-1 flex-col gap-14 px-5 sm:gap-16 sm:px-6 lg:mt-0 lg:gap-20 lg:px-8 lg:py-20 xl:gap-24 xl:px-12">
-        <div>
-          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-b border-border/40 pb-4">
-            <div class="flex items-center gap-3">
-              <span class="inline-flex items-center justify-center rounded-md size-7 bg-primary/10 text-primary font-mono text-xs font-bold"
-                >01</span
-              >
-              <h2 class="text-xl md:text-2xl font-bold text-foreground tracking-tight">Navigation</h2>
+      <div class="flex flex-1 flex-col gap-14 px-5 py-10 sm:px-8 lg:gap-16 lg:px-10 lg:py-14 xl:px-12">
+        <!-- 01 / Navigation -->
+        <section>
+          <div class="mb-6 flex flex-col justify-between gap-3 border-b-2 border-foreground pb-3 sm:flex-row sm:items-end">
+            <div class="flex items-center">
+              <span class="swiss-index mr-3">01</span>
+              <h2 class="text-xl font-bold tracking-[-0.04em] text-foreground md:text-2xl">Navigation</h2>
             </div>
-            <span class="text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest hidden sm:inline-block"
-              >// System_Modules</span
-            >
+            <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Index / System_Modules</span>
           </div>
-          <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 lg:gap-6">
+
+          <div class="grid grid-cols-1 gap-px border border-foreground/25 bg-foreground/25 sm:grid-cols-2 lg:grid-cols-3">
             {
               NAV_CARDS.map((card) => (
-                <>
-                  {/* Mobile · original card design */}
-                  <a
-                    href={card.href}
-                    class="group relative flex sm:hidden flex-col justify-between border border-border/40 bg-background/50 p-6 transition-all duration-300 hover:bg-muted/20 hover:border-primary/30 hover:shadow-sm"
-                  >
-                    <div class="absolute right-4 top-4 flex items-center gap-1.5 opacity-60 transition-opacity group-hover:opacity-100">
-                      <span class="relative flex size-1.5">
-                        {card.status === 'Active' && (
-                          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-success/70 opacity-75" />
-                        )}
-                        <span
-                          class={`relative inline-flex rounded-full size-1.5 ${card.status === 'Active' ? 'bg-success' : 'bg-primary/50'}`}
-                        />
-                      </span>
-                      <span class="text-[10px] font-mono uppercase tracking-wider text-muted-foreground transition-colors group-hover:text-foreground">
-                        {card.status}
-                      </span>
-                    </div>
-                    <div class="mb-8 flex size-12 items-center justify-center border border-primary/10 bg-primary/5 transition-all duration-300 group-hover:scale-110 group-hover:bg-primary/10">
-                      <span class={cn('size-6 text-primary/80 transition-colors group-hover:text-primary', card.icon)} />
-                    </div>
-                    <div>
-                      <div class="mb-1 flex items-center justify-between">
-                        <h3 class="text-base font-semibold tracking-tight text-foreground">{card.title}</h3>
-                        <span class="icon-[ph--arrow-up-right] size-4 text-muted-foreground/30 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary" />
-                      </div>
-                      <p class="line-clamp-1 text-sm leading-relaxed text-muted-foreground">{card.desc}</p>
-                    </div>
-                  </a>
-
-                  {/* Desktop · redesigned card */}
-                  <a
-                    href={card.href}
-                    class={cn(
-                      'group relative hidden min-h-[190px] flex-col justify-between overflow-hidden rounded-xl border border-border/40 bg-background/50 p-6 transition-all duration-300 hover:border-primary/30 hover:bg-muted/20 hover:shadow-sm sm:flex',
-                      card.featured && 'lg:col-span-2 lg:min-h-[230px]'
-                    )}
-                  >
-                    {/* Ghost index watermark */}
-                    <span
-                      aria-hidden="true"
-                      class="pointer-events-none absolute -bottom-8 -right-2 select-none text-[8rem] font-black leading-none tracking-tighter text-foreground/[0.04] transition-transform duration-500 group-hover:-translate-y-1"
-                    >
-                      {card.id}
+                <a
+                  href={card.href}
+                  class={`group relative flex min-h-[180px] flex-col justify-between bg-background p-5 transition-colors duration-200 hover:bg-foreground hover:text-background ${
+                    card.featured ? 'sm:col-span-2 lg:min-h-[230px]' : ''
+                  } ${card.wide ? 'sm:col-span-2' : ''}`}
+                >
+                  <div class="flex items-start justify-between">
+                    <span class="flex size-9 items-center justify-center border border-current/25 text-current transition-colors group-hover:border-primary group-hover:text-primary">
+                      <span class={`${card.icon} size-5`} />
                     </span>
+                    <span class="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground transition-colors group-hover:text-background/50">
+                      {card.status}
+                    </span>
+                  </div>
 
-                    {/* Top meta row */}
-                    <div class="relative z-10 flex items-center justify-between">
-                      <span class="font-mono text-[10px] tracking-widest text-muted-foreground/60">/{card.id}</span>
-                      <span class="inline-flex items-center gap-1.5">
-                        <span class="relative flex size-1.5">
-                          {card.status === 'Active' && (
-                            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-success/70 opacity-75" />
-                          )}
-                          <span
-                            class={`relative inline-flex size-1.5 rounded-full ${card.status === 'Active' ? 'bg-success' : 'bg-primary/50'}`}
-                          />
-                        </span>
-                        <span class="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/70">{card.status}</span>
-                      </span>
-                    </div>
-
-                    <div class="relative z-10 mt-auto">
-                      {/* Icon plate */}
-                      <div
-                        class={cn(
-                          'mb-5 flex size-12 items-center justify-center rounded-lg border border-primary/15 bg-primary/[0.06] transition-all duration-300 group-hover:scale-110 group-hover:bg-primary/10',
-                          card.featured && 'lg:size-14'
-                        )}
+                  <div class="mt-8">
+                    <div class="mb-2 font-mono text-[10px] tracking-[0.18em] text-primary">/{card.id}</div>
+                    <div class="flex items-end justify-between gap-3">
+                      <h3
+                        class={`font-bold leading-none tracking-[-0.05em] text-current ${card.featured ? 'text-3xl lg:text-4xl' : 'text-2xl'}`}
                       >
-                        <span
-                          class={cn(
-                            'size-6 text-primary/80 transition-colors group-hover:text-primary',
-                            card.featured && 'lg:size-7',
-                            card.icon
-                          )}
-                        />
-                      </div>
-
-                      {/* Title + description */}
-                      <div class="flex items-center justify-between gap-3">
-                        <h3 class={cn('font-semibold tracking-tight text-foreground', card.featured ? 'text-2xl' : 'text-lg')}>
-                          {card.title}
-                        </h3>
-                        <span class="icon-[ph--arrow-up-right] size-4 shrink-0 text-muted-foreground/30 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary" />
-                      </div>
-                      <p class="mt-1.5 font-mono text-[11px] uppercase tracking-wider text-muted-foreground/60">{card.desc}</p>
+                        {card.title}
+                      </h3>
+                      <span class="icon-[ph--arrow-up-right] mb-0.5 size-5 shrink-0 text-current opacity-50 transition-all group-hover:opacity-100" />
                     </div>
-                  </a>
-                </>
+                    <p class="mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground transition-colors group-hover:text-background/55">
+                      {card.desc}
+                    </p>
+                  </div>
+                </a>
               ))
             }
           </div>
-        </div>
-        <div class="fade-up" style="animation-delay: 200ms">
-          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-b border-border/40 pb-4">
-            <div class="flex items-center gap-3">
-              <span class="inline-flex items-center justify-center rounded-md size-7 bg-primary/10 text-primary font-mono text-xs font-bold"
-                >02</span
-              ><h2 class="text-xl md:text-2xl font-bold text-foreground tracking-tight">Recent Logs</h2>
-            </div><a
+        </section>
+
+        <!-- 02 / Recent Logs -->
+        <section class="fade-up" style="animation-delay: 150ms">
+          <div class="mb-6 flex flex-col justify-between gap-3 border-b-2 border-foreground pb-3 sm:flex-row sm:items-end">
+            <div class="flex items-center">
+              <span class="swiss-index mr-3">02</span>
+              <h2 class="text-xl font-bold tracking-[-0.04em] text-foreground md:text-2xl">Recent Logs</h2>
+            </div>
+            <a
               href="/posts"
-              class="group hidden lg:flex items-center gap-1.5 text-xs font-mono font-medium text-muted-foreground hover:text-primary transition-colors"
-              ><span class="uppercase tracking-wider">View_All</span><span
-                class="icon-[ph--arrow-right] group-hover:translate-x-1 transition-transform"></span></a
+              class="group hidden items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:text-primary lg:flex"
+              >View_All<span class="icon-[ph--arrow-right] transition-transform group-hover:translate-x-1"></span></a
             >
           </div>
           <div><List {posts} {type} {heroImageLayout} /></div>
-        </div>
+        </section>
+
         {
           ENABLED && (
-            <div class="fade-up" style="animation-delay: 300ms">
-              <>
-                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-b border-border/40 pb-4">
-                  <>
-                    <div class="flex items-center gap-3">
-                      <>
-                        <span class="inline-flex items-center justify-center rounded-md size-7 bg-primary/10 text-primary font-mono text-xs font-bold">
-                          03
-                        </span>
-                        <h2 class="text-xl md:text-2xl font-bold text-foreground tracking-tight">Activity</h2>
-                      </>
-                    </div>
-                    <span class="text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest hidden sm:inline-block">
-                      // GitHub_Trace
-                    </span>
-                  </>
+            <section class="fade-up" style="animation-delay: 250ms">
+              <div class="mb-6 flex flex-col justify-between gap-3 border-b-2 border-foreground pb-3 sm:flex-row sm:items-end">
+                <div class="flex items-center">
+                  <span class="swiss-index mr-3">03</span>
+                  <h2 class="text-xl font-bold tracking-[-0.04em] text-foreground md:text-2xl">Activity</h2>
                 </div>
-                <div class="bg-background/50 hover:bg-muted/10 transition-colors">
-                  <GithubContributions
-                    username={GITHUB_USERNAME}
-                    tooltipEnabled={TOOLTIP_ENABLED}
-                    client:visible
-                    transition:animate="none"
-                  />
-                </div>
-              </>
-            </div>
+                <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">GitHub / Contribution_Trace</span>
+              </div>
+              <div class="border border-foreground/25">
+                <GithubContributions username={GITHUB_USERNAME} tooltipEnabled={TOOLTIP_ENABLED} client:visible transition:animate="none" />
+              </div>
+            </section>
           )
         }
+
         {
           SKILLS_ENABLED && SKILLS_DATA.length > 0 && (
-            <div class="fade-up" style="animation-delay: 400ms">
-              <>
-                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-b border-border/40 pb-4">
-                  <>
-                    <div class="flex items-center gap-3">
-                      <>
-                        <span class="inline-flex items-center justify-center rounded-md size-7 bg-primary/10 text-primary font-mono text-xs font-bold">
-                          04
-                        </span>
-                        <h2 class="text-xl md:text-2xl font-bold text-foreground tracking-tight">Tech Stack</h2>
-                      </>
-                    </div>
-                    <span class="text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest hidden sm:inline-block">
-                      // Skill_Radar
-                    </span>
-                  </>
+            <section class="fade-up" style="animation-delay: 350ms">
+              <div class="mb-6 flex flex-col justify-between gap-3 border-b-2 border-foreground pb-3 sm:flex-row sm:items-end">
+                <div class="flex items-center">
+                  <span class="swiss-index mr-3">04</span>
+                  <h2 class="text-xl font-bold tracking-[-0.04em] text-foreground md:text-2xl">Tech Stack</h2>
                 </div>
-                <div class="[&_.skill-card]:border-border/40 [&_.skill-card]:bg-background/50 hover:[&_.skill-card]:bg-primary/5 hover:[&_.skill-card]:border-primary/20 [&_.skill-card]:shadow-sm [&_.skill-card]:transition-all duration-300">
-                  <SkillsShowcase skillsData={SKILLS_DATA} />
-                </div>
-              </>
-            </div>
+                <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Capability / Skill_Radar</span>
+              </div>
+              <div class="[&_.skill-card]:border-foreground/25 [&_.skill-card]:bg-background">
+                <SkillsShowcase skillsData={SKILLS_DATA} />
+              </div>
+            </section>
           )
         }
+
         {
           BUILD_INFO_ENABLED && BUILD_COMPONENTS.length > 0 && (
-            <div class="fade-up" style="animation-delay: 500ms">
-              <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 border-b border-border/40 pb-4">
-                <div class="flex items-center gap-3">
-                  <span class="inline-flex items-center justify-center rounded-md size-7 bg-primary/10 text-primary font-mono text-xs font-bold">
-                    05
-                  </span>
-                  <h2 class="text-xl md:text-2xl font-bold text-foreground tracking-tight">Build Info</h2>
+            <section class="fade-up" style="animation-delay: 450ms">
+              <div class="mb-6 flex flex-col justify-between gap-3 border-b-2 border-foreground pb-3 sm:flex-row sm:items-end">
+                <div class="flex items-center">
+                  <span class="swiss-index mr-3">05</span>
+                  <h2 class="text-xl font-bold tracking-[-0.04em] text-foreground md:text-2xl">Build Info</h2>
                 </div>
-                <span class="text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest hidden sm:inline-block">
-                  // Component_Manifest
-                </span>
+                <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">System / Component_Manifest</span>
               </div>
               <BuildInfo components={BUILD_COMPONENTS} totalWords={totalWords} />
-            </div>
+            </section>
           )
         }
       </div>

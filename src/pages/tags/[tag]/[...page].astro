@@ -45,7 +45,7 @@ const progressPercent = Math.round((page.currentPage / page.lastPage) * 100)
         { icon: 'icon-[ph--hash]', label: `#${tag}` },
         { icon: 'icon-[ph--article]', label: `${page.total} Found` },
       ]}
-      statsLabel="// FILTER STATUS"
+      statsLabel="FILTER STATUS"
       statsMeta={`${page.total} FOUND`}
       stats={[
         { value: String(page.total), label: 'Found' },
@@ -53,42 +53,41 @@ const progressPercent = Math.round((page.currentPage / page.lastPage) * 100)
       ]}
     />
 
-    <main class="w-full lg:w-2/3 z-10 flex flex-col fade-up animation-delay-100">
-      <div class="px-6 lg:px-8 xl:px-12 lg:py-20 flex-1 flex flex-col">
+    <main class="w-full lg:w-1/2 lg:flex-1 z-10 flex flex-col fade-up animation-delay-100">
+      <div class="px-5 py-10 sm:px-8 lg:px-10 lg:py-14 xl:px-12 flex-1 flex flex-col">
         <div class={SECTION_HEADER_CLASS}>
           <div class="flex items-center">
             <span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>Filtered Results</h2>
           </div>
-          <span class={SECTION_META_CLASS}>// Query_Output</span>
+          <span class={SECTION_META_CLASS}>Query_Output</span>
         </div>
 
         <!-- Breadcrumb -->
-        <div class="text-sm text-muted-foreground flex items-center gap-2 flex-wrap -mt-4 mb-6">
-          <a href="/" class="hover:text-foreground transition-colors">home</a>
-          <span class="text-muted-foreground/40">/</span>
-          <a href="/tags" class="hover:text-foreground transition-colors">tags</a>
-          <span class="text-muted-foreground/40">/</span>
-          <span class="text-foreground font-medium rounded bg-muted/50 px-2 py-0.5">{tag}</span>
+        <div class="-mt-4 mb-6 flex flex-wrap items-center gap-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+          <a href="/" class="transition-colors hover:text-primary">home</a>
+          <span class="text-foreground/25">/</span>
+          <a href="/tags" class="transition-colors hover:text-primary">tags</a>
+          <span class="text-foreground/25">/</span>
+          <span class="bg-primary px-2 py-0.5 font-medium text-primary-foreground">{tag}</span>
         </div>
 
         <div class="space-y-8 min-h-[40vh] flex-1 fade-up animation-delay-200">
           <List posts={page.data} type={POSTS_CONFIG.tagsPageConfig.type} heroImageLayout={POSTS_CONFIG.tagsPageConfig?.heroImageLayout} />
         </div>
 
-        <div class="pt-8 border-t border-border/40">
-          <div class="flex justify-between text-xs text-muted-foreground mb-3">
-            <span>Reading Progress</span><span>{progressPercent}%</span>
+        <div class="border-t-2 border-foreground pt-6">
+          <div class="mb-2 flex justify-between font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground">
+            <span>Reading Progress</span><span class="tabular-nums text-foreground">{progressPercent}%</span>
           </div>
-          <div class="w-full h-1.5 bg-muted/50 overflow-hidden rounded-full mb-8">
-            <div class="h-full bg-primary transition-all duration-700 ease-out" style={`width: ${progressPercent}%`}></div>
+          <div class="mb-8 h-1.5 w-full overflow-hidden bg-muted">
+            <div class="h-full bg-primary transition-all duration-500 ease-out" style={`width: ${progressPercent}%`}></div>
           </div>
-          <div class="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div class="hidden md:flex flex-col gap-1">
-              <span class="text-sm font-medium text-foreground">Navigation</span><span class="text-xs text-muted-foreground"
-                >Select a page to continue.</span
-              >
+          <div class="flex flex-col items-center justify-between gap-6 md:flex-row">
+            <div class="hidden flex-col gap-1 md:flex">
+              <span class="font-mono text-[10px] uppercase tracking-[0.16em] text-foreground">Navigation</span>
+              <span class="text-xs text-muted-foreground">Select a page to continue.</span>
             </div>
-            <div class="flex-1 w-full md:w-auto flex justify-center md:justify-end"><Pagination {page} baseUrl="/posts" /></div>
+            <div class="flex w-full flex-1 justify-center md:w-auto md:justify-end"><Pagination {page} baseUrl={`/tags/${tag}`} /></div>
           </div>
         </div>
       </div>

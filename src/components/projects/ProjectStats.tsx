@@ -88,14 +88,14 @@ export default function ProjectStats({ repoUrl, initialStar = 0, initialFork = 0
   }, [repoUrl])
 
   return (
-    <div className={cn('flex gap-4 transition-all duration-500', loading ? 'opacity-50' : 'opacity-100')}>
-      <div className="flex items-center gap-1" title="Stars">
-        <span className={cn('icon-[ph--star-fill] size-3', error ? 'text-muted-foreground' : 'text-warning/80')}></span>
-        <span className="font-mono">{stats.stars}</span>
+    <div className={cn('flex gap-4 transition-opacity duration-300', loading ? 'opacity-50' : 'opacity-100')}>
+      <div className="flex items-center gap-1 font-mono text-[10px] tabular-nums text-muted-foreground" title="Stars">
+        <span className={cn('icon-[ph--star-fill] size-3', error ? 'text-muted-foreground' : 'text-primary')}></span>
+        <span>{stats.stars}</span>
       </div>
-      <div className="flex items-center gap-1" title="Forks">
-        <span className="icon-[ph--git-fork-fill] size-3 text-muted-foreground"></span>
-        <span className="font-mono">{stats.forks}</span>
+      <div className="flex items-center gap-1 font-mono text-[10px] tabular-nums text-muted-foreground" title="Forks">
+        <span className="icon-[ph--git-fork-fill] size-3"></span>
+        <span>{stats.forks}</span>
       </div>
     </div>
   )

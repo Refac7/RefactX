@@ -71,17 +71,24 @@ const ThemeToggle = () => {
   // 未挂载前渲染幽灵图标占位，防止排版抖动
   if (!mounted) {
     return (
-      <button className="relative size-5 flex items-center justify-center cursor-pointer" aria-label="Toggle Theme">
-        <div className="relative size-5 flex items-center justify-center opacity-0">
-          <span className="icon-[tabler--device-desktop-question] size-5"></span>
+      <button
+        className="relative inline-flex size-8 cursor-pointer items-center justify-center border border-transparent text-foreground hover:border-foreground hover:text-primary"
+        aria-label="Toggle Theme"
+      >
+        <div className="relative flex size-4 items-center justify-center opacity-0">
+          <span className="icon-[tabler--device-desktop-question] size-4"></span>
         </div>
       </button>
     )
   }
 
   return (
-    <button onClick={handleClick} className="relative size-5 flex items-center justify-center cursor-pointer" aria-label="Toggle Theme">
-      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.9 }} className="relative size-5 flex items-center justify-center">
+    <button
+      onClick={handleClick}
+      className="relative inline-flex size-8 cursor-pointer items-center justify-center border border-transparent text-foreground hover:border-foreground hover:text-primary"
+      aria-label="Toggle Theme"
+    >
+      <motion.div whileHover={{ scale: 1 }} whileTap={{ scale: 0.92 }} className="relative flex size-4 items-center justify-center">
         <motion.div
           className="absolute inset-0"
           variants={iconVariants}
@@ -89,7 +96,7 @@ const ThemeToggle = () => {
           animate={controlsSun}
           transition={{ duration: 0.2, ease: 'easeOut' }}
         >
-          <span className="icon-[tabler--sun-filled] size-5 text-foreground hover:text-foreground transition-colors"></span>
+          <span className="icon-[tabler--sun-filled] size-4 text-current transition-colors"></span>
         </motion.div>
         <motion.div
           className="absolute inset-0"
@@ -98,7 +105,7 @@ const ThemeToggle = () => {
           animate={controlsSystem}
           transition={{ duration: 0.2, ease: 'easeOut' }}
         >
-          <span className="icon-[tabler--device-desktop-question] size-5 text-foreground hover:text-foreground transition-colors"></span>
+          <span className="icon-[tabler--device-desktop-question] size-4 text-current transition-colors"></span>
         </motion.div>
         <motion.div
           className="absolute inset-0"
@@ -107,7 +114,7 @@ const ThemeToggle = () => {
           animate={controlsMoon}
           transition={{ duration: 0.2, ease: 'easeOut' }}
         >
-          <span className="icon-[tabler--moon-filled] size-5 text-foreground hover:text-foreground transition-colors"></span>
+          <span className="icon-[tabler--moon-filled] size-4 text-current transition-colors"></span>
         </motion.div>
       </motion.div>
     </button>

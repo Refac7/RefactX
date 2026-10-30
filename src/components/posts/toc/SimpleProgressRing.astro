@@ -6,27 +6,32 @@ interface Props {
 }
 
 const { class: className = '', size = 32, strokeWidth = 2 } = Astro.props
-
-const radius = (size - strokeWidth) / 2
-const circumference = 2 * Math.PI * radius
 ---
 
 <div class={`inline-block ${className}`}>
-  <svg width={size} height={size} class="transform -rotate-90">
-    <circle cx={size / 2} cy={size / 2} r={radius} stroke="currentColor" stroke-width={strokeWidth} fill="none" class="text-border/80"
-    ></circle>
-    <circle
-      cx={size / 2}
-      cy={size / 2}
-      r={radius}
+  <svg width={size} height={size} class="block" aria-hidden="true">
+    <rect
+      x={strokeWidth / 2}
+      y={strokeWidth / 2}
+      width={size - strokeWidth}
+      height={size - strokeWidth}
+      stroke="currentColor"
+      stroke-width={strokeWidth}
+      fill="none"
+      class="text-border/40"></rect>
+    <rect
+      x={strokeWidth / 2}
+      y={strokeWidth / 2}
+      width={size - strokeWidth}
+      height={size - strokeWidth}
       stroke="currentColor"
       stroke-width={strokeWidth}
       fill="none"
       class="text-primary transition-all duration-150 ease-out"
-      stroke-linecap="round"
-      stroke-dasharray={circumference}
-      stroke-dashoffset={circumference}
-      data-progress-ring></circle>
+      pathLength="100"
+      stroke-dasharray="100"
+      stroke-dashoffset="100"
+      data-progress-ring></rect>
   </svg>
 </div>
 
@@ -42,9 +47,8 @@ const circumference = 2 * Math.PI * radius
       const scrollPercent = Math.min(Math.max(scrollTop / docHeight, 0), 1)
 
       progressRings.forEach((ring) => {
-        const circumference = 2 * Math.PI * parseFloat(ring.getAttribute('r') || '0')
-        const offset = circumference - scrollPercent * circumference
-        ;(ring as SVGCircleElement).style.strokeDashoffset = offset.toString()
+        const offset = 100 - scrollPercent * 100
+        ;(ring as SVGRectElement).style.strokeDashoffset = offset.toString()
       })
     }
 

@@ -5,39 +5,39 @@
 
 /* ===== Color Variables | 颜色变量 ===== */
 .markdown {
-  --text: #3f3f46; /* zinc-700 */
-  --text-deep: #09090b; /* zinc-950 */
-  --heading: #09090b; /* zinc-950 */
-  --links: #09090b; /* zinc-950 */
-  --links-border: #e4e4e7; /* zinc-200 */
-  --links-hover-border: #a1a1aa; /* zinc-400 */
-  --anchor: var(--color-primary); /* blue-500 */
-  --hr-color: #e4e4e7; /* zinc-200 */
-  --blockquote-border: #e4e4e7; /* zinc-200 */
-  --blockquote-bg: #fafafa; /* zinc-50 */
-  --table-text: #18181b; /* zinc-900 */
-  --inline-code-bg: #f4f4f5; /* zinc-100 */
-  --inline-code-text: #18181b; /* zinc-900 */
-  --inline-code-border: #e4e4e7; /* zinc-200 */
-  --caption: #71717a; /* zinc-500 */
+  --text: hsl(var(--muted-foreground));
+  --text-deep: hsl(var(--foreground));
+  --heading: hsl(var(--foreground));
+  --links: hsl(var(--foreground));
+  --links-border: hsl(var(--border) / 0.25);
+  --links-hover-border: hsl(var(--primary));
+  --anchor: var(--color-primary);
+  --hr-color: hsl(var(--border) / 0.2);
+  --blockquote-border: hsl(var(--primary));
+  --blockquote-bg: transparent;
+  --table-text: hsl(var(--foreground));
+  --inline-code-bg: hsl(var(--muted));
+  --inline-code-text: hsl(var(--foreground));
+  --inline-code-border: hsl(var(--border) / 0.2);
+  --caption: hsl(var(--muted-foreground));
 }
 
 .dark .markdown {
-  --text: #a1a1aa; /* zinc-400 */
-  --text-deep: #fafafa; /* zinc-50 */
-  --heading: #fafafa; /* zinc-50 */
-  --links: #fafafa; /* zinc-50 */
-  --links-border: #3f3f46; /* zinc-700 */
-  --links-hover-border: #a1a1aa; /* zinc-400 */
-  --anchor: var(--color-primary); /* blue-400 */
-  --hr-color: #27272a; /* zinc-800 */
-  --blockquote-border: #3f3f46; /* zinc-700 */
-  --blockquote-bg: #18181b; /* zinc-900 */
-  --table-text: #fafafa; /* zinc-50 */
-  --inline-code-bg: #27272a; /* zinc-800 */
-  --inline-code-text: #e4e4e7; /* zinc-200 */
-  --inline-code-border: #3f3f46; /* zinc-700 */
-  --caption: #a1a1aa; /* zinc-400 */
+  --text: hsl(var(--muted-foreground));
+  --text-deep: hsl(var(--foreground));
+  --heading: hsl(var(--foreground));
+  --links: hsl(var(--foreground));
+  --links-border: hsl(var(--border) / 0.2);
+  --links-hover-border: hsl(var(--primary));
+  --anchor: var(--color-primary);
+  --hr-color: hsl(var(--border) / 0.16);
+  --blockquote-border: hsl(var(--primary));
+  --blockquote-bg: transparent;
+  --table-text: hsl(var(--foreground));
+  --inline-code-bg: hsl(var(--muted));
+  --inline-code-text: hsl(var(--foreground));
+  --inline-code-border: hsl(var(--border) / 0.16);
+  --caption: hsl(var(--muted-foreground));
 }
 
 /* ===== Base Styles | 基础样式 ===== */
@@ -73,17 +73,21 @@
 }
 .markdown h2 {
   font-size: 1.5em;
-  line-height: 1.3333333;
+  font-weight: 700;
+  padding-top: 0.7em;
+  border-top: 1px solid var(--hr-color);
+  letter-spacing: -0.035em;
 }
 .markdown h3 {
   font-size: 1.25em;
-  font-weight: 500;
+  font-weight: 700;
   margin-top: 1.6em;
   margin-bottom: 0.6em;
+  letter-spacing: -0.02em;
 }
 .markdown h4 {
   font-size: 1.125em;
-  font-weight: 500;
+  font-weight: 700;
 }
 .markdown h5 {
   font-size: 1em;
@@ -126,6 +130,7 @@
 }
 .markdown a:hover {
   border-bottom-color: var(--links-hover-border);
+  color: var(--anchor);
 }
 .markdown a code {
   color: inherit;
@@ -191,11 +196,11 @@
 .markdown blockquote {
   font-weight: 400;
   color: var(--text);
-  background-color: var(--blockquote-bg);
-  border-left: 3px solid var(--blockquote-border);
-  border-radius: 0 0.5rem 0.5rem 0;
+  background-color: transparent;
+  border-left: 4px solid var(--blockquote-border);
   margin: 1.6em 0;
-  padding: 1em 1.25em;
+  padding: 0.25em 0 0.25em 1.25em;
+  font-style: normal;
 }
 
 .markdown blockquote > * {

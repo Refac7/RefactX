@@ -12,42 +12,42 @@ const showImage = Astro.props.showImage
 const hasImage = Boolean(post.data.heroImage) && post.data.heroImage !== 'none'
 const imagePosition = post.data.heroImageLayout || heroImageLayout || 'right'
 const isReverse = imagePosition === 'right'
-const sideWidthClass = 'md:w-[280px] lg:w-[320px]'
+const sideWidthClass = 'md:w-[260px] lg:w-[300px]'
 const watermarkIndex = String(index).padStart(2, '0')
 ---
 
 <article
-  class="group relative flex flex-col md:flex-row bg-background/50 border border-border/40 overflow-hidden h-full transition-all duration-300 hover:border-primary/30 hover:shadow-sm hover:-translate-y-0.5"
+  class="group relative flex h-full flex-col border-b border-foreground/25 bg-background transition-colors duration-200 before:absolute before:inset-y-0 before:left-0 before:z-10 before:w-[3px] before:bg-primary before:opacity-0 before:transition-opacity before:content-[''] hover:bg-muted/40 hover:before:opacity-100 md:flex-row"
 >
   {
     hasImage && showImage && (
       <div
         class={`
-	        hidden md:flex flex-col relative shrink-0 h-auto
+	        relative hidden shrink-0 md:flex md:flex-col
 	        ${sideWidthClass}
-	        ${isReverse ? 'md:order-2 border-l border-border/40' : 'md:order-1 border-r border-border/40'}
+	        ${isReverse ? 'order-2 border-l border-foreground/25' : 'order-1 border-r border-foreground/25'}
 	      `}
       >
-        <a href={`/posts/${post.id}`} class="block w-full h-full relative overflow-hidden bg-muted group/img rounded-none">
+        <a href={`/posts/${post.id}`} class="relative block size-full overflow-hidden bg-muted">
           <img
             src={post.data.heroImage || ''}
             alt={post.data.title}
             loading="eager"
             decoding="async"
-            class="absolute inset-0 w-full h-full object-cover grayscale transition-all duration-700 ease-out group-hover/img:grayscale-0 group-hover/img:scale-105 rounded-none"
+            class="absolute inset-0 size-full object-cover grayscale transition-all duration-500 ease-out group-hover:grayscale-0"
           />
         </a>
       </div>
     )
   }
 
-  <div class="relative flex flex-col w-full p-6 flex-1 overflow-hidden">
+  <div class="relative flex w-full flex-1 flex-col overflow-hidden p-5 lg:p-6">
     <!-- Ghost index watermark -->
     {
       showIndex && (
         <span
           aria-hidden="true"
-          class="pointer-events-none absolute -bottom-8 -right-2 hidden select-none text-[8rem] font-black leading-none tracking-tighter text-foreground/[0.04] transition-colors duration-300 group-hover:text-primary/[0.06] md:block"
+          class="pointer-events-none absolute -bottom-6 right-1 hidden select-none font-bold leading-none tracking-[-0.08em] text-foreground/[0.05] transition-colors duration-200 group-hover:text-primary/[0.09] md:block md:text-[7rem]"
         >
           {watermarkIndex}
         </span>
@@ -55,14 +55,22 @@ const watermarkIndex = String(index).padStart(2, '0')
     }
 
     <!-- Meta row -->
-    <div class="relative z-10 flex items-center justify-between gap-4 mb-4">
-      <div class="flex flex-wrap items-center gap-x-2.5 gap-y-1 font-mono text-[11px] tracking-wide text-muted-foreground/70">
-        <time>{formatDate(post.data.pubDate)}</time>
+    <div class="relative z-10 flex items-center justify-between gap-4">
+      <div class="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+        {
+          showIndex && (
+            <>
+              <span class="font-semibold text-primary">{watermarkIndex}</span>
+              <span class="h-2.5 w-px bg-foreground/25" />
+            </>
+          )
+        }
+        <time class="tabular-nums">{formatDate(post.data.pubDate)}</time>
         {
           post.data.updatedDate && (
             <>
-              <span class="text-border">/</span>
-              <time class="flex items-center gap-1">
+              <span class="text-foreground/25">/</span>
+              <time class="flex items-center gap-1 tabular-nums">
                 <span class="icon-[ph--clock-clockwise] size-3" />
                 {formatDate(post.data.updatedDate)}
               </time>
@@ -72,7 +80,7 @@ const watermarkIndex = String(index).padStart(2, '0')
         {
           post.data.author && (
             <>
-              <span class="text-border">/</span>
+              <span class="text-foreground/25">/</span>
               <a href={`/authors/${post.data.author}`} class="transition-colors hover:text-primary">
                 {post.data.author}
               </a>
@@ -84,34 +92,43 @@ const watermarkIndex = String(index).padStart(2, '0')
     </div>
 
     <!-- Title + description -->
-    <a href={`/posts/${post.id}`} class="group/title relative z-10 block outline-none">
+    <a href={`/posts/${post.id}`} class="group/title relative z-10 mt-4 block outline-none">
       <h2
-        class="text-xl md:text-2xl font-bold leading-snug tracking-tight text-foreground transition-colors group-hover/title:text-primary"
+        class="text-xl font-bold leading-[1.08] tracking-[-0.035em] text-foreground transition-colors group-hover/title:text-primary md:text-2xl"
       >
         {post.data.title}
       </h2>
       {
         post.data.description && (
-          <p class="mt-3 text-sm text-muted-foreground leading-relaxed line-clamp-2 max-w-[68ch]">{post.data.description}</p>
+          <p class="mt-2.5 line-clamp-2 max-w-[68ch] text-sm leading-relaxed text-muted-foreground">{post.data.description}</p>
         )
       }
     </a>
 
     <!-- Footer: tags + read more -->
-    <div class="relative z-10 mt-auto flex flex-wrap items-center justify-between gap-3 pt-6">
-      <div class="flex flex-wrap items-center gap-2">
+    <div class="relative z-10 mt-auto flex flex-wrap items-center justify-between gap-3 pt-5">
+      <div class="flex flex-wrap items-center gap-1.5">
         {
           post.data.tags
             ?.slice(0, 3)
-            .map((tag) => <PostTag tag={tag} class="border-border/40 bg-muted/50 text-xs text-muted-foreground px-2.5 py-1" />)
+            .map((tag) => (
+              <PostTag
+                tag={tag}
+                class="border border-foreground/25 bg-transparent px-2 py-0.5 font-mono text-[10px] text-muted-foreground hover:border-primary hover:bg-primary hover:text-primary-foreground"
+              />
+            ))
         }
-        {post.data.tags && post.data.tags.length > 3 && <span class="text-xs text-muted-foreground/60">+{post.data.tags.length - 3}</span>}
+        {
+          post.data.tags && post.data.tags.length > 3 && (
+            <span class="font-mono text-[10px] text-muted-foreground/60">+{post.data.tags.length - 3}</span>
+          )
+        }
       </div>
       <span
-        class="inline-flex shrink-0 items-center gap-1 text-xs font-medium text-muted-foreground transition-colors group-hover:text-primary"
+        class="inline-flex shrink-0 items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground transition-colors group-hover:text-primary"
       >
         {POSTS_CONFIG.readMoreText}
-        <span class="icon-[ph--arrow-right] transition-transform duration-300 group-hover:translate-x-1"></span>
+        <span class="icon-[ph--arrow-right] transition-transform duration-200 group-hover:translate-x-1"></span>
       </span>
     </div>
   </div>

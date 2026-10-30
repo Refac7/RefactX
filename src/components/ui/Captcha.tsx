@@ -65,27 +65,27 @@ const Captcha = ({ onVerify, className }: CaptchaProps) => {
     <div
       onClick={handleVerify}
       className={cn(
-        'flex items-center gap-3 p-2 px-3 border border-border/60 bg-background/50 cursor-pointer select-none transition-all',
-        status === 'idle' ? 'hover:border-primary/40 hover:bg-muted/30' : 'cursor-default',
-        status === 'error' && 'border-danger/50 bg-danger/5',
+        'flex cursor-pointer select-none items-center gap-3 border border-foreground/40 bg-background p-3 transition-colors',
+        status === 'idle' ? 'hover:border-primary hover:bg-muted/40' : 'cursor-default',
+        status === 'error' && 'border-danger bg-danger/5',
         className
       )}
     >
-      <div className="flex items-center justify-center size-5">
+      <div className="flex size-5 items-center justify-center">
         {status === 'idle' && <span className="icon-[ph--square] size-5 text-muted-foreground/60"></span>}
         {(status === 'loading' || status === 'computing') && (
-          <span className="icon-[ph--spinner-gap] size-5 text-primary animate-spin"></span>
+          <span className="icon-[ph--spinner-gap] size-5 animate-spin text-primary"></span>
         )}
-        {status === 'success' && <span className="icon-[ph--check-circle-fill] size-5 text-success animate-in zoom-in-50"></span>}
+        {status === 'success' && <span className="icon-[ph--check-circle-fill] size-5 text-success"></span>}
         {status === 'error' && <span className="icon-[ph--warning-circle-fill] size-5 text-danger"></span>}
       </div>
-      <span className="text-xs font-medium text-muted-foreground">
+      <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
         {status === 'idle'
           ? 'Verify you are human'
           : status === 'loading'
             ? 'Connecting to edge...'
             : status === 'computing'
-              ? 'Securing connection...' // 增加一个计算中的文案
+              ? 'Securing connection...'
               : status === 'success'
                 ? 'Verification complete'
                 : 'Verification failed, retry'}

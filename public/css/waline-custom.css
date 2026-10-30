@@ -11,8 +11,8 @@
   --waline-disable-color: hsl(var(--muted-foreground) / 0.5) !important;
   --waline-info-color: hsl(var(--muted-foreground)) !important;
   --waline-code-bg-color: hsl(var(--muted) / 0.4) !important;
-  --waline-border-radius: 0.75rem !important;
-  --waline-avatar-radius: 50% !important;
+  --waline-border-radius: 0 !important;
+  --waline-avatar-radius: 0 !important;
 }
 
 #waline .wl-panel:focus-within {
@@ -23,7 +23,7 @@
 .wl-panel {
   margin: 0rem !important;
   background-color: var(--waline-bgcolor);
-  border-color: var(--waline-border-color);
+  border: 1px solid hsl(var(--border) / 0.3) !important;
   border-radius: var(--waline-border-radius);
 }
 
@@ -40,7 +40,7 @@
 }
 
 .wl-btn {
-  border-radius: 0.5rem !important;
+  border-radius: 0 !important;
 }
 
 /* 评论组件内部元素统一圆角（头像保持圆形） */
@@ -49,13 +49,13 @@
 #waline .wl-emoji-popup,
 #waline .wl-reaction-votes,
 #waline .wl-content pre {
-  border-radius: 0.75rem !important;
+  border-radius: 0 !important;
 }
 
 #waline .wl-card .wl-badge,
 #waline .wl-login-nick,
 #waline .wl-content :not(pre) > code {
-  border-radius: 0.375rem !important;
+  border-radius: 0 !important;
 }
 
 .wl-actions {
@@ -63,7 +63,7 @@
 }
 
 .wl-header-item {
-  border-bottom: 1px dashed var(--waline-border-color) !important;
+  border-bottom: 1px solid var(--waline-border-color) !important;
   padding: 0.5rem 0rem !important;
 }
 
@@ -95,12 +95,24 @@
 }
 
 #waline .wl-btn {
-  font-weight: 500;
-  transition: opacity 0.2s;
+  border-radius: 0 !important;
+  font-family: var(--font-geist-mono) !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
 }
 
 #waline .wl-btn:hover {
-  opacity: 0.8;
+  opacity: 0.85;
+}
+
+#waline .wl-header-item label,
+#waline .wl-login-nick {
+  font-family: var(--font-geist-mono) !important;
+  font-size: 10px !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
 }
 
 #waline .wl-content,

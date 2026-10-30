@@ -114,37 +114,39 @@ export default function GithubContributions({ username, tooltipEnabled }: Props)
     }, []) || []
 
   const getLevelClass = (count: number) => {
-    if (count === 0) return 'bg-muted/30 border-border/40'
-    if (count < 5) return 'bg-primary/30 border-primary/20'
-    if (count < 10) return 'bg-primary/50 border-primary/30'
-    if (count < 20) return 'bg-primary/70 border-primary/50'
-    return 'bg-primary border-primary/80'
+    if (count === 0) return 'bg-muted border-foreground/10'
+    if (count < 5) return 'bg-primary/25 border-primary/20'
+    if (count < 10) return 'bg-primary/45 border-primary/30'
+    if (count < 20) return 'bg-primary/70 border-primary/40'
+    return 'bg-primary border-primary'
   }
 
   return (
     <TooltipProvider>
-      <div className="w-full flex flex-col items-center select-none font-sans mt-2">
-        <div className="flex justify-between items-end w-full px-1 mb-4 opacity-80 hover:opacity-100 transition-opacity duration-300">
+      <div className="mt-0 flex w-full flex-col items-center p-5 select-none font-sans">
+        <div className="mb-5 flex w-full items-end justify-between gap-4 border-b border-foreground/15 pb-3">
           <div className="flex items-center gap-3">
+            <span className="size-2 bg-primary" />
             <div className="flex flex-col">
-              <span className="text-xs text-muted-foreground font-medium">Activity</span>
-              <span className="text-sm font-semibold text-foreground">@{username}</span>
+              <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-muted-foreground">Activity</span>
+              <span className="text-sm font-bold tracking-[-0.01em] text-foreground">@{username}</span>
             </div>
           </div>
 
           <div className="flex flex-col items-end">
-            <div className="flex items-center gap-1.5 mb-0.5">
-              <span className={cn('size-1.5 rounded-full', loading ? 'bg-warning' : error ? 'bg-danger' : 'bg-success')} />
-              <span className="text-xs text-muted-foreground font-medium">Contributions</span>
+            <div className="mb-0.5 flex items-center gap-1.5">
+              <span className={cn('size-1.5', loading ? 'bg-warning' : error ? 'bg-danger' : 'bg-success')} />
+              <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-muted-foreground">Contributions</span>
             </div>
-            <span className="text-sm font-semibold text-foreground">
-              {loading ? '---' : totalCount} <span className="text-xs font-normal text-muted-foreground">in last year</span>
+            <span className="text-sm font-bold tabular-nums text-foreground">
+              {loading ? '---' : totalCount}{' '}
+              <span className="font-mono text-[9px] font-normal uppercase tracking-[0.1em] text-muted-foreground">in last year</span>
             </span>
           </div>
         </div>
 
         <div ref={containerRef} className="w-full overflow-x-auto scrollbar-hide pb-2">
-          <div className="grid grid-flow-col gap-0.75 w-max mx-auto">
+          <div className="mx-auto grid w-max grid-flow-col gap-0.75">
             {weeks.map((week, weekIndex) => (
               <div key={weekIndex} className="grid grid-rows-7 gap-0.75">
                 {week.map((contribution, dayIndex) => {
@@ -156,7 +158,7 @@ export default function GithubContributions({ username, tooltipEnabled }: Props)
 
                   return (
                     <Tooltip key={dayIndex} content={tooltipText} disabled={!tooltipEnabled || error}>
-                      <div className={cn('size-3 xl:size-5 border transition-colors duration-300', getLevelClass(count))} />
+                      <div className={cn('size-3 border transition-colors duration-150 xl:size-5', getLevelClass(count))} />
                     </Tooltip>
                   )
                 })}

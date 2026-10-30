@@ -6,51 +6,52 @@ import HeaderLink from '~/components/base/HeaderLink.astro'
 import SearchSwitch from '~/components/base/SearchSwitch.astro'
 import { Image } from 'astro:assets'
 import favicon from '../../public/favicon.webp'
-import { CMS_CONFIG } from '~/config'
+import { CMS_CONFIG, SITE } from '~/config'
 ---
 
-<header class="fixed top-0 left-0 right-0 z-40 bg-background/70 backdrop-blur-xl border-b border-border/40">
-  <div
-    class="pointer-events-none absolute inset-0 opacity-[0.06] dark:opacity-[0.08]"
-    style="background-image: repeating-linear-gradient(45deg, currentColor 0, currentColor 1px, transparent 1px, transparent 10px);"
-    aria-hidden="true"
-  >
-  </div>
-  <div class="relative mx-auto flex justify-between px-6 lg:px-8 xl:px-12 py-8">
-    <div class="flex gap-3 sm:gap-6 items-center shrink-0">
-      <a href="/" class="pointer-events-auto select-none" transition:persist>
-        <Image src={favicon} width={56} height={56} alt="Logo" class="w-8 h-8 border-2 border-transparent" loading="eager" />
+<header class="fixed top-0 left-0 right-0 z-40 border-b-2 border-foreground bg-background">
+  <div class="mx-auto flex items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-10 lg:py-4">
+    <div class="flex min-w-0 items-center gap-4 sm:gap-8">
+      <a href="/" class="pointer-events-auto flex shrink-0 select-none items-center gap-3" transition:persist aria-label={SITE.title}>
+        <span class="flex size-9 items-center justify-center bg-foreground p-1.5">
+          <Image src={favicon} width={56} height={56} alt="Logo" class="size-full invert object-contain dark:invert-0" loading="eager" />
+        </span>
+        <span class="hidden min-w-0 flex-col leading-none sm:flex">
+          <span class="truncate text-[13px] font-bold uppercase tracking-[0.14em] text-foreground">{SITE.title || 'RefactX'}</span>
+          <span class="mt-1.5 font-mono text-[9px] uppercase tracking-[0.24em] text-muted-foreground">Independent / Digital</span>
+        </span>
       </a>
 
-      <div class="flex gap-1 md:hidden">
+      <div class="flex items-center gap-1 md:hidden">
         {
-          HEADER_LINKS.slice(0, 2).map((link) => (
+          HEADER_LINKS.slice(0, 1).map((link) => (
             <HeaderLink href={link.url} background>
               {link.name}
             </HeaderLink>
           ))
         }
 
-        {/* 超过 2 个链接时，生成下拉菜单折叠按钮 */}
+        {/* 超过 1 个链接时，生成下拉菜单折叠按钮 */}
         {
-          HEADER_LINKS.length > 2 && (
-            <div class="relative flex items-center h-full -ml-1">
+          HEADER_LINKS.length > 1 && (
+            <div class="relative flex items-center">
               <button
                 id="mobile-menu-btn"
-                class="flex items-center justify-center gap-1.5 px-3 h-9 border border-transparent bg-transparent text-muted-foreground transition-colors focus:outline-none hover:text-primary"
+                class="flex size-8 items-center justify-center border border-foreground/30 bg-transparent text-foreground transition-colors hover:border-primary hover:text-primary focus:outline-none"
+                aria-label="More navigation"
               >
-                <span class="icon-[ph--caret-down-bold] size-3 transition-transform duration-300" id="mobile-menu-icon" />
+                <span class="icon-[ph--caret-down-bold] size-3 transition-transform duration-200" id="mobile-menu-icon" />
               </button>
 
               {/* 下拉悬浮面板 */}
               <div
                 id="mobile-menu-dropdown"
-                class="absolute top-full left-0 mt-3 w-30 bg-background/95 backdrop-blur-md border border-border/60 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] opacity-0 invisible -translate-y-2.5 transition-all duration-300 flex flex-col p-1.5 z-100"
+                class="absolute top-full left-0 z-100 mt-3 flex w-44 flex-col border-2 border-foreground bg-background opacity-0 invisible -translate-y-1 transition-all duration-200"
               >
-                {HEADER_LINKS.slice(2).map((link) => (
+                {HEADER_LINKS.slice(1).map((link) => (
                   <a
                     href={link.url}
-                    class="px-4 py-3 text-xs font-mono font-bold uppercase tracking-widest text-muted-foreground hover:text-primary hover:bg-muted/40 hover:border-primary transition-all"
+                    class="border-b border-foreground/15 px-4 py-3 font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-foreground last:border-b-0 hover:bg-primary hover:text-primary-foreground"
                   >
                     {link.name}
                   </a>
@@ -61,7 +62,7 @@ import { CMS_CONFIG } from '~/config'
         }
       </div>
 
-      <div class="hidden gap-1 md:flex">
+      <nav class="hidden items-center gap-1 md:flex" aria-label="Primary">
         {
           HEADER_LINKS.map((link) => (
             <HeaderLink href={link.url} background>
@@ -69,29 +70,31 @@ import { CMS_CONFIG } from '~/config'
             </HeaderLink>
           ))
         }
-      </div>
+      </nav>
     </div>
-    <div class="flex gap-2 items-center" transition:persist="header-theme-toggle">
+
+    <div class="flex shrink-0 items-center gap-1.5 sm:gap-2" transition:persist="header-theme-toggle">
+      <span class="mr-2 hidden font-mono text-[9px] uppercase tracking-[0.2em] text-muted-foreground lg:inline">Menu / 01</span>
       <SearchSwitch />
       <a
         href="/rss.xml"
         target="_blank"
-        class="inline-flex items-center justify-center hover:scale-105 duration-200"
+        class="inline-flex size-8 items-center justify-center border border-transparent text-foreground transition-colors hover:border-foreground hover:text-primary"
         aria-label="RSS Feed"
         title="RSS Feed"
       >
-        <span class="icon-[material-symbols--rss-feed] size-5"></span>
+        <span class="icon-[material-symbols--rss-feed] size-4"></span>
       </a>
 
       {
         CMS_CONFIG.enableCMS && (
           <a
             href="/admin"
-            class="inline-flex items-center justify-center hover:scale-105 duration-200"
+            class="inline-flex size-8 items-center justify-center border border-transparent text-foreground transition-colors hover:border-foreground hover:text-primary"
             aria-label="Admin Dashboard"
             title="Admin Panel"
           >
-            <span class="icon-[material-symbols--admin-panel-settings-outline] size-5" />
+            <span class="icon-[material-symbols--admin-panel-settings-outline] size-4" />
           </a>
         )
       }
@@ -119,13 +122,13 @@ import { CMS_CONFIG } from '~/config'
       }
 
       var openMenu = function () {
-        dropdown.classList.remove('opacity-0', 'invisible', 'translate-y-[-10px]')
+        dropdown.classList.remove('opacity-0', 'invisible', '-translate-y-1')
         dropdown.classList.add('opacity-100', 'visible', 'translate-y-0')
         if (icon) icon.classList.add('rotate-180')
       }
 
       var closeMenu = function () {
-        dropdown.classList.add('opacity-0', 'invisible', 'translate-y-[-10px]')
+        dropdown.classList.add('opacity-0', 'invisible', '-translate-y-1')
         dropdown.classList.remove('opacity-100', 'visible', 'translate-y-0')
         if (icon) icon.classList.remove('rotate-180')
       }

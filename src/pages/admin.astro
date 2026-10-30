@@ -42,7 +42,7 @@ const description = 'Authorized Personnel Only'
         { icon: 'icon-[ph--github-logo]', label: 'GitHub' },
       ]}
       intro="验证身份以进入 RefactX 内容管理后台——管理文章、配置数据与部署流程喵～ (・ω・)ノ"
-      statsLabel="// SYSTEM_MODULES"
+      statsLabel="System Modules"
       statsMeta="2 ACTIVE"
       stats={[
         { value: 'Posts', label: 'Markdown pipeline' },
@@ -50,7 +50,7 @@ const description = 'Authorized Personnel Only'
       ]}
     />
 
-    <main class="w-full lg:w-2/3 z-10 flex flex-col fade-up animation-delay-100">
+    <main class="w-full lg:w-1/2 lg:flex-1 z-10 flex flex-col fade-up animation-delay-100">
       <AdminDashboard client:only="react" />
     </main>
   </div>

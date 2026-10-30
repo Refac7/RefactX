@@ -7,20 +7,19 @@ type Props = {
   [key: string]: any
 }
 
-const { href, class: className, ...props }: Props = Astro.props
+const { href, class: className, ...props } = Astro.props
 ---
 
 <a
   {href}
   class={cn(
-    'group relative flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-muted-foreground transition-colors hover:text-primary py-1',
+    'group relative inline-flex items-center gap-2 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-current transition-colors hover:text-primary',
     className
   )}
   {...props}
 >
-  {/* Hover 时左侧出现的装饰块 */}
-  <span class="h-1.5 w-1.5 bg-primary opacity-0 group-hover:opacity-100 transition-opacity duration-200"></span>
-  <span class="relative z-10 border-b border-transparent group-hover:border-primary/50 transition-colors">
+  <span class="h-1 w-1 shrink-0 bg-current opacity-30 transition-opacity group-hover:bg-primary group-hover:opacity-100"></span>
+  <span class="relative z-10 border-b border-transparent transition-colors group-hover:border-current">
     <slot />
   </span>
 </a>

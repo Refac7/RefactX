@@ -11,12 +11,12 @@ const { skillsData }: Props = Astro.props
 const duplicateSkills = (skills: Skill[]) => [...skills, ...skills, ...skills, ...skills]
 ---
 
-<div class="relative py-2 px-2 max-md:px-0">
+<div class="relative max-md:px-0">
   {
     skillsData.map((row: SkillData) => {
       const duplicatedSkills = duplicateSkills(row.skills)
       return (
-        <div class="relative w-full overflow-hidden my-3 group">
+        <div class="group relative my-0 w-full overflow-hidden border-b border-foreground/25 first:border-t">
           <div
             class={cn(
               'flex w-max will-change-transform',
@@ -27,14 +27,14 @@ const duplicateSkills = (skills: Skill[]) => [...skills, ...skills, ...skills, .
             style="transform: translateZ(0); -webkit-transform: translateZ(0);"
           >
             {duplicatedSkills.map((skill) => (
-              <div class="safari-item group flex items-center gap-2.5 px-4 py-2.5 mx-2 border border-border/40 bg-background/50 hover:bg-muted/30 transition-all duration-300">
+              <div class="safari-item group flex items-center gap-2.5 border-r border-foreground/20 px-5 py-3 transition-colors hover:bg-foreground hover:text-background">
                 <span
                   class={cn(
-                    'flex items-center justify-center w-4 h-4 text-foreground/70 group-hover:text-foreground transition-colors',
+                    'flex size-4 items-center justify-center text-foreground/70 transition-colors group-hover:text-primary',
                     skill.icon
                   )}
                 />
-                <span class="font-sans text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">
+                <span class="font-mono text-[10px] font-medium uppercase tracking-[0.12em] text-muted-foreground transition-colors group-hover:text-background">
                   {skill.name}
                 </span>
               </div>
