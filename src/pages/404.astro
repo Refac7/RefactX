@@ -3,40 +3,33 @@ import Layout from '~/layouts/Layout.astro'
 ---
 
 <Layout title="404 Not Found" description="The page could not be found.">
-  <div class="relative min-h-screen flex flex-col p-6 lg:p-12 font-sans overflow-hidden fade-up">
-    <div class="absolute top-6 left-6 lg:top-12 lg:left-12 flex items-center gap-2">
-      <span class="size-2 rounded-full bg-danger"></span>
-      <span class="text-xs font-medium text-foreground tracking-tight">System Status</span>
-    </div>
+  <div class="page-shell">
+    <main class="relative flex min-h-[calc(100svh-76px)] items-center justify-center overflow-hidden px-5 py-16">
+      <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+        <div class="absolute left-1/2 top-1/3 h-72 w-72 -translate-x-1/2 rounded-full bg-primary/20 blur-3xl"></div>
+        <span
+          class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 select-none text-[34vw] font-black leading-none tracking-tighter text-foreground/[0.035]"
+          >404</span
+        >
+      </div>
 
-    <div class="absolute top-6 right-6 lg:top-12 lg:right-12">
-      <span class="text-xs font-medium text-muted-foreground">Error Code: 404</span>
-    </div>
-
-    <div class="absolute bottom-6 left-6 lg:bottom-12 lg:left-12 z-20">
-      <button
-        onclick="history.back()"
-        class="inline-flex items-center justify-center border border-border/40 bg-background px-5 py-2 text-xs font-semibold text-foreground shadow-sm hover:bg-muted/50 transition-colors"
-      >
-        Go Back
-      </button>
-    </div>
-
-    <div class="absolute bottom-6 right-6 lg:bottom-12 lg:right-12 z-20">
-      <a
-        href="/"
-        class="inline-flex items-center justify-center bg-foreground px-5 py-2 text-xs font-semibold text-background shadow-sm hover:bg-foreground/90 transition-colors"
-      >
-        Return Home
-      </a>
-    </div>
-
-    <div class="flex-1 flex flex-col items-center justify-center max-w-2xl mx-auto z-10 w-full text-center">
-      <h1 class="text-[8rem] sm:text-[12rem] font-bold tracking-tighter text-foreground leading-none mb-4 select-none">404</h1>
-      <h2 class="text-xl sm:text-2xl font-semibold tracking-tight text-foreground mb-4">Page Not Found</h2>
-      <p class="text-sm sm:text-base text-muted-foreground max-w-md mx-auto leading-relaxed">
-        The page you are looking for doesn't exist, has been moved, or is currently unavailable.
-      </p>
-    </div>
+      <div class="relative z-10 mx-auto max-w-xl text-center">
+        <span class="eyebrow eyebrow-dot">Lost in the void</span>
+        <p class="mt-8 font-display text-[clamp(5rem,18vw,10rem)] font-extrabold leading-[0.8] tracking-[-0.08em] text-foreground">
+          4<span class="text-primary">0</span>4
+        </p>
+        <h1 class="mt-6 font-display text-2xl font-bold tracking-tight sm:text-3xl">这一页去旅行了</h1>
+        <p class="mx-auto mt-4 max-w-md text-sm leading-relaxed text-muted-foreground">
+          你寻找的页面不存在、已经被移动，或者暂时藏起来了。不如回到首页，重新出发。
+        </p>
+        <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <a href="/" class="btn btn-primary">回到首页 <span class="icon-[ph--house] size-4"></span></a>
+          <button type="button" onclick="history.back()" class="btn btn-ghost">
+            返回上一页
+            <span class="icon-[ph--arrow-u-up-left] size-4"></span>
+          </button>
+        </div>
+      </div>
+    </main>
   </div>
 </Layout>

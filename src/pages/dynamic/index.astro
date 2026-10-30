@@ -7,8 +7,9 @@ import PageAside from '~/components/base/PageAside.astro'
 ---
 
 <Layout title={DYNAMIC_CONFIG.title} description={DYNAMIC_CONFIG.introduce}>
-  <div class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
+  <div class="page-shell relative font-sans min-h-screen">
     <PageAside
+      image="/photos/250711-2.webp"
       statusText="Live Sync"
       statusVariant="success"
       title={DYNAMIC_CONFIG.title}
@@ -20,7 +21,7 @@ import PageAside from '~/components/base/PageAside.astro'
         { icon: 'icon-[ph--shield-check]', label: 'Verified' },
       ]}
       intro={DYNAMIC_CONFIG.introduce}
-      statsLabel="// STREAM STATUS"
+      statsLabel="同步状态"
       statsMeta="2 METRICS"
       stats={[
         { value: 'API', label: 'Data Source' },
@@ -33,9 +34,9 @@ import PageAside from '~/components/base/PageAside.astro'
         <div class={SECTION_HEADER_CLASS}>
           <div class="flex items-center">
             <span class={SECTION_NUM_CLASS}>01</span>
-            <h2 class={SECTION_TITLE_CLASS}>Timeline</h2>
+            <h2 class={SECTION_TITLE_CLASS}>时间线</h2>
           </div>
-          <span class={SECTION_META_CLASS}>// Signal_Stream</span>
+          <span class={SECTION_META_CLASS}>动态流</span>
         </div>
 
         <DynamicFeed client:load />

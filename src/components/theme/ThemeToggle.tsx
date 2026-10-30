@@ -72,8 +72,8 @@ const ThemeToggle = () => {
   if (!mounted) {
     return (
       <button className="relative size-5 flex items-center justify-center cursor-pointer" aria-label="Toggle Theme">
-        <div className="relative size-5 flex items-center justify-center opacity-0">
-          <span className="icon-[tabler--device-desktop-question] size-5"></span>
+        <div className="relative size-5 flex items-center justify-center">
+          <span className="icon-[ph--monitor] size-5"></span>
         </div>
       </button>
     )
@@ -89,7 +89,7 @@ const ThemeToggle = () => {
           animate={controlsSun}
           transition={{ duration: 0.2, ease: 'easeOut' }}
         >
-          <span className="icon-[tabler--sun-filled] size-5 text-foreground hover:text-foreground transition-colors"></span>
+          <span className="icon-[ph--sun] size-5 text-foreground hover:text-foreground transition-colors"></span>
         </motion.div>
         <motion.div
           className="absolute inset-0"
@@ -98,7 +98,7 @@ const ThemeToggle = () => {
           animate={controlsSystem}
           transition={{ duration: 0.2, ease: 'easeOut' }}
         >
-          <span className="icon-[tabler--device-desktop-question] size-5 text-foreground hover:text-foreground transition-colors"></span>
+          <span className="icon-[ph--monitor] size-5 text-foreground hover:text-foreground transition-colors"></span>
         </motion.div>
         <motion.div
           className="absolute inset-0"
@@ -107,7 +107,7 @@ const ThemeToggle = () => {
           animate={controlsMoon}
           transition={{ duration: 0.2, ease: 'easeOut' }}
         >
-          <span className="icon-[tabler--moon-filled] size-5 text-foreground hover:text-foreground transition-colors"></span>
+          <span className="icon-[ph--moon] size-5 text-foreground hover:text-foreground transition-colors"></span>
         </motion.div>
       </motion.div>
     </button>

@@ -1,5 +1,5 @@
 ---
-import { SITE, SOCIAL_LINKS } from '~/config'
+import { SOCIAL_LINKS } from '~/config'
 
 export interface StatItem {
   value: string
@@ -28,16 +28,18 @@ interface Props {
   identityTags?: IdentityTag[]
   /** Intro / description paragraph */
   intro?: string
-  /** Label for the bottom stats section */
+  /** Label for the stats section */
   statsLabel?: string
-  /** Right-side metadata for the stats section header (auto-derived from social links if omitted) */
+  /** Right-side metadata for the stats section (auto-derived from social links if omitted) */
   statsMeta?: string
-  /** Stats cells in the bottom bar (2–3 items) */
+  /** Stats cells (2–3 items) */
   stats?: StatItem[]
-  /** Built-in social link list (defaults to site config) */
+  /** Built-in social link list */
   socialLinks?: typeof SOCIAL_LINKS
-  /** Toggle the built-in social link list when no slot overrides it (opt-in) */
+  /** Toggle the built-in social link list */
   showSocialLinks?: boolean
+  /** Optional hero background image */
+  image?: string
 }
 
 const {
@@ -51,399 +53,419 @@ const {
     { icon: 'icon-[ph--code]', label: 'Developer' },
     { icon: 'icon-[ph--pen-nib]', label: 'Creator' },
   ],
-  intro = '欢迎光临喵～ (・ω・)ノ，本站基于 Astro v6 构建，记录技术、分享生活。',
-  statsLabel = '// CONNECT PORTALS',
+  intro,
+  statsLabel = 'Overview',
   statsMeta,
   stats = [],
   socialLinks = SOCIAL_LINKS,
   showSocialLinks = false,
+  image = '/photos/240809-2.webp',
 } = Astro.props as Props
 
 const dotColor = statusVariant === 'success' ? 'bg-success' : 'bg-primary'
 const pingColor = statusVariant === 'success' ? 'bg-success/70' : 'bg-primary/60'
-const visibleIdentityTags = identityTags.slice(0, 2)
-const hasBottomSlot = Astro.slots.has('bottom')
-const hasMobileSlot = Astro.slots.has('mobile')
-
-const hasBuiltinSocial = showSocialLinks && socialLinks.length > 0
+const visibleIdentityTags = identityTags.slice(0, 4)
+const visibleStats = stats.slice(0, 3)
 const resolvedStatsMeta = statsMeta ?? `${socialLinks.length} ACTIVE`
 ---
 
-<aside
-  class="editorial-aside relative z-20 flex w-full min-w-0 flex-col overflow-hidden border-border/40 bg-background/50 backdrop-blur-sm lg:sticky lg:top-[96px] lg:h-[calc(100vh-96px)] lg:w-1/2 lg:basis-1/2 lg:shrink-0 lg:grow-0 lg:border-r"
->
-  <!-- Main content -->
-  <div class="relative z-10 flex flex-1 flex-col lg:overflow-y-auto scrollbar-hide">
-    <!-- Brand header -->
-    <header
-      class="fade-up mt-4 flex shrink-0 items-start justify-between gap-3 border-b border-dashed border-border/60 px-6 pb-5 pt-6 sm:px-8 md:mt-0 md:px-10 md:pb-5 md:pt-7 lg:mt-8 lg:p-8 lg:pb-4 xl:p-12 xl:pb-4"
-    >
-      <div class="flex min-w-0 select-none items-center gap-3">
-        <div class="brand-mark flex size-10 shrink-0 items-center justify-center border border-primary bg-primary text-primary-foreground">
-          <span class="icon-[ph--dot-outline-fill] size-6"></span>
-        </div>
+<section class="page-hero">
+  <div class="page-hero__media" aria-hidden="true">
+    <img src={image} alt="" loading="eager" fetchpriority="high" decoding="async" onload="this.classList.add('is-loaded')" />
+    <div class="page-hero__veil"></div>
+    <div class="page-hero__grain"></div>
+  </div>
 
-        <div class="min-w-0">
-          <div class="truncate text-sm font-bold tracking-tight text-foreground">
-            {SITE.title || 'Digital Hub'}
-          </div>
-          <div class="truncate font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">You & Radiance</div>
-        </div>
-      </div>
-
-      <span aria-hidden="true" class="ml-3 mt-1 inline shrink-0 font-mono text-[9px] tracking-[0.12em] text-muted-foreground/70">
-        01—01
-      </span>
-    </header>
-
-    <!-- Hero -->
-    <section
-      class="editorial-hero relative flex min-h-[50vh] flex-1 flex-col justify-start px-6 py-10 fade-up animation-delay-100 sm:min-h-[42vh] sm:px-8 sm:py-12 md:grid md:min-h-[38vh] md:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] md:content-center md:items-end md:gap-x-12 md:px-10 md:py-14 lg:flex lg:min-h-0 lg:flex-col lg:items-stretch lg:justify-start lg:px-8 lg:py-12 xl:px-12"
-    >
-      <!-- Oversized background typography -->
-      <div aria-hidden="true" class="editorial-watermark pointer-events-none absolute inset-x-0 top-[10%] z-0 select-none overflow-hidden">
-        <span class="block whitespace-nowrap font-black uppercase leading-[0.78] tracking-[-0.09em]">
-          {title}
-        </span>
-      </div>
-
-      <!-- On tablets the cover becomes a two-column composition:
-           identity on the left, intro on the right. -->
-      <div class="md:contents">
-        <!-- Status -->
-        <div
-          class="relative z-10 mb-8 inline-flex w-fit select-none items-center gap-2 border border-border/60 bg-background/80 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground backdrop-blur-sm md:col-start-1 md:row-start-1 md:mb-6 lg:mt-auto lg:mb-8"
-        >
-          {
-            statusHasPing && (
-              <span class="relative flex size-2">
-                <span class={`absolute inline-flex size-full animate-ping rounded-full opacity-75 ${pingColor}`} />
-                <span class={`relative inline-flex size-2 rounded-full ${dotColor}`} />
-              </span>
-            )
-          }
-          {statusText}
-        </div>
-
-        <!-- Title -->
-        <div class="relative z-10 md:col-start-1 md:row-start-2 lg:mb-6">
-          <div aria-hidden="true" class="mb-4 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.18em] text-primary">
-            <span class="h-[3px] w-8 bg-primary"></span>
-            <span>Independent / Digital</span>
-          </div>
-
-          <h1
-            class="editorial-title relative mb-5 w-fit max-w-full select-none font-black text-foreground md:max-w-[calc(100%-1rem)] lg:w-auto lg:max-w-none"
-          >
-            <span class="editorial-title-text">{title}</span>
-            <span aria-hidden="true" class="editorial-title-period">.</span>
-          </h1>
-        </div>
-
-        <!-- Subtitle -->
-        {
-          subtitleIcon && subtitleText && (
-            <div class="relative z-10 mb-4 flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground md:col-start-1 md:row-start-3">
-              <span class={`${subtitleIcon} size-4 shrink-0`} />
-              <span>{subtitleText}</span>
-            </div>
-          )
-        }
-
-        <!-- Identity tags -->
-        {
-          visibleIdentityTags.length > 0 && (
-            <div class="relative z-10 mb-7 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[11px] uppercase tracking-wider text-muted-foreground md:col-start-1 md:row-start-4 md:mb-0 lg:mb-7">
-              {visibleIdentityTags.map((tag, i) => (
-                <>
-                  {i > 0 && <span aria-hidden="true" class="size-1 bg-primary/60" />}
-                  <span class="flex items-center gap-1.5">
-                    <span class={`${tag.icon} size-4 shrink-0`} />
-                    {tag.label}
-                  </span>
-                </>
-              ))}
-            </div>
-          )
-        }
-      </div>
-
-      <!-- Intro -->
+  <div class="container-page page-hero__content">
+    <div class="page-hero__status">
       {
-        intro && (
-          <div class="editorial-intro relative z-10 max-w-[24rem] pl-4 fade-up animation-delay-150 sm:max-w-[30rem] md:col-start-2 md:row-span-4 md:row-start-1 md:max-w-none md:self-end md:pl-5 lg:max-w-[24rem] lg:self-auto">
-            <p class="text-sm leading-relaxed text-muted-foreground md:text-base">
-              {intro.split('\n').map((line, i) => (
-                <>
-                  {i > 0 && <br />}
-                  {line}
-                </>
-              ))}
-            </p>
+        statusHasPing && (
+          <span class="relative flex size-2">
+            <span class={`absolute inline-flex size-full animate-ping rounded-full opacity-75 ${pingColor}`} />
+            <span class={`relative inline-flex size-2 rounded-full ${dotColor}`} />
+          </span>
+        )
+      }
+      {statusText}
+    </div>
+
+    <div class="page-hero__headline">
+      <span class="page-hero__eyebrow">RefactX · Journal</span>
+      <h1 class="page-hero__title">
+        {title}<span class="page-hero__period">.</span>
+      </h1>
+      {
+        subtitleIcon && subtitleText && (
+          <div class="page-hero__subtitle">
+            <span class={`${subtitleIcon} size-4 shrink-0`} />
+            <span>{subtitleText}</span>
           </div>
         )
       }
-
-      <!-- Bottom editorial marker -->
-      <div
-        aria-hidden="true"
-        class="relative z-10 mt-8 flex items-center gap-3 font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground/60"
-      >
-        <span class="h-px w-8 bg-border"></span>
-        <span>Scroll to explore</span>
-      </div>
-    </section>
-  </div>
-
-  <!-- Mobile slot / built-in mobile social links -->
-  {
-    (hasMobileSlot || hasBuiltinSocial) && (
-      <div class="fade-up animation-delay-200 shrink-0 select-none border-t border-dashed border-border/50 bg-background/50 lg:hidden">
-        {hasMobileSlot ? (
-          <slot name="mobile" />
-        ) : (
-          <div class="p-6">
-            <div class="flex items-center justify-between font-mono text-[10px] uppercase tracking-widest text-muted-foreground/70">
-              <span>{statsLabel}</span>
-              <span>{resolvedStatsMeta}</span>
-            </div>
-            <div class="mt-4 grid grid-cols-2 gap-3">
-              {socialLinks.map((item) => (
-                <a
-                  href={item.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="group flex items-center gap-2.5 border border-border/40 bg-background/50 px-4 py-3 transition-all duration-300 hover:border-primary/30 hover:bg-primary/5"
-                >
-                  <span class={`${item.icon} size-5 shrink-0 text-muted-foreground transition-colors group-hover:text-primary`} />
-                  <span class="truncate text-xs font-medium tracking-tight text-foreground">{item.name}</span>
-                  <span class="icon-[ph--arrow-up-right] ml-auto size-3.5 shrink-0 text-muted-foreground/30 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary" />
-                </a>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-    )
-  }
-
-  <!-- Bottom stats / built-in social links -->
-  <footer
-    class="relative hidden shrink-0 select-none border-t border-dashed border-border/50 bg-background/50 fade-up animation-delay-200 lg:block"
-  >
-    <div
-      class="flex items-center justify-between border-b border-dashed border-border/50 px-6 py-4 font-mono text-xs text-muted-foreground lg:px-8 xl:px-12"
-    >
-      <span>{statsLabel}</span>
-      {resolvedStatsMeta && <span>{resolvedStatsMeta}</span>}
     </div>
 
     {
-      hasBottomSlot ? (
-        <slot name="bottom" />
-      ) : hasBuiltinSocial ? (
-        <div class="grid grid-cols-1 gap-px bg-border/40">
-          {socialLinks.map((item) => (
-            <a
-              href={item.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="group flex items-center gap-4 h-14 px-6 lg:px-8 xl:px-12 rounded-none bg-background hover:bg-primary/5 transition-all duration-300 text-left"
-            >
-              <span class={`${item.icon} size-5 shrink-0 text-muted-foreground group-hover:text-primary transition-colors`} />
-              <span class="text-[10px] font-mono font-medium text-muted-foreground group-hover:text-primary uppercase tracking-wider transition-colors">
-                {item.name || 'Link'}
-              </span>
-            </a>
+      intro && (
+        <p class="page-hero__intro">
+          {intro.split('\n').map((line, i) => (
+            <>
+              {i > 0 && <br />}
+              {line}
+            </>
+          ))}
+        </p>
+      )
+    }
+
+    {
+      visibleIdentityTags.length > 0 && (
+        <div class="page-hero__tags">
+          {visibleIdentityTags.map((tag) => (
+            <span class="page-hero__tag">
+              <span class={`${tag.icon} size-3.5`} />
+              {tag.label}
+            </span>
           ))}
         </div>
-      ) : (
-        <>
-          {stats.length === 2 && (
-            <div class="flex">
-              {stats.map((stat, i) => (
-                <div
-                  class={`stat-cell flex flex-1 flex-col items-start justify-center bg-background/50 px-6 py-6 transition-colors hover:bg-primary/5 lg:px-8 lg:py-8 xl:px-12 xl:py-10 ${i < stats.length - 1 ? 'border-r border-border/40' : ''}`}
-                >
-                  <span class="stat-value font-black tracking-[-0.06em] text-foreground">{stat.value}</span>
-                  <span class="mt-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">{stat.label}</span>
-                </div>
-              ))}
-            </div>
-          )}
+      )
+    }
+  </div>
 
-          {stats.length === 3 && (
-            <div class="flex flex-col">
-              <div class="flex">
-                {stats.slice(0, 2).map((stat, i) => (
-                  <div
-                    class={`stat-cell flex flex-1 flex-col items-start justify-center border-b border-border/40 bg-background/50 px-6 py-6 transition-colors hover:bg-primary/5 lg:px-8 lg:py-8 xl:px-12 xl:py-10 ${i === 0 ? 'border-r border-border/40' : ''}`}
-                  >
-                    <span class="stat-value font-black tracking-[-0.06em] text-foreground">{stat.value}</span>
-                    <span class="mt-2 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">{stat.label}</span>
+  {
+    (visibleStats.length > 0 || showSocialLinks) && (
+      <div class="container-page page-hero__stats-wrap">
+        <div class="page-hero__stats">
+          {showSocialLinks && socialLinks.length > 0 ? (
+            <>
+              <div class="page-hero__stats-head">
+                <span>{statsLabel}</span>
+                <span>{resolvedStatsMeta}</span>
+              </div>
+              <div class="page-hero__social-grid">
+                {socialLinks.map((item) => (
+                  <a href={item.url} target="_blank" rel="noopener noreferrer" class="page-hero__social">
+                    <span class={`${item.icon} size-4`} />
+                    <span>{item.name}</span>
+                    <span class="icon-[ph--arrow-up-right] ml-auto size-3.5 opacity-40" />
+                  </a>
+                ))}
+              </div>
+            </>
+          ) : (
+            <>
+              <div class="page-hero__stats-head">
+                <span>{statsLabel}</span>
+                <span>{resolvedStatsMeta}</span>
+              </div>
+              <div class="page-hero__stat-grid">
+                {visibleStats.map((stat) => (
+                  <div class="page-hero__stat">
+                    <span class="page-hero__stat-value">{stat.value}</span>
+                    <span class="page-hero__stat-label">{stat.label}</span>
                   </div>
                 ))}
               </div>
-
-              <div class="flex items-center justify-between bg-background/50 px-6 py-5 transition-colors hover:bg-primary/5 lg:px-8 lg:py-6 xl:px-12">
-                <span class="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">{stats[2].label}</span>
-                <span class="text-sm font-black tracking-tight text-foreground">{stats[2].value}</span>
-              </div>
-            </div>
+            </>
           )}
-        </>
-      )
-    }
-  </footer>
-</aside>
+        </div>
+      </div>
+    )
+  }
+</section>
 
 <style>
-  .editorial-aside {
-    --editorial-blue: hsl(var(--primary));
-  }
-
-  .editorial-hero {
+  .page-hero {
+    position: relative;
     isolation: isolate;
+    overflow: hidden;
+    border-bottom-left-radius: 2.5rem;
+    border-bottom-right-radius: 2.5rem;
+    color: #fff;
   }
 
-  .editorial-watermark {
-    color: var(--editorial-blue);
-    opacity: 0.045;
+  .page-hero__media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(120deg, hsl(var(--card)), hsl(var(--primary) / 0.2), hsl(var(--card)));
+    background-size: 220% 100%;
+    animation: heroShimmer 2.2s linear infinite;
   }
 
-  .editorial-watermark span {
-    font-size: clamp(4.5rem, 12vw, 13rem);
+  .page-hero__media img {
+    opacity: 0;
+    filter: blur(22px);
+    transform: scale(1.08);
+    transition:
+      opacity 900ms ease,
+      filter 1100ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 1200ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .editorial-title {
-    font-size: clamp(2.5rem, 9vw, 3.25rem);
-    line-height: 0.92;
-    font-weight: 900;
-    letter-spacing: -0.075em;
+  .page-hero__media img.is-loaded {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1.02);
   }
 
-  .editorial-title-text {
+  @keyframes heroShimmer {
+    0% {
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: 220% 50%;
+    }
+  }
+
+  .page-hero__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 62%;
+  }
+
+  .page-hero__veil {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgb(10 16 28 / 0.46) 0%, rgb(10 16 28 / 0.5) 40%, hsl(var(--background)) 100%),
+      linear-gradient(90deg, rgb(10 16 28 / 0.52), transparent 68%);
+  }
+
+  .page-hero__grain {
+    position: absolute;
+    inset: 0;
+    opacity: 0.16;
+    background-image: radial-gradient(rgb(255 255 255 / 0.5) 0.5px, transparent 0.5px);
+    background-size: 5px 5px;
+    mix-blend-mode: soft-light;
+    pointer-events: none;
+  }
+
+  .page-hero__content {
     position: relative;
     z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: clamp(24rem, 50vh, 36rem);
+    padding-top: clamp(5rem, 12vh, 8rem);
+    padding-bottom: 3rem;
   }
 
-  .editorial-title-period {
-    color: var(--editorial-blue);
+  .page-hero__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: fit-content;
+    margin-bottom: 1.6rem;
+    padding: 0.42rem 0.8rem;
+    border-radius: 999px;
+    border: 1px solid rgb(255 255 255 / 0.22);
+    background: rgb(255 255 255 / 0.1);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    font-family: var(--font-geist-mono);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .page-hero__headline {
+    max-width: 48rem;
+  }
+
+  .page-hero__eyebrow {
+    display: inline-block;
+    margin-bottom: 0.6rem;
+    font-family: var(--font-geist-mono);
+    font-size: 0.64rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: hsl(var(--primary));
+  }
+
+  .page-hero__title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.9rem, 8vw, 6.2rem);
+    font-weight: 800;
+    line-height: 0.92;
+    letter-spacing: -0.065em;
+    color: #fff;
+    text-wrap: balance;
+    text-shadow: 0 10px 40px rgb(8 14 24 / 0.28);
+  }
+
+  .page-hero__period {
+    color: hsl(var(--primary));
     letter-spacing: -0.1em;
   }
 
-  .editorial-intro {
-    border-left: 3px solid var(--editorial-blue);
+  .page-hero__subtitle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-top: 1rem;
+    font-family: var(--font-geist-mono);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgb(255 255 255 / 0.72);
   }
 
-  .brand-mark {
-    box-shadow: 4px 4px 0 hsl(var(--primary) / 0.15);
+  .page-hero__intro {
+    max-width: 38rem;
+    margin-top: 1.4rem;
+    font-size: clamp(0.92rem, 1.3vw, 1.05rem);
+    line-height: 1.8;
+    color: rgb(255 255 255 / 0.78);
   }
 
-  .stat-value {
-    font-size: clamp(1.75rem, 2.8vw, 3rem);
-    line-height: 0.95;
+  .page-hero__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-top: 1.5rem;
+  }
+
+  .page-hero__tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.36rem 0.7rem;
+    border-radius: 999px;
+    border: 1px solid rgb(255 255 255 / 0.18);
+    background: rgb(255 255 255 / 0.08);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    font-size: 0.7rem;
+    color: rgb(255 255 255 / 0.82);
+  }
+
+  .page-hero__stats-wrap {
+    position: relative;
+    z-index: 2;
+    padding-bottom: 1.5rem;
+  }
+
+  .page-hero__stats {
+    overflow: hidden;
+    border-radius: 1.5rem;
+    border: 1px solid hsl(var(--border) / 0.8);
+    background: hsl(var(--card) / 0.94);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 30px 60px -40px hsl(218 30% 12% / 0.55);
+  }
+
+  .page-hero__stats-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.8rem 1.2rem;
+    border-bottom: 1px solid hsl(var(--border) / 0.7);
+    font-family: var(--font-geist-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .page-hero__stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+  }
+
+  .page-hero__stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 1rem 1.2rem;
+    border-right: 1px solid hsl(var(--border) / 0.6);
+  }
+
+  .page-hero__stat:last-child {
+    border-right: 0;
+  }
+
+  .page-hero__stat-value {
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 2.6vw, 2rem);
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    color: hsl(var(--foreground));
     overflow-wrap: anywhere;
   }
 
-  /* Editorial typography scales up with the available width. */
-  @media (min-width: 1024px) {
-    .editorial-title {
-      font-size: clamp(3rem, 4.8vw, 5.75rem);
-      line-height: 0.86;
-      letter-spacing: -0.085em;
-      overflow-wrap: anywhere;
-      text-wrap: balance;
-    }
-
-    .editorial-watermark span {
-      font-size: clamp(6rem, 9vw, 10rem);
-    }
+  .page-hero__stat-label {
+    font-family: var(--font-geist-mono);
+    font-size: 0.58rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: hsl(var(--muted-foreground));
   }
 
-  /* Short browser windows: preserve the oversized title without
-     forcing the entire sidebar to exceed the viewport unnecessarily. */
-  @media (min-width: 1024px) and (max-height: 760px) {
-    .editorial-title {
-      font-size: clamp(2.75rem, 4vw, 4.25rem);
-    }
-
-    .editorial-hero {
-      padding-top: 1.75rem;
-      padding-bottom: 1.75rem;
-    }
-
-    .editorial-hero .mb-8 {
-      margin-bottom: 1.25rem;
-    }
-
-    .editorial-hero .mb-6 {
-      margin-bottom: 1rem;
-    }
-
-    .editorial-hero .mb-7 {
-      margin-bottom: 1rem;
-    }
-
-    .editorial-hero .mt-8 {
-      margin-top: 1rem;
-    }
-
-    .stat-cell {
-      padding-top: 1rem;
-      padding-bottom: 1rem;
-    }
-
-    .editorial-watermark span {
-      font-size: 6rem;
-    }
+  .page-hero__social-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    gap: 0;
   }
 
-  @media (min-width: 1024px) and (max-height: 600px) {
-    .editorial-title {
-      font-size: clamp(2.25rem, 3.5vw, 3.25rem);
-    }
+  .page-hero__social {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 1rem 1.2rem;
+    border-right: 1px solid hsl(var(--border) / 0.6);
+    font-size: 0.8rem;
+    color: hsl(var(--foreground) / 0.8);
+    text-decoration: none;
+    transition:
+      color 180ms ease,
+      background-color 180ms ease;
+  }
 
-    .editorial-hero {
-      padding-top: 1rem;
-      padding-bottom: 1rem;
-    }
+  .page-hero__social:hover {
+    color: hsl(var(--accent-foreground));
+    background: hsl(var(--accent) / 0.5);
+  }
 
-    .editorial-hero .mb-8 {
-      margin-bottom: 0.75rem;
+  @media (max-width: 639px) {
+    .page-hero {
+      border-bottom-left-radius: 1.75rem;
+      border-bottom-right-radius: 1.75rem;
     }
-
-    .editorial-hero .mb-6,
-    .editorial-hero .mb-7 {
-      margin-bottom: 0.625rem;
+    .page-hero__content {
+      min-height: 30rem;
+      padding-bottom: 2rem;
     }
-
-    .editorial-hero .mt-8 {
-      margin-top: 0.625rem;
+    .page-hero__stat {
+      border-right: 0;
+      border-bottom: 1px solid hsl(var(--border) / 0.6);
     }
-
-    .editorial-hero .editorial-intro p {
-      font-size: 0.8125rem;
-      line-height: 1.5;
+    .page-hero__stat:last-child {
+      border-bottom: 0;
     }
-
-    .editorial-hero > .flex {
-      display: none;
+    .page-hero__social {
+      border-right: 0;
+      border-bottom: 1px solid hsl(var(--border) / 0.6);
     }
-
-    .stat-value {
-      font-size: 1.5rem;
+    .page-hero__social:last-child {
+      border-bottom: 0;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .editorial-aside *,
-    .editorial-aside *::before,
-    .editorial-aside *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      scroll-behavior: auto !important;
-      transition-duration: 0.01ms !important;
+    .page-hero *,
+    .page-hero *::before,
+    .page-hero *::after {
+      animation: none !important;
+      transition: none !important;
     }
   }
 </style>

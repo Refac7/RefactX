@@ -9,8 +9,9 @@ const { title, description, introduce } = MESSAGEBOARD_CONFIG
 ---
 
 <Layout {title} {description}>
-  <div class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
+  <div class="page-shell relative font-sans min-h-screen">
     <PageAside
+      image="/photos/240809-3.webp"
       statusText="Online"
       statusVariant="success"
       {title}
@@ -32,8 +33,8 @@ const { title, description, introduce } = MESSAGEBOARD_CONFIG
     <main class="w-full lg:w-2/3 z-10 flex flex-col fade-up animation-delay-150">
       <div class="px-6 lg:px-8 xl:px-12 lg:py-20 flex-1 flex flex-col">
         <div class={SECTION_HEADER_CLASS}>
-          <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>Leave a Message</h2></div>
-          <span class={SECTION_META_CLASS}>// Guest_Signals</span>
+          <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>留下你的话</h2></div>
+          <span class={SECTION_META_CLASS}>访客留言</span>
         </div>
 
         <p class="text-sm md:text-base text-muted-foreground leading-relaxed max-w-2xl mb-10 fade-up animation-delay-200">

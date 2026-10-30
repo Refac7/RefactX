@@ -31,16 +31,17 @@ const getRelativeIndentClass = (depth: number) => {
 
 {
   hasHeadings && (
-    <div id="mobile-toc-container" class="xl:hidden sticky top-[96px] z-30">
-      <div class="relative">
+    <div id="mobile-toc-container" class="xl:hidden sticky top-20 z-30 mb-8">
+      <div class="relative rounded-2xl border border-border/70 bg-card shadow-[0_16px_40px_-34px_rgba(12,20,34,0.42)]">
         <button
-          class="flex w-full cursor-pointer items-center justify-between bg-background/95 backdrop-blur-md border-b border-border/40 px-6 sm:px-8 py-3 select-none"
+          class="flex w-full cursor-pointer items-center justify-between rounded-2xl px-4 py-3 select-none"
           data-toc-toggle
+          aria-expanded="false"
         >
           <div class="flex gap-4 items-center min-w-0 flex-1">
             <SimpleProgressRing size={16} strokeWidth={2} class="shrink-0" />
             <div class="flex flex-col min-w-0">
-              <span class="text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest text-left">// Navigator</span>
+              <span class="text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest text-left">On this page</span>
               <span id="mobile-toc-current-section" class="text-sm font-medium text-foreground/80 truncate">
                 Overview
               </span>
@@ -55,7 +56,7 @@ const getRelativeIndentClass = (depth: number) => {
         </button>
 
         <div
-          class="bg-background/98 backdrop-blur-md border-b border-border/40 overflow-hidden max-h-0 transition-[max-height] duration-300 ease-in-out"
+          class="rounded-b-2xl bg-card border border-t-0 border-border/60 overflow-hidden max-h-0 transition-[max-height] duration-300 ease-in-out"
           data-toc-content
         >
           <div class="relative">
@@ -166,6 +167,8 @@ const getRelativeIndentClass = (depth: number) => {
       if (!this.tocContent || !this.tocArrow) return
 
       this.isOpen = open
+      const toggleButton = document.querySelector('[data-toc-toggle]')
+      toggleButton?.setAttribute('aria-expanded', String(open))
 
       if (open) {
         this.tocContent.style.maxHeight = '31vh'

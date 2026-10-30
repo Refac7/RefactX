@@ -8,14 +8,17 @@
 
 /* ===== 主题变量 ===== */
 @theme {
-  --font-serif: var(--font-sans);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-serif: 'Numbers', 'MiSans VF', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'MiSans VF', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Numbers', 'MiSans VF', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'GeistMono', 'Input Mono', 'Fira Code', monospace;
 
   --color-border: hsl(var(--border));
   --color-ring: hsl(var(--ring));
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
   --color-primary: hsl(var(--primary));
   --color-primary-foreground: hsl(var(--primary-foreground));
   --color-accent: hsl(var(--accent));
@@ -63,64 +66,69 @@
 /* ===== 颜色变量 & 节日主题 ===== */
 @layer base {
   :root {
-    --font-sans: 'MiSans VF', 'CJKEmDash', 'Numbers', ui-sans-serif, system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    --font-sans: 'MiSans VF', 'CJKEmDash', ui-sans-serif, system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    --font-display: 'Numbers', 'CJKEmDash', 'MiSans VF', ui-sans-serif, system-ui, sans-serif;
     --font-geist-mono: 'GeistMono', 'Input Mono', 'Fira Code', monospace;
 
-    /* 淡蓝色主题 */
-    --background: 210 20% 99%;
-    --foreground: 215 30% 11%;
-    --accent: 205 72% 96%;
-    --accent-foreground: 205 82% 34%;
-    --primary: 205 88% 43%; /* 淡蓝色 */
+    /* 冷纸与蓝调主题 */
+    --background: 212 32% 98%;
+    --foreground: 220 30% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 30% 12%;
+    --accent: 214 82% 94%;
+    --accent-foreground: 216 76% 30%;
+    --primary: 216 88% 56%; /* 蓝 */
     --primary-foreground: 0 0% 100%;
-    --muted: 213 17% 95%;
-    --muted-foreground: 215 14% 43%;
-    --border: 214 18% 89%;
-    --ring: 205 88% 43%;
-    --tag-bg: 205 72% 96%;
-    --tag-bg-hover: 205 72% 90%;
-    --tag-border: 205 60% 85%;
-    --tag-text: 205 82% 34%;
-    --scrollbar: 205 20% 72%;
-    --scrollbar-bg: 205 22% 94%;
+    --muted: 214 26% 94%;
+    --muted-foreground: 216 12% 43%;
+    --border: 214 22% 88%;
+    --ring: 216 88% 56%;
+    --tag-bg: 214 82% 95%;
+    --tag-bg-hover: 214 82% 90%;
+    --tag-border: 214 58% 84%;
+    --tag-text: 216 76% 34%;
+    --scrollbar: 215 20% 74%;
+    --scrollbar-bg: 214 26% 94%;
 
     /* 语义色 · 成功 / 警告 / 危险 / 信息 */
-    --success: 152 64% 34%;
+    --success: 152 54% 34%;
     --success-foreground: 0 0% 100%;
-    --warning: 38 92% 42%;
-    --warning-foreground: 0 0% 100%;
-    --danger: 0 72% 48%;
+    --warning: 32 88% 44%;
+    --warning-foreground: 30 35% 12%;
+    --danger: 4 70% 48%;
     --danger-foreground: 0 0% 100%;
-    --info: 205 88% 43%;
+    --info: 205 75% 42%;
     --info-foreground: 0 0% 100%;
   }
 
   .dark {
-    --background: 0 0% 0%;
-    --foreground: 210 20% 96%;
-    --accent: 205 40% 16%;
-    --accent-foreground: 205 85% 78%;
-    --primary: 205 88% 62%; /* 淡蓝色 · dark */
-    --primary-foreground: 0 0% 100%;
-    --muted: 215 17% 14%;
-    --muted-foreground: 215 15% 60%;
-    --border: 215 16% 20%;
-    --ring: 205 88% 62%;
-    --tag-bg: 205 38% 14%;
-    --tag-bg-hover: 205 38% 19%;
-    --tag-border: 205 34% 26%;
-    --tag-text: 205 85% 78%;
-    --scrollbar: 205 18% 32%;
-    --scrollbar-bg: 205 20% 14%;
+    --background: 220 26% 7%;
+    --foreground: 210 26% 94%;
+    --card: 220 22% 10%;
+    --card-foreground: 210 26% 94%;
+    --accent: 218 42% 16%;
+    --accent-foreground: 213 92% 78%;
+    --primary: 213 90% 66%; /* 蓝 · dark */
+    --primary-foreground: 220 30% 8%;
+    --muted: 218 20% 14%;
+    --muted-foreground: 215 12% 64%;
+    --border: 218 17% 20%;
+    --ring: 213 90% 62%;
+    --tag-bg: 218 34% 15%;
+    --tag-bg-hover: 218 34% 20%;
+    --tag-border: 218 30% 26%;
+    --tag-text: 213 92% 78%;
+    --scrollbar: 218 16% 31%;
+    --scrollbar-bg: 218 20% 14%;
 
     /* 语义色 · 成功 / 警告 / 危险 / 信息 */
-    --success: 152 58% 58%;
-    --success-foreground: 216 30% 8%;
-    --warning: 40 92% 62%;
-    --warning-foreground: 216 30% 8%;
-    --danger: 0 80% 68%;
-    --danger-foreground: 216 30% 8%;
-    --info: 205 85% 66%;
+    --success: 152 52% 58%;
+    --success-foreground: 150 30% 8%;
+    --warning: 38 90% 62%;
+    --warning-foreground: 30 30% 8%;
+    --danger: 4 78% 66%;
+    --danger-foreground: 30 30% 8%;
+    --info: 205 78% 66%;
     --info-foreground: 216 30% 8%;
   }
 
@@ -230,6 +238,10 @@ html.theme-mourning {
   }
   body {
     @apply min-h-screen bg-background text-foreground;
+    background-image:
+      radial-gradient(60rem 36rem at 8% -8%, hsl(var(--primary) / 0.1), transparent 62%),
+      radial-gradient(48rem 30rem at 96% 4%, hsl(var(--primary) / 0.06), transparent 58%);
+    background-attachment: fixed;
   }
   h1,
   h2,
@@ -237,10 +249,20 @@ html.theme-mourning {
   h4,
   h5,
   h6 {
-    @apply font-serif font-medium;
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
   }
   a {
     @apply underline-offset-4;
+  }
+  ::selection {
+    color: hsl(var(--foreground));
+    background: hsl(var(--primary) / 0.55);
   }
 }
 
@@ -250,7 +272,7 @@ html.theme-mourning {
    贴边分隔线（仅单边边框）保持直角，避免网格/列表出现圆角缺口。 */
 @layer base {
   :root {
-    --ui-radius: 0.75rem;
+    --ui-radius: 1rem;
   }
 
   [class~='border'],
@@ -440,4 +462,179 @@ input[type='search']::-moz-search-cancel-button {
 }
 .dark .lazy-image {
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+}
+
+/* ===== 2026 暖纸 · 琥珀设计系统 ===== */
+@layer components {
+  .font-display {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.035em;
+  }
+
+  .container-page {
+    width: 100%;
+    max-width: 1180px;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  .container-narrow {
+    width: 100%;
+    max-width: 920px;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  .surface {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border) / 0.8);
+    border-radius: 1.5rem;
+    box-shadow:
+      0 1px 2px hsl(218 20% 20% / 0.04),
+      0 18px 40px -32px hsl(218 20% 20% / 0.22);
+  }
+
+  .surface-soft {
+    background: hsl(var(--card) / 0.66);
+    border: 1px solid hsl(var(--border) / 0.72);
+    border-radius: 1.25rem;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-geist-mono);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .eyebrow-dot::before {
+    content: '';
+    width: 0.42rem;
+    height: 0.42rem;
+    border-radius: 999px;
+    background: hsl(var(--primary));
+    box-shadow: 0 0 0 4px hsl(var(--primary) / 0.16);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding: 0.65rem 1.15rem;
+    border-radius: 999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1;
+    transition:
+      transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 220ms ease,
+      color 220ms ease,
+      border-color 220ms ease,
+      box-shadow 220ms ease;
+  }
+
+  .btn:hover {
+    transform: translateY(-1px);
+  }
+
+  .btn-primary {
+    color: hsl(var(--primary-foreground));
+    background: hsl(var(--primary));
+    border: 1px solid hsl(var(--primary));
+    box-shadow: 0 12px 24px -14px hsl(var(--primary) / 0.9);
+  }
+
+  .btn-primary:hover {
+    background: hsl(var(--primary) / 0.9);
+  }
+
+  .btn-ghost {
+    color: hsl(var(--foreground));
+    background: hsl(var(--card) / 0.7);
+    border: 1px solid hsl(var(--border) / 0.8);
+  }
+
+  .btn-ghost:hover {
+    background: hsl(var(--accent));
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.32rem 0.68rem;
+    border-radius: 999px;
+    border: 1px solid hsl(var(--border) / 0.8);
+    background: hsl(var(--muted) / 0.55);
+    color: hsl(var(--muted-foreground));
+    font-size: 0.72rem;
+    font-weight: 500;
+    line-height: 1.1;
+    transition:
+      color 180ms ease,
+      background-color 180ms ease,
+      border-color 180ms ease;
+  }
+
+  .chip:hover {
+    color: hsl(var(--accent-foreground));
+    background: hsl(var(--accent));
+    border-color: hsl(var(--primary) / 0.35);
+  }
+
+  .section-rule {
+    border-top: 1px solid hsl(var(--border) / 0.75);
+  }
+
+  .lift {
+    transition:
+      transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 320ms ease,
+      border-color 320ms ease;
+  }
+
+  .lift:hover {
+    transform: translateY(-3px);
+    border-color: hsl(var(--primary) / 0.38);
+    box-shadow: 0 24px 48px -30px hsl(218 24% 16% / 0.32);
+  }
+}
+
+/* 页面主内容统一宽度（兼容旧页面的内联布局） */
+.page-shell > main {
+  width: 100%;
+}
+
+.page-shell > main > div {
+  width: 100%;
+  max-width: 1180px;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+  padding-block: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+@media (max-width: 639px) {
+  .container-page,
+  .container-narrow {
+    padding-inline: 1.1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lift,
+  .btn {
+    transition: none !important;
+  }
+  .lift:hover,
+  .btn:hover {
+    transform: none;
+  }
 }

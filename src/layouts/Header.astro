@@ -1,160 +1,566 @@
 ---
-// src/components/Header.astro
-import { HEADER_LINKS } from '~/config'
+import { HEADER_LINKS, SITE, SOCIAL_LINKS, CMS_CONFIG } from '~/config'
 import ThemeToggle from '~/components/theme/ThemeToggle'
-import HeaderLink from '~/components/base/HeaderLink.astro'
 import SearchSwitch from '~/components/base/SearchSwitch.astro'
 import { Image } from 'astro:assets'
 import favicon from '../../public/favicon.webp'
-import { CMS_CONFIG } from '~/config'
+
+interface Props {
+  hero?: boolean
+}
+
+const { hero = false } = Astro.props
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/'
+
+const isActive = (url: string) => {
+  const clean = url.replace(/\/$/, '') || '/'
+  if (clean === '/') return pathname === '/'
+  return pathname === clean || pathname.startsWith(`${clean}/`)
+}
 ---
 
-<header class="fixed top-0 left-0 right-0 z-40 bg-background/70 backdrop-blur-xl border-b border-border/40">
-  <div
-    class="pointer-events-none absolute inset-0 opacity-[0.06] dark:opacity-[0.08]"
-    style="background-image: repeating-linear-gradient(45deg, currentColor 0, currentColor 1px, transparent 1px, transparent 10px);"
-    aria-hidden="true"
-  >
-  </div>
-  <div class="relative mx-auto flex justify-between px-6 lg:px-8 xl:px-12 py-8">
-    <div class="flex gap-3 sm:gap-6 items-center shrink-0">
-      <a href="/" class="pointer-events-auto select-none" transition:persist>
-        <Image src={favicon} width={56} height={56} alt="Logo" class="w-8 h-8 border-2 border-transparent" loading="eager" />
-      </a>
+<header id="site-header" class="site-header" data-hero={hero ? 'true' : 'false'} data-transparent={hero ? 'true' : 'false'}>
+  <div class="site-header__inner">
+    <a href="/" class="site-brand" aria-label={`${SITE.title} 首页`}>
+      <span class="site-brand__mark">
+        <Image src={favicon} width={44} height={44} alt="" class="size-7 object-contain" loading="eager" />
+      </span>
+      <span class="site-brand__text">
+        <span class="site-brand__name">{SITE.title.replace(' Project', '')}</span>
+        <span class="site-brand__tag">You &amp; Radiance</span>
+      </span>
+    </a>
 
-      <div class="flex gap-1 md:hidden">
-        {
-          HEADER_LINKS.slice(0, 2).map((link) => (
-            <HeaderLink href={link.url} background>
-              {link.name}
-            </HeaderLink>
-          ))
-        }
+    <nav class="site-nav" aria-label="主导航">
+      {
+        HEADER_LINKS.map((link) => (
+          <a href={link.url} class:list={['site-nav__link', isActive(link.url) && 'is-active']}>
+            {link.name}
+          </a>
+        ))
+      }
+    </nav>
 
-        {/* 超过 2 个链接时，生成下拉菜单折叠按钮 */}
-        {
-          HEADER_LINKS.length > 2 && (
-            <div class="relative flex items-center h-full -ml-1">
-              <button
-                id="mobile-menu-btn"
-                class="flex items-center justify-center gap-1.5 px-3 h-9 border border-transparent bg-transparent text-muted-foreground transition-colors focus:outline-none hover:text-primary"
-              >
-                <span class="icon-[ph--caret-down-bold] size-3 transition-transform duration-300" id="mobile-menu-icon" />
-              </button>
-
-              {/* 下拉悬浮面板 */}
-              <div
-                id="mobile-menu-dropdown"
-                class="absolute top-full left-0 mt-3 w-30 bg-background/95 backdrop-blur-md border border-border/60 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] opacity-0 invisible -translate-y-2.5 transition-all duration-300 flex flex-col p-1.5 z-100"
-              >
-                {HEADER_LINKS.slice(2).map((link) => (
-                  <a
-                    href={link.url}
-                    class="px-4 py-3 text-xs font-mono font-bold uppercase tracking-widest text-muted-foreground hover:text-primary hover:bg-muted/40 hover:border-primary transition-all"
-                  >
-                    {link.name}
-                  </a>
-                ))}
-              </div>
-            </div>
-          )
-        }
+    <div class="site-actions">
+      <div class="header-action">
+        <SearchSwitch />
       </div>
-
-      <div class="hidden gap-1 md:flex">
-        {
-          HEADER_LINKS.map((link) => (
-            <HeaderLink href={link.url} background>
-              {link.name}
-            </HeaderLink>
-          ))
-        }
-      </div>
-    </div>
-    <div class="flex gap-2 items-center" transition:persist="header-theme-toggle">
-      <SearchSwitch />
-      <a
-        href="/rss.xml"
-        target="_blank"
-        class="inline-flex items-center justify-center hover:scale-105 duration-200"
-        aria-label="RSS Feed"
-        title="RSS Feed"
-      >
-        <span class="icon-[material-symbols--rss-feed] size-5"></span>
+      <a href="/rss.xml" target="_blank" class="header-action header-action--rss" aria-label="RSS Feed" title="RSS Feed">
+        <span class="icon-[ph--rss] size-5"></span>
       </a>
-
       {
         CMS_CONFIG.enableCMS && (
-          <a
-            href="/admin"
-            class="inline-flex items-center justify-center hover:scale-105 duration-200"
-            aria-label="Admin Dashboard"
-            title="Admin Panel"
-          >
-            <span class="icon-[material-symbols--admin-panel-settings-outline] size-5" />
+          <a href="/admin" class="header-action header-action--admin" aria-label="后台管理" title="后台管理">
+            <span class="icon-[ph--sliders-horizontal] size-5" />
           </a>
         )
       }
-
-      <ThemeToggle client:load />
+      <div class="header-action">
+        <ThemeToggle client:load />
+      </div>
+      <button id="mobile-menu-toggle" class="mobile-menu-toggle lg:hidden" type="button" aria-label="打开菜单" aria-expanded="false">
+        <span class="icon-[ph--list] size-5 menu-icon-open"></span>
+        <span class="icon-[ph--x] size-5 menu-icon-close"></span>
+      </button>
     </div>
   </div>
 </header>
 
-<script is:inline>
-  // 封装下拉菜单交互逻辑，完美兼容 Astro 的 ViewTransitions
-  ;(function () {
-    var clickHandler = null
+<div id="mobile-menu" class="mobile-menu" aria-hidden="true">
+  <div class="mobile-menu__inner">
+    <div class="mobile-menu__top">
+      <span class="eyebrow eyebrow-dot">Navigation</span>
+      <span class="font-mono text-[0.6rem] uppercase tracking-[0.16em] text-muted-foreground">Menu</span>
+    </div>
 
-    function initMobileNav() {
-      var btn = document.getElementById('mobile-menu-btn')
-      var dropdown = document.getElementById('mobile-menu-dropdown')
-      var icon = document.getElementById('mobile-menu-icon')
-
-      if (!btn || !dropdown) return
-
-      // 移除旧的全局点击监听器
-      if (clickHandler) {
-        document.removeEventListener('click', clickHandler)
+    <nav class="mobile-menu__nav" aria-label="移动端导航">
+      {
+        HEADER_LINKS.map((link, index) => (
+          <a href={link.url} class:list={['mobile-menu__link', isActive(link.url) && 'is-active']}>
+            <span class="mobile-menu__index">{String(index + 1).padStart(2, '0')}</span>
+            <span>{link.name}</span>
+            <span class="icon-[ph--arrow-up-right] mobile-menu__arrow" />
+          </a>
+        ))
       }
+    </nav>
 
-      var openMenu = function () {
-        dropdown.classList.remove('opacity-0', 'invisible', 'translate-y-[-10px]')
-        dropdown.classList.add('opacity-100', 'visible', 'translate-y-0')
-        if (icon) icon.classList.add('rotate-180')
-      }
-
-      var closeMenu = function () {
-        dropdown.classList.add('opacity-0', 'invisible', 'translate-y-[-10px]')
-        dropdown.classList.remove('opacity-100', 'visible', 'translate-y-0')
-        if (icon) icon.classList.remove('rotate-180')
-      }
-
-      // 移除旧的按钮监听器（使用事件委托）
-      var newBtn = btn.cloneNode(true)
-      btn.parentNode.replaceChild(newBtn, btn)
-
-      newBtn.addEventListener('click', function (e) {
-        e.stopPropagation()
-        var isExpanded = dropdown.classList.contains('opacity-100')
-        isExpanded ? closeMenu() : openMenu()
-      })
-
-      // 使用事件委托替代重复的监听器
-      clickHandler = function (e) {
-        if (!newBtn.contains(e.target) && !dropdown.contains(e.target)) {
-          closeMenu()
+    <div class="mobile-menu__footer">
+      <div class="flex flex-wrap gap-2">
+        {
+          SOCIAL_LINKS.map((item) => (
+            <a href={item.url} target="_blank" rel="noopener noreferrer" class="chip">
+              <span class={`${item.icon} size-3.5`} />
+              {item.name}
+            </a>
+          ))
         }
-      }
-      document.addEventListener('click', clickHandler)
+        <a href="/rss.xml" target="_blank" class="chip">
+          <span class="icon-[ph--rss] size-3.5"></span>
+          RSS
+        </a>
+      </div>
+      <p class="mt-5 text-xs leading-relaxed text-muted-foreground">{SITE.description}</p>
+    </div>
+  </div>
+</div>
+
+<style is:global>
+  .site-header {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 60;
+    color: hsl(var(--foreground));
+    transition:
+      background-color 300ms ease,
+      border-color 300ms ease,
+      color 300ms ease,
+      backdrop-filter 300ms ease;
+  }
+
+  .site-header[data-hero='true'][data-transparent='true'] {
+    color: #fff;
+    background: transparent;
+    border-bottom-color: transparent;
+  }
+
+  .site-header[data-scrolled='true'],
+  .site-header[data-hero='false'] {
+    background: hsl(var(--background) / 0.84);
+    border-bottom: 1px solid hsl(var(--border) / 0.7);
+    -webkit-backdrop-filter: blur(18px) saturate(150%);
+    backdrop-filter: blur(18px) saturate(150%);
+  }
+
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    max-width: 1240px;
+    height: 76px;
+    margin-inline: auto;
+    padding-inline: clamp(1.1rem, 3.2vw, 2.5rem);
+  }
+
+  .site-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    min-width: 0;
+    text-decoration: none;
+  }
+
+  .site-brand__mark {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .site-brand:hover .site-brand__mark {
+    transform: rotate(-6deg) scale(1.04);
+  }
+
+  .dark .site-brand__mark img {
+    filter: invert(1) brightness(1.1);
+  }
+
+  .site-header[data-transparent='true'] .site-brand__mark {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+  }
+
+  .site-brand__text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+    min-width: 0;
+  }
+
+  .site-brand__name {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    white-space: nowrap;
+  }
+
+  .site-brand__tag {
+    margin-top: 0.18rem;
+    font-family: var(--font-geist-mono);
+    font-size: 0.55rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    opacity: 0.58;
+  }
+
+  .site-nav {
+    display: none;
+    align-items: center;
+    gap: 0.15rem;
+    padding: 0.3rem;
+    border-radius: 999px;
+    border: 1px solid transparent;
+  }
+
+  .site-header[data-transparent='true'] .site-nav {
+    background: rgb(255 255 255 / 0.08);
+    border-color: rgb(255 255 255 / 0.12);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+
+  .site-header[data-scrolled='true'] .site-nav,
+  .site-header[data-hero='false'] .site-nav {
+    background: hsl(var(--muted) / 0.6);
+    border-color: hsl(var(--border) / 0.6);
+  }
+
+  .site-nav__link {
+    position: relative;
+    padding: 0.5rem 0.9rem;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 550;
+    color: currentColor;
+    opacity: 0.7;
+    text-decoration: none;
+    transition:
+      opacity 200ms ease,
+      background-color 200ms ease,
+      color 200ms ease;
+  }
+
+  .site-nav__link:hover {
+    opacity: 1;
+    background: hsl(var(--card) / 0.72);
+  }
+
+  .site-header[data-transparent='true'] .site-nav__link:hover {
+    background: rgb(255 255 255 / 0.14);
+  }
+
+  .site-nav__link.is-active {
+    opacity: 1;
+    font-weight: 650;
+    color: hsl(var(--foreground));
+    background: hsl(var(--card));
+    box-shadow: 0 4px 12px -8px hsl(218 24% 16% / 0.32);
+  }
+
+  .site-header[data-transparent='true'] .site-nav__link.is-active {
+    color: #20180b;
+    background: hsl(var(--primary));
+  }
+
+  .site-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+  }
+
+  .header-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    color: currentColor;
+    opacity: 0.66;
+    transition:
+      opacity 180ms ease,
+      color 180ms ease,
+      transform 180ms ease;
+  }
+
+  .header-action:hover {
+    opacity: 1;
+    color: hsl(var(--primary));
+    transform: scale(1.06);
+  }
+
+  .site-header[data-transparent='true'] .header-action:hover {
+    color: #fff;
+    opacity: 1;
+  }
+
+  .site-header[data-transparent='true'] .header-action,
+  .site-header[data-transparent='true'] .header-action span,
+  .site-header[data-transparent='true'] #search-switch {
+    color: #fff;
+  }
+
+  .header-action--rss,
+  .header-action--admin {
+    display: none;
+  }
+
+  @media (min-width: 640px) {
+    .header-action--rss {
+      display: inline-flex;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .header-action--admin {
+      display: inline-flex;
+    }
+  }
+
+  .mobile-menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    border: 0;
+    background: transparent;
+    color: currentColor;
+    cursor: pointer;
+    transition: color 200ms ease;
+  }
+
+  .mobile-menu-toggle:hover {
+    color: hsl(var(--primary));
+  }
+
+  .site-header[data-transparent='true'] .mobile-menu-toggle:hover {
+    color: #fff;
+  }
+
+  .mobile-menu-toggle .menu-icon-close {
+    display: none;
+  }
+
+  .mobile-menu-toggle[aria-expanded='true'] .menu-icon-open {
+    display: none;
+  }
+
+  .mobile-menu-toggle[aria-expanded='true'] .menu-icon-close {
+    display: inline-block;
+  }
+
+  .mobile-menu {
+    position: fixed;
+    inset: 76px 0 0;
+    z-index: 55;
+    display: flex;
+    justify-content: flex-end;
+    background: hsl(218 30% 8% / 0);
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      background-color 320ms ease,
+      visibility 0s linear 320ms;
+  }
+
+  .mobile-menu[data-open='true'] {
+    background: hsl(218 30% 8% / 0.34);
+    visibility: visible;
+    pointer-events: auto;
+    transition: background-color 320ms ease;
+  }
+
+  .mobile-menu__inner {
+    display: flex;
+    flex-direction: column;
+    width: min(22rem, 88vw);
+    height: 100%;
+    padding: 1.4rem;
+    background: hsl(var(--background));
+    border-left: 1px solid hsl(var(--border));
+    box-shadow: -24px 0 60px -30px hsl(218 26% 12% / 0.5);
+    transform: translateX(100%);
+    transition: transform 380ms cubic-bezier(0.22, 1, 0.36, 1);
+    overflow-y: auto;
+  }
+
+  .mobile-menu[data-open='true'] .mobile-menu__inner {
+    transform: translateX(0);
+  }
+
+  .mobile-menu__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid hsl(var(--border) / 0.7);
+  }
+
+  .mobile-menu__close {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    border: 1px solid hsl(var(--border) / 0.7);
+    background: hsl(var(--card));
+    cursor: pointer;
+  }
+
+  .mobile-menu__nav {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+  }
+
+  .mobile-menu__link {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.95rem 0.2rem;
+    border-bottom: 1px solid hsl(var(--border) / 0.55);
+    font-family: var(--font-display);
+    font-size: 1.55rem;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    color: hsl(var(--foreground));
+    text-decoration: none;
+    transition: color 180ms ease;
+  }
+
+  .mobile-menu__link:hover,
+  .mobile-menu__link.is-active {
+    color: hsl(var(--accent-foreground));
+  }
+
+  .mobile-menu__link.is-active {
+    padding-inline: 0.7rem;
+    border-radius: 0.9rem;
+    border-bottom-color: transparent;
+    background: hsl(var(--accent) / 0.55);
+  }
+
+  .mobile-menu__index {
+    font-family: var(--font-geist-mono);
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .mobile-menu__arrow {
+    margin-left: auto;
+    font-size: 1rem;
+    opacity: 0.35;
+    transition: transform 180ms ease;
+  }
+
+  .mobile-menu__link:hover .mobile-menu__arrow {
+    transform: translateX(3px);
+    opacity: 1;
+  }
+
+  .mobile-menu__footer {
+    margin-top: auto;
+    padding-top: 1.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .site-nav {
+      display: flex;
     }
 
-    // 监听 Astro 的页面加载事件和 ViewTransition 事件
-    document.addEventListener('astro:after-swap', initMobileNav)
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initMobileNav)
-    } else {
-      initMobileNav()
+    .mobile-menu-toggle {
+      display: none;
     }
+  }
+
+  @media (max-width: 400px) {
+    .site-brand__tag {
+      display: none;
+    }
+    .site-brand__name {
+      font-size: 0.92rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-menu,
+    .mobile-menu__inner,
+    .site-header,
+    .site-nav__link,
+    .header-action {
+      transition: none !important;
+    }
+  }
+</style>
+
+<script is:inline>
+  ;(() => {
+    let cleanup = null
+
+    const initHeader = () => {
+      if (cleanup) cleanup()
+
+      const header = document.getElementById('site-header')
+      const toggle = document.getElementById('mobile-menu-toggle')
+      const menu = document.getElementById('mobile-menu')
+      const close = document.getElementById('mobile-menu-close')
+      if (!header || !toggle || !menu) return
+
+      const setScrolled = () => {
+        const scrolled = window.scrollY > 18
+        if (scrolled) header.setAttribute('data-scrolled', 'true')
+        else header.removeAttribute('data-scrolled')
+
+        const transparent = header.dataset.hero === 'true' && !scrolled
+        header.setAttribute('data-transparent', transparent ? 'true' : 'false')
+      }
+
+      const openMenu = () => {
+        menu.setAttribute('data-open', 'true')
+        menu.setAttribute('aria-hidden', 'false')
+        toggle.setAttribute('aria-expanded', 'true')
+        document.documentElement.style.overflow = 'hidden'
+      }
+
+      const closeMenu = () => {
+        menu.setAttribute('data-open', 'false')
+        menu.setAttribute('aria-hidden', 'true')
+        toggle.setAttribute('aria-expanded', 'false')
+        document.documentElement.style.overflow = ''
+      }
+
+      const onKeydown = (event) => {
+        if (event.key === 'Escape') closeMenu()
+      }
+
+      toggle.addEventListener('click', () => {
+        if (menu.getAttribute('data-open') === 'true') closeMenu()
+        else openMenu()
+      })
+      close?.addEventListener('click', closeMenu)
+      menu.addEventListener('click', (event) => {
+        if (event.target === menu) closeMenu()
+      })
+      menu.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu))
+      document.addEventListener('keydown', onKeydown)
+      window.addEventListener('scroll', setScrolled, { passive: true })
+      setScrolled()
+
+      cleanup = () => {
+        document.removeEventListener('keydown', onKeydown)
+        window.removeEventListener('scroll', setScrolled)
+        closeMenu()
+        cleanup = null
+      }
+    }
+
+    document.addEventListener('astro:after-swap', initHeader)
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initHeader)
+    else initHeader()
+    window.addEventListener('pagehide', () => cleanup?.())
   })()
 </script>

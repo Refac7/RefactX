@@ -49,7 +49,7 @@ const PostLayout = layoutMap[layoutKey] || Jap
 
   <button
     id="hud-btt-btn"
-    class="fixed bottom-6 left-6 md:bottom-10 md:left-10 z-100 group flex items-center gap-2 bg-background/80 backdrop-blur-sm border border-border/40 text-foreground px-4 py-2.5 shadow-lg hover:shadow-xl hover:border-primary/30 hover:-translate-y-1 opacity-0 translate-y-4 pointer-events-none transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+    class="fixed bottom-6 right-5 md:bottom-8 md:right-8 z-100 group flex items-center gap-2 bg-background/80 backdrop-blur-sm border border-border/40 text-foreground px-4 py-2.5 shadow-lg hover:shadow-xl hover:border-primary/30 hover:-translate-y-1 opacity-0 translate-y-4 pointer-events-none transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
     aria-label="Back to top"
   >
     <span class="icon-[ph--arrow-up-bold] size-3.5 group-hover:-translate-y-0.5 transition-transform duration-300"></span>
@@ -57,22 +57,21 @@ const PostLayout = layoutMap[layoutKey] || Jap
   </button>
 
   <div class="flex flex-col justify-between h-fit transition-all duration-500 ease-out fade-up relative">
-    <TocMobile {post} {posts} headings={filterHeadings} />
-
     <div class="fade-up animation-delay-100">
       <PostLayout {frontmatter} minutesRead={remarkPluginFrontmatter.minutesRead} {wordCount} headings={filterHeadings}>
+        <TocMobile slot="toc" {post} {posts} headings={filterHeadings} />
         <Content />
       </PostLayout>
     </div>
 
-    <div class="px-6 sm:px-8 pb-6 sm:pb-8 mx-auto w-full fade-up animation-delay-150">
+    <div class="container-page pb-6 sm:pb-8 mx-auto w-full fade-up animation-delay-150">
       {posts.length > 1 && <PostNavigation {prev} {next} />}
     </div>
 
-    <div class="mt-8 p-6 lg:p-8 xl:p-12 pb-12 mx-auto w-full fade-up animation-delay-200">
-      <div class="border-b border-border/40 pb-4 mb-8 flex items-center gap-3">
-        <span class="text-xl md:text-2xl font-bold text-foreground tracking-tight">∞</span>
-        <h2 class="text-xl md:text-2xl font-bold text-foreground tracking-tight">Comments</h2>
+    <div class="mt-8 container-page pb-12 mx-auto w-full fade-up animation-delay-200">
+      <div class="border-b border-border/50 pb-4 mb-8 flex items-center gap-3">
+        <span class="text-xl md:text-2xl font-bold text-primary">∞</span>
+        <h2 class="font-display text-2xl font-bold tracking-tight text-foreground">留下你的声音</h2>
       </div>
       <Comments />
     </div>

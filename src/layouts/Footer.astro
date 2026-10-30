@@ -1,94 +1,123 @@
 ---
-import { FOOTER_LINKS, SITE } from '~/config'
-import ThemeToggle from '~/components/theme/ThemeToggle'
-import FooterLink from '~/components/base/FooterLink.astro'
+import { FOOTER_LINKS, SITE, SOCIAL_LINKS } from '~/config'
+import { Image } from 'astro:assets'
+import favicon from '../../public/favicon.webp'
 
 const currentYear = new Date().getFullYear()
-const CONTAINER_CLASS = 'mx-auto px-6 sm:px-8 py-12'
+const exploreLinks = FOOTER_LINKS.filter((link) => ['/', '/posts', '/dynamic', '/projects'].includes(link.url))
+const moreLinks = FOOTER_LINKS.filter((link) => !['/', '/posts', '/dynamic', '/projects'].includes(link.url))
 ---
 
-<footer class="relative z-10 border-t border-border/40 bg-background/60 backdrop-blur-xl">
-  <div class={CONTAINER_CLASS}>
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 lg:gap-12 pb-12 border-b border-border/40">
-      <div class="md:col-span-2 space-y-4">
-        <span class="text-sm font-semibold tracking-tight text-foreground block">{SITE.author || 'Refac7'}</span>
-        <p class="text-sm text-muted-foreground leading-relaxed max-w-sm">
-          {SITE.footerText}<br />
-          {SITE.footerText2 || 'Minimalist layout, maximum focus. Data persistence guaranteed.'}
-        </p>
+<footer class="site-footer">
+  <div class="container-page">
+    <div class="site-footer__card">
+      <div class="site-footer__halo" aria-hidden="true"></div>
+
+      <div class="site-footer__grid">
+        <div class="site-footer__brand">
+          <a href="/" class="inline-flex items-center gap-3 no-underline">
+            <span class="site-footer__mark">
+              <Image src={favicon} width={40} height={40} alt="" class="size-6 object-contain" />
+            </span>
+            <span class="site-footer__name">{SITE.title}</span>
+          </a>
+          <p class="site-footer__desc">
+            {SITE.description}
+            <span class="block mt-1 opacity-70">记录代码、生活与光。</span>
+          </p>
+          <div class="flex flex-wrap gap-2 pt-1">
+            {
+              SOCIAL_LINKS.map((item) => (
+                <a href={item.url} target="_blank" rel="noopener noreferrer" class="footer-social" aria-label={item.name}>
+                  <span class={`${item.icon} size-[18px]`} />
+                </a>
+              ))
+            }
+            <a href="/rss.xml" target="_blank" class="footer-social" aria-label="RSS">
+              <span class="icon-[ph--rss-bold] size-[18px]"></span>
+            </a>
+            <a href="/admin" class="footer-social" aria-label="后台管理">
+              <span class="icon-[ph--sliders-horizontal] size-[18px]"></span>
+            </a>
+          </div>
+        </div>
+
+        <div class="site-footer__column">
+          <h3>探索</h3>
+          <ul>
+            {
+              exploreLinks.map((link) => (
+                <li>
+                  <a href={link.url}>{link.name}</a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div class="site-footer__column">
+          <h3>更多</h3>
+          <ul>
+            {
+              moreLinks.map((link) => (
+                <li>
+                  <a href={link.url}>{link.name}</a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div class="site-footer__column">
+          <h3>构建</h3>
+          <ul>
+            <li>
+              <a href="https://astro.build" target="_blank" rel="noopener noreferrer">
+                <span class="icon-[lineicons--astro] size-3.5"></span> Astro
+              </a>
+            </li>
+            <li>
+              <a href="https://www.vercel.com" target="_blank" rel="noopener noreferrer">
+                <span class="icon-[simple-icons--vercel] size-3"></span> Vercel
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/Refac7/RefactX" target="_blank" rel="noopener noreferrer">
+                <span class="icon-[mingcute--github-fill] size-3.5"></span> Source
+              </a>
+            </li>
+            <li>
+              <a href="/rss.xml" target="_blank">RSS Feed</a>
+            </li>
+          </ul>
+        </div>
       </div>
 
-      <div class="space-y-4">
-        <span class="text-sm font-semibold tracking-tight text-foreground block"> Navigation </span>
-        <ul class="flex flex-col gap-2">
-          {
-            FOOTER_LINKS.map((link) => (
-              <li>
-                <FooterLink href={link.url} class="text-muted-foreground hover:text-foreground transition-colors">
-                  {link.name}
-                </FooterLink>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-
-      <div class="space-y-4">
-        <span class="text-sm font-semibold tracking-tight text-foreground block"> Technology </span>
-        <ul class="flex flex-col gap-3">
-          <li>
-            <a
-              href="https://astro.build"
-              target="_blank"
-              class="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
-              ><span class="icon-[lineicons--astro] size-4"></span>Astro</a
-            >
-          </li>
-          <li>
-            <a
-              href="https://www.vercel.com"
-              target="_blank"
-              class="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
-              ><span class="icon-[simple-icons--vercel] size-3 ml-0.5"></span>Vercel</a
-            >
-          </li>
-          <li>
-            <a
-              href="https://github.com/Refac7/RefactX"
-              target="_blank"
-              class="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
-              ><span class="icon-[mingcute--github-fill] size-3 ml-0.5"></span>Source Code</a
-            >
-          </li>
-        </ul>
-      </div>
-    </div>
-
-    <div
-      class="py-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-[10px] font-mono text-muted-foreground uppercase"
-    >
-      <div class="flex flex-col sm:flex-row gap-2 sm:gap-6">
-        <span>© {currentYear} {SITE.author || 'Refac7'}. All Rights Reserved.</span>
-        <span class="hidden sm:inline text-muted-foreground">|</span>
-        <a href="https://icp.gov.moe/?keyword=20252280" target="_blank" class="hover:text-foreground transition-colors"
-          >萌ICP备 20252280号</a
-        >
-      </div>
-
-      <div class="flex w-full sm:w-auto gap-4">
-        <div class="flex items-center gap-2">
-          <span class="relative flex h-1.5 w-1.5"
-            ><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-success/70 opacity-75"></span><span
-              class="relative inline-flex h-1.5 w-1.5 bg-success rounded-full"></span></span
+      <div class="site-footer__bottom">
+        <div class="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-5">
+          <span>© {currentYear} {SITE.author} · All Rights Reserved.</span>
+          <a
+            href="https://icp.gov.moe/?keyword=20252280"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-foreground transition-colors">萌ICP备 20252280号</a
           >
-          <span>All Systems Normal</span>
         </div>
-        <div class="flex items-center gap-2" data-site-age>
-          <span class="text-muted-foreground/60">·</span>
-          <span>Site Age</span>
-          <span class="text-foreground/80 normal-case tabular-nums" data-site-age-value>calculating…</span>
+
+        <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <span class="inline-flex items-center gap-2">
+            <span class="relative flex h-1.5 w-1.5">
+              <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-success/70 opacity-75"></span>
+              <span class="relative inline-flex h-1.5 w-1.5 rounded-full bg-success"></span>
+            </span>
+            All Systems Normal
+          </span>
+          <span class="inline-flex items-center gap-1.5" data-site-age>
+            <span class="opacity-50">·</span>
+            <span>Site Age</span>
+            <span class="normal-case tabular-nums text-foreground/80" data-site-age-value>calculating…</span>
+          </span>
         </div>
-        <div class="flex ml-auto bg-background sm:hidden"><ThemeToggle client:load /></div>
       </div>
     </div>
   </div>
@@ -128,3 +157,165 @@ const CONTAINER_CLASS = 'mx-auto px-6 sm:px-8 py-12'
     })()
   </script>
 </footer>
+
+<style>
+  .site-footer {
+    position: relative;
+    z-index: 10;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .site-footer__card {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(1.6rem, 4vw, 3rem);
+    border-radius: 2rem;
+    border: 1px solid hsl(var(--border) / 0.8);
+    background: hsl(var(--card));
+    box-shadow: 0 30px 70px -50px hsl(218 26% 14% / 0.4);
+  }
+
+  .site-footer__halo {
+    position: absolute;
+    top: -9rem;
+    left: 50%;
+    width: 38rem;
+    height: 20rem;
+    transform: translateX(-50%);
+    border-radius: 999px;
+    background: hsl(var(--primary) / 0.26);
+    filter: blur(70px);
+    pointer-events: none;
+  }
+
+  .site-footer__grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.2rem;
+  }
+
+  .site-footer__brand {
+    max-width: 22rem;
+  }
+
+  .site-footer__mark {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    border: 0;
+    background: transparent;
+  }
+
+  :global(.dark) .site-footer__mark img {
+    filter: invert(1) brightness(1.1);
+  }
+
+  .site-footer__name {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+  }
+
+  .site-footer__desc {
+    margin-top: 1rem;
+    font-size: 0.86rem;
+    line-height: 1.75;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .footer-social {
+    display: inline-grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    background: transparent;
+    color: hsl(var(--muted-foreground));
+    transition:
+      color 180ms ease,
+      transform 180ms ease;
+  }
+
+  .footer-social:hover {
+    color: hsl(var(--primary));
+    background: transparent;
+    transform: translateY(-2px) scale(1.05);
+  }
+
+  .site-footer__column h3 {
+    margin: 0 0 1rem;
+    font-family: var(--font-geist-mono);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .site-footer__column ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.72rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .site-footer__column a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.85rem;
+    color: hsl(var(--foreground) / 0.72);
+    text-decoration: none;
+    transition: color 180ms ease;
+  }
+
+  .site-footer__column a:hover {
+    color: hsl(var(--accent-foreground));
+  }
+
+  .site-footer__bottom {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 2.4rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid hsl(var(--border) / 0.7);
+    font-family: var(--font-geist-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: hsl(var(--muted-foreground));
+  }
+
+  @media (min-width: 640px) {
+    .site-footer__bottom {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .site-footer__grid {
+      grid-template-columns: 1.6fr repeat(3, minmax(0, 0.7fr));
+      gap: 2rem;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .site-footer__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .site-footer__brand {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

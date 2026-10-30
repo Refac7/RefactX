@@ -29,8 +29,9 @@ const totalCount = ProjectList.length.toString().padStart(2, '0')
 ---
 
 <Layout {title} {description}>
-  <div class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
+  <div class="page-shell relative font-sans min-h-screen">
     <PageAside
+      image="/photos/250524-1.webp"
       statusText="Online"
       statusVariant="success"
       {title}
@@ -54,9 +55,9 @@ const totalCount = ProjectList.length.toString().padStart(2, '0')
       <div class="px-6 lg:px-8 xl:px-12 lg:py-20 flex-1">
         <div class={SECTION_HEADER_CLASS}>
           <div class="flex items-center">
-            <span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>Component Sequence</h2>
+            <span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>项目清单</h2>
           </div>
-          <span class={SECTION_META_CLASS}>// Module_Registry</span>
+          <span class={SECTION_META_CLASS}>项目与实验</span>
         </div>
 
         <div class="grid grid-cols-1 gap-6 mt-8">
@@ -64,7 +65,7 @@ const totalCount = ProjectList.length.toString().padStart(2, '0')
             ProjectList.map((project, index) => {
               return (
                 <div
-                  class="group relative flex flex-col bg-background/50 border border-border/40 hover:bg-muted/20 hover:border-primary/30 hover:shadow-sm transition-all duration-300 fade-up hover:-translate-y-0.5"
+                  class="group relative flex flex-col surface-soft lift hover:bg-muted/20 hover:border-primary/30 hover:shadow-sm transition-all duration-300 fade-up hover:-translate-y-0.5"
                   style={`animation-delay: ${index * 100}ms`}
                 >
                   <div class="p-6 pb-2 relative z-10 flex justify-between items-start">

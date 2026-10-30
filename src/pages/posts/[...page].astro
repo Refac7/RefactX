@@ -25,8 +25,9 @@ const progressPercent = Math.round((page.currentPage / page.lastPage) * 100)
 ---
 
 <Layout {title} {description}>
-  <div class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
+  <div class="page-shell relative font-sans min-h-screen">
     <PageAside
+      image="/photos/250524-1.webp"
       statusText="Feed Live"
       statusHasPing={false}
       statusVariant="primary"
@@ -39,22 +40,22 @@ const progressPercent = Math.round((page.currentPage / page.lastPage) * 100)
         { icon: 'icon-[ph--archive]', label: 'Archives' },
       ]}
       intro={introduce}
-      statsLabel="// FEED STATUS"
+      statsLabel="Article archive"
       statsMeta={`${page.total} TOTAL`}
       stats={[
-        { value: String(page.total), label: 'Total Entries' },
-        { value: `${page.currentPage} / ${page.lastPage}`, label: 'Page' },
+        { value: String(page.total), label: 'Total Articles' },
+        { value: `${page.currentPage} / ${page.lastPage}`, label: 'Current Page' },
       ]}
     />
 
-    <main class="w-full lg:w-2/3 z-10 flex flex-col fade-up animation-delay-100">
-      <div class="px-6 lg:px-8 xl:px-12 lg:py-20 flex-1 flex flex-col">
+    <main class="w-full z-10 flex flex-col fade-up animation-delay-100">
+      <div class="flex-1 flex flex-col">
         <div class={SECTION_HEADER_CLASS}>
-          <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>Stream Sequence</h2></div>
-          <span class={SECTION_META_CLASS}>// Post_Feed</span>
+          <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>全部文章</h2></div>
+          <span class={SECTION_META_CLASS}>Page {page.currentPage} of {page.lastPage}</span>
         </div>
 
-        <div class="relative z-10 flex-1 min-h-100 fade-up animation-delay-200">
+        <div class="relative z-10 flex-1 fade-up animation-delay-200">
           <List
             posts={page.data}
             type={POSTS_CONFIG.postPageConfig.type}
@@ -63,19 +64,11 @@ const progressPercent = Math.round((page.currentPage / page.lastPage) * 100)
           />
         </div>
 
-        <div class="mt-20 pt-8 border-t border-border/40">
-          <div class="mb-8">
-            <div class="flex justify-between text-xs text-muted-foreground mb-3">
-              <span>Reading Progress</span><span>{progressPercent}%</span>
-            </div>
-            <div class="w-full h-1.5 bg-muted/50 overflow-hidden rounded-full">
-              <div class="h-full bg-primary transition-all duration-700 ease-out" style={`width: ${progressPercent}%`}></div>
-            </div>
-          </div>
-          <div class="flex flex-col md:flex-row items-center justify-between gap-6 mb-8">
+        <div class="mt-16 pt-8 border-t border-border/50">
+          <div class="flex flex-col md:flex-row items-center justify-between gap-6">
             <div class="hidden md:flex flex-col gap-1">
-              <span class="text-sm font-medium text-foreground">Navigation</span>
-              <span class="text-xs text-muted-foreground">Select a page to continue reading.</span>
+              <span class="text-sm font-semibold text-foreground">继续翻页</span>
+              <span class="text-xs text-muted-foreground">已阅读 {progressPercent}% 的文章归档。</span>
             </div>
             <div class="flex-1 w-full md:w-auto flex justify-center md:justify-end"><Pagination {page} baseUrl="/posts" /></div>
           </div>

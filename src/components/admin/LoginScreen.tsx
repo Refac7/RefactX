@@ -5,10 +5,10 @@ import { useAdmin } from './AdminContext'
 import Captcha from '~/components/ui/Captcha'
 
 const ACCESS_SPEC = [
-  { label: 'Access Level', value: 'Administrator' },
-  { label: 'Auth Method', value: 'bcrypt · PoW' },
-  { label: 'Session', value: 'JWT · 2h' },
-  { label: 'Scope', value: 'Posts · Data · Deploy' },
+  { label: '权限级别', value: 'Administrator' },
+  { label: '验证方式', value: 'bcrypt · PoW' },
+  { label: '会话', value: 'JWT · 2h' },
+  { label: '范围', value: 'Posts · Data · Deploy' },
 ]
 
 const SECURITY_NOTES = [
@@ -33,21 +33,21 @@ export default function LoginScreen() {
   }
 
   return (
-    <div className="px-6 lg:px-8 xl:px-12 lg:py-20 flex-1 flex flex-col">
+    <div className="container-page w-full flex-1 flex flex-col py-12 sm:py-16">
       <div className="fade-up">
         {/* Section header in site style */}
         <div className={SECTION_HEADER_CLASS}>
           <div className="flex items-center">
             <span className={SECTION_NUM_CLASS}>01</span>
-            <h2 className={SECTION_TITLE_CLASS}>Authenticate</h2>
+            <h2 className={SECTION_TITLE_CLASS}>身份验证</h2>
           </div>
-          <span className={SECTION_META_CLASS}>// System_Login</span>
+          <span className={SECTION_META_CLASS}>CMS Login</span>
         </div>
 
         <div className="grid xl:grid-cols-[minmax(0,1fr)_minmax(0,440px)] gap-10">
           {/* Access information */}
           <div className="flex flex-col">
-            <div className="relative overflow-hidden rounded-xl border border-border/40 bg-background/50 p-6">
+            <div className="surface relative overflow-hidden p-6">
               <span
                 aria-hidden="true"
                 className="pointer-events-none absolute -right-4 -top-10 select-none text-[7rem] font-black leading-none tracking-tighter text-foreground/[0.04]"
@@ -60,8 +60,8 @@ export default function LoginScreen() {
                   <span className="icon-[ph--lock-key-fill] size-6" />
                 </span>
                 <div>
-                  <p className="text-sm font-bold tracking-tight text-foreground">Restricted Access</p>
-                  <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/70">Authorized personnel only</p>
+                  <p className="text-sm font-bold tracking-tight text-foreground">后台登录</p>
+                  <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/70">仅限授权管理员</p>
                 </div>
               </div>
 
@@ -87,17 +87,17 @@ export default function LoginScreen() {
 
           {/* Credentials form */}
           <div className="relative">
-            <div className="overflow-hidden rounded-xl border border-border/40 bg-background/50">
+            <div className="surface overflow-hidden">
               <div className="flex items-center justify-between border-b border-border/40 bg-muted/20 px-5 py-4">
-                <span className="text-sm font-semibold tracking-tight">Credentials</span>
-                <span className="rounded-full border border-border/40 bg-background px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                <span className="text-sm font-semibold tracking-tight">登录凭据</span>
+                <span className="rounded-full border border-border/60 bg-background px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
                   JWT
                 </span>
               </div>
 
               <div className="space-y-5 p-5">
                 <div className="space-y-1.5">
-                  <label className="ml-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Username</label>
+                  <label className="ml-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">用户名</label>
                   <div className="relative">
                     <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/60 icon-[ph--user] size-4" />
                     <input
@@ -110,7 +110,7 @@ export default function LoginScreen() {
                       autoFocus
                       autoComplete="username"
                       className={cn(
-                        'w-full rounded-lg border bg-background py-2.5 pl-9 pr-4 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-offset-0',
+                        'w-full rounded-xl border bg-background py-2.5 pl-9 pr-4 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-offset-0',
                         loginError
                           ? 'border-danger/50 text-danger focus:ring-danger/20'
                           : 'border-border/60 focus:border-primary/50 focus:ring-primary/20'
@@ -120,7 +120,7 @@ export default function LoginScreen() {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="ml-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Passkey</label>
+                  <label className="ml-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">密码</label>
                   <div className="relative">
                     <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/60 icon-[ph--key] size-4" />
                     <input
@@ -132,7 +132,7 @@ export default function LoginScreen() {
                       placeholder="••••••••"
                       autoComplete="current-password"
                       className={cn(
-                        'w-full rounded-lg border bg-background py-2.5 pl-9 pr-10 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-offset-0',
+                        'w-full rounded-xl border bg-background py-2.5 pl-9 pr-10 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-offset-0',
                         loginError
                           ? 'border-danger/50 text-danger focus:ring-danger/20'
                           : 'border-border/60 focus:border-primary/50 focus:ring-primary/20'
@@ -157,7 +157,7 @@ export default function LoginScreen() {
                   onClick={() => canSubmit && performLogin(username.trim(), password, captchaToken!)}
                   disabled={isValidating || !canSubmit}
                   className={cn(
-                    'flex w-full items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-semibold transition-all',
+                    'flex w-full items-center justify-center gap-2 rounded-full py-3 text-sm font-semibold transition-all',
                     canSubmit && !loginError
                       ? 'bg-primary text-primary-foreground shadow-sm hover:bg-primary/90'
                       : 'cursor-not-allowed border border-border/50 bg-muted text-muted-foreground'
@@ -165,11 +165,11 @@ export default function LoginScreen() {
                 >
                   {isValidating ? (
                     <>
-                      <span className="icon-[ph--spinner] animate-spin size-4" /> Verifying...
+                      <span className="icon-[ph--spinner] animate-spin size-4" /> 验证中...
                     </>
                   ) : (
                     <>
-                      Continue
+                      登录
                       <span className="icon-[ph--arrow-right] size-4" />
                     </>
                   )}
@@ -187,7 +187,7 @@ export default function LoginScreen() {
             </div>
 
             <p className="mt-4 mb-4 text-center font-mono text-[10px] uppercase tracking-widest text-muted-foreground/50">
-              Protected by HMAC CAPTCHA · bcrypt
+              由 HMAC CAPTCHA 与 bcrypt 保护
             </p>
           </div>
         </div>

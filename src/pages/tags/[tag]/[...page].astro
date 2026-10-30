@@ -32,8 +32,9 @@ const progressPercent = Math.round((page.currentPage / page.lastPage) * 100)
 ---
 
 <Layout title={`#${tag}`} {description}>
-  <div class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
+  <div class="page-shell relative font-sans min-h-screen">
     <PageAside
+      image="/photos/240809-3.webp"
       statusText="Filter Active"
       statusHasPing={false}
       statusVariant="primary"
@@ -57,9 +58,9 @@ const progressPercent = Math.round((page.currentPage / page.lastPage) * 100)
       <div class="px-6 lg:px-8 xl:px-12 lg:py-20 flex-1 flex flex-col">
         <div class={SECTION_HEADER_CLASS}>
           <div class="flex items-center">
-            <span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>Filtered Results</h2>
+            <span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>筛选结果</h2>
           </div>
-          <span class={SECTION_META_CLASS}>// Query_Output</span>
+          <span class={SECTION_META_CLASS}>// 标签归档</span>
         </div>
 
         <!-- Breadcrumb -->
@@ -77,7 +78,7 @@ const progressPercent = Math.round((page.currentPage / page.lastPage) * 100)
 
         <div class="pt-8 border-t border-border/40">
           <div class="flex justify-between text-xs text-muted-foreground mb-3">
-            <span>Reading Progress</span><span>{progressPercent}%</span>
+            <span>阅读进度</span><span>{progressPercent}%</span>
           </div>
           <div class="w-full h-1.5 bg-muted/50 overflow-hidden rounded-full mb-8">
             <div class="h-full bg-primary transition-all duration-700 ease-out" style={`width: ${progressPercent}%`}></div>
@@ -85,10 +86,12 @@ const progressPercent = Math.round((page.currentPage / page.lastPage) * 100)
           <div class="flex flex-col md:flex-row items-center justify-between gap-6">
             <div class="hidden md:flex flex-col gap-1">
               <span class="text-sm font-medium text-foreground">Navigation</span><span class="text-xs text-muted-foreground"
-                >Select a page to continue.</span
+                >继续翻阅这个标签下的文章。</span
               >
             </div>
-            <div class="flex-1 w-full md:w-auto flex justify-center md:justify-end"><Pagination {page} baseUrl="/posts" /></div>
+            <div class="flex-1 w-full md:w-auto flex justify-center md:justify-end">
+              <Pagination {page} baseUrl={`/tags/${encodeURIComponent(tag)}`} />
+            </div>
           </div>
         </div>
       </div>

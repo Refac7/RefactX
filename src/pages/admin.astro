@@ -30,8 +30,9 @@ const description = 'Authorized Personnel Only'
     })()
   </script>
 
-  <div id="cms-login-root" class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
+  <div id="cms-login-root" class="page-shell relative font-sans min-h-screen">
     <PageAside
+      image="/photos/240809-1.webp"
       statusText="Restricted Area"
       title="Access"
       subtitleIcon="icon-[ph--lock-key]"
@@ -59,7 +60,7 @@ const description = 'Authorized Personnel Only'
     html.is-authed #cms-login-root {
       display: block;
     }
-    html.is-authed #cms-login-root > aside {
+    html.is-authed #cms-login-root > section {
       display: none;
     }
     html.is-authed #cms-login-root > main {

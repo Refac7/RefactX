@@ -18,8 +18,9 @@ const lastUpdate = new Date().toLocaleDateString('en-US', { month: 'short', day:
 ---
 
 <Layout {title} {description}>
-  <div class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
+  <div class="page-shell relative font-sans min-h-screen">
     <PageAside
+      image="/photos/240809-2.webp"
       statusText="Indexing"
       statusHasPing={false}
       statusVariant="primary"
@@ -44,8 +45,8 @@ const lastUpdate = new Date().toLocaleDateString('en-US', { month: 'short', day:
     <main class="w-full lg:w-2/3 z-10 flex flex-col fade-up animation-delay-150">
       <div class="px-6 lg:px-8 xl:px-12 lg:py-20 flex-1">
         <div class={SECTION_HEADER_CLASS}>
-          <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>All Tags</h2></div>
-          <span class={SECTION_META_CLASS}>// Tag_Cloud</span>
+          <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>全部标签</h2></div>
+          <span class={SECTION_META_CLASS}>标签索引</span>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mt-8 fade-up animation-delay-200">
@@ -55,7 +56,7 @@ const lastUpdate = new Date().toLocaleDateString('en-US', { month: 'short', day:
               return (
                 <a
                   href={`/tags/${tag.name}`}
-                  class="group relative flex flex-col justify-between p-6 bg-background/50 border border-border/40 hover:bg-muted/30 hover:border-primary/30 hover:shadow-sm transition-all duration-300 h-32 fade-up hover:-translate-y-0.5"
+                  class="group relative flex flex-col justify-between p-6 surface-soft lift hover:bg-muted/30 hover:border-primary/30 hover:shadow-sm transition-all duration-300 h-32 fade-up hover:-translate-y-0.5"
                   style={`animation-delay: ${index * 50}ms`}
                   rel="noopener noreferrer"
                 >

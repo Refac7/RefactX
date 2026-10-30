@@ -35,15 +35,15 @@ const getRelativeIndentClass = (depth: number) => {
 <aside
   id="desktop-toc-aside"
   class={cn(
-    'hidden xl:block sticky top-32 w-60 shrink-0 z-40 transition-opacity duration-300 ease-out',
+    'hidden xl:block sticky top-24 w-64 shrink-0 z-40 transition-opacity duration-300 ease-out',
     'opacity-90 hover:opacity-100 group',
     className
   )}
 >
-  <div class="border border-border/40 bg-background/50 backdrop-blur-sm p-5">
+  <div class="surface p-5">
     <!-- Mono header label -->
-    <div class="flex items-center justify-between mb-4 pb-3 border-b border-border/30">
-      <span class="text-[10px] font-mono text-muted-foreground uppercase tracking-widest select-none"> // On_This_Page </span>
+    <div class="flex items-center justify-between mb-4 pb-3 border-b border-border/50">
+      <span class="text-[10px] font-mono text-muted-foreground uppercase tracking-[0.16em] select-none">On this page</span>
       <span class="text-[10px] font-mono text-muted-foreground/50 select-none">
         {String(filteredHeadings.length).padStart(2, '0')}
       </span>

@@ -14,9 +14,11 @@ type Props = {
   description: string
   image?: string
   author?: string
+  /** 页面顶部是否使用通栏主视觉（透明导航） */
+  hero?: boolean
 }
 
-const { title, description, image, author } = Astro.props
+const { title, description, image, author, hero = false } = Astro.props
 ---
 
 <!doctype html>
@@ -31,7 +33,7 @@ const { title, description, image, author } = Astro.props
         } catch {}
 
         const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
-        document.documentElement.style.backgroundColor = isDark ? '#0e1116' : '#fcfcfd'
+        document.documentElement.style.backgroundColor = isDark ? '#100e0b' : '#faf6ee'
       })()
     </script>
   </head>
@@ -52,19 +54,15 @@ const { title, description, image, author } = Astro.props
       )
     }
 
-    <div class="select-text selection:bg-foreground/20 selection:text-foreground">
-      <div class="relative z-10 bg-background">
-        <Header />
-      </div>
-      <div class="h-[96px]" aria-hidden="true"></div>
+    <div class="select-text">
+      <Header {hero} />
+      {!hero && <div class="h-[76px]" aria-hidden="true" />}
 
-      <main class="relative z-5 fullPage flex-auto bg-background">
+      <main class:list={['relative z-5 fullPage flex-auto', !hero && 'pt-2']}>
         <slot />
       </main>
 
-      <div class="relative z-0 bg-background">
-        <Footer />
-      </div>
+      <Footer />
     </div>
 
     <SearchOverlay />

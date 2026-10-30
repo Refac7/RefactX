@@ -81,14 +81,14 @@ const Captcha = ({ onVerify, className }: CaptchaProps) => {
       </div>
       <span className="text-xs font-medium text-muted-foreground">
         {status === 'idle'
-          ? 'Verify you are human'
+          ? '验证你是人类'
           : status === 'loading'
-            ? 'Connecting to edge...'
+            ? '正在连接验证服务...'
             : status === 'computing'
-              ? 'Securing connection...' // 增加一个计算中的文案
+              ? '正在建立安全连接...' // 增加一个计算中的文案
               : status === 'success'
-                ? 'Verification complete'
-                : 'Verification failed, retry'}
+                ? '验证完成'
+                : '验证失败，请重试'}
       </span>
     </div>
   )

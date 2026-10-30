@@ -20,8 +20,9 @@ const totalLinks = FRIENDS_LIST.length.toString().padStart(2, '0')
 ---
 
 <Layout {title} {description}>
-  <div class="relative font-sans flex flex-col lg:flex-row min-h-screen max-w-[1920px] mx-auto">
+  <div class="page-shell relative font-sans min-h-screen">
     <PageAside
+      image="/photos/240220-2.webp"
       statusText="Connected"
       statusVariant="success"
       {title}
@@ -44,8 +45,8 @@ const totalLinks = FRIENDS_LIST.length.toString().padStart(2, '0')
     <main class="w-full lg:w-2/3 z-10 flex flex-col fade-up animation-delay-150">
       <div class="px-6 lg:px-8 xl:px-12 lg:py-20 flex-1 flex flex-col">
         <div class={SECTION_HEADER_CLASS}>
-          <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>Directory</h2></div>
-          <span class={SECTION_META_CLASS}>// Node_Registry</span>
+          <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>友链星图</h2></div>
+          <span class={SECTION_META_CLASS}>互联网邻居</span>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3 gap-3 sm:gap-4 fade-up animation-delay-200">
@@ -56,7 +57,7 @@ const totalLinks = FRIENDS_LIST.length.toString().padStart(2, '0')
                   href={friend.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="friend-card group relative block border border-border/40 bg-background/50 p-4 sm:p-5 hover:bg-muted/20 hover:border-primary/30 hover:shadow-sm transition-all duration-300 min-h-[104px] hover:-translate-y-0.5 overflow-hidden"
+                  class="friend-card group relative block surface-soft lift p-4 sm:p-5 hover:bg-muted/20 hover:border-primary/30 hover:shadow-sm transition-all duration-300 min-h-[104px] hover:-translate-y-0.5 overflow-hidden"
                   style={`animation-delay: ${index * 50}ms`}
                 >
                   <span
@@ -119,10 +120,10 @@ const totalLinks = FRIENDS_LIST.length.toString().padStart(2, '0')
                   <div class="flex items-center">
                     <>
                       <span class={SECTION_NUM_CLASS}>02</span>
-                      <h2 class={SECTION_TITLE_CLASS}>Exchange Protocol</h2>
+                      <h2 class={SECTION_TITLE_CLASS}>友链申请</h2>
                     </>
                   </div>
-                  <span class={SECTION_META_CLASS}>// Handshake_Config</span>
+                  <span class={SECTION_META_CLASS}>交换友链</span>
                 </div>
                 <div class="grid xl:grid-cols-2 gap-10 mt-6">
                   {/* 规则与联系方式 */}
