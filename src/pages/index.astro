@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content'
 import { SITE, SKILLSSHOWCASE_CONFIG, GITHUB_CONFIG, POSTS_CONFIG, BUILD_INFO_CONFIG } from '~/config.ts'
 import { getWordCount, postsSort } from '~/lib/utils'
+import { SECTION_HEADER_CLASS, SECTION_TITLE_CLASS, SECTION_NUM_CLASS, SECTION_META_CLASS } from '~/lib/ui'
 
 import Layout from '~/layouts/Layout.astro'
 import PageAside from '~/components/base/PageAside.astro'
@@ -38,48 +39,55 @@ const NAV_CARDS = [
   <div class="relative mx-auto flex min-h-screen max-w-[1920px] flex-col font-sans lg:flex-row lg:flex-nowrap">
     <PageAside showSocialLinks />
     <main class="z-10 flex w-full min-w-0 flex-col lg:w-1/2 lg:basis-1/2 lg:shrink-0 lg:grow-0">
-      <div class="flex flex-1 flex-col gap-14 px-5 py-10 sm:px-8 lg:gap-16 lg:px-10 lg:py-14 xl:px-12">
+      <div class="flex flex-1 flex-col gap-16 px-5 py-10 sm:px-8 lg:gap-20 lg:px-10 lg:py-14 xl:px-12">
         <!-- 01 / Navigation -->
         <section>
-          <div class="mb-6 flex flex-col justify-between gap-3 border-b-2 border-foreground pb-3 sm:flex-row sm:items-end">
+          <div class={SECTION_HEADER_CLASS}>
             <div class="flex items-center">
-              <span class="swiss-index mr-3">01</span>
-              <h2 class="text-xl font-bold tracking-[-0.04em] text-foreground md:text-2xl">Navigation</h2>
+              <span class={SECTION_NUM_CLASS}>01</span>
+              <h2 class={SECTION_TITLE_CLASS}>Navigation</h2>
             </div>
-            <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Index / System_Modules</span>
+            <span class={SECTION_META_CLASS}>Index / System_Modules</span>
           </div>
 
-          <div class="grid grid-cols-1 gap-px border border-foreground/25 bg-foreground/25 sm:grid-cols-2 lg:grid-cols-3">
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {
               NAV_CARDS.map((card) => (
                 <a
                   href={card.href}
-                  class={`group relative flex min-h-[180px] flex-col justify-between bg-background p-5 transition-colors duration-200 hover:bg-foreground hover:text-background ${
-                    card.featured ? 'sm:col-span-2 lg:min-h-[230px]' : ''
+                  class={`group relative flex min-h-[180px] flex-col justify-between overflow-hidden rounded-2xl border border-border p-6 shadow-soft transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/35 hover:shadow-lift ${
+                    card.featured ? 'bg-accent-soft/70 sm:col-span-2 lg:min-h-[230px]' : 'bg-card'
                   } ${card.wide ? 'sm:col-span-2' : ''}`}
                 >
-                  <div class="flex items-start justify-between">
-                    <span class="flex size-9 items-center justify-center border border-current/25 text-current transition-colors group-hover:border-primary group-hover:text-primary">
+                  {card.featured && (
+                    <span
+                      aria-hidden="true"
+                      class="pointer-events-none absolute -right-6 -bottom-10 font-serif text-[11rem] leading-none text-primary/[0.08] transition-transform duration-500 group-hover:-translate-y-2 group-hover:rotate-6 select-none"
+                    >
+                      ✳
+                    </span>
+                  )}
+
+                  <div class="relative flex items-start justify-between">
+                    <span class="flex size-10 items-center justify-center rounded-xl border border-primary/15 bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
                       <span class={`${card.icon} size-5`} />
                     </span>
-                    <span class="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground transition-colors group-hover:text-background/50">
+                    <span class="rounded-full border border-border/80 bg-card/70 px-2.5 py-1 text-[10px] font-medium text-muted-foreground">
                       {card.status}
                     </span>
                   </div>
 
-                  <div class="mt-8">
-                    <div class="mb-2 font-mono text-[10px] tracking-[0.18em] text-primary">/{card.id}</div>
+                  <div class="relative mt-8">
+                    <div class="mb-2 font-mono text-[10px] tracking-[0.16em] text-primary">/{card.id}</div>
                     <div class="flex items-end justify-between gap-3">
                       <h3
-                        class={`font-bold leading-none tracking-[-0.05em] text-current ${card.featured ? 'text-3xl lg:text-4xl' : 'text-2xl'}`}
+                        class={`font-serif leading-none font-medium tracking-[-0.03em] text-foreground ${card.featured ? 'text-3xl lg:text-4xl' : 'text-2xl'}`}
                       >
                         {card.title}
                       </h3>
-                      <span class="icon-[ph--arrow-up-right] mb-0.5 size-5 shrink-0 text-current opacity-50 transition-all group-hover:opacity-100" />
+                      <span class="icon-[ph--arrow-up-right] mb-0.5 size-5 shrink-0 text-muted-foreground/50 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary" />
                     </div>
-                    <p class="mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground transition-colors group-hover:text-background/55">
-                      {card.desc}
-                    </p>
+                    <p class="mt-3 text-[12px] text-muted-foreground">{card.desc}</p>
                   </div>
                 </a>
               ))
@@ -89,15 +97,15 @@ const NAV_CARDS = [
 
         <!-- 02 / Recent Logs -->
         <section class="fade-up" style="animation-delay: 150ms">
-          <div class="mb-6 flex flex-col justify-between gap-3 border-b-2 border-foreground pb-3 sm:flex-row sm:items-end">
+          <div class={SECTION_HEADER_CLASS}>
             <div class="flex items-center">
-              <span class="swiss-index mr-3">02</span>
-              <h2 class="text-xl font-bold tracking-[-0.04em] text-foreground md:text-2xl">Recent Logs</h2>
+              <span class={SECTION_NUM_CLASS}>02</span>
+              <h2 class={SECTION_TITLE_CLASS}>Recent Logs</h2>
             </div>
             <a
               href="/posts"
-              class="group hidden items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:text-primary lg:flex"
-              >View_All<span class="icon-[ph--arrow-right] transition-transform group-hover:translate-x-1"></span></a
+              class="group hidden items-center gap-1.5 text-[11px] font-semibold tracking-[0.1em] text-primary uppercase transition-colors hover:text-accent-foreground lg:flex"
+              >View all<span class="icon-[ph--arrow-right] transition-transform group-hover:translate-x-1"></span></a
             >
           </div>
           <div><List {posts} {type} {heroImageLayout} /></div>
@@ -106,14 +114,14 @@ const NAV_CARDS = [
         {
           ENABLED && (
             <section class="fade-up" style="animation-delay: 250ms">
-              <div class="mb-6 flex flex-col justify-between gap-3 border-b-2 border-foreground pb-3 sm:flex-row sm:items-end">
+              <div class={SECTION_HEADER_CLASS}>
                 <div class="flex items-center">
-                  <span class="swiss-index mr-3">03</span>
-                  <h2 class="text-xl font-bold tracking-[-0.04em] text-foreground md:text-2xl">Activity</h2>
+                  <span class={SECTION_NUM_CLASS}>03</span>
+                  <h2 class={SECTION_TITLE_CLASS}>Activity</h2>
                 </div>
-                <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">GitHub / Contribution_Trace</span>
+                <span class={SECTION_META_CLASS}>GitHub / Contribution_Trace</span>
               </div>
-              <div class="border border-foreground/25">
+              <div class="overflow-hidden rounded-2xl border border-border bg-card shadow-soft">
                 <GithubContributions username={GITHUB_USERNAME} tooltipEnabled={TOOLTIP_ENABLED} client:visible transition:animate="none" />
               </div>
             </section>
@@ -123,14 +131,14 @@ const NAV_CARDS = [
         {
           SKILLS_ENABLED && SKILLS_DATA.length > 0 && (
             <section class="fade-up" style="animation-delay: 350ms">
-              <div class="mb-6 flex flex-col justify-between gap-3 border-b-2 border-foreground pb-3 sm:flex-row sm:items-end">
+              <div class={SECTION_HEADER_CLASS}>
                 <div class="flex items-center">
-                  <span class="swiss-index mr-3">04</span>
-                  <h2 class="text-xl font-bold tracking-[-0.04em] text-foreground md:text-2xl">Tech Stack</h2>
+                  <span class={SECTION_NUM_CLASS}>04</span>
+                  <h2 class={SECTION_TITLE_CLASS}>Tech Stack</h2>
                 </div>
-                <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Capability / Skill_Radar</span>
+                <span class={SECTION_META_CLASS}>Capability / Skill_Radar</span>
               </div>
-              <div class="[&_.skill-card]:border-foreground/25 [&_.skill-card]:bg-background">
+              <div class="overflow-hidden rounded-2xl border border-border bg-card shadow-soft [&_.skill-card]:border-border [&_.skill-card]:bg-card">
                 <SkillsShowcase skillsData={SKILLS_DATA} />
               </div>
             </section>
@@ -140,12 +148,12 @@ const NAV_CARDS = [
         {
           BUILD_INFO_ENABLED && BUILD_COMPONENTS.length > 0 && (
             <section class="fade-up" style="animation-delay: 450ms">
-              <div class="mb-6 flex flex-col justify-between gap-3 border-b-2 border-foreground pb-3 sm:flex-row sm:items-end">
+              <div class={SECTION_HEADER_CLASS}>
                 <div class="flex items-center">
-                  <span class="swiss-index mr-3">05</span>
-                  <h2 class="text-xl font-bold tracking-[-0.04em] text-foreground md:text-2xl">Build Info</h2>
+                  <span class={SECTION_NUM_CLASS}>05</span>
+                  <h2 class={SECTION_TITLE_CLASS}>Build Info</h2>
                 </div>
-                <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">System / Component_Manifest</span>
+                <span class={SECTION_META_CLASS}>System / Component_Manifest</span>
               </div>
               <BuildInfo components={BUILD_COMPONENTS} totalWords={totalWords} />
             </section>

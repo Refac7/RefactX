@@ -1,20 +1,20 @@
-<div id="search-mask" class="fixed z-200 hidden inset-0 bg-background/95 transition-opacity duration-200 opacity-0">
+<div id="search-mask" class="fixed inset-0 z-200 hidden bg-border opacity-0 backdrop-blur-sm transition-opacity duration-200">
   <div class="absolute left-1/2 top-[10%] -translate-x-1/2 transition-all duration-200 -translate-y-4 search-panel-show w-[94%] max-w-3xl">
-    <div id="search-panel" class="flex flex-col max-h-[75vh] w-full overflow-hidden border-2 border-foreground bg-background">
-      <div id="search-bar" class="flex shrink-0 items-center gap-3 border-b-2 border-foreground px-5 py-4">
-        <span class="size-2 shrink-0 bg-primary"></span>
-        <span class="hidden font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground sm:inline">Search</span>
+    <div id="search-panel" class="flex max-h-[75vh] w-full flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-lift">
+      <div id="search-bar" class="flex shrink-0 items-center gap-3 border-b border-border px-5 py-4">
+        <span class="size-2 shrink-0 rounded-full bg-primary"></span>
+        <span class="hidden text-[10px] font-semibold tracking-[0.12em] text-muted-foreground uppercase sm:inline">Search</span>
         <label class="sr-only" for="search-input">Search</label>
         <input
           type="search"
           id="search-input"
-          class="w-full bg-transparent text-base font-medium text-foreground outline-none placeholder:text-muted-foreground/50"
+          class="w-full bg-transparent text-[15px] font-medium text-foreground outline-none placeholder:text-muted-foreground/45"
           placeholder="Type to search..."
           autocomplete="off"
         />
         <button
           id="search-exact"
-          class="inline-flex shrink-0 items-center gap-1.5 border border-foreground/30 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.1em] transition-colors select-none hover:border-foreground"
+          class="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-[10px] font-medium tracking-[0.06em] text-muted-foreground transition-colors select-none hover:border-primary/40 hover:text-foreground"
           aria-pressed="false"
           title="Exact Match"
         >
@@ -22,7 +22,7 @@
           Exact
         </button>
         <kbd
-          class="hidden h-6 shrink-0 items-center justify-center border border-foreground/25 px-2 font-mono text-[10px] font-semibold text-muted-foreground sm:inline-flex"
+          class="hidden h-7 shrink-0 items-center justify-center rounded-md border border-border bg-muted/60 px-2 text-[10px] font-semibold text-muted-foreground sm:inline-flex"
           >ESC</kbd
         >
       </div>
@@ -43,6 +43,16 @@
     const getResults = () => document.getElementById('search-results')
     const getPanel = () => document.querySelector('.search-panel-show') as HTMLElement | null
     const getExactToggle = () => document.getElementById('search-exact') as HTMLButtonElement | null
+
+    const EMPTY_STATE = `
+      <div class="flex select-none flex-col items-center justify-center gap-3 py-16 text-center">
+        <span class="icon-[ph--magnifying-glass] size-9 text-muted-foreground/35"></span>
+        <div>
+          <p class="text-sm font-medium text-muted-foreground">Search across articles, notes and pages</p>
+          <p class="mt-1 text-[11px] text-muted-foreground/60">Press Esc to close · Ctrl / Cmd + K to reopen</p>
+        </div>
+      </div>
+    `
 
     let searchReqId = 0
     let isPagefindLoaded = false
@@ -114,6 +124,8 @@
         panel?.classList.remove('-translate-y-4')
         panel?.classList.add('translate-y-0')
       })
+      const results = getResults()
+      if (results && results.innerHTML.trim() === '') results.innerHTML = EMPTY_STATE
       getInput()?.focus()
 
       // 打开面板的瞬间去加载庞大的 WASM
@@ -181,10 +193,9 @@
 
           const resultItem = document.createElement('a')
           resultItem.href = data.url
-          resultItem.className =
-            'group block border-b border-foreground/15 bg-background p-5 transition-colors hover:border-primary hover:bg-muted/50'
+          resultItem.className = 'group block border-b border-border/50 px-5 py-4 transition-colors last:border-b-0 hover:bg-accent/60'
           resultItem.innerHTML = `
-          <h3 class="mb-2 text-base font-bold tracking-[-0.02em] text-foreground transition-colors group-hover:text-primary">${data.meta.title}</h3>
+          <h3 class="mb-1.5 font-serif text-lg font-medium tracking-[-0.02em] text-foreground transition-colors group-hover:text-primary">${data.meta.title}</h3>
           <p class="line-clamp-2 text-sm leading-relaxed text-muted-foreground">${data.excerpt}</p>
         `
           results?.appendChild(resultItem)
@@ -198,9 +209,9 @@
               const subItem = document.createElement('a')
               subItem.href = subResult.url
               subItem.className =
-                'block border-b border-foreground/10 bg-muted/30 p-3 pl-6 transition-colors hover:border-primary hover:bg-muted/60 group'
+                'group block border-b border-border/40 bg-muted/25 py-2.5 pr-4 pl-7 transition-colors last:border-b-0 hover:bg-accent/60'
               subItem.innerHTML = `
-              <h4 class="mb-1 text-sm font-semibold tracking-[-0.01em] text-foreground transition-colors group-hover:text-primary">${cleanTitle}</h4>
+              <h4 class="mb-0.5 text-[13px] font-semibold tracking-[-0.01em] text-foreground transition-colors group-hover:text-primary">${cleanTitle}</h4>
               <p class="line-clamp-1 text-xs text-muted-foreground/80">${subResult.excerpt}</p>
             `
               results?.appendChild(subItem)

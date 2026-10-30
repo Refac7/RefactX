@@ -26,47 +26,47 @@ const DashboardLayout = () => {
       <main className="flex-1 px-6 lg:px-8 xl:px-12 py-6 lg:py-8 xl:py-12 flex flex-col min-h-screen">
         {/* Stats cards */}
         <div className="hidden lg:grid grid-cols-3 gap-6 mb-6 shrink-0">
-          <div className="bg-background/50 border border-border/40 p-5 flex items-center justify-between hover:border-primary/30 hover:shadow-sm transition-all">
+          <div className="flex items-center justify-between rounded-2xl border border-border bg-card p-5 shadow-soft transition-all hover:border-primary/30">
             <div>
               <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest mb-1">Total Files</p>
               <h3 className="text-2xl font-bold">{remoteFiles.length}</h3>
             </div>
-            <div className="size-10 bg-primary/10 border border-primary/20 flex items-center justify-center">
+            <div className="flex size-10 items-center justify-center rounded-xl border border-primary/15 bg-primary/10">
               <span className="icon-[ph--files] size-5 text-primary/70" />
             </div>
           </div>
           <div
-            className="bg-background/50 border border-border/40 p-5 flex items-center justify-between cursor-pointer hover:border-primary/30 hover:shadow-sm transition-all"
+            className="flex cursor-pointer items-center justify-between rounded-2xl border border-border bg-card p-5 shadow-soft transition-all hover:border-primary/30"
             onClick={() => setMobileView('queue')}
           >
             <div>
               <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest mb-1">Pending Changes</p>
               <h3 className={cn('text-2xl font-bold', queue.length > 0 ? 'text-primary' : 'text-foreground')}>{queue.length}</h3>
             </div>
-            <div className="size-10 bg-primary/10 border border-primary/20 flex items-center justify-center">
+            <div className="flex size-10 items-center justify-center rounded-xl border border-primary/15 bg-primary/10">
               <span className={cn('size-5', queue.length > 0 ? 'text-primary' : 'text-primary/50', 'icon-[ph--queue]')} />
             </div>
           </div>
-          <div className="bg-background/50 border border-border/40 p-5 flex items-center justify-between hover:border-primary/30 hover:shadow-sm transition-all">
+          <div className="flex items-center justify-between rounded-2xl border border-border bg-card p-5 shadow-soft transition-all hover:border-primary/30">
             <div>
               <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest mb-1">Repository</p>
               <h3 className="text-sm font-bold truncate max-w-50">{REPO_CONFIG.repo}</h3>
             </div>
-            <div className="size-10 bg-primary/10 border border-primary/20 flex items-center justify-center">
+            <div className="flex size-10 items-center justify-center rounded-xl border border-primary/15 bg-primary/10">
               <span className="icon-[ph--git-branch] size-5 text-primary/70" />
             </div>
           </div>
         </div>
 
         {/* Mobile tab nav */}
-        <div className="grid grid-cols-3 mb-4 bg-background/50 border border-border/40 p-1 lg:hidden shrink-0">
+        <div className="mb-4 grid shrink-0 grid-cols-3 rounded-full border border-border bg-card p-1 shadow-soft lg:hidden">
           {['files', 'editor', 'queue'].map((v) => (
             <button
               key={v}
               onClick={() => setMobileView(v as any)}
               className={cn(
-                'py-2 text-[10px] font-mono uppercase tracking-widest transition-all',
-                mobileView === v ? 'bg-muted text-foreground shadow-xs' : 'text-muted-foreground hover:text-foreground'
+                'rounded-full py-2 text-[11px] font-medium transition-all',
+                mobileView === v ? 'bg-accent-soft text-accent-foreground' : 'text-muted-foreground hover:text-foreground'
               )}
             >
               {v === 'queue' && queue.length > 0 ? `Queue (${queue.length})` : v}

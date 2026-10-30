@@ -9,16 +9,16 @@
   --text-deep: hsl(var(--foreground));
   --heading: hsl(var(--foreground));
   --links: hsl(var(--foreground));
-  --links-border: hsl(var(--border) / 0.25);
+  --links-border: hsl(var(--primary) / 0.3);
   --links-hover-border: hsl(var(--primary));
   --anchor: var(--color-primary);
-  --hr-color: hsl(var(--border) / 0.2);
+  --hr-color: hsl(var(--border));
   --blockquote-border: hsl(var(--primary));
-  --blockquote-bg: transparent;
+  --blockquote-bg: hsl(var(--accent-soft) / 0.7);
   --table-text: hsl(var(--foreground));
   --inline-code-bg: hsl(var(--muted));
   --inline-code-text: hsl(var(--foreground));
-  --inline-code-border: hsl(var(--border) / 0.2);
+  --inline-code-border: hsl(var(--border));
   --caption: hsl(var(--muted-foreground));
 }
 
@@ -27,24 +27,24 @@
   --text-deep: hsl(var(--foreground));
   --heading: hsl(var(--foreground));
   --links: hsl(var(--foreground));
-  --links-border: hsl(var(--border) / 0.2);
+  --links-border: hsl(var(--primary) / 0.35);
   --links-hover-border: hsl(var(--primary));
   --anchor: var(--color-primary);
-  --hr-color: hsl(var(--border) / 0.16);
+  --hr-color: hsl(var(--border));
   --blockquote-border: hsl(var(--primary));
-  --blockquote-bg: transparent;
+  --blockquote-bg: hsl(var(--accent-soft) / 0.6);
   --table-text: hsl(var(--foreground));
   --inline-code-bg: hsl(var(--muted));
   --inline-code-text: hsl(var(--foreground));
-  --inline-code-border: hsl(var(--border) / 0.16);
+  --inline-code-border: hsl(var(--border));
   --caption: hsl(var(--muted-foreground));
 }
 
 /* ===== Base Styles | 基础样式 ===== */
 .markdown {
   color: var(--text);
-  font-size: 1rem;
-  line-height: 1.75;
+  font-size: 1.0625rem;
+  line-height: 1.8;
   font-family: var(--font-sans);
 }
 
@@ -56,38 +56,39 @@
 .markdown h5,
 .markdown h6 {
   color: var(--heading);
-  font-weight: 600;
+  font-family: var(--font-serif);
+  font-weight: 500;
   margin-top: 2em;
   margin-bottom: 1em;
-  line-height: 1.4;
-  letter-spacing: -0.02em;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
 }
 
 .markdown h1 {
   font-size: 2.25em;
-  font-weight: 700;
+  font-weight: 500;
   margin-top: 0;
   margin-bottom: 0.8888889em;
   line-height: 1.1;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.035em;
 }
 .markdown h2 {
   font-size: 1.5em;
-  font-weight: 700;
+  font-weight: 500;
   padding-top: 0.7em;
   border-top: 1px solid var(--hr-color);
-  letter-spacing: -0.035em;
+  letter-spacing: -0.03em;
 }
 .markdown h3 {
   font-size: 1.25em;
-  font-weight: 700;
+  font-weight: 500;
   margin-top: 1.6em;
   margin-bottom: 0.6em;
   letter-spacing: -0.02em;
 }
 .markdown h4 {
   font-size: 1.125em;
-  font-weight: 700;
+  font-weight: 600;
 }
 .markdown h5 {
   font-size: 1em;
@@ -197,9 +198,11 @@
   font-weight: 400;
   color: var(--text);
   background-color: transparent;
-  border-left: 4px solid var(--blockquote-border);
+  border-left: 3px solid var(--blockquote-border);
+  border-radius: 0 0.9rem 0.9rem 0;
+  background-color: var(--blockquote-bg);
   margin: 1.6em 0;
-  padding: 0.25em 0 0.25em 1.25em;
+  padding: 0.9em 1.4em;
   font-style: normal;
 }
 
@@ -225,9 +228,9 @@
   font-size: 0.875em;
   line-height: 1.7;
   margin: 1.5em 0;
-  border-radius: 0.75rem;
+  border-radius: 1rem;
   border: 1px solid var(--hr-color);
-  padding: 1em 1.25em;
+  padding: 1.1em 1.35em;
 }
 
 .markdown pre code {
@@ -255,8 +258,8 @@
   background-color: var(--inline-code-bg);
   color: var(--inline-code-text);
   border: 1px solid var(--inline-code-border);
-  border-radius: 0.375rem;
-  padding: 0.15em 0.4em;
+  border-radius: 0.45rem;
+  padding: 0.15em 0.45em;
   word-wrap: break-word;
 }
 
@@ -317,7 +320,7 @@
   display: block;
   max-width: 100%;
   margin: 2em auto;
-  border-radius: 0.75rem;
+  border-radius: 1rem;
   border: 1px solid var(--hr-color);
   will-change: transform, filter;
 }
@@ -328,7 +331,7 @@
 .markdown video,
 .markdown figure {
   margin: 2em 0;
-  border-radius: 0.75rem;
+  border-radius: 1rem;
   overflow: hidden;
 }
 .markdown figure > * {
@@ -398,9 +401,10 @@
 .markdown details {
   background-color: var(--blockquote-bg);
   border: 1px solid var(--hr-color);
-  border-radius: 0.75rem;
-  padding: 1em;
+  border-radius: 1rem;
+  padding: 1.1em 1.25em;
   margin: 1.5em 0;
+  background-color: hsl(var(--card));
 }
 
 .markdown details summary {
@@ -542,7 +546,7 @@
 .callout {
   padding-left: 16px;
   font-size: 15px;
-  border-radius: 0.5rem;
+  border-radius: 1rem;
 }
 
 .callout p {
@@ -565,7 +569,7 @@ html:not(.dark) .img-dark {
   width: 100%;
   aspect-ratio: 16 / 9;
   margin: 2rem 0;
-  border-radius: 0.75rem;
+  border-radius: 1rem;
 }
 
 [data-link='github-acct'] > img,

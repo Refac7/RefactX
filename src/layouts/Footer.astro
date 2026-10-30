@@ -6,30 +6,37 @@ import FooterLink from '~/components/base/FooterLink.astro'
 const currentYear = new Date().getFullYear()
 ---
 
-<footer class="relative z-10 border-t-2 border-foreground bg-[#0a0a0a] text-white">
-  <div class="mx-auto px-4 py-12 sm:px-6 lg:px-10 lg:py-16">
-    <div class="grid grid-cols-1 gap-10 border-b border-white/20 pb-12 md:grid-cols-12 lg:gap-12">
-      <div class="md:col-span-6">
+<footer class="relative z-10 mt-20 overflow-hidden rounded-t-[2.5rem] bg-[#23211d] text-[#f5f0e6]">
+  <div
+    class="pointer-events-none absolute -top-24 -right-16 font-serif text-[18rem] leading-none text-[#e08a6b]/10 select-none"
+    aria-hidden="true"
+  >
+    ✳
+  </div>
+
+  <div class="relative mx-auto max-w-[1600px] px-6 py-14 sm:px-10 lg:px-14 lg:py-20">
+    <div class="grid grid-cols-1 gap-12 border-b border-white/10 pb-14 md:grid-cols-12 lg:gap-16">
+      <div class="md:col-span-7">
         <div class="flex items-center gap-3">
-          <span class="size-2.5 bg-primary"></span>
-          <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-white/55">Colophon / End_Of_Document</span>
+          <span class="size-2 rounded-full bg-[#e08a6b]"></span>
+          <span class="text-[11px] font-semibold tracking-[0.16em] text-[#f5f0e6]/50 uppercase">Colophon</span>
         </div>
-        <p class="mt-6 max-w-xl text-4xl font-bold leading-[0.88] tracking-[-0.055em] sm:text-5xl lg:text-6xl">
+        <p class="mt-7 max-w-2xl font-serif text-5xl leading-[0.98] tracking-[-0.035em] text-[#f8f4ec] sm:text-6xl lg:text-7xl">
           {SITE.author || 'Refac7'}
         </p>
-        <p class="mt-6 max-w-md text-sm leading-relaxed text-white/60">
+        <p class="mt-7 max-w-md text-[15px] leading-relaxed text-[#f5f0e6]/55">
           {SITE.footerText}<br />
           {SITE.footerText2 || 'Minimalist layout, maximum focus. Data persistence guaranteed.'}
         </p>
       </div>
 
-      <div class="md:col-span-3">
-        <span class="mb-5 block border-b border-white/20 pb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-white/55"> Index </span>
-        <ul class="flex flex-col gap-1.5">
+      <div class="md:col-span-2">
+        <span class="mb-5 block text-[11px] font-semibold tracking-[0.16em] text-[#f5f0e6]/40 uppercase">Index</span>
+        <ul class="flex flex-col gap-2.5">
           {
             FOOTER_LINKS.map((link) => (
               <li>
-                <FooterLink href={link.url} class="text-white/75 hover:text-primary">
+                <FooterLink href={link.url} class="text-[#f5f0e6]/70 hover:text-[#e8a184]">
                   {link.name}
                 </FooterLink>
               </li>
@@ -39,58 +46,57 @@ const currentYear = new Date().getFullYear()
       </div>
 
       <div class="md:col-span-3">
-        <span class="mb-5 block border-b border-white/20 pb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-white/55"> Stack </span>
-        <ul class="flex flex-col gap-3">
+        <span class="mb-5 block text-[11px] font-semibold tracking-[0.16em] text-[#f5f0e6]/40 uppercase">Stack</span>
+        <ul class="flex flex-col gap-3.5">
           <li>
             <a
               href="https://astro.build"
               target="_blank"
-              class="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-white/70 transition-colors hover:text-primary"
-              ><span class="icon-[lineicons--astro] size-3.5"></span>Astro</a
+              class="flex items-center gap-2.5 text-[13px] text-[#f5f0e6]/70 transition-colors hover:text-[#e8a184]"
+              ><span class="icon-[lineicons--astro] size-4"></span>Astro</a
             >
           </li>
           <li>
             <a
               href="https://www.vercel.com"
               target="_blank"
-              class="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-white/70 transition-colors hover:text-primary"
-              ><span class="icon-[simple-icons--vercel] size-3"></span>Vercel</a
+              class="flex items-center gap-2.5 text-[13px] text-[#f5f0e6]/70 transition-colors hover:text-[#e8a184]"
+              ><span class="icon-[simple-icons--vercel] size-3.5"></span>Vercel</a
             >
           </li>
           <li>
             <a
               href="https://github.com/Refac7/RefactX"
               target="_blank"
-              class="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-white/70 transition-colors hover:text-primary"
-              ><span class="icon-[mingcute--github-fill] size-3"></span>Source Code</a
+              class="flex items-center gap-2.5 text-[13px] text-[#f5f0e6]/70 transition-colors hover:text-[#e8a184]"
+              ><span class="icon-[mingcute--github-fill] size-4"></span>Source Code</a
             >
           </li>
         </ul>
       </div>
     </div>
 
-    <div
-      class="flex flex-col justify-between gap-4 pt-6 font-mono text-[10px] uppercase tracking-[0.12em] text-white/45 md:flex-row md:items-center"
-    >
+    <div class="flex flex-col justify-between gap-4 pt-6 text-[11px] text-[#f5f0e6]/40 md:flex-row md:items-center">
       <div class="flex flex-col gap-2 sm:flex-row sm:gap-6">
         <span>© {currentYear} {SITE.author || 'Refac7'} — All Rights Reserved</span>
-        <a href="https://icp.gov.moe/?keyword=20252280" target="_blank" class="transition-colors hover:text-primary">萌ICP备 20252280号</a>
+        <a href="https://icp.gov.moe/?keyword=20252280" target="_blank" class="transition-colors hover:text-[#e8a184]">萌ICP备 20252280号</a
+        >
       </div>
 
       <div class="flex w-full flex-wrap items-center gap-4 sm:w-auto">
         <div class="flex items-center gap-2">
           <span class="relative flex size-1.5"
-            ><span class="absolute inline-flex size-full animate-ping bg-success/70"></span><span
-              class="relative inline-flex size-1.5 bg-success"></span></span
+            ><span class="absolute inline-flex size-full animate-ping rounded-full bg-success/70"></span><span
+              class="relative inline-flex size-1.5 rounded-full bg-success"></span></span
           >
           <span>All Systems Normal</span>
         </div>
         <div class="flex items-center gap-2" data-site-age>
-          <span class="text-white/25">/</span>
+          <span class="text-[#f5f0e6]/25">/</span>
           <span>Site Age</span>
-          <span class="tabular-nums text-white/80" data-site-age-value>calculating…</span>
+          <span class="tabular-nums text-[#f5f0e6]/75" data-site-age-value>calculating…</span>
         </div>
-        <div class="ml-auto flex bg-[#0a0a0a] text-white sm:hidden [&_button]:!text-white [&_button:hover]:!text-primary">
+        <div class="ml-auto flex sm:hidden [&_button]:!text-[#f5f0e6] [&_button:hover]:!bg-white/10 [&_button:hover]:!text-[#e8a184]">
           <ThemeToggle client:load />
         </div>
       </div>

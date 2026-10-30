@@ -54,6 +54,7 @@ const ThemeToggle = () => {
 
     const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
     root.classList.toggle('dark', isDark)
+    root.style.backgroundColor = isDark ? '#1b1a18' : '#f7f3ea'
 
     // 使用 requestAnimationFrame 保证样式应用完毕后再恢复过渡
     requestAnimationFrame(() => {
@@ -72,7 +73,7 @@ const ThemeToggle = () => {
   if (!mounted) {
     return (
       <button
-        className="relative inline-flex size-8 cursor-pointer items-center justify-center border border-transparent text-foreground hover:border-foreground hover:text-primary"
+        className="relative inline-flex size-9 cursor-pointer items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
         aria-label="Toggle Theme"
       >
         <div className="relative flex size-4 items-center justify-center opacity-0">
@@ -85,7 +86,7 @@ const ThemeToggle = () => {
   return (
     <button
       onClick={handleClick}
-      className="relative inline-flex size-8 cursor-pointer items-center justify-center border border-transparent text-foreground hover:border-foreground hover:text-primary"
+      className="relative inline-flex size-9 cursor-pointer items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
       aria-label="Toggle Theme"
     >
       <motion.div whileHover={{ scale: 1 }} whileTap={{ scale: 0.92 }} className="relative flex size-4 items-center justify-center">

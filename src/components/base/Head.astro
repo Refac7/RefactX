@@ -27,6 +27,7 @@ const ogImage = new URL(image || SITE.ogImage, Astro.url)
 
     root.dataset.theme = isDark ? 'dark' : 'light'
     root.classList.toggle('dark', isDark)
+    root.style.backgroundColor = isDark ? '#1b1a18' : '#f7f3ea'
 
     // 只在必要时监听
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
@@ -34,6 +35,7 @@ const ogImage = new URL(image || SITE.ogImage, Astro.url)
         const nowDark = window.matchMedia('(prefers-color-scheme: dark)').matches
         root.dataset.theme = nowDark ? 'dark' : 'light'
         root.classList.toggle('dark', nowDark)
+        root.style.backgroundColor = nowDark ? '#1b1a18' : '#f7f3ea'
       }
     })
 
@@ -43,6 +45,7 @@ const ogImage = new URL(image || SITE.ogImage, Astro.url)
       const dark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
       root.dataset.theme = dark ? 'dark' : 'light'
       root.classList.toggle('dark', dark)
+      root.style.backgroundColor = dark ? '#1b1a18' : '#f7f3ea'
     })
   })()
 </script>
@@ -57,7 +60,8 @@ const ogImage = new URL(image || SITE.ogImage, Astro.url)
 <meta name="description" content={description} />
 <meta name="author" content={metaAuthor} />
 
-<meta name="theme-color" content="" />
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f7f3ea" />
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1b1a18" />
 <meta name="color-scheme" content="light dark" />
 
 <link rel="icon" type="image/x-icon" sizes="16x16 32x32 48x48" href="/favicon.ico" />

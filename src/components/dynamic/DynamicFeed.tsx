@@ -42,14 +42,14 @@ function FeedItemCard({ item, animationDelay }: { item: FeedItem; animationDelay
 
   return (
     <div
-      className="group relative flex flex-col border border-foreground/25 bg-background transition-colors duration-200 fade-up hover:border-primary"
+      className="fade-up group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-soft transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-lift"
       style={{ animationDelay }}
     >
-      <div className="flex items-start justify-between gap-4 border-b border-foreground/15 p-5 pb-3">
-        <span className="inline-flex select-none items-center bg-primary px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em] text-primary-foreground">
+      <div className="flex items-start justify-between gap-4 border-b border-border/60 p-5 pb-3.5">
+        <span className="inline-flex items-center rounded-full bg-accent-soft px-2.5 py-1 text-[10px] font-semibold tracking-[0.04em] text-accent-foreground select-none">
           {item.mood}
         </span>
-        <span className="flex items-center gap-1 whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <span className="flex items-center gap-1 text-[10px] font-medium whitespace-nowrap text-muted-foreground">
           {new Date(item.date).toLocaleString('zh-CN', {
             month: 'short',
             day: 'numeric',
@@ -80,7 +80,7 @@ function FeedItemCard({ item, animationDelay }: { item: FeedItem; animationDelay
         {hasOverflow && (
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="mt-3 inline-flex select-none items-center gap-1 self-start font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-primary"
+            className="mt-3 inline-flex cursor-pointer items-center gap-1 self-start rounded-full px-2 py-1 text-[11px] font-medium text-muted-foreground transition-colors select-none hover:bg-accent hover:text-primary"
           >
             {isExpanded ? (
               <>
@@ -101,7 +101,7 @@ function FeedItemCard({ item, animationDelay }: { item: FeedItem; animationDelay
             href={item.link}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-primary transition-colors hover:text-foreground"
+            className="inline-flex items-center gap-1.5 text-[11px] font-medium text-primary transition-colors hover:text-accent-foreground"
           >
             <span className="icon-[ph--link-bold] size-3.5"></span> Attachment Link
           </a>
@@ -172,10 +172,12 @@ export default function DynamicFeed() {
   return (
     <div className="flex flex-col relative min-h-100">
       {!isVerified && (
-        <div className="absolute flex items-center justify-center p-2 animate-in fade-in duration-500 z-10">
-          <div className="flex flex-col items-start text-start mx-auto">
-            <span className="icon-[ph--shield-check-bold] mb-4 size-10 text-primary"></span>
-            <h3 className="mb-2 font-mono text-sm font-bold uppercase tracking-[0.14em] text-foreground">Attentions</h3>
+        <div className="absolute inset-x-0 top-4 z-20 flex animate-in items-start justify-center p-2 fade-in duration-500">
+          <div className="flex w-full max-w-2xl flex-col items-start rounded-3xl border border-border bg-card/95 p-7 text-start shadow-lift backdrop-blur-xl">
+            <span className="mb-4 flex size-11 items-center justify-center rounded-2xl bg-primary/12 text-primary">
+              <span className="icon-[ph--shield-check-bold] size-5"></span>
+            </span>
+            <h3 className="mb-2 font-serif text-xl font-medium tracking-[-0.02em] text-foreground">Attentions</h3>
             <p className="mb-6 max-w-2xl text-sm leading-relaxed text-muted-foreground">
               你真的想要访问这个页面吗？其中可能包括了情绪化信息，未经审查的观点，以及其他一些不适合所有观众的内容。
               <br />
@@ -189,15 +191,12 @@ export default function DynamicFeed() {
       )}
 
       <div
-        className={cn(
-          'transition-all duration-1000 flex flex-col',
-          !isVerified && 'blur-sm pointer-events-none select-none opacity-80 grayscale-[0.5]'
-        )}
+        className={cn('transition-all duration-1000 flex flex-col', !isVerified && 'pointer-events-none opacity-35 blur-[3px] select-none')}
       >
         {loading || !isVerified ? (
           <div className="grid grid-cols-1 gap-6">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="flex min-h-35 animate-pulse flex-col border border-foreground/25 bg-background p-6">
+              <div key={i} className="flex min-h-35 animate-pulse flex-col rounded-2xl border border-border bg-card p-6">
                 <div className="mb-4 flex items-center justify-between">
                   <div className="h-5 w-16 bg-muted"></div>
                   <div className="h-3 w-20 bg-muted/70"></div>
@@ -221,7 +220,7 @@ export default function DynamicFeed() {
               <div className="mt-10 mb-4 flex justify-center fade-up" style={{ animationDelay: '100ms' }}>
                 <button
                   onClick={() => setVisibleCount((prev) => prev + ITEMS_PER_PAGE)}
-                  className="group flex select-none items-center justify-center gap-2 border border-foreground px-6 py-2.5 font-mono text-[10px] uppercase tracking-[0.16em] text-foreground transition-colors hover:bg-foreground hover:text-background"
+                  className="group flex cursor-pointer items-center justify-center gap-2 rounded-full border border-border bg-card px-6 py-2.5 text-[11px] font-semibold tracking-[0.1em] text-foreground uppercase shadow-soft transition-colors select-none hover:border-primary/40 hover:bg-accent-soft"
                 >
                   <span>Load More</span>
                   <span className="icon-[ph--arrow-down] size-3.5 transition-transform group-hover:translate-y-0.5"></span>
@@ -231,7 +230,7 @@ export default function DynamicFeed() {
 
             {!hasMore && feed.length > 0 && (
               <div className="mt-10 mb-4 flex justify-center fade-up">
-                <span className="select-none font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground/60">
+                <span className="text-[10px] font-medium tracking-[0.14em] text-muted-foreground/60 uppercase select-none">
                   — End of signals —
                 </span>
               </div>

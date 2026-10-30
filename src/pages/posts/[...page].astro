@@ -63,13 +63,13 @@ const progressPercent = Math.round((page.currentPage / page.lastPage) * 100)
           />
         </div>
 
-        <div class="mt-16 border-t-2 border-foreground pt-6">
+        <div class="mt-16 border-t border-border pt-6">
           <div class="mb-8">
             <div class="mb-2 flex justify-between font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground">
               <span>Reading Progress</span><span class="tabular-nums text-foreground">{progressPercent}%</span>
             </div>
-            <div class="h-1.5 w-full overflow-hidden bg-muted">
-              <div class="h-full bg-primary transition-all duration-500 ease-out" style={`width: ${progressPercent}%`}></div>
+            <div class="h-1.5 w-full overflow-hidden rounded-full bg-muted">
+              <div class="h-full rounded-full bg-primary transition-all duration-500 ease-out" style={`width: ${progressPercent}%`}></div>
             </div>
           </div>
           <div class="mb-2 flex flex-col items-center justify-between gap-6 md:flex-row">

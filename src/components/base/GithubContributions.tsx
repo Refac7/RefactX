@@ -114,33 +114,33 @@ export default function GithubContributions({ username, tooltipEnabled }: Props)
     }, []) || []
 
   const getLevelClass = (count: number) => {
-    if (count === 0) return 'bg-muted border-foreground/10'
-    if (count < 5) return 'bg-primary/25 border-primary/20'
-    if (count < 10) return 'bg-primary/45 border-primary/30'
-    if (count < 20) return 'bg-primary/70 border-primary/40'
+    if (count === 0) return 'bg-muted border-border/50'
+    if (count < 5) return 'bg-primary/20 border-primary/15'
+    if (count < 10) return 'bg-primary/40 border-primary/25'
+    if (count < 20) return 'bg-primary/65 border-primary/35'
     return 'bg-primary border-primary'
   }
 
   return (
     <TooltipProvider>
       <div className="mt-0 flex w-full flex-col items-center p-5 select-none font-sans">
-        <div className="mb-5 flex w-full items-end justify-between gap-4 border-b border-foreground/15 pb-3">
+        <div className="mb-5 flex w-full items-end justify-between gap-4 border-b border-border/60 pb-3">
           <div className="flex items-center gap-3">
-            <span className="size-2 bg-primary" />
+            <span className="size-2 rounded-full bg-primary" />
             <div className="flex flex-col">
-              <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-muted-foreground">Activity</span>
-              <span className="text-sm font-bold tracking-[-0.01em] text-foreground">@{username}</span>
+              <span className="text-[10px] font-semibold tracking-[0.12em] text-muted-foreground uppercase">Activity</span>
+              <span className="font-serif text-base font-medium tracking-[-0.01em] text-foreground">@{username}</span>
             </div>
           </div>
 
           <div className="flex flex-col items-end">
             <div className="mb-0.5 flex items-center gap-1.5">
-              <span className={cn('size-1.5', loading ? 'bg-warning' : error ? 'bg-danger' : 'bg-success')} />
-              <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-muted-foreground">Contributions</span>
+              <span className={cn('size-1.5 rounded-full', loading ? 'bg-warning' : error ? 'bg-danger' : 'bg-success')} />
+              <span className="text-[10px] font-semibold tracking-[0.12em] text-muted-foreground uppercase">Contributions</span>
             </div>
-            <span className="text-sm font-bold tabular-nums text-foreground">
+            <span className="text-sm font-semibold tabular-nums text-foreground">
               {loading ? '---' : totalCount}{' '}
-              <span className="font-mono text-[9px] font-normal uppercase tracking-[0.1em] text-muted-foreground">in last year</span>
+              <span className="text-[9px] font-medium tracking-[0.1em] text-muted-foreground uppercase">in last year</span>
             </span>
           </div>
         </div>
@@ -158,7 +158,7 @@ export default function GithubContributions({ username, tooltipEnabled }: Props)
 
                   return (
                     <Tooltip key={dayIndex} content={tooltipText} disabled={!tooltipEnabled || error}>
-                      <div className={cn('size-3 border transition-colors duration-150 xl:size-5', getLevelClass(count))} />
+                      <div className={cn('size-3 rounded-[3px] border transition-colors duration-150 xl:size-5', getLevelClass(count))} />
                     </Tooltip>
                   )
                 })}

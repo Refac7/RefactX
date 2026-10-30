@@ -1,5 +1,5 @@
 ---
-// src/components/Header.astro
+// src/layouts/Header.astro
 import { HEADER_LINKS } from '~/config'
 import ThemeToggle from '~/components/theme/ThemeToggle'
 import HeaderLink from '~/components/base/HeaderLink.astro'
@@ -9,16 +9,18 @@ import favicon from '../../public/favicon.webp'
 import { CMS_CONFIG, SITE } from '~/config'
 ---
 
-<header class="fixed top-0 left-0 right-0 z-40 border-b-2 border-foreground bg-background">
-  <div class="mx-auto flex items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-10 lg:py-4">
-    <div class="flex min-w-0 items-center gap-4 sm:gap-8">
-      <a href="/" class="pointer-events-auto flex shrink-0 select-none items-center gap-3" transition:persist aria-label={SITE.title}>
-        <span class="flex size-9 items-center justify-center bg-foreground p-1.5">
-          <Image src={favicon} width={56} height={56} alt="Logo" class="size-full invert object-contain dark:invert-0" loading="eager" />
+<header
+  class="fixed top-0 right-0 left-0 z-40 border-b border-border/80 bg-background/85 backdrop-blur-xl supports-[backdrop-filter]:bg-background/70"
+>
+  <div class="mx-auto flex min-h-[76px] max-w-[1920px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-10">
+    <div class="flex min-w-0 items-center gap-3 sm:gap-7">
+      <a href="/" class="pointer-events-auto flex shrink-0 items-center gap-3 select-none" transition:persist aria-label={SITE.title}>
+        <span class="flex size-10 items-center justify-center rounded-xl bg-primary/10 p-1.5 ring-1 ring-primary/15">
+          <Image src={favicon} width={56} height={56} alt="Logo" class="size-full object-contain" loading="eager" />
         </span>
-        <span class="hidden min-w-0 flex-col leading-none sm:flex">
-          <span class="truncate text-[13px] font-bold uppercase tracking-[0.14em] text-foreground">{SITE.title || 'RefactX'}</span>
-          <span class="mt-1.5 font-mono text-[9px] uppercase tracking-[0.24em] text-muted-foreground">Independent / Digital</span>
+        <span class="hidden min-w-0 flex-col leading-tight sm:flex">
+          <span class="truncate text-[15px] font-semibold tracking-[-0.01em] text-foreground">{SITE.title || 'RefactX'}</span>
+          <span class="mt-0.5 truncate text-[11px] text-muted-foreground">You &amp; Radiance</span>
         </span>
       </a>
 
@@ -37,7 +39,7 @@ import { CMS_CONFIG, SITE } from '~/config'
             <div class="relative flex items-center">
               <button
                 id="mobile-menu-btn"
-                class="flex size-8 items-center justify-center border border-foreground/30 bg-transparent text-foreground transition-colors hover:border-primary hover:text-primary focus:outline-none"
+                class="flex size-9 cursor-pointer items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus:outline-none"
                 aria-label="More navigation"
               >
                 <span class="icon-[ph--caret-down-bold] size-3 transition-transform duration-200" id="mobile-menu-icon" />
@@ -46,12 +48,12 @@ import { CMS_CONFIG, SITE } from '~/config'
               {/* 下拉悬浮面板 */}
               <div
                 id="mobile-menu-dropdown"
-                class="absolute top-full left-0 z-100 mt-3 flex w-44 flex-col border-2 border-foreground bg-background opacity-0 invisible -translate-y-1 transition-all duration-200"
+                class="invisible absolute top-full left-0 z-100 mt-3 flex w-48 -translate-y-1 flex-col overflow-hidden rounded-2xl border border-border bg-card opacity-0 shadow-lift transition-all duration-200"
               >
                 {HEADER_LINKS.slice(1).map((link) => (
                   <a
                     href={link.url}
-                    class="border-b border-foreground/15 px-4 py-3 font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-foreground last:border-b-0 hover:bg-primary hover:text-primary-foreground"
+                    class="border-b border-border/60 px-4 py-3 text-[13px] font-medium text-foreground transition-colors last:border-b-0 hover:bg-accent hover:text-accent-foreground"
                   >
                     {link.name}
                   </a>
@@ -62,7 +64,7 @@ import { CMS_CONFIG, SITE } from '~/config'
         }
       </div>
 
-      <nav class="hidden items-center gap-1 md:flex" aria-label="Primary">
+      <nav class="hidden items-center gap-0.5 md:flex" aria-label="Primary">
         {
           HEADER_LINKS.map((link) => (
             <HeaderLink href={link.url} background>
@@ -73,28 +75,28 @@ import { CMS_CONFIG, SITE } from '~/config'
       </nav>
     </div>
 
-    <div class="flex shrink-0 items-center gap-1.5 sm:gap-2" transition:persist="header-theme-toggle">
-      <span class="mr-2 hidden font-mono text-[9px] uppercase tracking-[0.2em] text-muted-foreground lg:inline">Menu / 01</span>
+    <div class="flex shrink-0 items-center gap-1" transition:persist="header-theme-toggle">
+      <span class="mr-2 hidden text-[11px] font-medium tracking-[0.02em] text-muted-foreground lg:inline">Explore</span>
       <SearchSwitch />
       <a
         href="/rss.xml"
         target="_blank"
-        class="inline-flex size-8 items-center justify-center border border-transparent text-foreground transition-colors hover:border-foreground hover:text-primary"
+        class="inline-flex size-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
         aria-label="RSS Feed"
         title="RSS Feed"
       >
-        <span class="icon-[material-symbols--rss-feed] size-4"></span>
+        <span class="icon-[material-symbols--rss-feed] size-[18px]"></span>
       </a>
 
       {
         CMS_CONFIG.enableCMS && (
           <a
             href="/admin"
-            class="inline-flex size-8 items-center justify-center border border-transparent text-foreground transition-colors hover:border-foreground hover:text-primary"
+            class="inline-flex size-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
             aria-label="Admin Dashboard"
             title="Admin Panel"
           >
-            <span class="icon-[material-symbols--admin-panel-settings-outline] size-4" />
+            <span class="icon-[material-symbols--admin-panel-settings-outline] size-[18px]" />
           </a>
         )
       }

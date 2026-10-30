@@ -64,23 +64,26 @@ const totalCount = ProjectList.length.toString().padStart(2, '0')
             ProjectList.map((project, index) => {
               return (
                 <div
-                  class="group relative flex flex-col border border-foreground/25 bg-background transition-colors duration-200 fade-up hover:border-primary"
+                  class="fade-up group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-soft transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/35 hover:shadow-lift"
                   style={`animation-delay: ${index * 70}ms`}
                 >
                   <span
                     aria-hidden="true"
-                    class="pointer-events-none absolute right-4 top-3 select-none font-mono text-5xl font-bold leading-none tracking-[-0.08em] text-foreground/[0.06]"
+                    class="pointer-events-none absolute top-2 right-4 font-serif text-6xl leading-none font-medium tracking-[-0.06em] text-primary/[0.07] select-none"
                   >
                     {String(index + 1).padStart(2, '0')}
                   </span>
                   <div class="relative z-10 flex items-start justify-between p-5 pb-0">
-                    <div class="flex size-11 items-center justify-center border border-foreground/30 bg-muted/40">
+                    <div class="flex size-11 items-center justify-center overflow-hidden rounded-xl border border-border bg-muted/40">
                       {project.type === 'icon' && <span class={cn('size-6 text-foreground/80', project.icon)} />}
                       {project.type === 'image' && (
                         <img
                           src={project.icon}
                           alt={project.name}
-                          class={cn('size-full object-cover grayscale transition-all group-hover:grayscale-0', project.imageClass)}
+                          class={cn(
+                            'size-full object-cover transition-transform duration-500 group-hover:scale-[1.02]',
+                            project.imageClass
+                          )}
                         />
                       )}
                     </div>
@@ -89,7 +92,7 @@ const totalCount = ProjectList.length.toString().padStart(2, '0')
                         <a
                           href={project.githubUrl}
                           target="_blank"
-                          class="flex size-8 items-center justify-center border border-foreground/25 text-muted-foreground transition-colors hover:border-foreground hover:text-foreground"
+                          class="flex size-8 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:border-primary/40 hover:bg-accent-soft hover:text-foreground"
                         >
                           <span class="icon-[mdi--github] size-4" />
                         </a>
@@ -98,7 +101,7 @@ const totalCount = ProjectList.length.toString().padStart(2, '0')
                         <a
                           href={project.website}
                           target="_blank"
-                          class="flex size-8 items-center justify-center border border-foreground/25 text-muted-foreground transition-colors hover:border-primary hover:text-primary"
+                          class="flex size-8 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:border-primary/40 hover:bg-accent-soft hover:text-primary"
                         >
                           <span class="icon-[ph--arrow-up-right] size-4" />
                         </a>
@@ -107,15 +110,15 @@ const totalCount = ProjectList.length.toString().padStart(2, '0')
                   </div>
                   <div class="relative z-10 flex-1 p-5 pt-4">
                     <a href={project.website || project.githubUrl} target="_blank" class="block">
-                      <h3 class="text-lg font-bold tracking-[-0.03em] text-foreground transition-colors group-hover:text-primary">
+                      <h3 class="font-serif text-xl font-medium tracking-[-0.02em] text-foreground transition-colors group-hover:text-primary">
                         {project.name}
                       </h3>
                     </a>
                     <p class="mt-2 line-clamp-3 text-sm leading-relaxed text-muted-foreground">{project.description}</p>
                   </div>
-                  <div class="mt-auto flex items-center justify-between border-t border-foreground/20 px-5 py-2.5">
-                    <span class="inline-flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-[0.16em] text-muted-foreground">
-                      <span class="size-1.5 bg-success" />
+                  <div class="mt-auto flex items-center justify-between border-t border-border/70 bg-muted/15 px-5 py-3">
+                    <span class="inline-flex items-center gap-1.5 text-[10px] font-medium tracking-[0.1em] text-muted-foreground uppercase">
+                      <span class="size-1.5 rounded-full bg-success" />
                       Stable
                     </span>
                     {project.githubUrl && (

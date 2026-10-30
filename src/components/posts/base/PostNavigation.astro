@@ -10,22 +10,25 @@ interface Props {
 const { prev, next } = Astro.props
 ---
 
-<nav class="mt-16 grid grid-cols-1 gap-px border border-foreground/25 bg-foreground/25 sm:grid-cols-2">
+<nav class="mt-16 grid grid-cols-1 gap-4 sm:grid-cols-2">
   {
     next ? (
-      <a href={`/posts/${next.id}`} class="group relative bg-background p-5 transition-colors hover:bg-foreground hover:text-background">
+      <a
+        href={`/posts/${next.id}`}
+        class="group relative rounded-2xl border border-border bg-card p-5 shadow-soft transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/35 hover:shadow-lift"
+      >
         <div class="mb-2 flex items-center gap-2">
           <span class="icon-[ph--arrow-left] size-3.5 text-primary" />
-          <span class="font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground group-hover:text-background/55">
+          <span class="text-[10px] font-semibold tracking-[0.14em] text-muted-foreground uppercase group-hover:text-primary">
             {POSTS_CONFIG.prevPostText}
           </span>
         </div>
-        <p class="line-clamp-1 text-sm font-semibold tracking-[-0.01em] text-foreground transition-colors group-hover:text-background">
+        <p class="line-clamp-1 font-serif text-[15px] font-medium tracking-[-0.01em] text-foreground transition-colors group-hover:text-primary">
           {next.data.title}
         </p>
       </a>
     ) : (
-      <div class="hidden bg-background sm:block" />
+      <div class="hidden rounded-2xl border border-dashed border-border/70 sm:block" />
     )
   }
 
@@ -33,20 +36,20 @@ const { prev, next } = Astro.props
     prev ? (
       <a
         href={`/posts/${prev.id}`}
-        class="group relative bg-background p-5 text-right transition-colors hover:bg-foreground hover:text-background"
+        class="group relative rounded-2xl border border-border bg-card p-5 text-right shadow-soft transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/35 hover:shadow-lift"
       >
         <div class="mb-2 flex items-center justify-end gap-2">
-          <span class="font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground group-hover:text-background/55">
+          <span class="text-[10px] font-semibold tracking-[0.14em] text-muted-foreground uppercase group-hover:text-primary">
             {POSTS_CONFIG.nextPostText}
           </span>
           <span class="icon-[ph--arrow-right] size-3.5 text-primary" />
         </div>
-        <p class="line-clamp-1 text-sm font-semibold tracking-[-0.01em] text-foreground transition-colors group-hover:text-background">
+        <p class="line-clamp-1 font-serif text-[15px] font-medium tracking-[-0.01em] text-foreground transition-colors group-hover:text-primary">
           {prev.data.title}
         </p>
       </a>
     ) : (
-      <div class="hidden bg-background sm:block" />
+      <div class="hidden rounded-2xl border border-dashed border-border/70 sm:block" />
     )
   }
 </nav>

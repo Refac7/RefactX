@@ -27,25 +27,25 @@ const formattedTotalWords = (totalWords ?? 0).toLocaleString('en-US')
 const showTotalWords = SHOW_TOTAL_WORDS && totalWords !== undefined
 ---
 
-<div class="mb-6 border border-foreground/25 bg-background">
+<div class="mb-6 overflow-hidden rounded-2xl border border-border bg-card shadow-soft">
   <div class="overflow-hidden">
     <div class="-mr-px -mb-px grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3">
       {
         components.map((component) => (
-          <div class="group flex items-center justify-between gap-4 border-r border-b border-foreground/20 p-4 transition-colors hover:bg-muted/50">
+          <div class="group flex items-center justify-between gap-4 border-r border-b border-border/70 p-4 transition-colors hover:bg-accent/50">
             <div class="flex min-w-0 items-center gap-3">
-              <div class="flex size-9 shrink-0 items-center justify-center border border-foreground/25 text-primary transition-colors group-hover:border-primary">
+              <div class="flex size-9 shrink-0 items-center justify-center rounded-xl border border-primary/15 bg-primary/10 text-primary transition-colors group-hover:border-primary/40">
                 <span class={cn('size-4', component.icon)} />
               </div>
               <div class="min-w-0">
-                <div class="truncate text-sm font-bold tracking-[-0.01em] text-foreground">{component.name}</div>
-                <div class="font-mono text-[9px] uppercase tracking-[0.16em] text-muted-foreground/60">{component.category}</div>
+                <div class="truncate text-sm font-semibold tracking-[-0.01em] text-foreground">{component.name}</div>
+                <div class="text-[9px] font-medium tracking-[0.12em] text-muted-foreground/60 uppercase">{component.category}</div>
               </div>
             </div>
             <div class="flex shrink-0 flex-col items-end gap-1">
               <span class="font-mono text-[10px] font-medium tabular-nums text-foreground">v{resolveVersion(component.packageName)}</span>
               <span class="inline-flex items-center gap-1.5">
-                <span class={cn('size-1.5', component.status === 'Active' ? 'bg-success' : 'bg-primary/50')} />
+                <span class={cn('size-1.5 rounded-full', component.status === 'Active' ? 'bg-success' : 'bg-primary/50')} />
                 <span class="font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground/70">
                   {component.status || 'Stable'}
                 </span>
@@ -59,7 +59,7 @@ const showTotalWords = SHOW_TOTAL_WORDS && totalWords !== undefined
 
   {
     (SHOW_BUILD_TIME || SHOW_RUNTIME || showTotalWords) && (
-      <div class="flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-foreground/20 px-4 py-3 font-mono text-[9px] uppercase tracking-[0.14em] text-muted-foreground/70">
+      <div class="flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-border/70 px-4 py-3 text-[10px] font-medium tracking-[0.1em] text-muted-foreground/70 uppercase">
         {showTotalWords && (
           <span class="inline-flex items-center gap-2">
             <span class="icon-[ph--article] size-3.5" />

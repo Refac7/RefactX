@@ -16,16 +16,16 @@ const storageKey = `reading-warning:${id}`
   aria-labelledby="reading-warning-title"
   class="fixed inset-0 z-[9998] flex items-center justify-center bg-background/95 p-6"
 >
-  <div class="relative w-full max-w-lg overflow-hidden border-2 border-foreground bg-background fade-up">
-    <span class="absolute inset-x-0 top-0 h-1 bg-primary" aria-hidden="true"></span>
+  <div class="fade-up relative w-full max-w-lg overflow-hidden rounded-3xl border border-border bg-card shadow-lift">
+    <span class="absolute inset-x-0 top-0 h-1 bg-primary/80" aria-hidden="true"></span>
     <div class="p-7 sm:p-9">
       <div class="mb-5 flex items-center gap-3">
-        <span class="inline-flex size-10 shrink-0 items-center justify-center bg-primary text-primary-foreground">
+        <span class="inline-flex size-11 shrink-0 items-center justify-center rounded-2xl bg-primary/12 text-primary">
           <span class="icon-[ph--warning-fill] size-5"></span>
         </span>
         <div>
-          <div class="select-none font-mono text-[9px] uppercase tracking-[0.18em] text-primary">Content Warning</div>
-          <div id="reading-warning-title" class="text-base font-bold tracking-[-0.02em] text-foreground">阅读前请留意</div>
+          <div class="text-[10px] font-semibold tracking-[0.14em] text-primary uppercase select-none">Content Warning</div>
+          <div id="reading-warning-title" class="font-serif text-lg font-medium tracking-[-0.02em] text-foreground">阅读前请留意</div>
         </div>
       </div>
 
@@ -34,7 +34,7 @@ const storageKey = `reading-warning:${id}`
       <button
         type="button"
         data-warning-dismiss
-        class="inline-flex w-full items-center justify-center gap-2 bg-foreground px-4 py-2.5 text-sm font-bold text-background transition-colors hover:bg-primary hover:text-primary-foreground"
+        class="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-foreground px-4 py-3 text-sm font-medium text-background transition-colors hover:bg-primary hover:text-primary-foreground"
       >
         <span class="icon-[ph--eye] size-4"></span>
         我已了解，继续阅读

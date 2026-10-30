@@ -11,21 +11,21 @@ interface Props {
 const { class: className, variant = 'gradient', size = 'sm', showIcon = true }: Props = Astro.props
 
 const sizeClasses = {
-  sm: 'text-[10px] px-2 py-0.5 gap-1',
-  md: 'text-xs px-2.5 py-1 gap-1.5',
+  sm: 'text-[10px] px-2.5 py-0.5 gap-1',
+  md: 'text-[11px] px-3 py-1 gap-1.5',
 }
 
 const variantClasses = {
   default: 'bg-primary text-primary-foreground border border-primary hover:bg-primary/90',
-  gradient: 'bg-primary text-primary-foreground border border-primary hover:bg-primary/90',
-  subtle: 'bg-transparent text-primary border border-primary/40 hover:border-primary',
-  outline: 'bg-transparent text-foreground border border-foreground/30 hover:border-foreground',
+  gradient: 'bg-accent-soft text-accent-foreground border border-primary/25 hover:bg-primary hover:text-primary-foreground',
+  subtle: 'bg-accent-soft text-accent-foreground border border-primary/25 hover:border-primary/50',
+  outline: 'bg-transparent text-foreground border border-border hover:border-primary/40',
 }
 ---
 
 <span
   class={cn(
-    'inline-flex items-center font-mono font-semibold uppercase tracking-[0.1em] transition-colors duration-150',
+    'inline-flex items-center rounded-full font-semibold tracking-[0.02em] transition-colors duration-150',
     sizeClasses[size],
     variantClasses[variant],
     className

@@ -34,20 +34,20 @@ const getRelativeIndentClass = (depth: number) => {
     <div id="mobile-toc-container" class="xl:hidden sticky top-[76px] z-30">
       <div class="relative">
         <button
-          class="flex w-full cursor-pointer items-center justify-between border-b-2 border-foreground bg-background px-5 py-3 select-none sm:px-8"
+          class="flex w-full cursor-pointer items-center justify-between border-b border-border bg-background/90 px-5 py-3 backdrop-blur-xl select-none sm:px-8"
           data-toc-toggle
         >
           <div class="flex min-w-0 flex-1 items-center gap-4">
             <SimpleProgressRing size={16} strokeWidth={2} class="shrink-0" />
             <div class="flex min-w-0 flex-col">
-              <span class="text-left font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground/60">Navigator</span>
+              <span class="text-left text-[10px] font-semibold tracking-[0.14em] text-muted-foreground/60 uppercase">Navigator</span>
               <span id="mobile-toc-current-section" class="truncate text-sm font-medium text-foreground/80">
                 Overview
               </span>
             </div>
           </div>
           <div class="flex items-center gap-2 pl-2">
-            <span class="font-mono text-[9px] tabular-nums tracking-[0.16em] text-muted-foreground/50">
+            <span class="text-[10px] font-medium tabular-nums tracking-[0.14em] text-muted-foreground/50">
               {String(filteredHeadings.length).padStart(2, '0')}
             </span>
             <span class="icon-[ph--caret-down] size-4 text-primary transition-transform duration-200" data-toc-arrow />
@@ -55,7 +55,7 @@ const getRelativeIndentClass = (depth: number) => {
         </button>
 
         <div
-          class="max-h-0 overflow-hidden border-b-2 border-foreground bg-background transition-[max-height] duration-300 ease-in-out"
+          class="max-h-0 overflow-hidden border-b border-border bg-card transition-[max-height] duration-300 ease-in-out"
           data-toc-content
         >
           <div class="relative">
@@ -75,7 +75,7 @@ const getRelativeIndentClass = (depth: number) => {
                   return (
                     <li
                       class={cn(
-                        'flex min-w-0 items-start gap-2 border-b border-foreground/10 pb-1.5 last:border-b-0',
+                        'flex min-w-0 items-start gap-2 border-b border-border/50 pb-1.5 last:border-b-0',
                         depthClass,
                         getRelativeIndentClass(heading.depth) || ''
                       )}

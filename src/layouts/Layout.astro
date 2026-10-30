@@ -31,7 +31,7 @@ const { title, description, image, author } = Astro.props
         } catch {}
 
         const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
-        document.documentElement.style.backgroundColor = isDark ? '#080808' : '#ffffff'
+        document.documentElement.style.backgroundColor = isDark ? '#1b1a18' : '#f7f3ea'
       })()
     </script>
   </head>
@@ -52,7 +52,7 @@ const { title, description, image, author } = Astro.props
       )
     }
 
-    <div class="select-text selection:bg-foreground/20 selection:text-foreground">
+    <div class="select-text selection:bg-border selection:text-foreground">
       <div class="relative z-10 bg-background">
         <Header />
       </div>
@@ -122,16 +122,17 @@ const { title, description, image, author } = Astro.props
         gap: 0.75rem;
         color: hsl(var(--muted-foreground));
         font:
-          600 0.6875rem/1 var(--font-geist-mono),
-          monospace;
-        letter-spacing: 0.18em;
+          500 0.75rem/1 var(--font-sans),
+          sans-serif;
+        letter-spacing: 0.08em;
       }
 
       .page-transition-loader__dot {
-        width: 0.4rem;
-        height: 0.4rem;
+        width: 0.55rem;
+        height: 0.55rem;
+        border-radius: 9999px;
         background: hsl(var(--primary));
-        animation: pageTransitionPulse 800ms steps(2, end) infinite;
+        animation: pageTransitionPulse 900ms ease-in-out infinite;
       }
 
       .page-transition-loader__skip {
@@ -141,14 +142,14 @@ const { title, description, image, author } = Astro.props
         display: inline-flex;
         align-items: center;
         gap: 0.4rem;
-        padding: 0.55rem 1.1rem;
-        border: 1px solid hsl(var(--foreground));
-        background: hsl(var(--background));
+        border-radius: 9999px;
+        border: 1px solid hsl(var(--border));
+        background: hsl(var(--card));
+        padding: 0.6rem 1.15rem;
         color: hsl(var(--foreground));
         font:
-          600 0.625rem/1 var(--font-geist-mono),
-          monospace;
-        letter-spacing: 0.15em;
+          500 0.75rem/1 var(--font-sans),
+          sans-serif;
         cursor: pointer;
         opacity: 0;
         pointer-events: none;

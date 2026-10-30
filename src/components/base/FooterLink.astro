@@ -13,12 +13,12 @@ const { href, class: className, ...props } = Astro.props
 <a
   {href}
   class={cn(
-    'group relative inline-flex items-center gap-2 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-current transition-colors hover:text-primary',
+    'group relative inline-flex items-center gap-2 py-0.5 text-[13px] text-current transition-colors hover:text-primary',
     className
   )}
   {...props}
 >
-  <span class="h-1 w-1 shrink-0 bg-current opacity-30 transition-opacity group-hover:bg-primary group-hover:opacity-100"></span>
+  <span class="size-1 shrink-0 rounded-full bg-current opacity-25 transition-opacity group-hover:bg-primary group-hover:opacity-100"></span>
   <span class="relative z-10 border-b border-transparent transition-colors group-hover:border-current">
     <slot />
   </span>

@@ -65,8 +65,8 @@ const Captcha = ({ onVerify, className }: CaptchaProps) => {
     <div
       onClick={handleVerify}
       className={cn(
-        'flex cursor-pointer select-none items-center gap-3 border border-foreground/40 bg-background p-3 transition-colors',
-        status === 'idle' ? 'hover:border-primary hover:bg-muted/40' : 'cursor-default',
+        'flex cursor-pointer select-none items-center gap-3 rounded-xl border border-border bg-card p-3 transition-colors',
+        status === 'idle' ? 'hover:border-primary/40 hover:bg-accent-soft' : 'cursor-default',
         status === 'error' && 'border-danger bg-danger/5',
         className
       )}
@@ -79,7 +79,7 @@ const Captcha = ({ onVerify, className }: CaptchaProps) => {
         {status === 'success' && <span className="icon-[ph--check-circle-fill] size-5 text-success"></span>}
         {status === 'error' && <span className="icon-[ph--warning-circle-fill] size-5 text-danger"></span>}
       </div>
-      <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+      <span className="text-[11px] font-medium tracking-[0.08em] text-muted-foreground">
         {status === 'idle'
           ? 'Verify you are human'
           : status === 'loading'

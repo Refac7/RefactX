@@ -30,29 +30,29 @@ const ecConfig = defineEcConfig({
   useStyleReset: true,
 
   styleOverrides: {
-    uiFontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    uiFontSize: '0.875rem',
+    uiFontFamily: "'MiSans VF', ui-sans-serif, system-ui, -apple-system, 'PingFang SC', sans-serif",
+    uiFontSize: '0.8125rem',
     codeFontFamily: "'Geist Mono', ui-monospace, SFMono-Regular, Consolas, monospace",
     codeFontSize: '0.875rem',
-    codeLineHeight: '1.7',
+    codeLineHeight: '1.75',
 
-    borderRadius: '0.5rem',
-    codePaddingBlock: '1rem',
-    codePaddingInline: '1.25rem',
-    borderColor: ({ theme }) => (theme.type === 'dark' ? '#333333' : '#eaeaea'),
+    borderRadius: '0.95rem',
+    codePaddingBlock: '1.1rem',
+    codePaddingInline: '1.35rem',
+    borderColor: ({ theme }) => (theme.type === 'dark' ? '#3a3733' : '#e2dbcf'),
 
     frames: {
-      frameBoxShadowCssValue: 'none',
+      frameBoxShadowCssValue: '0 10px 30px -22px rgba(42, 34, 24, 0.45)',
 
-      editorBackground: ({ theme }) => (theme.type === 'dark' ? '#000000' : '#fafafa'),
-      terminalBackground: ({ theme }) => (theme.type === 'dark' ? '#000000' : '#fafafa'),
+      editorBackground: ({ theme }) => (theme.type === 'dark' ? '#1b1a18' : '#fcfaf5'),
+      terminalBackground: ({ theme }) => (theme.type === 'dark' ? '#1b1a18' : '#fcfaf5'),
 
-      editorTabBarBackground: ({ theme }) => (theme.type === 'dark' ? '#111111' : '#f5f5f5'),
-      editorActiveTabBackground: ({ theme }) => (theme.type === 'dark' ? '#000000' : '#fafafa'),
-      editorActiveTabIndicatorBottomColor: ({ theme }) => (theme.type === 'dark' ? '#ffffff' : '#000000'),
+      editorTabBarBackground: ({ theme }) => (theme.type === 'dark' ? '#23211d' : '#f2ede3'),
+      editorActiveTabBackground: ({ theme }) => (theme.type === 'dark' ? '#1b1a18' : '#fcfaf5'),
+      editorActiveTabIndicatorBottomColor: ({ theme }) => (theme.type === 'dark' ? '#e08a6b' : '#c76645'),
       editorActiveTabIndicatorTopColor: 'transparent',
 
-      terminalTitlebarBackground: ({ theme }) => (theme.type === 'dark' ? '#111111' : '#f5f5f5'),
+      terminalTitlebarBackground: ({ theme }) => (theme.type === 'dark' ? '#23211d' : '#f2ede3'),
     },
   },
 

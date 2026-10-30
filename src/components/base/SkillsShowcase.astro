@@ -16,7 +16,7 @@ const duplicateSkills = (skills: Skill[]) => [...skills, ...skills, ...skills, .
     skillsData.map((row: SkillData) => {
       const duplicatedSkills = duplicateSkills(row.skills)
       return (
-        <div class="group relative my-0 w-full overflow-hidden border-b border-foreground/25 first:border-t">
+        <div class="group relative my-0 w-full overflow-hidden border-b border-border/60 last:border-b-0">
           <div
             class={cn(
               'flex w-max will-change-transform',
@@ -27,14 +27,14 @@ const duplicateSkills = (skills: Skill[]) => [...skills, ...skills, ...skills, .
             style="transform: translateZ(0); -webkit-transform: translateZ(0);"
           >
             {duplicatedSkills.map((skill) => (
-              <div class="safari-item group flex items-center gap-2.5 border-r border-foreground/20 px-5 py-3 transition-colors hover:bg-foreground hover:text-background">
+              <div class="safari-item group flex items-center gap-2.5 border-r border-border/50 px-5 py-3.5 transition-colors hover:bg-accent">
                 <span
                   class={cn(
-                    'flex size-4 items-center justify-center text-foreground/70 transition-colors group-hover:text-primary',
+                    'flex size-4 items-center justify-center text-primary/70 transition-colors group-hover:text-primary',
                     skill.icon
                   )}
                 />
-                <span class="font-mono text-[10px] font-medium uppercase tracking-[0.12em] text-muted-foreground transition-colors group-hover:text-background">
+                <span class="text-[11px] font-medium text-muted-foreground transition-colors group-hover:text-foreground">
                   {skill.name}
                 </span>
               </div>

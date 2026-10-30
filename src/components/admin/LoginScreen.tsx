@@ -44,10 +44,10 @@ export default function LoginScreen() {
           <span className={SECTION_META_CLASS}>System / Login</span>
         </div>
 
-        <div className="grid xl:grid-cols-[minmax(0,1fr)_minmax(0,440px)] gap-10">
+        <div className="grid gap-8 2xl:grid-cols-[minmax(0,1fr)_minmax(0,440px)]">
           {/* Access information */}
           <div className="flex flex-col">
-            <div className="relative overflow-hidden rounded-xl border border-border/40 bg-background/50 p-6">
+            <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-6 shadow-soft">
               <span
                 aria-hidden="true"
                 className="pointer-events-none absolute -right-4 -top-10 select-none text-[7rem] font-black leading-none tracking-tighter text-foreground/[0.04]"
@@ -56,12 +56,12 @@ export default function LoginScreen() {
               </span>
 
               <div className="relative z-10 mb-6 flex items-center gap-3">
-                <span className="flex size-11 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
+                <span className="flex size-11 items-center justify-center rounded-2xl bg-primary/12 text-primary ring-1 ring-primary/15">
                   <span className="icon-[ph--lock-key-fill] size-6" />
                 </span>
                 <div>
-                  <p className="text-sm font-bold tracking-tight text-foreground">Restricted Access</p>
-                  <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground/70">Authorized personnel only</p>
+                  <p className="font-serif text-lg font-medium tracking-[-0.01em] text-foreground">Restricted Access</p>
+                  <p className="text-[10px] font-medium tracking-[0.1em] text-muted-foreground/70 uppercase">Authorized personnel only</p>
                 </div>
               </div>
 
@@ -87,9 +87,9 @@ export default function LoginScreen() {
 
           {/* Credentials form */}
           <div className="relative">
-            <div className="overflow-hidden rounded-xl border border-border/40 bg-background/50">
+            <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-soft">
               <div className="flex items-center justify-between border-b border-border/40 bg-muted/20 px-5 py-4">
-                <span className="text-sm font-semibold tracking-tight">Credentials</span>
+                <span className="font-serif text-base font-medium tracking-[-0.01em]">Credentials</span>
                 <span className="rounded-full border border-border/40 bg-background px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
                   JWT
                 </span>
@@ -157,7 +157,7 @@ export default function LoginScreen() {
                   onClick={() => canSubmit && performLogin(username.trim(), password, captchaToken!)}
                   disabled={isValidating || !canSubmit}
                   className={cn(
-                    'flex w-full items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-semibold transition-all',
+                    'flex w-full cursor-pointer items-center justify-center gap-2 rounded-full py-3 text-sm font-medium transition-all',
                     canSubmit && !loginError
                       ? 'bg-primary text-primary-foreground shadow-sm hover:bg-primary/90'
                       : 'cursor-not-allowed border border-border/50 bg-muted text-muted-foreground'

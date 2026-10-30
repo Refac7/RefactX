@@ -40,14 +40,14 @@ const getRelativeIndentClass = (depth: number) => {
     className
   )}
 >
-  <div class="border border-foreground/30 bg-background p-4">
+  <div class="rounded-2xl border border-border bg-card/90 p-5 shadow-soft backdrop-blur-sm">
     <!-- Mono header label -->
-    <div class="mb-3 flex items-center justify-between border-b border-foreground/20 pb-3">
-      <span class="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground select-none">
-        <span class="size-1.5 bg-primary"></span>
+    <div class="mb-3 flex items-center justify-between border-b border-border/70 pb-3">
+      <span class="flex items-center gap-2 text-[10px] font-semibold tracking-[0.14em] text-muted-foreground uppercase select-none">
+        <span class="size-1.5 rounded-full bg-primary"></span>
         On_This_Page
       </span>
-      <span class="font-mono text-[9px] tabular-nums text-muted-foreground/60 select-none">
+      <span class="text-[10px] font-medium tabular-nums text-muted-foreground/60 select-none">
         {String(filteredHeadings.length).padStart(2, '0')}
       </span>
     </div>
@@ -64,10 +64,10 @@ const getRelativeIndentClass = (depth: number) => {
                 <a
                   href={`#${heading.slug}`}
                   data-desktop-heading-link
-                  class="group/link relative flex w-full items-center border-b border-foreground/10 py-2 transition-colors last:border-b-0 hover:bg-muted/60"
+                  class="group/link relative flex w-full items-center rounded-lg border-b border-border/40 py-2 transition-colors last:border-b-0 hover:bg-accent/70"
                 >
                   {/* Active indicator bar */}
-                  <span class="absolute left-0 top-1/2 h-[calc(100%-8px)] w-[3px] -translate-y-1/2 bg-primary opacity-0 transition-opacity duration-150 group-data-active/link:opacity-100" />
+                  <span class="absolute top-1/2 left-0 h-[calc(100%-10px)] w-[3px] -translate-y-1/2 rounded-full bg-primary opacity-0 transition-opacity duration-150 group-data-active/link:opacity-100" />
 
                   <span
                     class={cn(

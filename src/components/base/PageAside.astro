@@ -70,58 +70,66 @@ const resolvedStatsMeta = statsMeta ?? `${socialLinks.length} ACTIVE`
 ---
 
 <aside
-  class="relative z-20 flex w-full min-w-0 flex-col border-b-2 border-foreground/20 bg-background lg:sticky lg:top-[76px] lg:h-[calc(100vh-76px)] lg:w-1/2 lg:basis-1/2 lg:shrink-0 lg:grow-0 lg:border-b-0 lg:border-r-2 lg:border-foreground"
+  class="relative z-20 flex w-full min-w-0 flex-col border-b border-border bg-background lg:sticky lg:top-[76px] lg:h-[calc(100vh-76px)] lg:w-1/2 lg:basis-1/2 lg:shrink-0 lg:grow-0 lg:border-r lg:border-b-0"
 >
   <div class="relative z-10 flex flex-1 flex-col lg:overflow-y-auto scrollbar-hide">
     <!-- Brand header -->
-    <header class="flex shrink-0 items-start justify-between gap-3 border-b-2 border-foreground px-6 pb-5 pt-6 lg:px-10 lg:py-5">
-      <div class="flex min-w-0 select-none items-center gap-3">
-        <div class="brand-mark flex size-10 shrink-0 items-center justify-center bg-primary text-primary-foreground">
-          <span class="icon-[ph--dot-outline-fill] size-6"></span>
+    <header class="flex shrink-0 items-center justify-between gap-3 px-6 pt-7 pb-5 lg:px-10 lg:py-6">
+      <div class="flex min-w-0 items-center gap-3 select-none">
+        <div
+          class="brand-mark flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-primary/15"
+        >
+          <span class="icon-[ph--asterisk-bold] size-5"></span>
         </div>
 
         <div class="min-w-0">
-          <div class="truncate text-[13px] font-bold uppercase tracking-[0.14em] text-foreground">
+          <div class="truncate text-[14px] font-semibold tracking-[-0.01em] text-foreground">
             {SITE.title || 'Digital Hub'}
           </div>
-          <div class="mt-1 truncate font-mono text-[9px] uppercase tracking-[0.24em] text-muted-foreground">You & Radiance</div>
+          <div class="mt-0.5 truncate text-[11px] text-muted-foreground">Independent / Digital</div>
         </div>
       </div>
 
-      <span aria-hidden="true" class="mt-1 inline shrink-0 font-mono text-[9px] tracking-[0.16em] text-muted-foreground"> 01—01 </span>
+      <span aria-hidden="true" class="mt-1 inline shrink-0 text-[11px] tabular-nums text-muted-foreground/60"> 01—01 </span>
     </header>
 
     <!-- Hero -->
     <section
-      class="editorial-hero swiss-grid relative flex min-h-[46vh] flex-1 flex-col justify-start px-6 py-10 sm:min-h-[40vh] sm:px-8 sm:py-12 lg:min-h-0 lg:px-10 lg:py-12 xl:px-12"
+      class="editorial-hero swiss-grid relative flex min-h-[46vh] flex-1 flex-col justify-start overflow-hidden px-6 py-10 sm:min-h-[40vh] sm:px-8 sm:py-12 lg:min-h-0 lg:px-10 lg:py-12 xl:px-12"
     >
+      <span
+        aria-hidden="true"
+        class="pointer-events-none absolute -right-10 top-16 font-serif text-[13rem] leading-none text-primary/[0.055] select-none lg:text-[17rem]"
+        >✳</span
+      >
+
       <!-- Status -->
       <div class="relative z-10 flex items-center justify-between gap-4">
         <div
-          class="inline-flex w-fit select-none items-center gap-2 border border-foreground/30 px-2.5 py-1.5 font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground"
+          class="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-card/80 px-3 py-1.5 text-[11px] font-medium text-muted-foreground backdrop-blur-sm select-none"
         >
           {
             statusHasPing && (
               <span class="relative flex size-1.5">
-                <span class={`absolute inline-flex size-full animate-ping opacity-75 ${pingColor}`} />
-                <span class={`relative inline-flex size-1.5 ${dotColor}`} />
+                <span class={`absolute inline-flex size-full animate-ping rounded-full opacity-75 ${pingColor}`} />
+                <span class={`relative inline-flex size-1.5 rounded-full ${dotColor}`} />
               </span>
             )
           }
           {statusText}
         </div>
-        <span class="font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground/60">Fig. 01</span>
+        <span class="text-[11px] font-medium tracking-[0.08em] text-muted-foreground/50 uppercase">Fig. 01</span>
       </div>
 
       <!-- Kicker -->
-      <div class="relative z-10 mt-10 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.2em] text-primary">
-        <span class="h-[2px] w-8 bg-primary"></span>
+      <div class="relative z-10 mt-10 flex items-center gap-2.5 text-[11px] font-semibold tracking-[0.16em] text-primary uppercase">
+        <span class="h-px w-7 bg-primary"></span>
         <span>Independent / Digital</span>
       </div>
 
       <!-- Title -->
       <div class="relative z-10 mt-5">
-        <h1 class="editorial-title relative w-fit max-w-full select-none text-foreground">
+        <h1 class="editorial-title relative w-fit max-w-full text-foreground select-none">
           <span class="editorial-title-text">{title}</span>
           <span aria-hidden="true" class="editorial-title-period">.</span>
         </h1>
@@ -130,8 +138,8 @@ const resolvedStatsMeta = statsMeta ?? `${socialLinks.length} ACTIVE`
       <!-- Subtitle -->
       {
         subtitleIcon && subtitleText && (
-          <div class="relative z-10 mt-5 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-            <span class={`${subtitleIcon} size-3.5 shrink-0`} />
+          <div class="relative z-10 mt-6 flex items-center gap-2 text-[12px] font-medium text-muted-foreground">
+            <span class={`${subtitleIcon} size-4 shrink-0 text-primary/80`} />
             <span>{subtitleText}</span>
           </div>
         )
@@ -140,15 +148,12 @@ const resolvedStatsMeta = statsMeta ?? `${socialLinks.length} ACTIVE`
       <!-- Identity tags -->
       {
         visibleIdentityTags.length > 0 && (
-          <div class="relative z-10 mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-            {visibleIdentityTags.map((tag, i) => (
-              <>
-                {i > 0 && <span aria-hidden="true" class="h-3 w-px bg-foreground/25" />}
-                <span class="flex items-center gap-1.5">
-                  <span class={`${tag.icon} size-3.5 shrink-0`} />
-                  {tag.label}
-                </span>
-              </>
+          <div class="relative z-10 mt-3 flex flex-wrap items-center gap-2">
+            {visibleIdentityTags.map((tag) => (
+              <span class="inline-flex items-center gap-1.5 rounded-full border border-border/80 bg-card/60 px-2.5 py-1 text-[11px] font-medium text-muted-foreground">
+                <span class={`${tag.icon} size-3.5 shrink-0 text-primary/70`} />
+                {tag.label}
+              </span>
             ))}
           </div>
         )
@@ -157,9 +162,9 @@ const resolvedStatsMeta = statsMeta ?? `${socialLinks.length} ACTIVE`
       <!-- Intro -->
       {
         intro && (
-          <div class="editorial-intro relative z-10 mt-10 max-w-[30rem] border-t-2 border-foreground pt-4 lg:mt-auto">
-            <div class="mb-2 font-mono text-[9px] uppercase tracking-[0.2em] text-muted-foreground/60">Abstract</div>
-            <p class="text-sm leading-relaxed text-muted-foreground md:text-[15px]">
+          <div class="editorial-intro relative z-10 mt-10 max-w-[31rem] rounded-2xl border border-border/80 bg-card/65 p-5 backdrop-blur-sm lg:mt-auto">
+            <div class="mb-2 text-[10px] font-semibold tracking-[0.16em] text-muted-foreground/60 uppercase">Abstract</div>
+            <p class="text-[14px] leading-relaxed text-muted-foreground md:text-[15px]">
               {intro.split('\n').map((line, i) => (
                 <>
                   {i > 0 && <br />}
@@ -174,9 +179,9 @@ const resolvedStatsMeta = statsMeta ?? `${socialLinks.length} ACTIVE`
       <!-- Bottom editorial marker -->
       <div
         aria-hidden="true"
-        class="relative z-10 mt-8 flex items-center gap-3 font-mono text-[9px] uppercase tracking-[0.2em] text-muted-foreground/60"
+        class="relative z-10 mt-8 flex items-center gap-3 text-[10px] font-medium tracking-[0.14em] text-muted-foreground/50 uppercase"
       >
-        <span class="h-px w-8 bg-foreground/30"></span>
+        <span class="h-px w-7 bg-border"></span>
         <span>Scroll to explore</span>
         <span class="ml-auto">↓</span>
       </div>
@@ -186,29 +191,29 @@ const resolvedStatsMeta = statsMeta ?? `${socialLinks.length} ACTIVE`
   <!-- Mobile slot / built-in mobile social links -->
   {
     (hasMobileSlot || hasBuiltinSocial) && (
-      <div class="shrink-0 select-none border-t-2 border-foreground bg-background lg:hidden">
+      <div class="shrink-0 border-t border-border bg-background select-none lg:hidden">
         {hasMobileSlot ? (
           <slot name="mobile" />
         ) : (
           <div class="p-6">
-            <div class="flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground">
+            <div class="flex items-center justify-between text-[11px] font-medium text-muted-foreground">
               <span class="flex items-center gap-2">
-                <span class="size-1.5 bg-primary" />
+                <span class="size-1.5 rounded-full bg-primary" />
                 {statsLabel}
               </span>
               <span>{resolvedStatsMeta}</span>
             </div>
-            <div class="mt-4 grid grid-cols-2 gap-2">
+            <div class="mt-4 grid grid-cols-2 gap-2.5">
               {socialLinks.map((item) => (
                 <a
                   href={item.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="group flex items-center gap-2.5 border border-foreground/25 px-3 py-3 transition-colors hover:border-primary hover:bg-primary hover:text-primary-foreground"
+                  class="group flex items-center gap-2.5 rounded-xl border border-border bg-card px-3.5 py-3 text-foreground transition-colors hover:border-primary/40 hover:bg-accent-soft"
                 >
-                  <span class={`${item.icon} size-4 shrink-0 text-current`} />
-                  <span class="truncate font-mono text-[10px] uppercase tracking-[0.1em]">{item.name}</span>
-                  <span class="icon-[ph--arrow-up-right] ml-auto size-3.5 shrink-0 opacity-40 transition-opacity group-hover:opacity-100" />
+                  <span class={`${item.icon} size-4 shrink-0 text-primary`} />
+                  <span class="truncate text-[12px] font-medium">{item.name}</span>
+                  <span class="icon-[ph--arrow-up-right] ml-auto size-3.5 shrink-0 text-muted-foreground/50 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                 </a>
               ))}
             </div>
@@ -219,12 +224,12 @@ const resolvedStatsMeta = statsMeta ?? `${socialLinks.length} ACTIVE`
   }
 
   <!-- Bottom stats / built-in social links -->
-  <footer class="relative hidden shrink-0 select-none border-t-2 border-foreground bg-background lg:block">
+  <footer class="relative hidden shrink-0 border-t border-border bg-background select-none lg:block">
     <div
-      class="flex items-center justify-between border-b border-foreground/20 px-6 py-3 font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground lg:px-10 xl:px-12"
+      class="flex items-center justify-between border-b border-border/70 px-6 py-3 text-[10px] font-semibold tracking-[0.13em] text-muted-foreground uppercase lg:px-10 xl:px-12"
     >
       <span class="flex items-center gap-2">
-        <span class="size-1.5 bg-primary"></span>
+        <span class="size-1.5 rounded-full bg-primary"></span>
         {statsLabel}
       </span>
       {resolvedStatsMeta && <span class="tabular-nums">{resolvedStatsMeta}</span>}
@@ -234,53 +239,47 @@ const resolvedStatsMeta = statsMeta ?? `${socialLinks.length} ACTIVE`
       hasBottomSlot ? (
         <slot name="bottom" />
       ) : hasBuiltinSocial ? (
-        <div class="grid grid-cols-1">
+        <div class="grid grid-cols-1 gap-2 p-3">
           {socialLinks.map((item) => (
             <a
               href={item.url}
               target="_blank"
               rel="noopener noreferrer"
-              class="group flex h-12 items-center gap-4 border-b border-foreground/15 px-6 text-left transition-colors last:border-b-0 hover:bg-primary hover:text-primary-foreground lg:px-10 xl:px-12"
+              class="group flex h-12 items-center gap-3.5 rounded-xl px-3.5 text-left transition-colors hover:bg-accent-soft"
             >
-              <span class={`${item.icon} size-4 shrink-0 text-current`} />
-              <span class="font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-current">{item.name || 'Link'}</span>
-              <span class="icon-[ph--arrow-up-right] ml-auto size-3.5 text-current opacity-40 transition-opacity group-hover:opacity-100" />
+              <span class={`${item.icon} size-4 shrink-0 text-primary`} />
+              <span class="text-[13px] font-medium text-foreground">{item.name || 'Link'}</span>
+              <span class="icon-[ph--arrow-up-right] ml-auto size-3.5 text-muted-foreground/50 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </a>
           ))}
         </div>
       ) : (
         <>
           {stats.length === 2 && (
-            <div class="grid grid-cols-2 divide-x divide-foreground/20">
+            <div class="grid grid-cols-2 gap-2 p-3">
               {stats.map((stat) => (
-                <div class="stat-cell group flex flex-col items-start justify-center px-6 py-6 transition-colors hover:bg-foreground hover:text-background lg:px-10 lg:py-8 xl:px-12">
-                  <span class="stat-value font-bold tabular-nums text-current">{stat.value}</span>
-                  <span class="mt-2 font-mono text-[9px] uppercase tracking-[0.16em] text-muted-foreground group-hover:text-background/60">
-                    {stat.label}
-                  </span>
+                <div class="stat-cell group flex flex-col items-start justify-center rounded-xl border border-border/70 bg-card/60 px-4 py-5 transition-colors hover:border-primary/30 hover:bg-accent-soft/60">
+                  <span class="stat-value font-serif font-medium tracking-[-0.02em] text-foreground">{stat.value}</span>
+                  <span class="mt-2 text-[10px] font-semibold tracking-[0.12em] text-muted-foreground uppercase">{stat.label}</span>
                 </div>
               ))}
             </div>
           )}
 
           {stats.length === 3 && (
-            <div class="flex flex-col">
-              <div class="grid grid-cols-2 divide-x divide-foreground/20 border-b border-foreground/20">
+            <div class="flex flex-col gap-2 p-3">
+              <div class="grid grid-cols-2 gap-2">
                 {stats.slice(0, 2).map((stat) => (
-                  <div class="stat-cell group flex flex-col items-start justify-center px-6 py-6 transition-colors hover:bg-foreground hover:text-background lg:px-10 lg:py-8 xl:px-12">
-                    <span class="stat-value font-bold tabular-nums text-current">{stat.value}</span>
-                    <span class="mt-2 font-mono text-[9px] uppercase tracking-[0.16em] text-muted-foreground group-hover:text-background/60">
-                      {stat.label}
-                    </span>
+                  <div class="stat-cell group flex flex-col items-start justify-center rounded-xl border border-border/70 bg-card/60 px-4 py-5 transition-colors hover:border-primary/30 hover:bg-accent-soft/60">
+                    <span class="stat-value font-serif font-medium tracking-[-0.02em] text-foreground">{stat.value}</span>
+                    <span class="mt-2 text-[10px] font-semibold tracking-[0.12em] text-muted-foreground uppercase">{stat.label}</span>
                   </div>
                 ))}
               </div>
 
-              <div class="group flex items-center justify-between px-6 py-4 transition-colors hover:bg-primary hover:text-primary-foreground lg:px-10 lg:py-5 xl:px-12">
-                <span class="font-mono text-[9px] uppercase tracking-[0.16em] text-muted-foreground group-hover:text-primary-foreground/70">
-                  {stats[2].label}
-                </span>
-                <span class="text-sm font-bold tabular-nums tracking-tight text-current">{stats[2].value}</span>
+              <div class="group flex items-center justify-between rounded-xl border border-border/70 bg-card/60 px-4 py-3.5 transition-colors hover:border-primary/30 hover:bg-accent-soft/60">
+                <span class="text-[10px] font-semibold tracking-[0.12em] text-muted-foreground uppercase">{stats[2].label}</span>
+                <span class="text-[13px] font-semibold tabular-nums text-foreground">{stats[2].value}</span>
               </div>
             </div>
           )}
@@ -296,31 +295,32 @@ const resolvedStatsMeta = statsMeta ?? `${socialLinks.length} ACTIVE`
   }
 
   .editorial-title {
-    font-size: clamp(3rem, 10vw, 4.5rem);
-    line-height: 0.86;
-    font-weight: 800;
-    letter-spacing: -0.06em;
+    font-family: var(--font-serif);
+    font-size: clamp(3.25rem, 10vw, 5rem);
+    line-height: 0.96;
+    font-weight: 500;
+    letter-spacing: -0.045em;
     text-wrap: balance;
     overflow-wrap: anywhere;
   }
 
   .editorial-title-period {
     color: hsl(var(--primary));
-    letter-spacing: -0.08em;
+    letter-spacing: -0.06em;
   }
 
   .stat-value {
-    font-size: clamp(2rem, 3.2vw, 3.25rem);
-    line-height: 0.9;
+    font-size: clamp(1.75rem, 2.8vw, 2.75rem);
+    line-height: 1;
     overflow-wrap: anywhere;
   }
 
   /* Editorial typography scales up with the available width. */
   @media (min-width: 1024px) {
     .editorial-title {
-      font-size: clamp(3.75rem, 6.2vw, 7rem);
-      line-height: 0.82;
-      letter-spacing: -0.07em;
+      font-size: clamp(4rem, 6vw, 6.5rem);
+      line-height: 0.93;
+      letter-spacing: -0.05em;
     }
   }
 
@@ -328,7 +328,7 @@ const resolvedStatsMeta = statsMeta ?? `${socialLinks.length} ACTIVE`
      forcing the entire sidebar to exceed the viewport unnecessarily. */
   @media (min-width: 1024px) and (max-height: 760px) {
     .editorial-title {
-      font-size: clamp(3rem, 4.6vw, 5rem);
+      font-size: clamp(3rem, 4.6vw, 4.75rem);
     }
 
     .editorial-hero {
@@ -344,7 +344,7 @@ const resolvedStatsMeta = statsMeta ?? `${socialLinks.length} ACTIVE`
 
   @media (min-width: 1024px) and (max-height: 620px) {
     .editorial-title {
-      font-size: clamp(2.5rem, 3.8vw, 3.75rem);
+      font-size: clamp(2.5rem, 3.8vw, 3.5rem);
     }
 
     .editorial-hero {

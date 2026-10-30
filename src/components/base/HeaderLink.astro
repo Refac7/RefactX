@@ -16,9 +16,9 @@ const isActive = href === '/' ? pathname === '/' : pathname.startsWith(href)
 <a
   {href}
   class={cn(
-    'relative inline-flex shrink-0 items-center whitespace-nowrap border-b-2 border-transparent px-2.5 py-2 font-mono text-[10px] font-semibold uppercase tracking-[0.16em] transition-colors sm:px-3',
-    background && 'text-muted-foreground hover:bg-muted hover:text-foreground',
-    isActive && 'text-foreground border-primary',
+    'relative inline-flex shrink-0 items-center whitespace-nowrap rounded-full px-3 py-2 text-[13px] font-medium transition-colors sm:px-3.5',
+    background && 'text-muted-foreground hover:bg-accent hover:text-foreground',
+    isActive && 'bg-accent text-foreground',
     className
   )}
   rel="prefetch"

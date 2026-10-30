@@ -11,8 +11,8 @@
   --waline-disable-color: hsl(var(--muted-foreground) / 0.5) !important;
   --waline-info-color: hsl(var(--muted-foreground)) !important;
   --waline-code-bg-color: hsl(var(--muted) / 0.4) !important;
-  --waline-border-radius: 0 !important;
-  --waline-avatar-radius: 0 !important;
+  --waline-border-radius: 1rem !important;
+  --waline-avatar-radius: 9999px !important;
 }
 
 #waline .wl-panel:focus-within {
@@ -40,7 +40,7 @@
 }
 
 .wl-btn {
-  border-radius: 0 !important;
+  border-radius: 1rem !important;
 }
 
 /* 评论组件内部元素统一圆角（头像保持圆形） */
@@ -49,13 +49,13 @@
 #waline .wl-emoji-popup,
 #waline .wl-reaction-votes,
 #waline .wl-content pre {
-  border-radius: 0 !important;
+  border-radius: 1rem !important;
 }
 
 #waline .wl-card .wl-badge,
 #waline .wl-login-nick,
 #waline .wl-content :not(pre) > code {
-  border-radius: 0 !important;
+  border-radius: 9999px !important;
 }
 
 .wl-actions {
@@ -95,7 +95,7 @@
 }
 
 #waline .wl-btn {
-  border-radius: 0 !important;
+  border-radius: 1rem !important;
   font-family: var(--font-geist-mono) !important;
   font-size: 10px !important;
   font-weight: 600 !important;
@@ -109,10 +109,10 @@
 
 #waline .wl-header-item label,
 #waline .wl-login-nick {
-  font-family: var(--font-geist-mono) !important;
-  font-size: 10px !important;
-  letter-spacing: 0.12em !important;
-  text-transform: uppercase !important;
+  font-family: var(--font-sans) !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.04em !important;
 }
 
 #waline .wl-content,

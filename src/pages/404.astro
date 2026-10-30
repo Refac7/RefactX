@@ -3,55 +3,50 @@ import Layout from '~/layouts/Layout.astro'
 ---
 
 <Layout title="404 Not Found" description="The page could not be found.">
-  <div class="swiss-grid relative flex min-h-screen flex-col overflow-hidden p-5 font-sans fade-up sm:p-8 lg:p-12">
-    <div class="flex items-start justify-between gap-4 border-b-2 border-foreground pb-4">
+  <div class="fade-up relative flex min-h-[calc(100vh-76px)] flex-col overflow-hidden px-5 py-10 font-sans sm:px-8 lg:px-12 lg:py-14">
+    <span
+      aria-hidden="true"
+      class="pointer-events-none absolute -top-10 right-[8%] font-serif text-[20rem] leading-none text-primary/[0.055] select-none">✳</span
+    >
+
+    <div class="relative flex items-start justify-between gap-4 border-b border-border pb-4">
       <div class="flex items-center gap-2">
-        <span class="size-2 bg-primary"></span>
-        <span class="font-mono text-[10px] uppercase tracking-[0.18em] text-foreground">System Status / Error</span>
+        <span class="size-2 rounded-full bg-primary"></span>
+        <span class="text-[11px] font-semibold tracking-[0.14em] text-foreground uppercase">System Status / Error</span>
       </div>
-      <span class="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Code: 404</span>
+      <span class="text-[11px] font-medium tracking-[0.1em] text-muted-foreground uppercase">Code: 404</span>
     </div>
 
-    <div class="z-10 flex w-full flex-1 flex-col justify-center py-16">
-      <div class="mb-5 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.2em] text-primary">
-        <span class="h-[2px] w-8 bg-primary"></span>
+    <div class="relative z-10 flex w-full flex-1 flex-col justify-center py-16">
+      <div class="mb-5 flex items-center gap-2.5 text-[11px] font-semibold tracking-[0.16em] text-primary uppercase">
+        <span class="h-px w-8 bg-primary"></span>
         <span>Page Not Found</span>
       </div>
 
       <h1
-        class="mt-6 select-none text-[28vw] font-extrabold leading-[0.8] tracking-[-0.09em] text-foreground sm:text-[20vw] lg:text-[16rem]"
+        class="mt-6 font-serif text-[30vw] leading-[0.82] font-medium tracking-[-0.055em] text-foreground select-none sm:text-[22vw] lg:text-[17rem]"
       >
         404<span class="text-primary">.</span>
       </h1>
 
-      <div class="mt-10 grid gap-8 border-t-2 border-foreground pt-6 md:grid-cols-12">
+      <div class="mt-10 grid gap-8 border-t border-border pt-8 md:grid-cols-12">
         <div class="md:col-span-5">
-          <span class="font-mono text-[9px] uppercase tracking-[0.2em] text-muted-foreground">Diagnosis / 01</span>
+          <span class="text-[10px] font-semibold tracking-[0.14em] text-muted-foreground uppercase">Diagnosis / 01</span>
         </div>
         <div class="md:col-span-7">
           <p class="max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
             The page you are looking for doesn't exist, has been moved, or is currently unavailable.
           </p>
-          <div class="mt-8 flex flex-wrap gap-2">
-            <button
-              onclick="history.back()"
-              class="inline-flex items-center justify-center border border-foreground px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.16em] text-foreground transition-colors hover:bg-foreground hover:text-background"
-            >
-              Go Back
-            </button>
-            <a
-              href="/"
-              class="inline-flex items-center justify-center bg-primary px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.16em] text-primary-foreground transition-colors hover:bg-foreground hover:text-background"
-            >
-              Return Home
-            </a>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <button onclick="history.back()" class="claude-button cursor-pointer"> Go Back </button>
+            <a href="/" class="claude-button-primary"> Return Home </a>
           </div>
         </div>
       </div>
     </div>
 
     <div
-      class="flex items-center justify-between border-t border-foreground/25 pt-4 font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground"
+      class="relative flex items-center justify-between border-t border-border pt-4 text-[10px] font-medium tracking-[0.12em] text-muted-foreground uppercase"
     >
       <span>RefactX / Static Archive</span>
       <span class="tabular-nums">End of document</span>
