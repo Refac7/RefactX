@@ -354,6 +354,8 @@ const { title, description, image, author, hero = false } = Astro.props
         window.__refactxRevealInitialized = true
 
         let observer = null
+        let mutationObserver = null
+        let observed = new WeakSet()
         const SELECTOR = [
           '.page-hero__status',
           '.page-hero__headline',
@@ -382,9 +384,30 @@ const { title, description, image, author, hero = false } = Astro.props
           document.querySelectorAll(SELECTOR).forEach((element) => element.classList.add('is-revealed'))
         }
 
+        const observeTargets = (elements) => {
+          if (!observer) return
+
+          elements.forEach((element) => {
+            if (!(element instanceof HTMLElement) || observed.has(element) || element.classList.contains('is-revealed')) return
+            observed.add(element)
+
+            const parent = element.parentElement
+            if (parent) {
+              const siblings = Array.from(parent.children).filter((child) => child.matches(SELECTOR))
+              const index = siblings.indexOf(element)
+              if (index >= 0) element.style.setProperty('--reveal-delay', `${Math.min(index, 8) * 55}ms`)
+            }
+
+            observer.observe(element)
+          })
+        }
+
         const initReveal = () => {
           if (observer) observer.disconnect()
+          if (mutationObserver) mutationObserver.disconnect()
           observer = null
+          mutationObserver = null
+          observed = new WeakSet()
 
           if (!document.documentElement.classList.contains('reveal-enabled')) return
 
@@ -392,18 +415,6 @@ const { title, description, image, author, hero = false } = Astro.props
             revealAll()
             return
           }
-
-          const targets = Array.from(document.querySelectorAll(SELECTOR)).filter((element) => !element.classList.contains('is-revealed'))
-          if (targets.length === 0) return
-
-          const targetSet = new Set(targets)
-          targets.forEach((element) => {
-            const parent = element.parentElement
-            if (!parent) return
-            const siblings = Array.from(parent.children).filter((child) => targetSet.has(child))
-            const index = siblings.indexOf(element)
-            if (index >= 0) element.style.setProperty('--reveal-delay', `${Math.min(index, 8) * 55}ms`)
-          })
 
           observer = new IntersectionObserver(
             (entries) => {
@@ -416,13 +427,29 @@ const { title, description, image, author, hero = false } = Astro.props
             { rootMargin: '0px 0px -6% 0px', threshold: 0.08 }
           )
 
-          targets.forEach((element) => observer.observe(element))
+          observeTargets(Array.from(document.querySelectorAll(SELECTOR)))
+
+          // CMS 登录面板等 client:only 内容会在水合后才出现，需要继续监听
+          mutationObserver = new MutationObserver((records) => {
+            const added = []
+            records.forEach((record) => {
+              record.addedNodes.forEach((node) => {
+                if (!(node instanceof Element)) return
+                if (node.matches(SELECTOR)) added.push(node)
+                node.querySelectorAll(SELECTOR).forEach((child) => added.push(child))
+              })
+            })
+            observeTargets(added)
+          })
+          mutationObserver.observe(document.body, { childList: true, subtree: true })
         }
 
         document.addEventListener('astro:page-load', initReveal)
         document.addEventListener('astro:before-swap', () => {
           if (observer) observer.disconnect()
+          if (mutationObserver) mutationObserver.disconnect()
           observer = null
+          mutationObserver = null
         })
 
         if (document.readyState === 'loading') {
