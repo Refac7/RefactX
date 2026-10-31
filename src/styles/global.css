@@ -708,3 +708,10 @@ input[type='search']::-moz-search-cancel-button {
     animation: none !important;
   }
 }
+
+/* 管理后台内容会被频繁显示/隐藏，跳过入场隐藏，避免切换标签或调整窗口后内容消失 */
+html.reveal-enabled #cms-login-root :is(.surface, .surface-soft, .reveal-header) {
+  opacity: 1 !important;
+  translate: 0 0 !important;
+  animation: none !important;
+}

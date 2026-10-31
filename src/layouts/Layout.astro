@@ -402,6 +402,20 @@ const { title, description, image, author, hero = false } = Astro.props
           })
         }
 
+        // 处理 display: none -> flex 这类切页/切标签后重新可见的元素
+        const revealVisible = (root) => {
+          if (!(root instanceof HTMLElement)) return
+          const candidates = root.matches(SELECTOR) ? [root] : []
+          root.querySelectorAll(SELECTOR).forEach((element) => candidates.push(element))
+
+          candidates.forEach((element) => {
+            if (!(element instanceof HTMLElement) || element.classList.contains('is-revealed')) return
+            if (element.offsetParent === null) return
+            const rect = element.getBoundingClientRect()
+            if (rect.top < window.innerHeight && rect.bottom > 0) element.classList.add('is-revealed')
+          })
+        }
+
         const initReveal = () => {
           if (observer) observer.disconnect()
           if (mutationObserver) mutationObserver.disconnect()
@@ -433,6 +447,11 @@ const { title, description, image, author, hero = false } = Astro.props
           mutationObserver = new MutationObserver((records) => {
             const added = []
             records.forEach((record) => {
+              if (record.type === 'attributes') {
+                revealVisible(record.target)
+                return
+              }
+
               record.addedNodes.forEach((node) => {
                 if (!(node instanceof Element)) return
                 if (node.matches(SELECTOR)) added.push(node)
@@ -441,8 +460,21 @@ const { title, description, image, author, hero = false } = Astro.props
             })
             observeTargets(added)
           })
-          mutationObserver.observe(document.body, { childList: true, subtree: true })
+          mutationObserver.observe(document.body, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['class', 'style'],
+          })
         }
+
+        let resizeFrame = 0
+        const handleResize = () => {
+          cancelAnimationFrame(resizeFrame)
+          resizeFrame = requestAnimationFrame(() => revealVisible(document.body))
+        }
+        window.addEventListener('resize', handleResize, { passive: true })
+        window.addEventListener('orientationchange', handleResize, { passive: true })
 
         document.addEventListener('astro:page-load', initReveal)
         document.addEventListener('astro:before-swap', () => {
