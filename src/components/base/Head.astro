@@ -27,6 +27,12 @@ const ogImage = new URL(image || SITE.ogImage, Astro.url)
 
     root.dataset.theme = isDark ? 'dark' : 'light'
     root.classList.toggle('dark', isDark)
+    root.classList.add('reveal-enabled')
+    try {
+      const hasVisited = sessionStorage.getItem('refactx-visited') === '1'
+      sessionStorage.setItem('refactx-visited', '1')
+      if (hasVisited) root.classList.add('has-navigated')
+    } catch {}
 
     // 只在必要时监听
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {

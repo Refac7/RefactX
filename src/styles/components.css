@@ -1478,3 +1478,14 @@
     transition: none;
   }
 }
+
+/* 页面切换后不再重复播放 Hero 图片的模糊入场，避免闪烁 */
+html.has-navigated .page-hero__media img,
+html.has-navigated .article-cover img {
+  transition: none !important;
+}
+
+html.has-navigated .page-hero__media,
+html.has-navigated .article-cover {
+  animation: none !important;
+}

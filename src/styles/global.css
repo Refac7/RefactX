@@ -607,3 +607,104 @@ input[type='search']::-moz-search-cancel-button {
     transform: none;
   }
 }
+
+/* ===== 入场动画 ===== */
+.reveal-enabled
+  :is(
+    .page-hero__status,
+    .page-hero__headline,
+    .page-hero__intro,
+    .page-hero__tags,
+    .page-hero__stats,
+    .reveal-header,
+    .post-card,
+    .explore-card,
+    .home-panel,
+    .home-cta,
+    .surface,
+    .surface-soft,
+    .article-back,
+    .article-eyebrow,
+    .article-title,
+    .article-desc,
+    .article-meta,
+    .article-cover,
+    .post-nav,
+    .pagination,
+    .site-footer__card
+  ) {
+  opacity: 0;
+  translate: 0 1.35rem;
+}
+
+.reveal-enabled
+  :is(
+    .page-hero__status,
+    .page-hero__headline,
+    .page-hero__intro,
+    .page-hero__tags,
+    .page-hero__stats,
+    .reveal-header,
+    .post-card,
+    .explore-card,
+    .home-panel,
+    .home-cta,
+    .surface,
+    .surface-soft,
+    .article-back,
+    .article-eyebrow,
+    .article-title,
+    .article-desc,
+    .article-meta,
+    .article-cover,
+    .post-nav,
+    .pagination,
+    .site-footer__card
+  ).is-revealed {
+  opacity: 1;
+  translate: 0 0;
+  animation: revealIn 760ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+
+@keyframes revealIn {
+  from {
+    opacity: 0;
+    translate: 0 1.35rem;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-enabled
+    :is(
+      .page-hero__status,
+      .page-hero__headline,
+      .page-hero__intro,
+      .page-hero__tags,
+      .page-hero__stats,
+      .reveal-header,
+      .post-card,
+      .explore-card,
+      .home-panel,
+      .home-cta,
+      .surface,
+      .surface-soft,
+      .article-back,
+      .article-eyebrow,
+      .article-title,
+      .article-desc,
+      .article-meta,
+      .article-cover,
+      .post-nav,
+      .pagination,
+      .site-footer__card
+    ) {
+    opacity: 1;
+    translate: 0 0;
+    animation: none !important;
+  }
+}
