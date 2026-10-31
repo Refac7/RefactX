@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react'
 
 export type ToastType = 'success' | 'error' | 'info'
 
-export interface ToastMsg {
+interface ToastMsg {
   id: string
   msg: string
   type: ToastType

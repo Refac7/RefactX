@@ -41,7 +41,6 @@ export default function ProjectStats({ repoUrl, initialStar = 0, initialFork = 0
         if (cached) {
           const { data, timestamp } = JSON.parse(cached)
           if (Date.now() - timestamp < CACHE_DURATION) {
-            // console.log(`[Stats] Loaded from cache: ${repoPath}`);
             setStats(data)
             setLoading(false)
             return
@@ -49,7 +48,6 @@ export default function ProjectStats({ repoUrl, initialStar = 0, initialFork = 0
         }
 
         // 3. 请求我们自己的代理 API (解决速率限制问题)
-        // console.log(`[Stats] Fetching: ${repoPath}`);
         const res = await fetch(`/api/repo-stats?repo=${repoPath}`)
 
         if (!res.ok) {

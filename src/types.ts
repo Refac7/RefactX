@@ -24,7 +24,7 @@ export type Site = {
  * 文章封面图宽高比类型 / Hero image aspect ratio type
  * @description 可选值为 '16/9' 和 '3/4' / Possible values: '16/9' and '3/4'
  */
-export type HeroImageAspectRatio = '16/9' | '3/4'
+type HeroImageAspectRatio = '16/9' | '3/4'
 
 /**
  * 文章封面图布局类型 / Hero image layout type
@@ -45,13 +45,13 @@ export type PostCardType = 'compact' | 'image' | 'time-line'
  * @property {number} size - 每页显示数量 / Number of items per page
  * @property {HeroImageLayout} heroImageLayout - 特色图片布局方式 / Hero image layout position
  */
-export interface PostCardPageConfig {
+interface PostCardPageConfig {
   type: PostCardType
   size: number
   heroImageLayout?: HeroImageLayout
 }
 
-export type PostType = 'jap'
+type PostType = 'jap'
 
 /**
  * 文章配置接口 / Post configuration interface
@@ -243,7 +243,7 @@ export interface ProjectConfig {
 }
 
 // 项目图标类型 / Project icon type
-export type IconType = 'icon' | 'image'
+type IconType = 'icon' | 'image'
 
 /**
  * 项目类型 / Project type

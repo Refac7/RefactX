@@ -39,7 +39,7 @@ function useAnimatedToasts<T extends { id: string | number }>(originalToasts: T[
   return { renderedToasts, handleAnimationEnd }
 }
 
-export interface AdminContextType
+interface AdminContextType
   extends ReturnType<typeof useAdminAuth>,
     ReturnType<typeof useAdminEditor>,
     ReturnType<typeof useAdminFileSystem> {

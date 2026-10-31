@@ -1,18 +1,18 @@
 // 频率限制配置
-export const RATE_LIMIT_CONFIG = {
+const RATE_LIMIT_CONFIG = {
   MAX_ATTEMPTS: 5, // 最大尝试次数
   LOCK_TIME: 15 * 60 * 1000, // 锁定时间（15分钟）
   RESET_TIME: 60 * 60 * 1000, // 记录重置时间（1小时）
 }
 
 // 内存存储：记录每个 IP 的失败次数和时间戳
-export interface RateLimitRecord {
+interface RateLimitRecord {
   attempts: number
   firstAttempt: number
   lockedUntil?: number
 }
 
-export const rateLimitMap = new Map<string, RateLimitRecord>()
+const rateLimitMap = new Map<string, RateLimitRecord>()
 
 // 清理过期的记录
 export function cleanupExpiredRecords() {
