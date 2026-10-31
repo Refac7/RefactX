@@ -2,24 +2,23 @@ import { cn } from '~/lib/utils'
 import { useAdmin } from '../AdminContext'
 
 export default function QueuePanel() {
-  const { mobileView, showRightPanel, queue, loadFromQueue, removeFromQueue, processQueue, isProcessingQueue, handleLogout } =
-    useAdmin()
+  const { mobileView, showRightPanel, queue, loadFromQueue, removeFromQueue, processQueue, isProcessingQueue, handleLogout } = useAdmin()
 
   return (
     <div
       className={cn(
-        'flex-col bg-background/50 border border-border/40 transition-all duration-300 relative overflow-hidden',
-        mobileView === 'queue' ? 'flex h-[calc(100vh-12rem)] lg:h-auto' : 'hidden',
+        'surface relative flex-col overflow-hidden transition-all duration-300',
+        mobileView === 'queue' ? 'flex h-[70svh] min-h-80 lg:h-auto' : 'hidden',
         showRightPanel ? 'lg:flex lg:col-span-3 xl:col-span-3' : 'lg:hidden'
       )}
     >
       {/* Header */}
-      <div className="h-12 px-4 border-b border-border/40 flex justify-between items-center bg-muted/20">
+      <div className="h-14 px-4 border-b border-border/60 flex justify-between items-center bg-muted/20">
         <div className="flex items-center gap-2">
-          <span className="inline-flex items-center justify-center rounded size-5 bg-primary/10 text-primary font-mono text-[9px] font-bold">
-            Q
+          <span className="inline-flex size-7 items-center justify-center rounded-lg bg-primary/12 text-primary">
+            <span className="icon-[ph--queue] size-4" />
           </span>
-          <span className="text-sm font-semibold text-foreground">Changes Queue</span>
+          <span className="text-sm font-semibold text-foreground">变更队列</span>
         </div>
         <div className="flex items-center gap-2">
           <span className="text-[10px] font-mono text-muted-foreground rounded bg-muted/50 px-2 py-0.5">{queue.length}</span>
@@ -38,13 +37,13 @@ export default function QueuePanel() {
         {queue.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
             <span className="icon-[ph--check-circle] size-8 mb-3 text-muted-foreground/30" />
-            <span className="text-[10px] font-mono uppercase tracking-widest">No pending changes</span>
+            <span className="text-[10px] font-mono uppercase tracking-widest">暂无待提交改动</span>
           </div>
         ) : (
           queue.map((item) => (
             <div
               key={item.id}
-              className="relative bg-background border border-border/40 p-3 flex flex-col gap-2 group hover:border-primary/30 hover:shadow-sm transition-all"
+              className="group relative flex flex-col gap-2 rounded-xl border border-border/70 bg-background p-3 transition-all hover:border-primary/35 hover:shadow-sm"
             >
               <div className="flex justify-between items-start">
                 <span
@@ -104,16 +103,16 @@ export default function QueuePanel() {
           className={cn(
             'w-full py-2.5 text-[10px] font-mono font-semibold uppercase tracking-widest transition-all flex items-center justify-center gap-2',
             isProcessingQueue || queue.length === 0
-              ? 'bg-muted text-muted-foreground cursor-not-allowed'
-              : 'bg-foreground text-background hover:bg-foreground/90 shadow-xs'
+              ? 'cursor-not-allowed bg-muted text-muted-foreground'
+              : 'bg-primary text-primary-foreground shadow-sm hover:bg-primary/90'
           )}
         >
           {isProcessingQueue ? (
             <>
-              <span className="icon-[ph--spinner] animate-spin size-4" /> Committing...
+              <span className="icon-[ph--spinner] size-4 animate-spin" /> 提交中...
             </>
           ) : (
-            'Commit Changes'
+            '提交改动'
           )}
         </button>
       </div>

@@ -80,76 +80,76 @@ export default function PostEditor({ showPreview, showMetaConfig }: PostEditorPr
   return (
     <>
       {showMetaConfig && !showPreview && (
-        <div className="bg-muted/10 border-b border-border/40 p-4 shrink-0 min-w-0 overflow-hidden">
+        <div className="bg-muted/20 border-b border-border/50 p-4 shrink-0 min-w-0 overflow-hidden">
           <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 min-w-0">
             <div className="sm:col-span-8 min-w-0">
-              <label className="block text-xs font-medium text-muted-foreground mb-1.5">Title</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1.5">标题</label>
               <input
                 value={meta.title}
                 onChange={(e) => setMeta({ ...meta, title: e.target.value })}
-                className="w-full min-w-0 bg-background border border-border/40 px-3 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
-                placeholder="Post Title"
+                className="w-full min-w-0 rounded-xl border border-border/60 bg-background px-3 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
+                placeholder="文章标题"
               />
             </div>
             <div className="sm:col-span-4 min-w-0 overflow-hidden">
-              <label className="block text-xs font-medium text-muted-foreground mb-1.5">Date</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1.5">日期</label>
               <input
                 type="date"
                 value={meta.pubDate}
                 onChange={(e) => setMeta({ ...meta, pubDate: e.target.value })}
-                className="block w-full max-w-full min-w-0 box-border appearance-none bg-background border border-border/40 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
+                className="block w-full max-w-full min-w-0 appearance-none rounded-xl border border-border/60 bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
               />
             </div>
             <div className="sm:col-span-4 min-w-0">
-              <label className="block text-xs font-medium text-muted-foreground mb-1.5">Author</label>
-              <div className="w-full bg-muted/30 border border-border/40 px-3 py-2 text-sm text-muted-foreground font-mono select-all">
+              <label className="block text-xs font-medium text-muted-foreground mb-1.5">作者</label>
+              <div className="w-full rounded-xl border border-border/60 bg-muted/30 px-3 py-2 text-sm text-muted-foreground font-mono select-all">
                 {username || meta.author || '—'}
               </div>
             </div>
             <div className="sm:col-span-8 min-w-0">
-              <label className="block text-xs font-medium text-muted-foreground mb-1.5">Description</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1.5">描述</label>
               <input
                 value={meta.description}
                 onChange={(e) => setMeta({ ...meta, description: e.target.value })}
-                className="w-full min-w-0 bg-background border border-border/40 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
-                placeholder="Brief summary of the post..."
+                className="w-full min-w-0 rounded-xl border border-border/60 bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
+                placeholder="一句话介绍这篇文章…"
               />
             </div>
             <div className="sm:col-span-6 min-w-0">
-              <label className="block text-xs font-medium text-muted-foreground mb-1.5">Tags (comma separated)</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1.5">标签（逗号分隔）</label>
               <input
                 value={meta.tags}
                 onChange={(e) => setMeta({ ...meta, tags: e.target.value })}
-                className="w-full min-w-0 bg-background border border-border/40 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
-                placeholder="tech, life, code"
+                className="w-full min-w-0 rounded-xl border border-border/60 bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
+                placeholder="技术, 生活, 代码"
               />
             </div>
             <div className="sm:col-span-6 min-w-0">
               <label className="flex justify-between items-end text-xs font-medium text-muted-foreground mb-1.5">
-                <span>Cover Image</span>
+                <span>封面图</span>
                 {WALINE_CONFIG.enableImgUpload && (
                   <span onClick={() => triggerUpload('hero')} className="cursor-pointer text-primary hover:underline">
-                    Upload
+                    上传
                   </span>
                 )}
               </label>
               <input
                 value={meta.heroImage}
                 onChange={(e) => setMeta({ ...meta, heroImage: e.target.value })}
-                className="w-full min-w-0 bg-background border border-border/40 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
+                className="w-full min-w-0 rounded-xl border border-border/60 bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
                 placeholder="https://..."
               />
             </div>
             <div className="sm:col-span-12 min-w-0">
               <label className="block text-xs font-medium text-muted-foreground mb-1.5">
-                Content Warning
+                内容警告
                 <span className="text-muted-foreground/50 font-normal"> (optional · fullscreen gate on the post)</span>
               </label>
               <textarea
                 value={meta.contentWarning}
                 onChange={(e) => setMeta({ ...meta, contentWarning: e.target.value })}
                 rows={2}
-                className="w-full min-w-0 resize-none bg-background border border-border/40 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
+                className="w-full min-w-0 resize-none rounded-xl border border-border/60 bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 transition-all"
                 placeholder="本文涉及……请酌情阅读"
               />
             </div>
@@ -159,9 +159,9 @@ export default function PostEditor({ showPreview, showMetaConfig }: PostEditorPr
                   type="checkbox"
                   checked={meta.recommend}
                   onChange={(e) => setMeta({ ...meta, recommend: e.target.checked })}
-                  className="size-4 border-border/40 text-primary focus:ring-primary/20"
+                  className="size-4 rounded border-border/60 text-primary focus:ring-primary/20"
                 />
-                <span className="text-sm font-medium text-foreground">Featured Post</span>
+                <span className="text-sm font-medium text-foreground">推荐文章</span>
               </label>
             </div>
           </div>
@@ -170,13 +170,13 @@ export default function PostEditor({ showPreview, showMetaConfig }: PostEditorPr
 
       {/* 工具栏 */}
       {!showPreview && (
-        <div className="border-b border-border/40 bg-background shrink-0 px-2 py-1.5 flex items-center gap-1 overflow-x-auto no-scrollbar">
+        <div className="border-b border-border/50 bg-card shrink-0 px-2 py-1.5 flex items-center gap-1 overflow-x-auto no-scrollbar">
           {TOOLBAR_ITEMS.map((tool, i) => (
             <button
               key={i}
               onClick={tool.action}
               title={tool.label}
-              className="p-2 hover:bg-muted text-muted-foreground hover:text-foreground transition-colors flex items-center justify-center"
+              className="grid size-8 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             >
               <span className={cn('size-4', tool.icon)}></span>
             </button>
@@ -184,7 +184,7 @@ export default function PostEditor({ showPreview, showMetaConfig }: PostEditorPr
         </div>
       )}
 
-      <div className="flex-1 relative flex flex-col min-h-0 bg-background">
+      <div className="flex-1 relative flex flex-col min-h-0 bg-card">
         {showPreview ? (
           <div className="absolute inset-0 overflow-y-auto w-full p-6 sm:p-10 custom-scrollbar">
             <div className="mx-auto markdown">
@@ -200,7 +200,7 @@ export default function PostEditor({ showPreview, showMetaConfig }: PostEditorPr
             onChange={(e) => setBody(e.target.value)}
             onKeyDown={handleKeyDown}
             className="flex-1 p-6 sm:p-10 bg-transparent text-sm sm:text-base leading-relaxed resize-none focus:outline-none custom-scrollbar placeholder:text-muted-foreground/30"
-            placeholder="Write your content here... (Markdown supported)"
+            placeholder="在这里开始写正文…（支持 Markdown）"
             spellCheck={false}
           />
         )}

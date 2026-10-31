@@ -24,30 +24,30 @@ export default function DataPanel() {
   return (
     <div
       className={cn(
-        'flex-col bg-background/50 border border-border/40 transition-all duration-300 relative overflow-hidden',
-        mobileView === 'files' ? 'flex h-[calc(100vh-12rem)]' : 'hidden',
-        showLeftPanel ? 'lg:flex lg:col-span-3 xl:col-span-2' : 'lg:hidden',
-        'lg:h-auto lg:min-h-100 lg:max-h-[calc(100vh-8rem)]'
+        'surface relative flex-col overflow-hidden transition-all duration-300',
+        mobileView === 'files' ? 'flex h-[70svh] min-h-80' : 'hidden',
+        showLeftPanel ? 'lg:flex lg:col-span-3 xl:col-span-3' : 'lg:hidden',
+        'lg:h-[calc(100vh-20rem)] lg:min-h-[30rem] lg:max-h-none'
       )}
     >
-      <div className="h-12 px-4 border-b border-border/40 flex justify-between items-center bg-muted/20 shrink-0">
+      <div className="h-14 px-4 border-b border-border/60 flex justify-between items-center bg-muted/20 shrink-0">
         <div className="flex items-center gap-2">
-          <span className="inline-flex items-center justify-center rounded size-5 bg-primary/10 text-primary font-mono text-[9px] font-bold">
-            FS
+          <span className="inline-flex size-7 items-center justify-center rounded-lg bg-primary/12 text-primary">
+            <span className="icon-[ph--folder-open] size-4" />
           </span>
-          <span className="text-sm font-semibold text-foreground">Content</span>
+          <span className="text-sm font-semibold text-foreground">内容库</span>
         </div>
         <div className="flex gap-1">
           <button
             onClick={handleNewPost}
-            className="px-2 py-0.5 hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+            className="grid size-7 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             title="New Post"
           >
             <span className="icon-[ph--plus] size-3.5" />
           </button>
           <button
             onClick={() => fetchRemoteFiles()}
-            className="px-2 py-0.5 hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+            className="grid size-7 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             title="Refresh"
           >
             <span className="icon-[ph--arrows-clockwise] size-3.5" />
@@ -56,14 +56,14 @@ export default function DataPanel() {
       </div>
 
       <div className="flex-1 overflow-y-auto custom-scrollbar p-2 min-h-0">
-        <div className="px-2 py-2 text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest">Config Data</div>
+        <div className="px-2 py-2 text-[0.6rem] font-mono text-muted-foreground/60 uppercase tracking-[0.16em]">配置数据</div>
         <div className="space-y-0.5 mb-4">
           {DATA_FILES.map((f) => (
             <div
               key={f.name}
               onClick={() => loadFile(f.name, true, f.path)}
               className={cn(
-                'group flex items-center justify-between rounded text-sm px-3 py-2 cursor-pointer transition-all',
+                'group flex items-center justify-between rounded-xl text-sm px-3 py-2 cursor-pointer transition-all',
                 filename === f.name ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground hover:bg-muted'
               )}
             >
@@ -80,8 +80,8 @@ export default function DataPanel() {
           ))}
         </div>
 
-        <div className="px-2 py-2 text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest border-t border-border/40 mt-2 pt-4">
-          Posts & Articles
+        <div className="px-2 py-2 text-[0.6rem] font-mono text-muted-foreground/60 uppercase tracking-[0.16em] border-t border-border/50 mt-2 pt-4">
+          文章
         </div>
         <div className="space-y-0.5">
           {isLoadingFiles ? (
@@ -93,7 +93,7 @@ export default function DataPanel() {
               <div
                 key={f.sha}
                 className={cn(
-                  'group flex justify-between items-center rounded text-sm px-3 py-2 cursor-pointer transition-all',
+                  'group flex justify-between items-center rounded-xl text-sm px-3 py-2 cursor-pointer transition-all',
                   filename === f.name ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground hover:bg-muted'
                 )}
               >

@@ -75,7 +75,7 @@ export default function JsonEditor() {
               onChange(e.target.value)
             }
           }}
-          className="w-full bg-background border border-border/40 p-3 text-sm font-mono focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none min-h-30 transition-all"
+          className="w-full rounded-xl border border-border/60 bg-background p-3 text-sm font-mono focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none min-h-30 transition-all"
           placeholder={`Enter ${field.label.toLowerCase()}...`}
         />
       )
@@ -86,11 +86,11 @@ export default function JsonEditor() {
         <input
           value={value || ''}
           onChange={(e) => onChange(e.target.value)}
-          className="flex-1 bg-background border border-border/40 p-3 text-sm focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+          className="flex-1 rounded-xl border border-border/60 bg-background p-3 text-sm focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
           placeholder={`Enter ${field.label.toLowerCase()}...`}
         />
         {field.type === 'image' && value && !value.startsWith('icon-') && (
-          <div className="size-10 shrink-0 border border-border/40 overflow-hidden bg-muted/20">
+          <div className="size-10 shrink-0 overflow-hidden rounded-lg border border-border/60 bg-muted/20">
             <img src={value} className="size-full object-cover" alt="preview" onError={(e) => (e.currentTarget.style.display = 'none')} />
           </div>
         )}
@@ -105,8 +105,8 @@ export default function JsonEditor() {
       return <div className="p-8 text-center text-muted-foreground text-sm">No visual schema available. Please use Raw Mode.</div>
 
     return (
-      <div className="flex-1 overflow-y-auto p-4 sm:p-8 custom-scrollbar bg-background">
-        <div className="flex items-center justify-between mb-8 pb-4 border-b border-border/40">
+      <div className="flex-1 overflow-y-auto p-4 sm:p-8 custom-scrollbar bg-card">
+        <div className="flex items-center justify-between mb-8 pb-4 border-b border-border/50">
           <div>
             <h3 className="text-base font-semibold text-foreground">{filename}</h3>
             <p className="text-xs text-muted-foreground mt-0.5">Single object — edit fields below</p>
@@ -139,17 +139,17 @@ export default function JsonEditor() {
     if (editingItemIndex !== null) {
       const item = parsedJson[editingItemIndex] || {}
       return (
-        <div className="flex-1 overflow-y-auto p-4 sm:p-8 custom-scrollbar bg-background">
-          <div className="flex items-center justify-between mb-8 pb-4 border-b border-border/40">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-8 custom-scrollbar bg-card">
+          <div className="flex items-center justify-between mb-8 pb-4 border-b border-border/50">
             <button
               onClick={() => setEditingItemIndex(null)}
-              className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5 hover:bg-muted"
+              className="flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             >
               <span className="icon-[ph--arrow-left] size-4"></span> Back to List
             </button>
             <button
               onClick={() => handleDeleteItem(editingItemIndex)}
-              className="text-sm font-medium text-danger hover:text-danger/80 hover:bg-danger/10 px-3 py-1.5 transition-colors"
+              className="rounded-full px-3 py-1.5 text-sm font-medium text-danger transition-colors hover:bg-danger/10 hover:text-danger/80"
             >
               Delete Item
             </button>
@@ -177,12 +177,12 @@ export default function JsonEditor() {
     }
 
     return (
-      <div className="flex-1 overflow-y-auto p-4 sm:p-6 custom-scrollbar bg-background">
+      <div className="flex-1 overflow-y-auto p-4 sm:p-6 custom-scrollbar bg-card">
         <div className="flex justify-between items-center mb-6">
           <span className="text-sm font-semibold text-foreground">Items ({parsedJson.length})</span>
           <button
             onClick={handleAddItem}
-            className="flex items-center gap-1.5 bg-foreground text-background px-3 py-1.5 text-sm font-medium hover:bg-foreground/90 transition-colors shadow-xs"
+            className="flex items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
           >
             <span className="icon-[ph--plus] size-4"></span> Add Item
           </button>
@@ -216,10 +216,10 @@ export default function JsonEditor() {
               <div
                 key={idx}
                 onClick={() => setEditingItemIndex(idx)}
-                className="group bg-background border border-border/40 p-4 cursor-pointer hover:border-border hover:shadow-xs hover:bg-muted/10 transition-all flex flex-col justify-between"
+                className="group flex cursor-pointer flex-col justify-between rounded-xl border border-border/70 bg-background p-4 transition-all hover:border-primary/35 hover:bg-muted/10 hover:shadow-sm"
               >
                 <div className="flex items-start justify-between mb-4">
-                  <div className="size-12 bg-muted/30 border border-border/40 flex items-center justify-center overflow-hidden">
+                  <div className="flex size-12 items-center justify-center overflow-hidden rounded-xl border border-border/60 bg-muted/30">
                     {iconEl}
                   </div>
                   <span className="icon-[ph--pencil-simple] size-4 text-muted-foreground/30 group-hover:text-foreground transition-colors"></span>

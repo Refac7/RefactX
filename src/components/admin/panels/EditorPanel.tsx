@@ -26,19 +26,19 @@ export default function EditorPanel() {
   return (
     <div
       className={cn(
-        'flex-col bg-background/50 border border-border/40 lg:flex transition-all duration-300 relative overflow-hidden',
-        mobileView === 'editor' ? 'flex h-[calc(100vh-12rem)] lg:h-auto' : 'hidden',
+        'surface relative flex-col overflow-hidden transition-all duration-300 lg:flex',
+        mobileView === 'editor' ? 'flex h-[70svh] min-h-80 lg:h-auto' : 'hidden',
         showLeftPanel && showRightPanel
-          ? 'lg:col-span-6 xl:col-span-7'
+          ? 'lg:col-span-6 xl:col-span-6'
           : !showLeftPanel && showRightPanel
             ? 'lg:col-span-9'
             : showLeftPanel && !showRightPanel
-              ? 'lg:col-span-9 xl:col-span-10'
+              ? 'lg:col-span-9 xl:col-span-9'
               : 'lg:col-span-12'
       )}
     >
       {/* Toolbar */}
-      <div className="h-12 flex justify-between items-center border-b border-border/40 bg-muted/20 relative z-10 px-2 sm:px-4">
+      <div className="h-14 flex justify-between items-center border-b border-border/60 bg-muted/20 relative z-10 px-2 sm:px-4">
         <div className="flex items-center h-full flex-1 min-w-0">
           <button
             onClick={() => setShowLeftPanel(!showLeftPanel)}
@@ -66,18 +66,18 @@ export default function EditorPanel() {
               <button
                 onClick={() => setShowPreview(!showPreview)}
                 className={cn(
-                  'px-3 py-1.5 text-[10px] font-mono uppercase tracking-widest transition-colors flex items-center gap-1.5',
-                  showPreview ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
+                  'flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[0.65rem] font-medium transition-colors',
+                  showPreview ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-muted/70 hover:text-foreground'
                 )}
               >
                 <span className={cn('size-4', showPreview ? 'icon-[ph--eye-slash]' : 'icon-[ph--eye]')} />
-                <span className="hidden sm:inline">Preview</span>
+                <span className="hidden sm:inline">预览</span>
               </button>
               <button
                 disabled={showPreview}
                 onClick={() => setShowMetaConfig(!showMetaConfig)}
                 className={cn(
-                  'px-2 py-0.5 transition-colors',
+                  'grid size-8 place-items-center rounded-full transition-colors',
                   showPreview
                     ? 'opacity-30 cursor-not-allowed text-muted-foreground'
                     : cn('text-muted-foreground hover:bg-muted hover:text-foreground', showMetaConfig && 'bg-muted text-foreground')
@@ -90,20 +90,20 @@ export default function EditorPanel() {
           ) : (
             <button
               onClick={() => setEditorMode(editorMode === 'visual' ? 'raw' : 'visual')}
-              className="px-3 py-1.5 text-[10px] font-mono bg-muted/50 text-muted-foreground hover:text-foreground uppercase tracking-widest transition-colors"
+              className="rounded-full bg-muted/60 px-3 py-1.5 text-[0.65rem] font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
               {editorMode === 'visual' ? 'Raw Code' : 'Visual Edit'}
             </button>
           )}
 
-          <div className="h-4 w-px bg-border/60 mx-1 hidden sm:block" />
+          <div className="h-5 w-px bg-border/60 mx-1 hidden sm:block" />
 
           <button
             onClick={stageForWrite}
-            className="px-4 py-1.5 bg-foreground text-background text-[10px] font-mono font-semibold uppercase tracking-widest hover:bg-foreground/90 transition-all flex items-center gap-1.5 shadow-xs"
+            className="flex items-center gap-1.5 rounded-full bg-primary px-4 py-1.5 text-[0.68rem] font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90"
           >
             <span className="icon-[ph--floppy-disk] size-4" />
-            <span className="hidden sm:inline">Save</span>
+            <span className="hidden sm:inline">保存</span>
           </button>
 
           <button
@@ -116,7 +116,7 @@ export default function EditorPanel() {
       </div>
 
       {/* Editor area */}
-      <div className="flex-1 relative w-full h-full min-h-100 flex flex-col overflow-hidden bg-background">
+      <div className="flex-1 relative w-full h-full min-h-100 flex flex-col overflow-hidden bg-card">
         {isFetchingContent && (
           <div className="absolute inset-0 bg-background/50 z-20 flex flex-col items-center justify-center gap-3 backdrop-blur-sm">
             <span className="icon-[ph--spinner] animate-spin size-6 text-muted-foreground" />
