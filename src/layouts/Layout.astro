@@ -103,9 +103,26 @@ const { title, description, image, author, hero = false } = Astro.props
         opacity: 1;
         visibility: visible;
         pointer-events: auto;
+        touch-action: none;
+        overscroll-behavior: contain;
+        user-select: none;
+        -webkit-user-select: none;
         transition:
           opacity 220ms ease,
           visibility 0s linear 0s;
+      }
+
+      /* 遮罩显示期间禁止滚动与交互，避免操作穿透到下方内容 */
+      html.page-transition-locked {
+        overflow: hidden;
+        overscroll-behavior: none;
+        scrollbar-gutter: stable;
+      }
+
+      html.page-transition-locked body {
+        overflow: hidden;
+        overscroll-behavior: none;
+        touch-action: none;
       }
 
       .page-transition-loader--done {
@@ -225,7 +242,9 @@ const { title, description, image, author, hero = false } = Astro.props
         let transitionGeneration = 0
         let hideFrame = 0
         let slowTimer = 0
+        let unlockTimer = 0
         const SLOW_THRESHOLD = 3500
+        const LOADER_FADE_MS = 340
 
         const getLoader = () => document.getElementById('page-transition-loader')
 
@@ -240,19 +259,49 @@ const { title, description, image, author, hero = false } = Astro.props
           getLoader()?.classList.remove('page-transition-loader--slow')
         }
 
+        const cancelUnlock = () => {
+          window.clearTimeout(unlockTimer)
+          unlockTimer = 0
+        }
+
         const showLoader = () => {
           cancelPendingTransition()
+          cancelUnlock()
           const loader = getLoader()
           if (!loader) return
 
           loader.classList.remove('page-transition-loader--done')
-          root.classList.add('page-transition-loading')
+          root.classList.add('page-transition-loading', 'page-transition-locked')
+          lockPage()
 
           // 加载过久时提供关闭入口，避免用户被一直卡在加载态
           clearSlow()
           slowTimer = window.setTimeout(() => {
             getLoader()?.classList.add('page-transition-loader--slow')
           }, SLOW_THRESHOLD)
+        }
+
+        const unlockPage = () => {
+          root.classList.remove('page-transition-loading', 'page-transition-locked')
+          document.querySelectorAll('body > [data-page-transition-inert]').forEach((element) => {
+            element.removeAttribute('inert')
+            delete element.dataset.pageTransitionInert
+          })
+        }
+
+        // 遮罩淡出动画结束后再解除锁定，避免淡出期间仍能滑动页面
+        const scheduleUnlock = () => {
+          cancelUnlock()
+          unlockTimer = window.setTimeout(unlockPage, LOADER_FADE_MS)
+        }
+
+        // 遮罩期间将页面内容设为 inert，彻底屏蔽点击、聚焦与键盘操作
+        const lockPage = () => {
+          document.querySelectorAll('body > :not(#page-transition-loader)').forEach((element) => {
+            if (element.hasAttribute('inert')) return
+            element.setAttribute('inert', '')
+            element.dataset.pageTransitionInert = ''
+          })
         }
 
         const hideLoader = () => {
@@ -263,7 +312,7 @@ const { title, description, image, author, hero = false } = Astro.props
 
             const loader = getLoader()
             loader?.classList.add('page-transition-loader--done')
-            root.classList.remove('page-transition-loading')
+            scheduleUnlock()
           })
         }
 
@@ -271,7 +320,7 @@ const { title, description, image, author, hero = false } = Astro.props
           cancelPendingTransition()
           clearSlow()
           getLoader()?.classList.add('page-transition-loader--done')
-          root.classList.remove('page-transition-loading')
+          scheduleUnlock()
         }
 
         document.getElementById('page-transition-skip')?.addEventListener('click', dismissLoader)
@@ -279,6 +328,9 @@ const { title, description, image, author, hero = false } = Astro.props
         document.addEventListener('astro:before-preparation', showLoader)
         document.addEventListener('astro:after-swap', () => {
           window.scrollTo(0, 0)
+          // ClientRouter 会替换 <html> 上的类名，这里补回滚动锁定直到遮罩淡出结束
+          root.classList.add('page-transition-locked')
+          lockPage()
           hideLoader()
         })
 
