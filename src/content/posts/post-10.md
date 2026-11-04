@@ -3,9 +3,9 @@ title: 'Nothing Phone (4a) 解锁 Bootloader 与 KernelSU Root 完整教程'
 description: '记录 Nothing Phone (4a) 解锁 Bootloader、修补并刷入 init_boot 镜像，以及通过 KernelSU 获取 Root 权限的完整过程，同时介绍 Nothing OS 5.0 手动刷机与重新获取 Root 的方法。'
 pubDate: 2026-11-04
 author: 'refac7'
-tags: ['']
+tags: ['Android', 'Root', '刷机', '教程', '玩机', '系统', '折腾', '备份']
 recommend: false
-heroImage: none
+heroImage: https://img.refact.cc/1793758397217-jjz1xz0176.jpg
 ogImage: none
 heroImageAspectRatio: '16/9'
 ---
@@ -24,8 +24,6 @@ heroImageAspectRatio: '16/9'
 > 7. **原厂镜像备份：** 在获取 Root 权限前，请妥善保存对应系统版本的原厂 `init_boot.img`，以便出现启动异常时恢复。
 >
 > **请注意：** 本文仅记录笔者在 Nothing Phone (4a) 上的实际操作过程，不保证适用于所有设备、固件版本及使用环境。所有操作均由读者自行决定并承担相应风险。
-
-![Nothing Phone (4a)](https://img.refact.cc/1793758397217-jjz1xz0176.jpg)
 
 ## 一、了解相关概念
 
