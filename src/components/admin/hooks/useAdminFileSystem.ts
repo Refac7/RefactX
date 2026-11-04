@@ -178,7 +178,7 @@ export function useAdminFileSystem(
       finalFilename = editor.filename.endsWith('.md') ? editor.filename : `${editor.filename}.md`
       const contentWarning = editor.meta.contentWarning?.trim()
       const contentWarningLine = contentWarning ? `\ncontentWarning: '${contentWarning.replace(/'/g, "''")}'` : ''
-      content = `---\ntitle: '${editor.meta.title.replace(/'/g, "''")}'\ndescription: '${editor.meta.description.replace(/'/g, "''")}'\npubDate: ${editor.meta.pubDate}\nauthor: '${editor.meta.author}'\ntags: [${editor.meta.tags
+      content = `---\ntitle: '${editor.meta.title.replace(/'/g, "''")}'\ndescription: '${editor.meta.description.replace(/'/g, "''")}'\npubDate: ${editor.meta.pubDate}\nauthor: '${(editor.meta.author || DEFAULT_META.author).replace(/'/g, "''")}'\ntags: [${editor.meta.tags
         .split(/[,，]/)
         .map((t: string) => `'${t.trim()}'`)
         .filter(Boolean)

@@ -2,6 +2,7 @@
 title: 我到底是怎么了？
 description: 休学五个月，我仍在学着与自己的身体共处；想改变，却发现一切都还那么遥远。
 pubDate: 2026-10-05
+author: refac7
 tags:
   - 情绪
   - 随笔

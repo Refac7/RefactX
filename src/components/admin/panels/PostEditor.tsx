@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { cn } from '~/lib/utils'
-import { WALINE_CONFIG } from '~/config'
+import { CMS_CONFIG, WALINE_CONFIG } from '~/config'
 import MarkdownTable from '~/components/base/MarkdownTable'
 import { useAdmin } from '../AdminContext'
 
@@ -12,7 +12,7 @@ interface PostEditorProps {
 }
 
 export default function PostEditor({ showPreview, showMetaConfig }: PostEditorProps) {
-  const { body, setBody, meta, setMeta, triggerUpload, stageForWrite, username } = useAdmin()
+  const { body, setBody, meta, setMeta, triggerUpload, stageForWrite } = useAdmin()
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   const insertText = (before: string, after: string = '') => {
@@ -103,7 +103,7 @@ export default function PostEditor({ showPreview, showMetaConfig }: PostEditorPr
             <div className="sm:col-span-4 min-w-0">
               <label className="block text-xs font-medium text-muted-foreground mb-1.5">作者</label>
               <div className="w-full rounded-xl border border-border/60 bg-muted/30 px-3 py-2 text-sm text-muted-foreground font-mono select-all">
-                {username || meta.author || '—'}
+                {meta.author || CMS_CONFIG.author}
               </div>
             </div>
             <div className="sm:col-span-8 min-w-0">

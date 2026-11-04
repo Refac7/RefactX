@@ -2,6 +2,7 @@
 title: 如何自制雌二醇凝胶
 description: 从器材、原料到配制步骤，记录一份 0.1% 雌二醇凝胶的自制方法及风险提示。
 pubDate: 2026-09-09
+author: refac7
 tags:
   - 雌二醇
   - 自制

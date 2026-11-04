@@ -128,7 +128,7 @@ export const POSTS_CONFIG: PostConfig = {
   title: 'Articles',
   description: 'Refact 的文章',
   introduce: '随手记下的小文章喵～偶尔更新，欢迎订阅 RSS 一起围观哦 (・∀・)',
-  author: 'Refact',
+  author: 'refac7',
   homePageConfig: { size: 3, type: 'compact' },
   postPageConfig: { size: 8, type: 'image' },
   tagsPageConfig: { size: 5, type: 'time-line' },
@@ -215,6 +215,7 @@ export const WALINE_CONFIG = {
 export const CMS_CONFIG = {
   enableCMS: true,
   owner: 'Refac7', // GitHub 仓库所有者
+  author: 'refac7', // 文章默认作者（frontmatter 中统一使用的作者名）
   repo: 'RefactX', // GitHub 仓库名称
   branch: 'main', // 目标分支
   pathPrefix: 'src/content/posts/', // 相对路径前缀

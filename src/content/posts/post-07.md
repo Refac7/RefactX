@@ -2,6 +2,7 @@
 title: "HRT一个月以来的变化"
 description: "HRT 满一个月：用药方案、身体与情绪的变化，以及第 30 天的检验报告，一次坦诚的记录。"
 pubDate: 2026-07-07
+author: refac7
 tags:
   - HRT
   - 身体记录

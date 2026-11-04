@@ -65,7 +65,7 @@ export const DEFAULT_META = {
   title: '',
   description: '',
   pubDate: new Date().toISOString().split('T')[0],
-  author: CMS_CONFIG.owner,
+  author: CMS_CONFIG.author,
   tags: '',
   recommend: false,
   heroImage: '',

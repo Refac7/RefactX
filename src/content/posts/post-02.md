@@ -2,6 +2,7 @@
 title: "校园网有线多设备上网方案"
 description: "从直连、桥接到 PPPoE 拨号，记录一次与校园网单设备限制的较量，最终让所有设备共享同一条有线网络。"
 pubDate: 2025-11-28
+author: refac7
 tags:
   - 校园网
   - 网络

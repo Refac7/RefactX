@@ -2,6 +2,7 @@
 title: "Waline评论系统的部署与配置"
 description: "从后端部署到前端接入，一步步记录 Waline 评论系统的搭建过程，涵盖数据库、邮件通知与常见坑。"
 pubDate: 2025-09-26
+author: refac7
 tags:
   - 评论系统
   - 部署

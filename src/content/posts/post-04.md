@@ -2,6 +2,7 @@
 title: "图床配置指南"
 description: "基于 Cloudflare R2 与 Worker 搭建私有图床，并让 Waline 评论区支持图片上传的完整配置指南。"
 pubDate: 2025-12-30
+author: refac7
 tags:
   - 图床
   - Cloudflare
