@@ -12,6 +12,7 @@ interface Props {
 
 const { frontmatter, minutesRead, wordCount, headings } = Astro.props
 const heroImage = frontmatter.heroImage && frontmatter.heroImage !== 'none' ? frontmatter.heroImage : null
+const isRemoteHeroImage = heroImage ? /^(https?:)?\/\//.test(heroImage) : false
 
 const meta = [
   {
@@ -102,6 +103,7 @@ const meta = [
               loading="eager"
               fetchpriority="high"
               decoding="async"
+              referrerpolicy={isRemoteHeroImage ? 'strict-origin-when-cross-origin' : undefined}
               onload="this.classList.add('is-loaded')"
             />
           </div>

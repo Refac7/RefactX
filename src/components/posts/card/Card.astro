@@ -14,6 +14,9 @@ const imagePosition = post.data.heroImageLayout || heroImageLayout || 'left'
 const isReverse = imagePosition === 'right'
 const watermarkIndex = String(index).padStart(2, '0')
 const firstTag = post.data.tags?.[0]
+// 图片床启用了防盗链，必须携带本站 Referer；默认的 no-referrer 会拿到拦截图
+const heroImageSrc = post.data.heroImage || ''
+const isRemoteHeroImage = /^(https?:)?\/\//.test(heroImageSrc)
 ---
 
 <article class="post-card lift group">
@@ -25,11 +28,11 @@ const firstTag = post.data.tags?.[0]
         aria-label={post.data.title}
       >
         <img
-          src={post.data.heroImage || ''}
+          src={heroImageSrc}
           alt={post.data.title}
           loading="lazy"
           decoding="async"
-          referrerpolicy="no-referrer"
+          referrerpolicy={isRemoteHeroImage ? 'strict-origin-when-cross-origin' : undefined}
           onerror="this.closest('.post-card__media')?.remove()"
         />
         {firstTag && <span class="post-card__media-tag">#{firstTag}</span>}
