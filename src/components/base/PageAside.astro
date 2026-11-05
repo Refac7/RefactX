@@ -1,5 +1,6 @@
 ---
 import { SOCIAL_LINKS } from '~/config'
+import { getHeroImageCredit } from '~/lib/heroImages'
 
 interface StatItem {
   value: string
@@ -67,6 +68,7 @@ const pingColor = statusVariant === 'success' ? 'bg-success/70' : 'bg-primary/60
 const visibleIdentityTags = identityTags.slice(0, 4)
 const visibleStats = stats.slice(0, 3)
 const resolvedStatsMeta = statsMeta ?? `${socialLinks.length} ACTIVE`
+const heroCredit = getHeroImageCredit(image)
 ---
 
 <section class="page-hero">
@@ -168,6 +170,25 @@ const resolvedStatsMeta = statsMeta ?? `${socialLinks.length} ACTIVE`
             </>
           )}
         </div>
+        {heroCredit && (
+          <a
+            class="page-hero__credit"
+            href={heroCredit.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Artwork: ${heroCredit.title} by ${heroCredit.author} on Pixiv`}
+          >
+            <span class="icon-[ph--copyright] size-3.5 shrink-0" aria-hidden="true" />
+            <span class="page-hero__credit-label">Artwork</span>
+            <span class="page-hero__credit-mobile">{heroCredit.author}</span>
+            <span class="page-hero__credit-meta" aria-hidden="true">
+              <span class="page-hero__credit-divider" />
+              <span class="page-hero__credit-title">{heroCredit.title}</span>
+              <span class="page-hero__credit-author">© {heroCredit.author}</span>
+              <span class="icon-[ph--arrow-up-right] size-3 shrink-0" />
+            </span>
+          </a>
+        )}
       </div>
     )
   }
