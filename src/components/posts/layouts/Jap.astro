@@ -102,10 +102,14 @@ const meta = [
               alt={frontmatter.title}
               loading="eager"
               fetchpriority="high"
-              decoding="async"
+              decoding="sync"
               referrerpolicy={isRemoteHeroImage ? 'strict-origin-when-cross-origin' : undefined}
               onload="this.classList.add('is-loaded')"
             />
+            <script is:inline>
+              if (document.currentScript.previousElementSibling?.complete){' '}
+              {document.currentScript.previousElementSibling.classList.add('is-loaded')}
+            </script>
           </div>
         </div>
       )

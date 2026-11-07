@@ -358,38 +358,80 @@ const { title, description, image, author, hero = false } = Astro.props
         window.__refactxPageEnterInitialized = true
 
         const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+        const loadedHeroImages = new Set()
 
-        const playEnter = () => {
-          if (reduceMotion.matches) return
-          const root = document.documentElement
-          const main = document.getElementById('page-main')
-          if (!main) return
-          root.classList.remove('page-enter')
-          void main.offsetWidth
-          requestAnimationFrame(() => root.classList.add('page-enter'))
+        const recordHeroImage = (image) => {
+          if (!image) return
+          if (image.currentSrc) loadedHeroImages.add(image.currentSrc)
+          if (image.src) loadedHeroImages.add(image.src)
+          const attr = image.getAttribute('src')
+          if (attr) loadedHeroImages.add(attr)
         }
 
         const hydrateHeroImages = () => {
           document.querySelectorAll('.page-hero__media img, .article-cover img').forEach((image) => {
-            if (image.complete && image.naturalWidth > 0) image.classList.add('is-loaded')
+            const markLoaded = () => {
+              image.classList.add('is-loaded')
+              recordHeroImage(image)
+            }
+
+            if (image.complete && image.naturalWidth > 0) {
+              markLoaded()
+            } else {
+              image.addEventListener('load', markLoaded, { once: true })
+            }
           })
         }
 
-        document.addEventListener('astro:before-swap', () => {
-          document.documentElement.classList.remove('page-enter')
-        })
-        document.addEventListener('astro:after-swap', () => {
-          // ClientRouter 会替换 <html> 上的 SSR 属性，这里重新补上动画所需的类
+        document.addEventListener('astro:before-swap', (event) => {
           const root = document.documentElement
-          root.classList.add('reveal-enabled', 'has-navigated')
-          hydrateHeroImages()
-          playEnter()
+          root.classList.remove('page-enter')
+
+          if (event && event.newDocument) {
+            const nextRoot = event.newDocument.documentElement
+            nextRoot.classList.add('reveal-enabled')
+
+            if (!reduceMotion.matches) {
+              nextRoot.classList.add('page-enter')
+            }
+
+            // 在 DOM 挂载之前预先给已在缓存中的 Hero 图片加上 is-loaded，避免切换时从 opacity: 0 闪烁
+            event.newDocument.querySelectorAll('.page-hero__media img, .article-cover img').forEach((img) => {
+              const src = img.getAttribute('src')
+              const fullSrc = img.src || src
+              if (!src && !fullSrc) return
+
+              if (loadedHeroImages.has(src) || loadedHeroImages.has(fullSrc)) {
+                img.classList.add('is-loaded')
+                return
+              }
+
+              const probe = new Image()
+              probe.src = fullSrc
+              if (probe.complete && probe.naturalWidth > 0) {
+                loadedHeroImages.add(src)
+                loadedHeroImages.add(fullSrc)
+                img.classList.add('is-loaded')
+              }
+            })
+          }
         })
+
+        document.addEventListener('astro:after-swap', () => {
+          const root = document.documentElement
+          root.classList.add('reveal-enabled')
+          hydrateHeroImages()
+
+          const main = document.getElementById('page-main')
+          if (main) {
+            main.addEventListener('animationend', () => root.classList.remove('page-enter'), { once: true })
+          }
+        })
+
         document.addEventListener('astro:page-load', hydrateHeroImages)
 
         const initPageEnter = () => {
           hydrateHeroImages()
-          playEnter()
         }
 
         if (document.readyState === 'loading') {

@@ -73,7 +73,12 @@ const heroCredit = getHeroImageCredit(image)
 
 <section class="page-hero">
   <div class="page-hero__media" aria-hidden="true">
-    <img src={image} alt="" loading="eager" fetchpriority="high" decoding="async" onload="this.classList.add('is-loaded')" />
+    <img src={image} alt="" loading="eager" fetchpriority="high" decoding="sync" onload="this.classList.add('is-loaded')" />
+    <script is:inline>
+      if (document.currentScript.previousElementSibling?.complete) {
+        document.currentScript.previousElementSibling.classList.add('is-loaded')
+      }
+    </script>
     <div class="page-hero__veil"></div>
     <div class="page-hero__grain"></div>
   </div>
