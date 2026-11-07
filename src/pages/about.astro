@@ -81,7 +81,7 @@ const todos: TodoItem[] = aboutData.todos
 
     <main class="w-full lg:w-2/3 z-10 flex flex-col fade-up animation-delay-100">
       <div class="px-6 lg:px-8 xl:px-12 lg:py-20 flex-1 flex flex-col">
-        <div class="mb-20 fade-up animation-delay-150">
+        <div class="mb-12 sm:mb-20 fade-up animation-delay-150">
           <div class={SECTION_HEADER_CLASS}>
             <div class="flex items-center"><span class={SECTION_NUM_CLASS}>01</span><h2 class={SECTION_TITLE_CLASS}>关于我</h2></div>
             <span class={SECTION_META_CLASS}>身份档案</span>
@@ -113,7 +113,7 @@ const todos: TodoItem[] = aboutData.todos
               <div class="mt-8 pt-6 border-t border-border/40 grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {
                   physicalAttributes.map((attr) => (
-                    <div class="flex flex-col p-3 bg-background border border-border/40 hover:bg-muted/30 transition-colors">
+                    <div class="flex flex-col rounded-lg p-3 bg-background border border-border/40 hover:bg-muted/30 transition-colors">
                       <span class="flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground mb-1.5 uppercase tracking-wider select-none">
                         <span class={`${attr.icon} size-3.5`} />
                         {attr.label}
@@ -127,7 +127,7 @@ const todos: TodoItem[] = aboutData.todos
           </div>
         </div>
 
-        <div class="mb-20 fade-up animation-delay-200">
+        <div class="mb-12 sm:mb-20 fade-up animation-delay-200">
           <div class={SECTION_HEADER_CLASS}>
             <div class="flex items-center"><span class={SECTION_NUM_CLASS}>02</span><h2 class={SECTION_TITLE_CLASS}>技能矩阵</h2></div>
             <span class={SECTION_META_CLASS}>能力扫描</span>
@@ -139,7 +139,7 @@ const todos: TodoItem[] = aboutData.todos
                   <h4 class="text-sm font-semibold text-foreground tracking-tight mb-4 flex items-center gap-2">{skillGroup.category}</h4>
                   <div class="flex flex-wrap gap-2">
                     {skillGroup.items.map((item) => (
-                      <span class="inline-flex items-center bg-muted/50 px-2.5 py-1 text-xs font-medium text-muted-foreground border border-border/40 group-hover:bg-background group-hover:text-foreground transition-colors cursor-default">
+                      <span class="inline-flex items-center rounded-full bg-muted/50 px-2.5 py-1 text-xs font-medium text-muted-foreground border border-border/40 group-hover:bg-background group-hover:text-foreground transition-colors cursor-default">
                         {item}
                       </span>
                     ))}
@@ -150,7 +150,7 @@ const todos: TodoItem[] = aboutData.todos
           </div>
         </div>
 
-        <div class="mb-20 fade-up" style="animation-delay: 250ms">
+        <div class="mb-12 sm:mb-20 fade-up" style="animation-delay: 250ms">
           <div class={SECTION_HEADER_CLASS}>
             <div class="flex items-center">
               <span class={SECTION_NUM_CLASS}>03</span><h2 class={SECTION_TITLE_CLASS}>装备清单</h2>
@@ -177,7 +177,7 @@ const todos: TodoItem[] = aboutData.todos
           </div>
         </div>
 
-        <div class="mb-20 fade-up" style="animation-delay: 300ms">
+        <div class="mb-12 sm:mb-20 fade-up" style="animation-delay: 300ms">
           <div class={SECTION_HEADER_CLASS}>
             <div class="flex items-center"><span class={SECTION_NUM_CLASS}>04</span><h2 class={SECTION_TITLE_CLASS}>游戏记录</h2></div>
             <span class={SECTION_META_CLASS}>游玩归档</span>
@@ -188,7 +188,7 @@ const todos: TodoItem[] = aboutData.todos
                 <div class="p-5 surface-soft lift hover:bg-muted/20 hover:shadow-sm transition-all flex flex-col justify-between min-h-30 hover:-translate-y-0.5">
                   <div class="flex justify-between items-start mb-4">
                     <span class="text-base font-semibold text-foreground tracking-tight">{game.title}</span>
-                    <span class="text-xs font-medium text-muted-foreground rounded bg-muted/60 px-2 py-0.5">{game.hours}</span>
+                    <span class="text-xs font-medium text-muted-foreground rounded-full bg-muted/60 px-2 py-0.5">{game.hours}</span>
                   </div>
                   <div class="flex items-center justify-between mt-auto">
                     <span class="text-sm text-muted-foreground">{game.platform}</span>
@@ -203,7 +203,7 @@ const todos: TodoItem[] = aboutData.todos
           </div>
         </div>
 
-        <div class="mb-20 fade-up" style="animation-delay: 350ms">
+        <div class="mb-12 sm:mb-20 fade-up" style="animation-delay: 350ms">
           <div class={SECTION_HEADER_CLASS}>
             <div class="flex items-center"><span class={SECTION_NUM_CLASS}>05</span><h2 class={SECTION_TITLE_CLASS}>日程表</h2></div>
             <span class={SECTION_META_CLASS}>时间分配</span>

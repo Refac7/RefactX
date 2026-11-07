@@ -34,7 +34,7 @@ const getRelativeIndentClass = (depth: number) => {
     <div id="mobile-toc-container" class="xl:hidden sticky top-[76px] z-50">
       <div class="relative">
         <button
-          class="flex w-full cursor-pointer items-center justify-between bg-background/95 backdrop-blur-md border-b border-border/40 px-6 sm:px-8 py-3 select-none"
+          class="flex w-full cursor-pointer items-center justify-between bg-background/95 backdrop-blur-xl border-b border-border/50 px-[1.1rem] sm:px-8 py-2.5 sm:py-3 select-none transition-colors active:bg-muted/40"
           data-toc-toggle
         >
           <div class="flex gap-4 items-center min-w-0 flex-1">
@@ -69,7 +69,7 @@ const getRelativeIndentClass = (depth: number) => {
             />
 
             <div class="max-h-[30vh] overflow-y-auto no-scrollbar" data-toc-scroll-area>
-              <ul class="px-6 sm:px-8 py-2 space-y-2" id="mobile-table-of-contents">
+              <ul class="px-[1.1rem] sm:px-8 py-2 space-y-2" id="mobile-table-of-contents">
                 {filteredHeadings.map((heading) => {
                   const depthClass = heading.depth === 1 ? 'font-medium text-foreground' : 'text-foreground/60 hover:text-foreground/90'
                   return (
@@ -119,6 +119,8 @@ const getRelativeIndentClass = (depth: number) => {
     private static observer: IntersectionObserver | null = null
     private static stickyObserver: IntersectionObserver | null = null
 
+    private static anchorOffset = 136
+
     private static lastScrollY = 0
     private static scrollRAF: number | null = null
     private static recentlyOpened = false
@@ -154,6 +156,15 @@ const getRelativeIndentClass = (depth: number) => {
 
       this.lastScrollY = window.scrollY
       this.isOpen = this.getOpenStateFromDOM()
+      this.anchorOffset = this.computeAnchorOffset()
+    }
+
+    /** 锚点滚动偏移：固定页头 + 吸顶目录条，避免标题被遮住 */
+    private static computeAnchorOffset(): number {
+      const bar = document.querySelector<HTMLElement>('[data-toc-toggle]')
+      const measured = bar ? Math.round(bar.getBoundingClientRect().height) : 0
+      const barHeight = measured > 0 ? measured : 52
+      return 76 + barHeight + 12
     }
 
     private static getOpenStateFromDOM(): boolean {
@@ -208,7 +219,7 @@ const getRelativeIndentClass = (depth: number) => {
           }
         },
         {
-          rootMargin: '-80px 0px -85% 0px',
+          rootMargin: `-${this.anchorOffset}px 0px -85% 0px`,
           threshold: [0, 0.1, 0.25, 0.5, 0.75, 1],
         }
       )
@@ -228,7 +239,7 @@ const getRelativeIndentClass = (depth: number) => {
         const rect = heading.getBoundingClientRect()
         const headingTop = rect.top + scrollTop
 
-        if (headingTop <= scrollTop + 120) {
+        if (headingTop <= scrollTop + this.anchorOffset + 24) {
           activeHeading = heading
           break
         }
@@ -314,7 +325,7 @@ const getRelativeIndentClass = (depth: number) => {
                 if (target) {
                   const rect = target.getBoundingClientRect()
                   const documentTop = rect.top + window.scrollY
-                  const scrollPosition = documentTop - 80
+                  const scrollPosition = documentTop - this.anchorOffset
 
                   window.scrollTo({
                     top: Math.max(0, scrollPosition),

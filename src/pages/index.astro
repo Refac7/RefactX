@@ -104,7 +104,7 @@ const EXPLORE_CARDS = [
           </div>
         </section>
 
-        <section class="mt-20">
+        <section class="mt-12 sm:mt-20">
           <div class={SECTION_HEADER_CLASS}>
             <div class="flex items-center">
               <span class={SECTION_NUM_CLASS}>02</span>
@@ -113,7 +113,7 @@ const EXPLORE_CARDS = [
             <span class={SECTION_META_CLASS}>Explore the site</span>
           </div>
 
-          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div class="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
             {
               EXPLORE_CARDS.map((card, index) => (
                 <a href={card.href} class:list={['explore-card', `explore-card--${card.tone}`]}>
@@ -135,7 +135,7 @@ const EXPLORE_CARDS = [
 
         {
           ENABLED && (
-            <section class="mt-20">
+            <section class="mt-12 sm:mt-20">
               <div class={SECTION_HEADER_CLASS}>
                 <div class="flex items-center">
                   <span class={SECTION_NUM_CLASS}>03</span>
@@ -158,7 +158,7 @@ const EXPLORE_CARDS = [
           )
         }
 
-        <section class="mt-20">
+        <section class="mt-12 sm:mt-20">
           <div class={SECTION_HEADER_CLASS}>
             <div class="flex items-center">
               <span class={SECTION_NUM_CLASS}>04</span>
@@ -200,7 +200,7 @@ const EXPLORE_CARDS = [
           </div>
         </section>
 
-        <section class="mt-20">
+        <section class="mt-12 sm:mt-20">
           <div class="home-cta">
             <div class="home-cta__glow" aria-hidden="true"></div>
             <span class="eyebrow">Say hello</span>

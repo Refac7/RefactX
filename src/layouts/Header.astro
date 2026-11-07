@@ -69,8 +69,13 @@ const isActive = (url: string) => {
 <div id="mobile-menu" class="mobile-menu" aria-hidden="true">
   <div class="mobile-menu__inner">
     <div class="mobile-menu__top">
-      <span class="eyebrow eyebrow-dot">Navigation</span>
-      <span class="font-mono text-[0.6rem] uppercase tracking-[0.16em] text-muted-foreground">Menu</span>
+      <span class="mobile-menu__eyebrow">
+        <span class="eyebrow eyebrow-dot">Navigation</span>
+        <span class="mobile-menu__hint">Menu</span>
+      </span>
+      <button id="mobile-menu-close" class="mobile-menu__close" type="button" aria-label="关闭菜单">
+        <span class="icon-[ph--x] size-4" aria-hidden="true"></span>
+      </button>
     </div>
 
     <nav class="mobile-menu__nav" aria-label="移动端导航">

@@ -49,26 +49,26 @@ const lastUpdate = new Date().toLocaleDateString('en-US', { month: 'short', day:
           <span class={SECTION_META_CLASS}>标签索引</span>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mt-8 fade-up animation-delay-200">
+        <div class="grid grid-cols-2 gap-3 sm:gap-6 xl:grid-cols-3 mt-6 sm:mt-8 fade-up animation-delay-200">
           {
             sortedTags.map((tag, index) => {
               const percent = sortedTags.length > 0 ? Math.min((tag.count / maxCount) * 100, 100) : 0
               return (
                 <a
                   href={`/tags/${tag.name}`}
-                  class="group relative flex flex-col justify-between p-6 surface-soft lift hover:bg-muted/30 hover:border-primary/30 hover:shadow-sm transition-all duration-300 h-32 fade-up hover:-translate-y-0.5"
+                  class="group relative flex flex-col justify-between p-4 sm:p-6 surface-soft lift hover:bg-muted/30 hover:border-primary/30 hover:shadow-sm transition-all duration-300 min-h-[6.75rem] sm:min-h-[8rem] fade-up hover:-translate-y-0.5"
                   style={`animation-delay: ${index * 50}ms`}
                   rel="noopener noreferrer"
                 >
-                  <div class="flex justify-between items-start z-10">
-                    <h3 class="font-semibold text-lg text-foreground group-hover:text-primary transition-colors tracking-tight capitalize">
+                  <div class="flex justify-between items-start gap-2 z-10">
+                    <h3 class="min-w-0 truncate font-semibold text-base sm:text-lg text-foreground group-hover:text-primary transition-colors tracking-tight capitalize">
                       {tag.name}
                     </h3>
-                    <span class="inline-flex items-center justify-center rounded bg-muted/60 px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+                    <span class="inline-flex shrink-0 items-center justify-center rounded-full bg-muted/60 px-2 py-0.5 text-[0.65rem] sm:text-xs font-medium text-muted-foreground">
                       {tag.count}
                     </span>
                   </div>
-                  <div class="w-full h-1.5 bg-muted/50 overflow-hidden rounded-full mt-4">
+                  <div class="w-full h-1 sm:h-1.5 bg-muted/50 overflow-hidden rounded-full mt-3 sm:mt-4">
                     <div
                       class="h-full bg-primary/60 group-hover:bg-primary transition-all duration-500 ease-out"
                       style={`width: ${percent}%`}
